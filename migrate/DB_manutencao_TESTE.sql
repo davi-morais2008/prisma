@@ -78,3 +78,67 @@ CREATE TABLE IF NOT EXISTS imagens_maquinas (
     id_maquina INT,
     url_imagem VARCHAR(500)
 );
+
+USE db_manutencaoDS_EM_TESTE;
+
+-- 1. Tabela: especialidades
+INSERT INTO especialidades (especialidade) VALUES 
+('Mecânica Industrial'),
+('Eletrotécnica'),
+('Automação e Robótica');
+
+-- 2. Tabela: logs_auditoria
+INSERT INTO logs_auditoria (usuario, acao, descricao, data_log) VALUES 
+('admin.sistema', 'INSERT', 'Novo usuário cadastrado: 12345678900', '2026-09-28'),
+('tecnico.carlos', 'UPDATE', 'Status da OS 1 alterado para Em Andamento', '2026-10-01');
+
+-- 3. Tabela: tipos_maquinas
+INSERT INTO tipos_maquinas (tipo_maquina) VALUES 
+('Prensa Hidráulica'),
+('Torno CNC'),
+('Esteira Transportadora');
+
+-- 4. Tabela: usuarios
+INSERT INTO usuarios (cpf, nome, sobrenome, email, senha) VALUES 
+('12345678900', 'Carlos', 'Eduardo', 'carlos.eduardo@empresa.com', 'hash_senha_123'),
+('98765432100', 'Mariana', 'Silva', 'mariana.silva@empresa.com', 'hash_senha_456'),
+('45678912300', 'Roberto', 'Almeida', 'roberto.almeida@empresa.com', 'hash_senha_789');
+
+-- 5. Tabela: falhas (ligada ao id_tipo_maquina)
+INSERT INTO falhas (id_tipo_maquina, falha) VALUES 
+(1, 'Vazamento no Cilindro Hidráulico'),
+(2, 'Erro de Deslocamento no Eixo X'),
+(3, 'Ruptura da Correia de Transmissão');
+
+-- 6. Tabela: maquinas (ligada ao id_tipo_maquina)
+INSERT INTO maquinas (id_tipo_maquina, numero_patrimonio, localizacao, manual_operacao, status_maquina) VALUES 
+(1, 'PAT-2026-001', 'Setor de Estamparia - Galpão A', 'http://manuals.empresa.com/prensa-001.pdf', 'Em Manutenção'),
+(2, 'PAT-2026-002', 'Setor de Usinagem - Galpão B', 'http://manuals.empresa.com/torno-002.pdf', 'Operacional'),
+(3, 'PAT-2026-003', 'Setor de Logística - Linha 03', 'http://manuals.empresa.com/esteira-003.pdf', 'Parado');
+
+-- 7. Tabela: ordens_servicos (ligada a maquinas, falhas e usuarios via CPF)
+INSERT INTO ordens_servicos (
+    id_maquina, id_falha, cpf, status_ordem, tipo_manutencao, descricao_problema,
+    data_inicio_manutencao, data_termino_manutencao, data_parada, data_prev_inicio_manutencao, data_prev_termino_manutencao
+) VALUES 
+(1, 1, '12345678900', 'Em Andamento', 'Corretiva', 'Vazamento constante de fluido hidráulico.', '2026-10-01', NULL, '2026-10-01', '2026-10-01', '2026-10-03'),
+(2, 2, '98765432100', 'Pendente', 'Preventiva', 'Calibração periódica do eixo X.', NULL, NULL, '2026-10-05', '2026-10-05', '2026-10-05'),
+(3, 3, '12345678900', 'Concluída', 'Corretiva', 'Troca de correia partida durante a operação.', '2026-09-20', '2026-09-21', '2026-09-20', '2026-09-20', '2026-09-21');
+
+-- 8. Tabela: tecnicos_especialidades (ligada a usuarios via CPF e especialidades)
+INSERT INTO tecnicos_especialidades (cpf, id_especialidade) VALUES 
+('12345678900', 1), -- Carlos tem especialidade em Mecânica Industrial
+('12345678900', 3), -- Carlos também tem em Automação
+('98765432100', 2); -- Mariana tem especialidade em Eletrotécnica
+
+-- 9. Tabela: fases_manutencao (ligada a ordens_servicos via id_ordem)
+INSERT INTO fases_manutencao (id_ordem, status, fase, data, observacao) VALUES 
+(1, 'Em Andamento', 'Diagnóstico Inicial', '2026-10-01', 'Identificado desgaste na vedação do pistão.'),
+(1, 'Em Andamento', 'Aguardando Peça', '2026-10-01', 'Solicitada nova junta de vedação ao almoxarifado.'),
+(3, 'Concluída', 'Finalização e Testes', '2026-09-21', 'Equipamento testado por 30 minutos em carga total.');
+
+-- 10. Tabela: imagens_maquinas (ligada a maquinas)
+INSERT INTO imagens_maquinas (id_maquina, url_imagem) VALUES 
+(1, 'http://storage.empresa.com/imagens/maquina_1_frente.jpg'),
+(1, 'http://storage.empresa.com/imagens/maquina_1_vazamento.jpg'),
+(2, 'http://storage.empresa.com/imagens/maquina_2_painel.jpg');
