@@ -24,6 +24,15 @@ def cadastrar_maquina(id_tipo_maquina, nmr_patrimonio, localizacao, manual_opera
         return False
 
 def atualizar_maquina(id):
+    """
+    Alterna o status de uma máquina no banco de dados entre 'Em Atividade' e 'Parada'.
+
+    Parâmetros:
+        id (int): ID da máquina que terá o status atualizado.
+
+    Retorna:
+        bool: True se a atualização foi realizada com sucesso, False se ocorreu algum erro.
+    """
     conexao, cursor = conectar()
     try:
         cursor.execute("UPDATE maquinas SET status_maquina = IF (status_maquina = 'Em Atividade', 'Parada', 'Em Atividade') WHERE id_maquina = %s", (id,))
