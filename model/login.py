@@ -1,5 +1,4 @@
 from database.conexao import conectar
-import mysql.connector
 
 def login_usuario(cpf, senha):
     conexao, cursor = conectar()

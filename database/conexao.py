@@ -8,15 +8,7 @@ def conectar():
             password="root",
             database="db_manutencaoDS_EM"
         )
-    #criar conexao
+
     cursor = conexao.cursor(dictionary=True)
 
     return conexao, cursor
-
-
-
-
-
-
-
-
