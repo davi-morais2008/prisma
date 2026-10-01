@@ -6,7 +6,7 @@ def conectar():
             port="3306",
             user="root",
             password="root",
-            database="db_manutencaods_em"
+            database="db_manutencaods_em_TESTE"
         )
 
     cursor = conexao.cursor(dictionary=True)
