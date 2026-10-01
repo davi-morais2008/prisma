@@ -13,7 +13,7 @@ def recuperar_senha(cpf):
     conexao, cursor = conectar()
 
     cursor.execute("SELECT email FROM usuarios WHERE cpf = %s", (cpf,))
-    resposta = cursor.fetchall()
+    resposta = cursor.fetchone()
     conexao.close()
 
     if resposta == None:
