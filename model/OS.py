@@ -46,7 +46,17 @@ def cadastrar_ordem_servico(id_maquina: int, id_falha: int, cpf: str, status_os:
 
 
 
-def consultar_ordem_servico():
+def consultar_ordem_servico() -> list[tuple]:
+    """
+    Busca e retorna a lista de ordens de serviço com dados detalhados.
+
+    Relaciona as tabelas 'ordens_servicos', 'maquinas', 'tipos_maquinas',
+    'falhas' e 'usuarios' para trazer nomes e identificadores legíveis.
+
+    Retorna:
+        list[tuple]: Lista de tuplas contendo os dados detalhados das ordens de serviço.
+    """
+    
     conexao, cursor = conectar()
     cursor.execute('''
     SELECT 
