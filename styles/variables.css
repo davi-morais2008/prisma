@@ -1,0 +1,74 @@
+@import url('https://fonts.cdnfonts.com/css/coolvetica');
+:root {
+  /* ========================================
+     CORES PRINCIPAIS
+     ======================================== */
+  /* Azul Escuro (Cabeçalho, Menu Lateral, Logo) */
+  --color-primary: #0A084B;
+  --color-primary-dark: #050428;
+
+  /* Roxo / Violeta (Botões secundários e destaques) */
+  --color-secondary: #7C72FF;
+  --color-secondary-hover: #675CE6;
+
+  /* Laranja / Amarelo (Botões de ação primária e alertas) */
+  --color-accent-orange: #FFA834;
+  --color-accent-peach: #F6B179;
+
+  /* ========================================
+     BACKGROUNDS E SUPERFÍCIES
+     ======================================== */
+  --color-bg-main: #F0F2FF;        /* Fundo geral das telas */
+  --color-bg-card: #FFFFFF;        /* Fundo dos cards e campos */
+  --color-bg-input: #FFFFFF;       /* Fundo dos inputs de formulário */
+  --color-bg-light: #EBEFFE;       /* Destaques leves/container interno */
+
+  /* Glassmorphism / Modal Translucido (Telas de Login/Cadastro) */
+  --color-glass-bg: rgba(255, 255, 255, 0.45);
+  --color-glass-border: rgba(255, 255, 255, 0.6);
+  --glass-blur: blur(12px);
+
+  /* ========================================
+     STATUS / ALERTAS (Calendário e Cards)
+     ======================================== */
+  --color-status-danger: #FF8A8A;  /* Vermelho / Alerta */
+  --color-status-warning: #FFE885; /* Amarelo / Atenção */
+  --color-status-success: #A3FFB8; /* Verde / OK */
+
+  /* ========================================
+     TEXTOS
+     ======================================== */
+  --color-text-primary: #1C1B1F;
+  --color-text-secondary: #62606E;
+  --color-text-light: #FFFFFF;
+
+  /* ========================================
+     TIPOGRAFIA
+     ======================================== */
+  --font-family-base: 'Coolvetica', sans-serif;
+
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem;/* 14px */
+  --font-size-md: 1rem;    /* 16px */
+  --font-size-lg: 1.25rem; /* 20px */
+  --font-size-xl: 1.5rem;  /* 24px */
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* ========================================
+     BORDAS E ARREDONDAMENTO
+     ======================================== */
+  --border-radius-sm: 8px;   /* Tag / Ícones */
+  --border-radius-md: 16px;  /* Cards / Inputs */
+  --border-radius-lg: 24px;  /* Modal / Containers principais */
+  --border-radius-pill: 50px;/* Botões pill / Inputs arredondados */
+
+  /* ========================================
+     SOMBRAS E ELEVAÇÕES
+     ======================================== */
+  --shadow-sm: 0px 2px 8px rgba(10, 8, 75, 0.06);
+  --shadow-md: 0px 4px 16px rgba(10, 8, 75, 0.1);
+  --shadow-lg: 0px 8px 24px rgba(10, 8, 75, 0.15);
+}
