@@ -22,3 +22,13 @@ def cadastrar_maquina(id_tipo_maquina, nmr_patrimonio, localizacao, manual_opera
         return True
     except:
         return False
+
+def atualizar_maquina(id):
+    conexao, cursor = conectar()
+    try:
+        cursor.execute("UPDATE maquinas SET status_maquina = IF (status_maquina = 'Em Atividade', 'Parada', 'Em Atividade') WHERE id_maquina = %s", (id,))
+        conexao.commit()
+        conexao.close()
+        return True
+    except:
+        return False
