@@ -6,18 +6,9 @@ def conectar():
             port="3306",
             user="root",
             password="root",
-            database="db_manutencaods_em_TESTE"
+            database="db_manutencaoDS_EM"
         )
 
     cursor = conexao.cursor(dictionary=True)
 
     return conexao, cursor
-
-
-
-
-
-
-
-
-

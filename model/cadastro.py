@@ -1,7 +1,4 @@
-
 from database.conexao import conectar
-
-
 
 def cadastrar_usuario(cpf:str, nome:str, sobrenome:str, email:str, senha:str) -> bool:
     """
