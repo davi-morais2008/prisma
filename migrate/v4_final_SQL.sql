@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS ordens_servicos (
  tipo_manutencao VARCHAR(100),
  descricao_problema VARCHAR(255),
  data_inicio_manutencao DATE,
+ data_termino_manutencao DATE,
  data_parada DATE,
  data_prev_inicio_manutencao DATE,
  data_prev_termino_manutencao DATE
