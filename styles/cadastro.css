@@ -1,0 +1,53 @@
+@import 'variables.css';
+
+* {
+    font-family: var(--font-family-base);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main-container {
+    background-image: url(/src/img/background-cadastro.jpg);
+
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-cadastro {
+    width: 558px;
+    height: 638px;
+    border-radius: 49px;
+    border: 1px solid rgba(255, 255, 255, 0.50);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 20px 40px 10px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(15px);
+}
+
+.form-input {
+    width: 406px;
+    height: 61px;
+    border-radius: 107px;
+    background: #FFF;
+    border: none;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    color: #FFF;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.form-actions{
+    border-radius: 33px;
+    background: #FFA600;
+}
