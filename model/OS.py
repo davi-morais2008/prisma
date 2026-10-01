@@ -44,3 +44,9 @@ def cadastrar_ordem_servico(id_maquina: int, id_falha: int, cpf: str, status_os:
         conexao.close()
         return False
 
+
+
+def consultar_os():
+    conexao, cursor = conectar()
+    cursor.execute()
+    return
