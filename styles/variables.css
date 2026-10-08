@@ -71,4 +71,6 @@
   --shadow-sm: 0px 2px 8px rgba(10, 8, 75, 0.06);
   --shadow-md: 0px 4px 16px rgba(10, 8, 75, 0.1);
   --shadow-lg: 0px 8px 24px rgba(10, 8, 75, 0.15);
+
+  --color-footer: #eaf1f8;
 }
