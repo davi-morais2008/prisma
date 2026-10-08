@@ -1,0 +1,47 @@
+!<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendário BEM</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="page-container">
+    <!-- Bloco Principal: Calendar -->
+    <section class="calendar">
+      
+      <!-- Cabeçalho do Calendário -->
+      <header class="calendar__header">
+        <button type="button" class="calendar__nav-button" id="prev-month" aria-label="Mês anterior">
+          &lt;
+        </button>
+        <h2 class="calendar__title" id="month-year-title">Mês Ano</h2>
+        <button type="button" class="calendar__nav-button" id="next-month" aria-label="Próximo mês">
+          &gt;
+        </button>
+      </header>
+
+      <!-- Dias da Semana (Cabeçalho da Grade) -->
+      <div class="calendar__weekdays">
+        <div class="calendar__day calendar__day--header">Dom</div>
+        <div class="calendar__day calendar__day--header">Seg</div>
+        <div class="calendar__day calendar__day--header">Ter</div>
+        <div class="calendar__day calendar__day--header">Qua</div>
+        <div class="calendar__day calendar__day--header">Qui</div>
+        <div class="calendar__day calendar__day--header">Sex</div>
+        <div class="calendar__day calendar__day--header">Sáb</div>
+      </div>
+
+      <!-- Grade de Dias (Preenchida via JavaScript) -->
+      <div class="calendar__days" id="calendar-days">
+        <!-- Os dias serão inseridos dinamicamente aqui -->
+      </div>
+
+    </section>
+</main>
+
+  <script src="script.js"></script>
+</body>
+</html>
