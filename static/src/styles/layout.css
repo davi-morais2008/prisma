@@ -7,9 +7,17 @@
     font-family: var(--font-family-base);
 }
 
+body{
+    margin-left: 200px;
+}
+
+.header{
+    display: none;
+}
+
 .sidebar {
     width: 200px;
-    height: 100vh;
+    height: 100%;
     position: fixed;
     top: 0;
     left: 0;
@@ -20,10 +28,10 @@
     justify-content: space-between;
     padding: 1.5rem 1rem;
     box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    z-index: 0;
 }
 
-.sidebar__header {
+.sidebar__logo {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,11 +39,12 @@
     border-bottom: 1px solid var(--color-bg-hover);
 }
 
-.sidebar__header-img {
+.sidebar__logo img{
     max-width: 140px;
     height: auto;
     object-fit: contain;
 }
+
 
 .sidebar__nav {
     flex: 1;
@@ -114,15 +123,71 @@
 }
 
 .footer__content {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    justify-content: space-around;
     color: var(--color-text-muted);
-    font-size: 0.8rem;
-    font-size: large;
+    font-size: clamp(0.3rem, 2.5vw, 1rem)
 }
 
+@media (max-width: 768px) {
+
+    body{
+        margin-left: 0px !important;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .header {
+        background-color: #1e293b;
+        color: rgb(255, 255, 255);
+        position: relative;
+        display: flex;
+    }
+
+    .header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .menu-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    /* Dropdown escondido por padrão no mobile */
+    .dropdown-menu {
+        display: none;
+        background-color: #334155;
+        flex-direction: column;
+    }
+
+    .dropdown-menu.active {
+        display: flex; /* Exibe quando ativo via JS */
+    }
+
+    .dropdown-menu ul {
+        list-style: none;
+    }
+
+    .dropdown-menu a {
+        display: block;
+        padding: 0.75rem 1rem;
+        color: white;
+        text-decoration: none;
+        border-top: 1px solid #475569;
+    }
+
+    .content {
+        padding: 1.5rem;
+        flex: 1;
+    }
+}
