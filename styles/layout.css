@@ -23,7 +23,6 @@
     z-index: 1000;
 }
 
-/* 2.1 Topo do Menu (Header Interno / Logo) */
 .sidebar__header {
     display: flex;
     justify-content: center;
@@ -38,11 +37,10 @@
     object-fit: contain;
 }
 
-/* 2.2 Navegação Principal (Nav & Links) */
 .sidebar__nav {
     flex: 1;
     margin-top: 1.5rem;
-    overflow-y: auto; /* Permite rolagem se a tela for muito curta */
+    overflow-y: auto;
 }
 
 .sidebar__nav-list {
@@ -70,7 +68,6 @@
     transition: all var(--transition-speed) ease;
 }
 
-/* Estados de Hover e Item Ativo */
 .sidebar__nav-link:hover {
     background-color: var(--color-bg-hover);
     color: var(--color-text-light);
@@ -82,7 +79,6 @@
     color: var(--color-text-light);
 }
 
-/* 2.3 Rodapé do Menu (Perfil do Usuário) */
 .sidebar__user {
     text-align: center;
     padding-top: 1rem;
