@@ -15,12 +15,12 @@
 
 .machines{
     width: 100vw;
-    height: 90vh;
     background-color: aqua;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    gap: 20px;
     font-family: var(--font-family-base);
     font-size: var(--font-size-md);
 }
@@ -36,7 +36,7 @@
 
 .machines__filters{
     width: 100%;
-    height: 15%;
+    height: 150px;
     background-color: blue;
     display: flex;
     flex-direction: column;
@@ -71,41 +71,64 @@
 }
 
 /* ======================================= */
-/* =========  BLOCO: Filtros  ============ */
+/* =========  BLOCO: Máquinas  ============ */
 /* ======================================= */
 
 .machines__machines-grid{
-    
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 200px 200px 200px;
+    background-color: blueviolet;
+    width: 100%;
+    padding: 0 10px;
+    justify-items: center;
+    align-items: center;
 }
 
 .machine{
+    height: 95%;
+    width: 95%;
+    background-color: white;
 
 }
-
-.machine__machine-title{
-
+.machine__machine-title {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
 }
 
-.machine__machine-number{
-
+.machine__machine-number {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-secondary);
 }
 
 /* ======================================= */
 /* =========  BLOCO: Cadastro  ============ */
 /* ======================================= */
 
-.machines__register{
+.machines__register {
 
 }
 
-.form-register{
+.form-register {
 
 }
 
-.form-register__input-select{
+.form-register__input-text {
 
 }
 
-.form-register__input-text{
+.form-register label {
+
+}
+
+.form-register button[type="submit"] {
+
+}
+
+.form-register button[type="submit"]:hover {
 
 }
