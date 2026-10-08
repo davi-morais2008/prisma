@@ -1,23 +1,79 @@
+@import url('variables.css');
+
 /* ======================================= */
 /* ======  BLOCO: Principal/Titulo  ====== */
 /* ======================================= */
 
 
+/* Reset de teste */
+*{
+
+}
+
+
+.machines{
+
+}
+
+.machines__title{
+
+}
 
 /* ======================================= */
 /* =========  BLOCO: Filtros  ============ */
 /* ======================================= */
 
+.machines__filters{
 
+}
+
+.filter-input-search{
+
+}
+.filter-buttons{
+
+}
+
+.filter-button{
+
+}
 
 /* ======================================= */
 /* =========  BLOCO: Filtros  ============ */
 /* ======================================= */
 
+.machines__machines-grid{
 
+}
+
+.machine{
+
+}
+
+.machine__machine-title{
+
+}
+
+.machine__machine-number{
+
+}
 
 /* ======================================= */
 /* =========  BLOCO: Cadastro  ============ */
 /* ======================================= */
 
+.machines__register{
 
+}
+
+.form-register{
+
+}
+
+.form-register__input-select{
+
+}
+
+.form-register__input-text{
+
+}
