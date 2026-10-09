@@ -209,7 +209,7 @@
     display: none;
 }
 
-/* QUANDO SIGN IN ESTIVER MARCADO */
+/* Verifica se o botao signin esta marcado, se sim, ele ativa todos com o flex */
 #signin:checked ~ .header_container .titulo_signin,
 #signin:checked ~ .header_container .subtitulo_signin,
 #signin:checked ~ .campos_signin,
@@ -217,7 +217,7 @@
     display: flex;
 }
 
-/* QUANDO SIGNUP ESTIVER MARCADO */
+/* Verifica se o botao signup esta marcado, se sim, ele ativa todos com o flex */
 #signup:checked ~ .header_container .titulo_signup,
 #signup:checked ~ .header_container .subtitulo_signup,
 #signup:checked ~ .campos_signup,
