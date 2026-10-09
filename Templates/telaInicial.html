@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Prisma</title>
 
+    <link rel="stylesheet" href="/static/src/styles/telaInicial.css">
+
 </head>
 
 <body>
@@ -14,19 +16,19 @@
 
         <div class="home__orders">
 
-            <article class="work-order">
+            <article class="work-order work-order--baixa">
                 <h3 class="work-order__title">Título da Ordem de Serviiço</h3>
                 <p class="work-order__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum, minus
                     nostrum! Aspernatur repellat eos nemo, in dicta autem animi porro </p>
             </article>
 
-            <article class="work-order">
+            <article class="work-order work-order--media">
                 <h3 class="work-order__title">Título da Ordem de Serviiço</h3>
                 <p class="work-order__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum, minus
                     nostrum! Aspernatur repellat eos nemo, in dicta autem animi porro </p>
             </article>
 
-            <article class="work-order">
+            <article class="work-order work-order--alta">
                 <h3 class="work-order__title">Título da Ordem de Serviiço</h3>
                 <p class="work-order__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum, minus
                     nostrum! Aspernatur repellat eos nemo, in dicta autem animi porro </p>
@@ -37,28 +39,27 @@
         <div class="modal" id="orderModal">
             <div class="modal__overlay" id="modalOverlay"></div>
 
-            <div class="modal__card">
-                <!-- Botão 'X' para fechar rápido no topo -->
-                <button class="modal__close-x" id="btnCloseX" title="Fechar">X</button>
+            <div class="modal__card">          
 
                 <!-- Conteúdo do Modal -->
+                <!-- Botões de Ação -->
+                <div class="modal__actions">
+                    <button class="btn btn--edit" id="btnEdit">
+                        <img src="/static/src/img/btn-edit.png" alt="Edit Button">
+                    </button>
+                    <button class="btn btn--delete" id="btnDelete">
+                        <img src="/static/src/img/btn-delete.png" alt="Delete Button">
+                    </button>
+                </div>
                 <h2 class="modal__title" id="modalTitle">Título da Ordem de Serviço</h2>
                 <p class="modal__description" id="modalDescription">
                     Descrição da ordem de serviço selecionada...
                 </p>
 
-                <!-- Botões de Ação -->
-                <div class="modal__actions">
-                    <button class="btn btn--edit" id="btnEdit">
-                        ✏️ Editar
-                    </button>
-                    <button class="btn btn--delete" id="btnDelete">
-                        🗑️ Excluir
-                    </button>
-                    <button class="btn btn--close" id="btnClose">
-                        Fechar
-                    </button>
-                </div>
+                
+                <button class="btn--close" id="btnClose">
+                    Fechar
+                </button>
             </div>
         </div>
     </main>
