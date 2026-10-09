@@ -1,4 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, flash, jsonify
+from model.login import login_usuario
+
+
 
 app = Flask(__name__)
 
@@ -9,29 +12,23 @@ app.secret_key = 'PRISMA_maintence'
 def pagina_historico():
     return render_template("historico.html")
 
+@app.route('/')
 @app.route('/login')
 def pagina_login():
     return render_template('login.html')
 
+
 @app.route('/login/post', methods = ['POST'])
-def pagina_login_acesso():
-    login_usuario = request.form.get('logar_usuario')
+def pagina_login_tecnico():
+    login_do_usuario = request.form.get('cpf')
+    senha_do_usuario = request.form.get('senha')
 
+    print(login_do_usuario)
+    print(senha_do_usuario)
 
-    if recuperar_login(login_usuario,senha_usuario):
-        session['usuario_logado'] = login_usuario
-        return redirect('/admin')
-    else:
-        flash('Usuário ou senha inválida!')
-        flash('Tente Novamente!')
+    if login_usuario(login_usuario,senha_usuario): 
         return redirect('/login')
 
-@app.route('/login/logout')
-def logout():
-    session = None
-    return redirect('/login')
 
 
-if __name__ == "__main__":
-
-    app.run(host="0.0.0.0", port=8080, debug=True)
+app.run(host="0.0.0.0", port=8080, debug=True)
