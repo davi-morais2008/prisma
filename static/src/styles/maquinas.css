@@ -202,6 +202,11 @@ body {
     font-family: var(--font-family-base);
 }
 
+.form-register h3{
+    text-align: center;
+    margin: 0 0 30px 0;
+}
+
 .form-register label {
     font-size: var(--font-size-md);
     font-weight: var(--font-weight-medium);
@@ -219,11 +224,25 @@ body {
     color: var(--color-text-primary);
     background-color: var(--color-bg-input);
     border: 1px solid var(--color-bg-light);
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-lg);
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     margin-bottom: 10%;
+    background-color: var(--color-bg-light);
 }
+
+.form-register__input-select::placeholder,
+.form-register__input-text::placeholder{
+    color: #9994cc80;
+}
+
+#closeRegister{
+    align-self: flex-end;
+    color: var(--color-primary);
+    margin-bottom: 10px;
+}
+
+
 
 .form-register__input-select:focus,
 .form-register__input-text:focus {
@@ -273,6 +292,52 @@ body {
     position: absolute;
 }
 
+/* --- CABEÇALHO DAS ESTATÍSTICAS E AÇÕES --- */
+.machine-details__statistics-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.machine-details__statistics-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--border-radius-sm);
+}
+
+.machine-details__action-button {
+    background: transparent;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.machine-details__action-button--edit {
+    color: var(--color-primary);
+}
+
+.machine-details__action-button--edit:hover {
+    background-color: var(--color-bg-light);
+    color: var(--color-secondary);
+    transform: scale(1.05);
+}
+
+.machine-details__action-button--delete {
+    color: var(--color-text-secondary);
+}
+
+.machine-details__action-button--delete:hover {
+    background-color: var(--color-bg-light);
+    color: var(--color-status-danger);
+    transform: scale(1.05);
+}
+
 /* --- LOGO / CABEÇALHO DA MÁQUINA --- */
 .machine-details__logo {
     width: 100%;
@@ -307,6 +372,22 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.machine-details__edit-button {
+    background: transparent;
+    width: 30px;
+    height: 30px;
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.machine-details__edit-button > img{
+    width: 10px;
+
 }
 
 /* --- INFORMAÇÕES PRIMÁRIAS --- */
