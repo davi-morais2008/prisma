@@ -1,0 +1,140 @@
+@import 'variables.css';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-shadow: border-box;
+}
+
+body {
+    font-family: var(--font-family-base);
+    background-color: var(--color-bg-main);
+    color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.page__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--border-radius-lg);
+    padding: 0;
+}
+
+
+.header {
+    background-color: var(--color-primary);
+    padding: var(--font-size-md);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--font-size-xs);
+}
+
+.header__title {
+    color: var(--color-text-light);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    display: flex;
+    align-items: center;
+}
+
+/* Triângulo do Logo usando pseudo-elemento ::before */
+.header__title::before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    /* Triângulo para cima */
+    border-width: 0 calc(var(--font-size-lg) / 2 + 4px) calc(var(--font-size-xl) - 4px) calc(var(--font-size-lg) / 2 + 4px);
+    border-color: transparent transparent var(--color-text-light) transparent;
+    margin-right: var(--font-size-xs);
+}
+
+
+
+.search {
+    padding: 0 var(--border-radius-lg);
+    display: flex;
+    justify-content: center;
+}
+
+.search__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--font-size-sm);
+    max-width: 500px;
+    width: 100%;
+}
+
+.search__input-group,
+.search__filter-group {
+    display: flex;
+}
+
+.search__input,
+.search__select {
+    width: 100%;
+    padding: var(--font-size-sm) var(--font-size-md);
+    font-family: var(--font-family-base);
+    background-color: var(--color-bg-input);
+    border: none;
+    border-radius: var(--border-radius-pill);
+    box-shadow: var(--shadow-sm);
+}
+
+.search__input::placeholder {
+    color: var(--color-text-secondary);
+}
+
+.search__select {
+    color: var(--color-text-secondary);
+}
+
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--font-size-md);
+    padding: 0 var(--border-radius-lg) var(--border-radius-lg);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+
+.user-card {
+    display: flex;
+    align-items: center;
+    gap: var(--font-size-md);
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    padding: var(--font-size-md);
+    margin-bottom: var(--font-size-xs);
+}
+
+/* Estilização para o ícone de usuário circular */
+.user-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+    color: var(--color-text-light);
+    font-size: var(--font-size-xl);
+    line-height: 1;
+}
+
+.user-card__info {
+    flex-grow: 1;
+    /* Conteúdo de info ocupando o espaço restante */
+}

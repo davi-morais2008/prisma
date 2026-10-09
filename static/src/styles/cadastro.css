@@ -1,248 +1,109 @@
-@import 'variables.css';
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body {
     font-family: var(--font-family-base);
-}
-
-/* Fundo da tela */
-.body_cadastro {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: var(--color-bg-main);
-    padding: 20px;
-}
-
-/* Container Principal */
-.main_container {
-    width: 100%;
-    max-width: 1050px;
-    background-color: var(--color-bg-card);
-    border-radius: var(--border-radius-lg);
-    display: flex;
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-    min-height: 680px;
-}
-
-/* --- COLUNA ESQUERDA --- */
-.coluna_formulario {
-    flex: 1;
-    padding: 30px 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.form_cadastro {
-    display: flex;
-    height: 100%;
-    flex-direction: column;
-    gap: 16px;
-}
-
-/* --- CABEÇALHO / TÍTULOS --- */
-.header_container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.titulo_cadastro {
-    color: var(--color-primary);
-    font-size: 1.75rem;
-    font-weight: var(--font-weight-bold);
-    text-align: center;
-}
-
-.subtitulo_cadastro {
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-sm);
-    text-align: center;
-    margin-top: 4px;
-}
-
-/* --- SLIDING INDICATOR --- */
-.toggle_radio {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.toggle_container {
-    position: relative;
-    display: flex;
-    width: 100%;
-    max-width: 280px;
-    height: 48px;
-    background-color: #f1f3f5;
-    border-radius: 24px;
-    padding: 4px;
-    margin: 8px auto 8px auto;
-    box-sizing: border-box;
-}
-
-.toggle_indicator {
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    width: calc(50% - 4px);
-    height: calc(100% - 8px);
-    background-color: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1;
-}
-
-.btn_toggle {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #6c757d;
-    cursor: pointer;
-    z-index: 2;
-    transition: color 0.3s ease;
-    user-select: none;
-}
-
-/* Animações da Pílula e Cor do Texto */
-#signin:checked ~ .toggle_container .toggle_indicator {
-    transform: translateX(0);
-}
-
-#signin:checked ~ .toggle_container label[for="signin"] {
-    color: #111827;
-}
-
-#signup:checked ~ .toggle_container .toggle_indicator {
-    transform: translateX(100%);
-}
-
-#signup:checked ~ .toggle_container label[for="signup"] {
-    color: #111827;
-}
-
-/* --- ESTRUTURA DOS CAMPOS --- */
-.campos_signin,
-.campos_signup {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.form_group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.form_label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-text-secondary);
-}
-
-.form_input {
-    width: 100%;
-    padding: 11px 14px;
-    font-size: 0.9rem;
     color: var(--color-text-primary);
-    background-color: var(--color-bg-input);
-    border: 1.5px solid var(--color-bg-light);
-    border-radius: 10px;
-    outline: none;
-    transition: all 0.2s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.form_input::placeholder {
+
+.page__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--border-radius-lg);
+    padding: var(--font-size-xl) 0; 
+}
+
+
+.search {
+    padding: 0 var(--border-radius-lg);
+    display: flex;
+    justify-content: center;
+}
+
+.search__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--font-size-sm);
+    max-width: 500px;
+    width: 100%;
+}
+
+.search__input-group,
+.search__filter-group {
+    display: flex;
+}
+
+.search__input,
+.search__select {
+    width: 100%;
+    padding: var(--font-size-sm) var(--font-size-md);
+    font-family: var(--font-family-base);
+    background-color: var(--color-bg-input);
+    border: none;
+    border-radius: var(--border-radius-pill);
+    box-shadow: var(--shadow-sm);
+    color: var(--color-text-primary);
+}
+
+.search__input::placeholder {
     color: var(--color-text-secondary);
 }
 
-.form_input:focus {
-    border-color: var(--color-secondary);
-    box-shadow: 0 0 0 3px rgba(124, 114, 255, 0.2);
+.search__select {
+    color: var(--color-text-secondary);
 }
 
-/* Botão de Envio */
-.form_actions {
-    margin-top: 8px;
-}
 
-.btn_submit {
-    
-    padding: 15px 30px;
-   
-    
-    font-size: 0.95rem;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-light);
-    background-color: var(--color-secondary);
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.btn_submit:hover {
-    background-color: var(--color-secondary-hover);
-}
-
-/* --- TROCA DINÂMICA (SEM ALTERAR O LAYOUT) --- */
-
-/* Esconde tudo por padrão */
-.titulo_signin,
-.subtitulo_signin,
-.titulo_signup,
-.subtitulo_signup,
-.campos_signin,
-.campos_signup,
-.btn_submit_signin,
-.btn_submit_signup {
-    display: none;
-}
-
-/* Verifica se o botao signin esta marcado, se sim, ele ativa todos com o flex */
-#signin:checked ~ .header_container .titulo_signin,
-#signin:checked ~ .header_container .subtitulo_signin,
-#signin:checked ~ .campos_signin,
-#signin:checked ~ .form_actions .btn_submit_signin {
+.user-list {
     display: flex;
+    flex-direction: column;
+    gap: var(--font-size-md);
+    padding: 0 var(--border-radius-lg) var(--border-radius-lg);
+    max-width: 650px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-/* Verifica se o botao signup esta marcado, se sim, ele ativa todos com o flex */
-#signup:checked ~ .header_container .titulo_signup,
-#signup:checked ~ .header_container .subtitulo_signup,
-#signup:checked ~ .campos_signup,
-#signup:checked ~ .form_actions .btn_submit_signup {
+
+.user-card {
     display: flex;
+    /* Alinha os itens ao centro, se preferir no topo mude para flex-start */
+    align-items: center; 
+    gap: var(--font-size-md);
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    padding: var(--font-size-md);
 }
 
-/* --- COLUNA DIREITA --- */
-.coluna_imagem {
-    flex: 1;
-    background: linear-gradient(180deg, var(--color-primary) 50%, rgb(96, 96, 248) 100%);
+.user-card__icon {
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 40px;
-    position: relative;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+    color: var(--color-text-light);
+    font-size: var(--font-size-xl);
+    line-height: 1;
+    flex-shrink: 0; 
 }
 
-.imagem_lateral {
-    max-width: 80%;
-    max-height: 80%;
-    object-fit: contain;
-    filter: drop-shadow(0 20px 30px rgba(10, 8, 75, 0.15));
+.user-card__info {
+    flex-grow: 1;
 }
 
-@view-transition {
-  navigation: auto;
+.user-card__text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    line-height: 1.5; /* Melhora a leitura do texto longo */
 }
