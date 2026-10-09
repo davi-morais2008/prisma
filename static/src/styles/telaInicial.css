@@ -88,6 +88,19 @@ body {
     line-height: 1.5;
 }
 
+/* Modificadores de urgência para as Ordens de Serviço */
+.work-order--baixa {
+    border-left-color: #22c55e; /* Verde (Urgência Baixa) */
+}
+
+.work-order--media {
+    border-left-color: #f59e0b; /* Amarelo/Laranja (Urgência Média) */
+}
+
+.work-order--alta {
+    border-left-color: #ef4444; /* Vermelho (Urgência Alta) */
+}
+
 
 .modal {
     position: fixed;
