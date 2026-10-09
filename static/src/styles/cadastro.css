@@ -14,35 +14,39 @@
     justify-content: center;
     align-items: center;
     background-color: var(--color-bg-main);
-    padding: 20px;
+    padding: clamp(10px, 3vw, 20px); /* Padding fluido */
 }
 
-/* Container Principal */
+/* Container Principal com Quebra Automática */
+/* Container Principal com Quebra Automática e Imagem no Topo */
 .main_container {
     width: 100%;
     max-width: 1050px;
     background-color: var(--color-bg-card);
     border-radius: var(--border-radius-lg);
     display: flex;
+    flex-wrap: wrap-reverse;
     overflow: hidden;
     box-shadow: var(--shadow-md);
-    min-height: 680px;
+    min-height: min(680px, 100vh);
 }
 
 /* --- COLUNA ESQUERDA --- */
 .coluna_formulario {
-    flex: 1;
-    padding: 30px 50px;
+    /* flex-grow: 1, flex-shrink: 1, flex-basis: 320px 
+       Se a tela for menor que ~640px, a coluna passa a ocupar 100% da largura automaticamente */
+    flex: 1 1 320px;
+    padding: clamp(20px, 4vw, 50px); /* Padding proporcional à tela */
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.form_cadastro {
+.form_auth {
     display: flex;
-    height: 100%;
     flex-direction: column;
     gap: 16px;
+    height: 100%;
 }
 
 /* --- CABEÇALHO / TÍTULOS --- */
@@ -54,7 +58,8 @@
 
 .titulo_cadastro {
     color: var(--color-primary);
-    font-size: 1.75rem;
+    /* Fonte fluida: nunca fica menor que 1.4rem nem maior que 1.75rem */
+    font-size: clamp(1.4rem, 2.5vw, 1.75rem);
     font-weight: var(--font-weight-bold);
     text-align: center;
 }
@@ -82,7 +87,7 @@
     background-color: #f1f3f5;
     border-radius: 24px;
     padding: 4px;
-    margin: 8px auto 8px auto;
+    margin: 8px auto 16px auto;
     box-sizing: border-box;
 }
 
@@ -131,11 +136,10 @@
 }
 
 /* --- ESTRUTURA DOS CAMPOS --- */
-.campos_signin,
-.campos_signup {
+.campos_container {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
 }
 
 .form_group {
@@ -177,10 +181,8 @@
 }
 
 .btn_submit {
-    
-    padding: 15px 30px;
-   
-    
+    width: 100%;
+    padding: 14px 20px;
     font-size: 0.95rem;
     font-weight: var(--font-weight-bold);
     color: var(--color-text-light);
@@ -195,54 +197,41 @@
     background-color: var(--color-secondary-hover);
 }
 
-/* --- TROCA DINÂMICA (SEM ALTERAR O LAYOUT) --- */
-
-/* Esconde tudo por padrão */
-.titulo_signin,
-.subtitulo_signin,
-.titulo_signup,
-.subtitulo_signup,
-.campos_signin,
-.campos_signup,
-.btn_submit_signin,
-.btn_submit_signup {
+/* --- CONTROLE DE EXIBIÇÃO DOS FORMULÁRIOS --- */
+.form_signin,
+.form_signup {
     display: none;
 }
 
-/* Verifica se o botao signin esta marcado, se sim, ele ativa todos com o flex */
-#signin:checked ~ .header_container .titulo_signin,
-#signin:checked ~ .header_container .subtitulo_signin,
-#signin:checked ~ .campos_signin,
-#signin:checked ~ .form_actions .btn_submit_signin {
+#signin:checked ~ .form_signin {
     display: flex;
 }
 
-/* Verifica se o botao signup esta marcado, se sim, ele ativa todos com o flex */
-#signup:checked ~ .header_container .titulo_signup,
-#signup:checked ~ .header_container .subtitulo_signup,
-#signup:checked ~ .campos_signup,
-#signup:checked ~ .form_actions .btn_submit_signup {
+#signup:checked ~ .form_signup {
     display: flex;
 }
 
-/* --- COLUNA DIREITA --- */
+/* --- COLUNA DIREITA (IMAGEM) --- */
 .coluna_imagem {
-    flex: 1;
+    flex: 1 1 auto;
     background: linear-gradient(180deg, var(--color-primary) 50%, rgb(96, 96, 248) 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px;
+    padding: clamp(20px, 4vw, 40px);
     position: relative;
+    min-height: 200px;
 }
 
 .imagem_lateral {
-    max-width: 80%;
+    width: 100%;
+    max-width: 280px;
+    height: auto;
     max-height: 80%;
     object-fit: contain;
     filter: drop-shadow(0 20px 30px rgba(10, 8, 75, 0.15));
 }
 
 @view-transition {
-  navigation: auto;
+    navigation: auto;
 }
