@@ -125,3 +125,81 @@ body {
     line-height: 1.5;
     word-break: break-word; 
 }
+
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none; /* Escondido por padrão */
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Quando a URL terminar com #user-modal, o modal aparece */
+.modal:target {
+    display: flex;
+}
+
+
+.modal__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-glass-bg); 
+    backdrop-filter: var(--glass-blur);
+    cursor: default;
+}
+
+
+.modal__content {
+    position: relative;
+    z-index: 10;
+    background-color: var(--color-bg-light); 
+    border-radius: var(--border-radius-lg); 
+    box-shadow: var(--shadow-lg); 
+    width: 90%;
+    max-width: 320px;
+    padding: var(--font-size-xl) var(--font-size-lg); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.modal__icon-wrapper {
+    margin-bottom: var(--font-size-md); 
+}
+
+.modal__icon {
+    font-size: 64px; 
+    color: var(--color-text-primary); 
+    line-height: 1;
+}
+
+
+.modal__skeleton {
+    background-color: var(--color-bg-card); 
+    width: 100%;
+}
+
+.modal__skeleton--title {
+    height: 32px;
+    width: 85%;
+    border-radius: var(--border-radius-pill); 
+    margin-bottom: var(--font-size-sm); 
+}
+
+.modal__skeleton--subtitle {
+    height: 24px;
+    width: 50%;
+    border-radius: var(--border-radius-pill); 
+    margin-bottom: var(--font-size-xl); 
+}
+
+.modal__skeleton--block {
+    height: 180px;
+    border-radius: var(--border-radius-lg); 
+}
