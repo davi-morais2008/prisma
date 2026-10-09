@@ -4,8 +4,6 @@ app = Flask(__name__)
 
 app.secret_key = 'PRISMA_maintence'
 
-app.secret_key = 'megamats'
-
 @app.route("/historico")
 
 def pagina_historico():
