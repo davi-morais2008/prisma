@@ -258,6 +258,131 @@ body {
 
 }
 
+/* ========================================
+   BLOCO: MACHINE-DETAILS (Máquina Individual)
+   ======================================== */
+.machine-details {
+
+}
+
+/* --- LOGO / CABEÇALHO DA MÁQUINA --- */
+.machine-details__logo {
+
+}
+
+.machine-details__logo-image {
+
+}
+
+.machine-details__logo-title {
+
+}
+
+/* --- INFORMAÇÕES PRIMÁRIAS --- */
+.machine-details__primary-info {
+
+
+}
+
+.machine-details__img-machine{
+
+}
+
+.machine-details__info-image {
+
+}
+
+.machine-details__info-content {
+
+}
+
+.machine-details__type {
+
+}
+
+.machine-details__type-title {
+
+}
+
+.machine-details__type-text {
+
+}
+
+.machine-details__number {
+
+}
+
+.machine-details__number-title {
+
+}
+
+.machine-details__number-text {
+
+}
+
+/* --- ESTATÍSTICAS --- */
+.machine-details__statistics {
+
+}
+
+.machine-details__statistics-title {
+
+}
+
+.machine-details__stat-item {
+
+}
+
+.machine-details__stat-item--production-time {
+
+}
+
+.machine-details__stat-item--working-time {
+
+}
+
+.machine-details__stat-item--machine-cost {
+
+}
+
+.machine-details__stat-item--machine-part {
+
+}
+
+.machine-details__stat-item--stop-time {
+
+}
+
+.machine-details__stat-item--manual-machines {
+
+}
+
+/* --- MANUTENÇÃO PREVENTIVA --- */
+.machine-details__prev-maintance {
+
+}
+
+.machine-details__prev-maintance-title {
+
+}
+
+.machine-details__prev-maintance-text {
+
+}
+
+/* --- HISTÓRICO DE MANUTENÇÕES --- */
+.machine-details__maintance-history {
+
+}
+
+.machine-details__maintance-history-title {
+
+}
+
+.machine-details__maintances-list {
+
+}
+
 
 @media (max-width: 768px) {
 .machines__button-register {
