@@ -1,109 +1,237 @@
+@import 'variables.css';
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-body {
     font-family: var(--font-family-base);
-    background-color: var(--color-bg-main);
-    color: var(--color-text-primary);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
+/* Fundo da tela */
+.body_cadastro {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-bg-main);
+    padding: clamp(10px, 3vw, 20px); /* Padding fluido */
+}
 
-.page__main {
+/* Container Principal com Quebra Automática */
+/* Container Principal com Quebra Automática e Imagem no Topo */
+.main_container {
+    width: 100%;
+    max-width: 1050px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    flex-wrap: wrap-reverse;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    min-height: min(680px, 100vh);
+}
+
+/* --- COLUNA ESQUERDA --- */
+.coluna_formulario {
+    /* flex-grow: 1, flex-shrink: 1, flex-basis: 320px 
+       Se a tela for menor que ~640px, a coluna passa a ocupar 100% da largura automaticamente */
+    flex: 1 1 320px;
+    padding: clamp(20px, 4vw, 50px); /* Padding proporcional à tela */
     display: flex;
     flex-direction: column;
-    gap: var(--border-radius-lg);
-    padding: var(--font-size-xl) 0; 
-}
-
-
-.search {
-    padding: 0 var(--border-radius-lg);
-    display: flex;
     justify-content: center;
 }
 
-.search__form {
+.form_auth {
     display: flex;
     flex-direction: column;
-    gap: var(--font-size-sm);
-    max-width: 500px;
-    width: 100%;
+    gap: 16px;
+    height: 100%;
 }
 
-.search__input-group,
-.search__filter-group {
-    display: flex;
-}
-
-.search__input,
-.search__select {
-    width: 100%;
-    padding: var(--font-size-sm) var(--font-size-md);
-    font-family: var(--font-family-base);
-    background-color: var(--color-bg-input);
-    border: none;
-    border-radius: var(--border-radius-pill);
-    box-shadow: var(--shadow-sm);
-    color: var(--color-text-primary);
-}
-
-.search__input::placeholder {
-    color: var(--color-text-secondary);
-}
-
-.search__select {
-    color: var(--color-text-secondary);
-}
-
-
-.user-list {
+/* --- CABEÇALHO / TÍTULOS --- */
+.header_container {
     display: flex;
     flex-direction: column;
-    gap: var(--font-size-md);
-    padding: 0 var(--border-radius-lg) var(--border-radius-lg);
-    max-width: 650px;
-    margin: 0 auto;
-    width: 100%;
+    align-items: center;
 }
 
+.titulo_cadastro {
+    color: var(--color-primary);
+    /* Fonte fluida: nunca fica menor que 1.4rem nem maior que 1.75rem */
+    font-size: clamp(1.4rem, 2.5vw, 1.75rem);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+}
 
-.user-card {
+.subtitulo_cadastro {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    margin-top: 4px;
+}
+
+/* --- SLIDING INDICATOR --- */
+.toggle_radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.toggle_container {
+    position: relative;
     display: flex;
-    /* Alinha os itens ao centro, se preferir no topo mude para flex-start */
-    align-items: center; 
-    gap: var(--font-size-md);
-    background-color: var(--color-bg-card);
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-md);
-    padding: var(--font-size-md);
+    width: 100%;
+    max-width: 280px;
+    height: 48px;
+    background-color: #f1f3f5;
+    border-radius: 24px;
+    padding: 4px;
+    margin: 8px auto 16px auto;
+    box-sizing: border-box;
 }
 
-.user-card__icon {
+.toggle_indicator {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+.btn_toggle {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
-    background-color: var(--color-primary);
-    border-radius: 50%;
-    color: var(--color-text-light);
-    font-size: var(--font-size-xl);
-    line-height: 1;
-    flex-shrink: 0; 
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+    z-index: 2;
+    transition: color 0.3s ease;
+    user-select: none;
 }
 
-.user-card__info {
-    flex-grow: 1;
+/* Animações da Pílula e Cor do Texto */
+#signin:checked ~ .toggle_container .toggle_indicator {
+    transform: translateX(0);
 }
 
-.user-card__text {
-    font-size: var(--font-size-sm);
+#signin:checked ~ .toggle_container label[for="signin"] {
+    color: #111827;
+}
+
+#signup:checked ~ .toggle_container .toggle_indicator {
+    transform: translateX(100%);
+}
+
+#signup:checked ~ .toggle_container label[for="signup"] {
+    color: #111827;
+}
+
+/* --- ESTRUTURA DOS CAMPOS --- */
+.campos_container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.form_group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form_label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.form_input {
+    width: 100%;
+    padding: 11px 14px;
+    font-size: 0.9rem;
     color: var(--color-text-primary);
-    line-height: 1.5; /* Melhora a leitura do texto longo */
+    background-color: var(--color-bg-input);
+    border: 1.5px solid var(--color-bg-light);
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.form_input::placeholder {
+    color: var(--color-text-secondary);
+}
+
+.form_input:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(124, 114, 255, 0.2);
+}
+
+/* Botão de Envio */
+.form_actions {
+    margin-top: 8px;
+}
+
+.btn_submit {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-light);
+    background-color: var(--color-secondary);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn_submit:hover {
+    background-color: var(--color-secondary-hover);
+}
+
+/* --- CONTROLE DE EXIBIÇÃO DOS FORMULÁRIOS --- */
+.form_signin,
+.form_signup {
+    display: none;
+}
+
+#signin:checked ~ .form_signin {
+    display: flex;
+}
+
+#signup:checked ~ .form_signup {
+    display: flex;
+}
+
+/* --- COLUNA DIREITA (IMAGEM) --- */
+.coluna_imagem {
+    flex: 1 1 auto;
+    background: linear-gradient(180deg, var(--color-primary) 50%, rgb(96, 96, 248) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(20px, 4vw, 40px);
+    position: relative;
+    min-height: 200px;
+}
+
+.imagem_lateral {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    max-height: 80%;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 30px rgba(10, 8, 75, 0.15));
+}
+
+@view-transition {
+    navigation: auto;
 }
