@@ -128,7 +128,13 @@ body{
     align-items: center;
     justify-content: space-around;
     color: var(--color-text-muted);
-    font-size: clamp(0.3rem, 2.5vw, 1rem)
+    font-size: clamp(0.65rem, 2.5vw, 1rem);
+    gap: 15px;
+    
+}
+
+.helogo {
+    margin-right: 10px;
 }
 
 @media (max-width: 768px) {
@@ -146,6 +152,7 @@ body{
         color: rgb(255, 255, 255);
         position: relative;
         display: flex;
+        flex-direction: column;
     }
 
     .header-bar {
