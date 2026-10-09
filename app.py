@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, redirect, session, flash, jsonify
 from model.login import login_usuario
 
-
-
 app = Flask(__name__)
 
 app.secret_key = 'PRISMA_maintence'
