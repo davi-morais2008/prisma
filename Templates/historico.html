@@ -17,7 +17,9 @@
                     <div class="card-group">
                         <p class="maintence-title">{{os.data_termino_manutencao}}</p>
                         <div class="maintence-card">                
-                            <p>Responsável: {{os.observacao}}</p>
+                            <p>Responsável: {{os.nome}} {{os.sobrenome}}</p>
+                            <p>Falha: {{os.falha}}</p>
+                            <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
                         </div> 
                     </div>  
                     {% endfor %}
