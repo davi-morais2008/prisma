@@ -1,101 +1,248 @@
 @import 'variables.css';
 
 * {
-    font-family: var(--font-family-base);
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    user-select: none;
+    font-family: var(--font-family-base);
 }
 
-.titulo-cadastro {
-    color: #FFF;
-    font-size: clamp(24px, 5vw, 40px);
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
+/* Fundo da tela */
+.body_cadastro {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-bg-main);
+    padding: 20px;
+}
+
+/* Container Principal */
+.main_container {
+    width: 100%;
+    max-width: 1050px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    min-height: 680px;
+}
+
+/* --- COLUNA ESQUERDA --- */
+.coluna_formulario {
+    flex: 1;
+    padding: 30px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form_cadastro {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* --- CABEÇALHO / TÍTULOS --- */
+.header_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titulo_cadastro {
+    color: var(--color-primary);
+    font-size: 1.75rem;
+    font-weight: var(--font-weight-bold);
     text-align: center;
 }
 
-.main-container {
-    background-image: url(/src/img/background-cadastro.jpg);
-    background-size: cover;
-    background-position: center;
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 16px;
+.subtitulo_cadastro {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    margin-top: 4px;
 }
 
-.form-cadastro {
-
-    width: min(558px, 100%);
-
-    min-height: 70vh;
-
-    max-height: 100%;
-
-    border-radius: clamp(20px, 5vw, 40px);
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(2px) url(#lg-filter) blur(4px) saturate(1.5) brightness(1.1);
-    -webkit-backdrop-filter: blur(16px) saturate(1.8) brightness(1.15) contrast(1.05);
-    box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.15),
-        inset 1.5px 1.5px 0 rgba(255, 255, 255, 0.5),
-        inset 0 0 12px rgba(255, 255, 255, 0.2),
-        0 8px 32px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    padding: 30px 20px;
+/* --- SLIDING INDICATOR --- */
+.toggle_radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
 }
 
-.form-group {
+.toggle_container {
+    position: relative;
     display: flex;
-    flex-direction: column;
-    color: #FFF;
-    font-family: Inter, sans-serif;
-
-    font-size: 1.3rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    gap: 10px;
-    width: min(350px, 100%);
-}
-
-.form-input {
-
     width: 100%;
-    height: 4vh;
-    border-radius: 107px;
-    background: #FFF;
-    border: none;
-    outline: none;
-    padding: 0 20px;
-    font-size: 16p
+    max-width: 280px;
+    height: 48px;
+    background-color: #f1f3f5;
+    border-radius: 24px;
+    padding: 4px;
+    margin: 8px auto 8px auto;
+    box-sizing: border-box;
 }
 
-.form-actions {
-    width: min(350px, 100%);
+.toggle_indicator {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+.btn_toggle {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+    z-index: 2;
+    transition: color 0.3s ease;
+    user-select: none;
+}
+
+/* Animações da Pílula e Cor do Texto */
+#signin:checked ~ .toggle_container .toggle_indicator {
+    transform: translateX(0);
+}
+
+#signin:checked ~ .toggle_container label[for="signin"] {
+    color: #111827;
+}
+
+#signup:checked ~ .toggle_container .toggle_indicator {
+    transform: translateX(100%);
+}
+
+#signup:checked ~ .toggle_container label[for="signup"] {
+    color: #111827;
+}
+
+/* --- ESTRUTURA DOS CAMPOS --- */
+.campos_signin,
+.campos_signup {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form_group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form_label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.form_input {
+    width: 100%;
+    padding: 11px 14px;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-input);
+    border: 1.5px solid var(--color-bg-light);
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.form_input::placeholder {
+    color: var(--color-text-secondary);
+}
+
+.form_input:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(124, 114, 255, 0.2);
+}
+
+/* Botão de Envio */
+.form_actions {
+    margin-top: 8px;
+}
+
+.btn_submit {
+    
+    padding: 15px 30px;
+   
+    
+    font-size: 0.95rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-light);
+    background-color: var(--color-secondary);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn_submit:hover {
+    background-color: var(--color-secondary-hover);
+}
+
+/* --- TROCA DINÂMICA (SEM ALTERAR O LAYOUT) --- */
+
+/* Esconde tudo por padrão */
+.titulo_signin,
+.subtitulo_signin,
+.titulo_signup,
+.subtitulo_signup,
+.campos_signin,
+.campos_signup,
+.btn_submit_signin,
+.btn_submit_signup {
+    display: none;
+}
+
+/* Verifica se o botao signin esta marcado, se sim, ele ativa todos com o flex */
+#signin:checked ~ .header_container .titulo_signin,
+#signin:checked ~ .header_container .subtitulo_signin,
+#signin:checked ~ .campos_signin,
+#signin:checked ~ .form_actions .btn_submit_signin {
+    display: flex;
+}
+
+/* Verifica se o botao signup esta marcado, se sim, ele ativa todos com o flex */
+#signup:checked ~ .header_container .titulo_signup,
+#signup:checked ~ .header_container .subtitulo_signup,
+#signup:checked ~ .campos_signup,
+#signup:checked ~ .form_actions .btn_submit_signup {
+    display: flex;
+}
+
+/* --- COLUNA DIREITA --- */
+.coluna_imagem {
+    flex: 1;
+    background: linear-gradient(180deg, var(--color-primary) 50%, rgb(96, 96, 248) 100%);
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    align-items: center;
+    padding: 40px;
+    position: relative;
 }
 
-.form-actions .btn-submit {
+.imagem_lateral {
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 30px rgba(10, 8, 75, 0.15));
+}
 
-    width: min(224px, 100%);
-    height: clamp(48px, 6vh, 60px);
-    border-radius: 33px;
-    background: #FFA600;
-    border: none;
-    font-size: clamp(16px, 2.5vw, 18px);
-    font-weight: 600;
-    cursor: pointer;
+@view-transition {
+  navigation: auto;
 }
