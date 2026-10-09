@@ -34,8 +34,13 @@ def pagina_cadastro():
 
 @app.route('/cadastro')
 def pagina_cadastro():
+    cadastro_cpf_do_usuario = request.form.get('cpf')
+    cadastro_senha_do_usuario = request.form.get('senha')
+    cadastro_email_do_usuario = request.form.get('cpf')
+    nome_do_usuario = request.form.get('senha')
+    sobrenome_do_usuario = request.form.get('senha')
     
-    if cadastrar_usuario(): 
+    if cadastrar_usuario(login_do_usuario,senha_do_usuario): 
         return redirect('/login')
 
 
