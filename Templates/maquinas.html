@@ -11,44 +11,44 @@
 <body>
     <main>
         <section class="machines">
-        <button class="machines__button-register">+</button>
-        <h1 class="machines__title">Máquinas</h1>
-        <div class="machines__filters">
-            <input type="text" class="filter-input-search">
-            <div class="filter-buttons">
-                <button class="filter-button">Filtro 1</button>
-                <button class="filter-button">Filtro 2</button>
-                <button class="filter-button">Filtro 3</button>
-                <button class="filter-button">Filtro 4</button>
+            <button class="machines__button-register">+</button>
+            <h1 class="machines__title">Máquinas</h1>
+            <div class="machines__filters">
+                <input type="text" class="filter-input-search">
+                <div class="filter-buttons">
+                    <button class="filter-button">Filtro 1</button>
+                    <button class="filter-button">Filtro 2</button>
+                    <button class="filter-button">Filtro 3</button>
+                    <button class="filter-button">Filtro 4</button>
+                </div>
             </div>
-        </div>
-        <div class="machines__machines-grid">
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 01</h3>
-                <p class="machine__machine-number">Patrimônio 01</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 02</h3>
-                <p class="machine__machine-number">Patrimônio 02</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 03</h3>
-                <p class="machine__machine-number">Patrimônio 03</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 04</h3>
-                <p class="machine__machine-number">Patrimônio 04</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 05</h3>
-                <p class="machine__machine-number">Patrimônio 05</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 06</h3>
-                <p class="machine__machine-number">Patrimônio 06</p>
-            </article>
-        </div>
-        <!-- <div class="machines__register">
+            <div class="machines__machines-grid">
+                <article class="machine">
+                    <h3 class="machine__machine-title">Máquina 01</h3>
+                    <p class="machine__machine-number">Patrimônio 01</p>
+                </article>
+                <article class="machine">
+                    <h3 class="machine__machine-title">Máquina 02</h3>
+                    <p class="machine__machine-number">Patrimônio 02</p>
+                </article>
+                <article class="machine">
+                    <h3 class="machine__machine-title">Máquina 03</h3>
+                    <p class="machine__machine-number">Patrimônio 03</p>
+                </article>
+                <article class="machine">
+                    <h3 class="machine__machine-title">Máquina 04</h3>
+                    <p class="machine__machine-number">Patrimônio 04</p>
+                </article>
+                <article class="machine">
+                    <h3 class="machine__machine-title">Máquina 05</h3>
+                    <p class="machine__machine-number">Patrimônio 05</p>
+                </article>
+                <article class="machine">
+                    <h3 class="machine__machine-title">Máquina 06</h3>
+                    <p class="machine__machine-number">Patrimônio 06</p>
+                </article>
+            </div>
+            <!-- <div class="machines__register">
             <form action="" class="form-register">
                 <label for="type-machine">Tipo de Máquina</label>
                 <select name="type-machine" id="type-machine" class="form-register__input-select">
@@ -62,45 +62,50 @@
                 <button type="submit">Cadastrar Máquina</button>
             </form>
         </div> -->
-        <div class="machines__machine-individual">
-            <div class="logo-machine">
-                <img src="" alt="">
-                <h1></h1>
-            </div>
-            <div class="primary-info">
-                <img src="" alt="">
-                <div class="primary-info__info">
-                    <div class="machine-type">
-                        <h2></h2>
-                        <p></p>
-                    </div>
-                    <div class="machine-number">
-                        <h2></h2>
-                        <p></p>
+            <div class="machine-details">
+                <div class="machine-details__logo">
+                    <img src="/static/src/img/EmblemaPrisma.png" alt="Logo do fabricante ou da máquina" class="machine-details__logo-image">
+                    <h1 class="machine-details__logo-title">PRISMA</h1>
+                </div>
+
+                <div class="machine-details__primary-info">
+                    <div class="machine-details__img-machine"><img src="/static/src/img/torno_mecanico.jpg" alt="Foto ilustrativa da máquina" class="machine-details__info-image"></div>
+                    <div class="machine-details__info-content">
+                        <div class="machine-details__type">
+                            <h2 class="machine-details__type-title"></h2>
+                            <p class="machine-details__type-text"></p>
+                        </div>
+                        <div class="machine-details__number">
+                            <h2 class="machine-details__number-title"></h2>
+                            <p class="machine-details__number-text"></p>
+                        </div>
                     </div>
                 </div>
+
+                <div class="machine-details__statistics">
+                    <h3 class="machine-details__statistics-title"></h3>
+                    <div class="machine-details__stat-item machine-details__stat-item--production-time"></div>
+                    <div class="machine-details__stat-item machine-details__stat-item--working-time"></div>
+                    <div class="machine-details__stat-item machine-details__stat-item--machine-cost"></div>
+                    <div class="machine-details__stat-item machine-details__stat-item--machine-part"></div>
+                    <div class="machine-details__stat-item machine-details__stat-item--stop-time"></div>
+                    <div class="machine-details__stat-item machine-details__stat-item--manual-machines"></div>
+                </div>
+
+                <div class="machine-details__prev-maintance">
+                    <h3 class="machine-details__prev-maintance-title"></h3>
+                    <p class="machine-details__prev-maintance-text"></p>
+                </div>
+
+                <div class="machine-details__maintance-history">
+                    <h3 class="machine-details__maintance-history-title"></h3>
+                    <div class="machine-details__maintances-list"></div>
+                </div>
+
             </div>
-            <div class="statistics">
-                <h3></h3>
-                <div class="statistics__time-production"></div>
-                <div class="statistics__time-working"></div>
-                <div class="statistics__machine-cost"></div>
-                <div class="statistics__machine-part"></div>
-                <div class="statistics__time-stop"></div>
-                <div class="statistics__manual-machines"></div>
-        </div>
-            <div class="prev-maintance">
-                <h3></h3>
-                <p></p>
-            </div>
-            <div class="maintance-history">
-                <h3></h3>
-                <div class="maintances"></div>
-            </div>
-        </div>
-    </section>
-</main>
-    
+        </section>
+    </main>
+
 </body>
 
 </html>
