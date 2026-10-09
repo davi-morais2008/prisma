@@ -8,16 +8,14 @@
     font-family: var(--font-family-base, 'Inter', system-ui, sans-serif);
 }
 
-body {
-    background-color: var(--color-bg-main);
-    color: var(--color-text-primary);
-}
+
 
 .home {
     width: 100%;
     min-height: 100vh;
     padding: 20px 16px;
-
+    background-color: var(--color-bg-main);
+    color: var(--color-text-primary);
     /* Grid de 2 linhas: Busca no topo e lista de ordens ocupando o restante */
     display: grid;
     grid-template-rows: auto 1fr;
@@ -35,9 +33,12 @@ body {
     padding: 0 20px;
     font-size: var(--font-size-sm);
     box-shadow: var(--shadow-sm);
-    outline: none;
+   
+    cursor: pointer;
     transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
+
+
 
 .home__search-bar:focus {
     border-color: var(--color-secondary-hover);
@@ -219,7 +220,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 1;
+    opacity: 0;
     padding: 14px;
 }
 
