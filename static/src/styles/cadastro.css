@@ -17,7 +17,7 @@
     padding: 20px;
 }
 
-/* Container Principal em 2 colunas */
+/* Container Principal */
 .main_container {
     width: 100%;
     max-width: 1050px;
@@ -29,20 +29,27 @@
     min-height: 680px;
 }
 
-/* --- COLUNA ESQUERDA (Formulário) --- */
+/* --- COLUNA ESQUERDA --- */
 .coluna_formulario {
     flex: 1;
-    padding: 40px 50px;
+    padding: 30px 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-/* Formulário */
 .form_cadastro {
     display: flex;
+    height: 100%;
     flex-direction: column;
     gap: 16px;
+}
+
+/* --- CABEÇALHO / TÍTULOS --- */
+.header_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .titulo_cadastro {
@@ -56,47 +63,42 @@
     color: var(--color-text-secondary);
     font-size: var(--font-size-sm);
     text-align: center;
-    margin-top: -10px;
-    margin-bottom: 6px;
+    margin-top: 4px;
 }
 
-/* Container pai */
-.toggle_container {
-    position: relative;
-    display: flex;
-    width: 240px; /* Ajuste a largura conforme o seu layout */
-    height: 48px;
-    background-color: #f1f3f5; /* Cor do fundo do container */
-    border-radius: 24px;
-    padding: 4px;
-    margin-bottom: 24px;
-    box-sizing: border-box;
-}
-
-/* Oculta os radio inputs mantendo acessibilidade */
+/* --- SLIDING INDICATOR --- */
 .toggle_radio {
     position: absolute;
     opacity: 0;
-    width: 0;
-    height: 0;
     pointer-events: none;
 }
 
-/* O indicador deslizante que se move ao fundo */
+.toggle_container {
+    position: relative;
+    display: flex;
+    width: 100%;
+    max-width: 280px;
+    height: 48px;
+    background-color: #f1f3f5;
+    border-radius: 24px;
+    padding: 4px;
+    margin: 8px auto 8px auto;
+    box-sizing: border-box;
+}
+
 .toggle_indicator {
     position: absolute;
     top: 4px;
     left: 4px;
-    width: calc(50% - 4px); /* Ocupa metade do container */
+    width: calc(50% - 4px);
     height: calc(100% - 8px);
-    background-color: #ffffff; /* Cor da pílula/indicador */
+    background-color: #ffffff;
     border-radius: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1;
 }
 
-/* Labels estilizados atuando como botões clicáveis */
 .btn_toggle {
     flex: 1;
     display: flex;
@@ -106,30 +108,36 @@
     font-weight: 600;
     color: #6c757d;
     cursor: pointer;
-    z-index: 2; /* Fica acima do indicador */
+    z-index: 2;
     transition: color 0.3s ease;
     user-select: none;
 }
 
-/* --- LÓGICA DE MOVIMENTO E CORES COM CSS PURE --- */
-
-/* Quando 'Sign In' estiver selecionado: Move o indicador para a esquerda (posição inicial) */
-#signin:checked ~ .toggle_indicator {
+/* Animações da Pílula e Cor do Texto */
+#signin:checked ~ .toggle_container .toggle_indicator {
     transform: translateX(0);
 }
 
-/* Quando 'Signup' estiver selecionado: Move o indicador para a direita */
-#signup:checked ~ .toggle_indicator {
+#signin:checked ~ .toggle_container label[for="signin"] {
+    color: #111827;
+}
+
+#signup:checked ~ .toggle_container .toggle_indicator {
     transform: translateX(100%);
 }
 
-/* Destaque da cor do texto ativo */
-#signin:checked ~ label[for="signin"],
-#signup:checked ~ label[for="signup"] {
-    color: #111827; /* Cor do texto selecionado */
-}   
+#signup:checked ~ .toggle_container label[for="signup"] {
+    color: #111827;
+}
 
-/* Inputs e Labels */
+/* --- ESTRUTURA DOS CAMPOS --- */
+.campos_signin,
+.campos_signup {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 .form_group {
     display: flex;
     flex-direction: column;
@@ -169,8 +177,10 @@
 }
 
 .btn_submit {
-    width: 100%;
-    padding: 12px;
+    
+    padding: 15px 30px;
+   
+    
     font-size: 0.95rem;
     font-weight: var(--font-weight-bold);
     color: var(--color-text-light);
@@ -185,7 +195,37 @@
     background-color: var(--color-secondary-hover);
 }
 
-/* --- COLUNA DIREITA (Imagem e Fundo Gradiente) --- */
+/* --- TROCA DINÂMICA (SEM ALTERAR O LAYOUT) --- */
+
+/* Esconde tudo por padrão */
+.titulo_signin,
+.subtitulo_signin,
+.titulo_signup,
+.subtitulo_signup,
+.campos_signin,
+.campos_signup,
+.btn_submit_signin,
+.btn_submit_signup {
+    display: none;
+}
+
+/* QUANDO SIGN IN ESTIVER MARCADO */
+#signin:checked ~ .header_container .titulo_signin,
+#signin:checked ~ .header_container .subtitulo_signin,
+#signin:checked ~ .campos_signin,
+#signin:checked ~ .form_actions .btn_submit_signin {
+    display: flex;
+}
+
+/* QUANDO SIGNUP ESTIVER MARCADO */
+#signup:checked ~ .header_container .titulo_signup,
+#signup:checked ~ .header_container .subtitulo_signup,
+#signup:checked ~ .campos_signup,
+#signup:checked ~ .form_actions .btn_submit_signup {
+    display: flex;
+}
+
+/* --- COLUNA DIREITA --- */
 .coluna_imagem {
     flex: 1;
     background: linear-gradient(180deg, var(--color-primary) 50%, rgb(96, 96, 248) 100%);
@@ -201,4 +241,8 @@
     max-height: 80%;
     object-fit: contain;
     filter: drop-shadow(0 20px 30px rgba(10, 8, 75, 0.15));
+}
+
+@view-transition {
+  navigation: auto;
 }
