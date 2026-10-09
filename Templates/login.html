@@ -3,74 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_circle,close" />
-    <title>Usuários</title>
+    <title>PRISMA - Acesse sua Conta</title>
+    <link rel="stylesheet" href="/styles/variables.css">
+    <link rel="stylesheet" href="/styles/login.css">
 </head>
 <body class="page">
-    <main class="page__main">
+    <main class="login">
+        
 
-        <header class="header">
-            <div class="header__logo">
-                <h1 class="header__title">PRISMA</h1>
+        <header class="login__header">
+            <div class="logo">
+                <img class="logo__image" src="/static/img/Emblema Prisma.png" alt="Logotipo PRISMA">
+                <h1 class="logo__title">PRISMA</h1>
             </div>
         </header>
 
-        <section class="search">
-            <form class="search__form" role="search">
-                <div class="search__input-group">
-                    <input class="search__input" type="search" placeholder="Buscar usuário..." name="busca" aria-label="Buscar usuário">
+
+        <section class="login__card" aria-labelledby="form-title">
+            <h2 id="form-title" class="login__title">Acesse sua conta</h2>
+            
+            <form class="form" action="/login" method="POST">
+                
+                <div class="form__field">
+                    <label class="form__label" for="cpf">Informe seu CPF:</label>
+                    <input class="form__input" type="text" name="cpf" id="cpf" max="11" required placeholder="000.000.000-00">
                 </div>
 
-                <div class="search__filter-group">
-                    <select class="search__select" name="tipo" aria-label="Filtrar por tipo">
-                        <option value="">Selecione</option>
-                        <option value="admin">Admin</option>
-                        <option value="comum">Técnico</option>
-                    </select>
+                <div class="form__field">
+                    <label class="form__label" for="senha">Informe sua senha:</label>
+                    <input class="form__input" type="password" name="senha" id="senha" required placeholder="Sua senha">
                 </div>
+
+                <div class="form__recovery">
+                    <a class="form__link" href="/Templates/recuperacao_senha.html">Esqueceu sua senha?</a>
+                </div>
+
+                <div class="form__actions">
+                    <button class="form__button form__button--primary" type="submit">Entrar</button>
+                    <a class="form__button form__button--secondary" href="/Templates/cadastro.html">Cadastrar</a>
+                </div>
+                
             </form>
         </section>
-
-        <section class="user-list">
-            <article class="user-card">
-                <span class="user-card__icon material-symbols-outlined">account_circle</span>
-                <div class="user-card__info">
-                    </div>
-            </article>
-
-            <article class="user-card">
-                <span class="user-card__icon material-symbols-outlined">account_circle</span>
-                <div class="user-card__info">
-                    </div>
-            </article>
-        </section>
-
     </main>
 
-    <div class="user-modal user-modal--hidden" id="userModal" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="user-modal__overlay" id="modalOverlay"></div>
 
-        <div class="user-modal__card">
-            <button class="user-modal__close" id="modalClose" aria-label="Fechar janela">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-
-            <div class="user-modal__avatar">
-                <span class="material-symbols-outlined">account_circle</span>
-            </div>
-
-            <div class="user-modal__field user-modal__field--primary">
-                <span id="modalUserName">Nome do Usuário</span>
-            </div>
-
-            <div class="user-modal__field user-modal__field--secondary">
-                <span id="modalUserRole">Cargo do Usuário</span>
-            </div>
-
-            <div class="user-modal__details">
-                </div>
-        </div>
-    </div>
-
+    <footer class="footer">
+        <p class="footer__text">PRISMA - Todos os direitos Reservados</p>
+    </footer>
 </body>
 </html>
