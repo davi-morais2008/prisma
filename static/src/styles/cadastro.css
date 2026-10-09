@@ -60,33 +60,74 @@
     margin-bottom: 6px;
 }
 
-/* Alternador Sign In / Signup */
+/* Container pai */
 .toggle_container {
+    position: relative;
     display: flex;
-    background-color: var(--color-bg-light);
+    width: 240px; /* Ajuste a largura conforme o seu layout */
+    height: 48px;
+    background-color: #f1f3f5; /* Cor do fundo do container */
+    border-radius: 24px;
     padding: 4px;
-    border-radius: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 24px;
+    box-sizing: border-box;
 }
 
+/* Oculta os radio inputs mantendo acessibilidade */
+.toggle_radio {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+/* O indicador deslizante que se move ao fundo */
+.toggle_indicator {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px); /* Ocupa metade do container */
+    height: calc(100% - 8px);
+    background-color: #ffffff; /* Cor da pílula/indicador */
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+/* Labels estilizados atuando como botões clicáveis */
 .btn_toggle {
     flex: 1;
-    padding: 10px;
-    border: none;
-    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
     font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
-    border-radius: var(--border-radius-sm);
+    color: #6c757d;
     cursor: pointer;
-    transition: all 0.2s ease;
+    z-index: 2; /* Fica acima do indicador */
+    transition: color 0.3s ease;
+    user-select: none;
 }
 
-.btn_toggle.active {
-    background-color: var(--color-bg-card);
-    color: var(--color-primary);
-    box-shadow: var(--shadow-sm);
+/* --- LÓGICA DE MOVIMENTO E CORES COM CSS PURE --- */
+
+/* Quando 'Sign In' estiver selecionado: Move o indicador para a esquerda (posição inicial) */
+#signin:checked ~ .toggle_indicator {
+    transform: translateX(0);
 }
+
+/* Quando 'Signup' estiver selecionado: Move o indicador para a direita */
+#signup:checked ~ .toggle_indicator {
+    transform: translateX(100%);
+}
+
+/* Destaque da cor do texto ativo */
+#signin:checked ~ label[for="signin"],
+#signup:checked ~ label[for="signup"] {
+    color: #111827; /* Cor do texto selecionado */
+}   
 
 /* Inputs e Labels */
 .form_group {

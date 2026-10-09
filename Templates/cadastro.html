@@ -14,16 +14,25 @@
         <!-- Coluna Esquerda: Formulário -->
         <div class="coluna_formulario">
             <!-- Cabeçalho com Logo -->
-        
+
 
             <form class="form_cadastro" action="" method="POST">
                 <h1 class="titulo_cadastro">Crie sua conta</h1>
                 <p class="subtitulo_cadastro">Preencha seus dados para começar</p>
 
-                <!-- Alternador Login / Cadastro -->
+                
+                <!-- Alternador Login / Cadastro em CSS puro -->
                 <div class="toggle_container">
-                    <button type="button" class="btn_toggle">Sign In</button>
-                    <button type="button" class="btn_toggle active">Signup</button>
+                    <!-- Radio inputs ocultos para controlar o estado -->
+                    <input type="radio" id="signin" name="toggle_auth" class="toggle_radio">
+                    <input type="radio" id="signup" name="toggle_auth" class="toggle_radio" checked>
+
+                    <!-- Indicador visual que desliza -->
+                    <div class="toggle_indicator"></div>
+
+                    <!-- Labels estilizadas como botões -->
+                    <label for="signin" class="btn_toggle">Login</label>
+                    <label for="signup" class="btn_toggle">Cadastro</label>
                 </div>
 
                 <div class="form_group">
