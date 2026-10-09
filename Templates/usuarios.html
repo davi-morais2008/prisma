@@ -4,25 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_circle" />
+    <link rel="stylesheet" href="../static/src/styles/variables.css">
     <link rel="stylesheet" href="../static/src/styles/usuarios.css">
     <title>Usuários</title>
 </head>
-<body class="page">
-    <main class="page__main">
 
-        <header class="header">
-            <div class="header__logo">
-                <h1 class="header__title">PRISMA</h1>
-            </div>
-        </header>
+    <main class="page__main">
 
         <section class="search">
             <form class="search__form" role="search">
-
                 <div class="search__input-group">
                     <input class="search__input" type="search" placeholder="Buscar usuário..." name="busca" aria-label="Buscar usuário">
                 </div>
-
                 <div class="search__filter-group">
                     <select class="search__select" name="tipo" aria-label="Filtrar por tipo">
                         <option value="">Selecione</option>
@@ -30,43 +23,28 @@
                         <option value="comum">Técnico</option>
                     </select>
                 </div>
-
             </form>
         </section>
 
-
         <section class="user-list">
-
-
             <article class="user-card">
-
-                <span class="user-card__icon material-symbols-outlined">
+                <span class="user-card__icon material-symbols-outlined" aria-hidden="true">
                     account_circle
                 </span>
                 <div class="user-card__info">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum quis vero blanditiis corporis
-                        quas tenetur consequatur laborum nihil ex saepe? Quia non voluptatibus aperiam, maxime
-                        architecto dolor quas dolore facilis?</p>
+                    <p class="user-card__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum quis vero blanditiis corporis quas tenetur consequatur laborum nihil ex saepe? Quia non voluptatibus aperiam, maxime architecto dolor quas dolore facilis?</p>
                 </div>
             </article>
 
             <article class="user-card">
-                <span class="user-card__icon material-symbols-outlined">
+                <span class="user-card__icon material-symbols-outlined" aria-hidden="true">
                     account_circle
                 </span>
                 <div class="user-card__info">
-
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil laboriosam libero recusandae
-                        dolor vitae error qui mollitia omnis officiis sit, blanditiis quos necessitatibus voluptatum
-                        accusantium consectetur ea maiores soluta nisi!</p>
-
+                    <p class="user-card__text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil laboriosam libero recusandae dolor vitae error qui mollitia omnis officiis sit, blanditiis quos necessitatibus voluptatum accusantium consectetur ea maiores soluta nisi!</p>
                 </div>
             </article>
-
         </section>
 
-
-
     </main>
-</body>
 </html>
