@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRISMA</title>
+    <link rel="stylesheet" href="/static/src/styles/maquinas.css">
+</head>
+
+<body>
+    <main>
+        <section class="machines">
+        <button class="machines__button-register">+</button>
+        <h1 class="machines__title">Máquinas</h1>
+        <div class="machines__filters">
+            <input type="text" class="filter-input-search">
+            <div class="filter-buttons">
+                <button class="filter-button">Filtro 1</button>
+                <button class="filter-button">Filtro 2</button>
+                <button class="filter-button">Filtro 3</button>
+                <button class="filter-button">Filtro 4</button>
+            </div>
+        </div>
+        <div class="machines__machines-grid">
+            <article class="machine">
+                <h3 class="machine__machine-title">Máquina 01</h3>
+                <p class="machine__machine-number">Patrimônio 01</p>
+            </article>
+            <article class="machine">
+                <h3 class="machine__machine-title">Máquina 02</h3>
+                <p class="machine__machine-number">Patrimônio 02</p>
+            </article>
+            <article class="machine">
+                <h3 class="machine__machine-title">Máquina 03</h3>
+                <p class="machine__machine-number">Patrimônio 03</p>
+            </article>
+            <article class="machine">
+                <h3 class="machine__machine-title">Máquina 04</h3>
+                <p class="machine__machine-number">Patrimônio 04</p>
+            </article>
+            <article class="machine">
+                <h3 class="machine__machine-title">Máquina 05</h3>
+                <p class="machine__machine-number">Patrimônio 05</p>
+            </article>
+            <article class="machine">
+                <h3 class="machine__machine-title">Máquina 06</h3>
+                <p class="machine__machine-number">Patrimônio 06</p>
+            </article>
+        </div>
+        <div class="machines__register">
+            <form action="" class="form-register">
+                <label for="type-machine">Tipo de Máquina</label>
+                <select name="type-machine" id="type-machine" class="form-register__input-select">
+                </select>
+                <label for="number-machine">Número do Patrmônio</label>
+                <input type="text" id="number-machine" class="form-register__input-text">
+                <label for="location-machine">Localização/Setor</label>
+                <input type="text" id="location-machine" class="form-register__input-text">
+                <label for="status-machine">Status da Máquina</label>
+                <select name="status-machine" id="status-machine" class="form-register__input-select"></select>
+                <button type="submit">Cadastrar Máquina</button>
+            </form>
+        </div>
+    </section>
+</main>
+    
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-@import url('https://fonts.cdnfonts.com/css/coolvetica');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 :root {
   /* ========================================
      CORES PRINCIPAIS
@@ -8,12 +8,12 @@
   --color-primary-dark: #050428;
 
   /* Roxo / Violeta (Botões secundários e destaques) */
-  --color-secondary: #7C72FF;
-  --color-secondary-hover: #675CE6;
+  --color-secondary: #110891;
+  --color-secondary-hover: #0a0079;
 
   /* Laranja / Amarelo (Botões de ação primária e alertas) */
   --color-accent-orange: #FFA834;
-  --color-accent-peach: #F6B179;
+  --color-accent-peach: #ff9137;
 
   /* ========================================
      BACKGROUNDS E SUPERFÍCIES
@@ -34,7 +34,7 @@
   --color-status-danger: #FF8A8A;  /* Vermelho / Alerta */
   --color-status-warning: #FFE885; /* Amarelo / Atenção */
   --color-status-success: #A3FFB8; /* Verde / OK */
-
+      
   /* ========================================
      TEXTOS
      ======================================== */
@@ -45,7 +45,7 @@
   /* ========================================
      TIPOGRAFIA
      ======================================== */
-  --font-family-base: 'Coolvetica', sans-serif;
+  --font-family-base: 'Montserrat', sans-serif;
 
   --font-size-xs: 0.75rem; /* 12px */
   --font-size-sm: 0.875rem;/* 14px */
@@ -71,4 +71,6 @@
   --shadow-sm: 0px 2px 8px rgba(10, 8, 75, 0.06);
   --shadow-md: 0px 4px 16px rgba(10, 8, 75, 0.1);
   --shadow-lg: 0px 8px 24px rgba(10, 8, 75, 0.15);
+
+  --color-footer: #eaf1f8;
 }

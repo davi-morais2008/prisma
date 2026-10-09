@@ -76,3 +76,24 @@ INNER JOIN usuarios u ON os.cpf = u.cpf;
 ''')
     resposta = cursor.fetchall()
     return resposta
+
+def atribuir_ordem_servico(cpf:str, id:int) -> bool:
+    """
+    Atualiza o responsável (CPF) por uma Ordem de Serviço existente no banco de dados.
+
+    Parâmetros:
+        cpf (str): CPF do técnico/usuário que assumirá a OS.
+        id (int): ID da ordem de serviço (id_ordem) a ser alterada.
+
+    Retorna:
+        bool: True se a alteração for gravada com sucesso, False em caso de falha.
+    """
+    conexao, cursor = conectar()
+    try:
+        cursor.execute('''UPDATE ordens_servicos SET cpf = %s WHERE id_ordem = %s;''', (cpf, id))
+        conexao.commit()
+        conexao.close()
+        return True
+    except:
+        return False
+    
