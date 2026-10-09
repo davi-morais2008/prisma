@@ -37,9 +37,46 @@ body {
     color: var(--color-primary);
 }
 
+.machines__button-register{
+    background-color: var(--color-accent-orange);
+    width: 70px;
+    height: 70px;
+    border-radius: 35px;
+    border: 0;
+    font-family: var(--font-family-base);
+    font-size: 40px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-light);
+    cursor: pointer;
+    position: absolute;
+    right: 40px;
+    top: 40px;
+}
+
+
 /* ======================================= */
 /* =========  BLOCO: Filtros  ============ */
 /* ======================================= */
+
+@media (max-width: 500px) {
+.machines__button-register {
+    background-color: var(--color-accent-orange);
+    width: 40px;
+    height: 40px;
+    border-radius: 35px;
+    border: 0;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-light);
+    cursor: pointer;
+    position: absolute;
+    right: 25px;
+    top: 25px;
+}
+
+}
+
 
 .machines__filters {
     width: 100%;
