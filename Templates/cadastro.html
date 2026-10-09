@@ -1,45 +1,69 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/cadastro.css">
+    <link rel="stylesheet" href="/static/src/styles/cadastro.css">
     <title>Página de Cadastro</title>
 </head>
+
 <body class="body_cadastro">
     <main class="main_container">
+
+        <!-- Coluna Esquerda: Formulário -->
+        <div class="coluna_formulario">
+            <!-- Cabeçalho com Logo -->
         
-        <form class="form_cadastro" action="" method="POST">
-            <h1 class="titulo_cadastro">Cria sua conta</h1>
-            <div class="form_group">
-                <label class="form_label" for="nome">Nome:</label>
-                <input class="form_input" type="text" id="nome" name="nome" required>
-            </div>
 
-            <div class="form_group">
-                <label class="form_label" for="sobrenome">Sobrenome:</label>
-                <input class="form_input" type="text" id="sobrenome" name="sobrenome" maxlength="14" required>
-            </div>
+            <form class="form_cadastro" action="" method="POST">
+                <h1 class="titulo_cadastro">Crie sua conta</h1>
+                <p class="subtitulo_cadastro">Preencha seus dados para começar</p>
 
-            <div class="form_group">
-                <label class="form_label" for="email">E-mail:</label>
-                <input class="form_input" type="email" id="email" name="email" required placeholder="seu@email.com">
-            </div>
+                <!-- Alternador Login / Cadastro -->
+                <div class="toggle_container">
+                    <button type="button" class="btn_toggle">Sign In</button>
+                    <button type="button" class="btn_toggle active">Signup</button>
+                </div>
 
-            <div class="form_group">
-                <label class="form_label" for="cpf">CPF:</label>
-                <input class="form_input" type="text" id="cpf" name="cpf" required placeholder="000.000.000-00">
-            </div>
+                <div class="form_group">
+                    <label class="form_label" for="nome">Nome:</label>
+                    <input class="form_input" type="text" id="nome" name="nome" required>
+                </div>
 
-            <div class="form_group">
-                <label class="form_label" for="numero">Número:</label>
-                <input class="form_input" type="text" id="numero" name="numero" required placeholder="(00) 00000-0000">
-            </div>
+                <div class="form_group">
+                    <label class="form_label" for="sobrenome">Sobrenome:</label>
+                    <input class="form_input" type="text" id="sobrenome" name="sobrenome" maxlength="14" required>
+                </div>
 
-            <div class="form_actions">
-                <button class="btn_submit" type="submit">Cadastrar</button>
-            </div>
-        </form>
+                <div class="form_group">
+                    <label class="form_label" for="email">E-mail:</label>
+                    <input class="form_input" type="email" id="email" name="email" required placeholder="seu@email.com">
+                </div>
+
+                <div class="form_group">
+                    <label class="form_label" for="cpf">CPF:</label>
+                    <input class="form_input" type="text" id="cpf" name="cpf" required placeholder="000.000.000-00">
+                </div>
+
+                <div class="form_group">
+                    <label class="form_label" for="numero">Número:</label>
+                    <input class="form_input" type="text" id="numero" name="numero" required
+                        placeholder="(00) 00000-0000">
+                </div>
+
+                <div class="form_actions">
+                    <button class="btn_submit" type="submit">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Coluna Direita: Imagem / Ilustração -->
+        <div class="coluna_imagem">
+            <img src="/static/src/img/EmblemaPrisma.png" alt="Ilustração 3D" class="imagem_lateral">
+        </div>
+
     </main>
 </body>
+
 </html>
