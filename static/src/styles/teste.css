@@ -1,0 +1,169 @@
+@import 'variables.css';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family-base);
+}
+
+/* Fundo da tela centralizado com Sticky Footer */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-bg-main);
+    padding: 20px;
+}
+
+/* Container Principal Card */
+.container_main {
+    width: 100%;
+    max-width: 950px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    min-height: 520px;
+    margin: auto 0;
+}
+
+/* --- COLUNA ESQUERDA (Logo e Gradiente) --- */
+.section_logo {
+    flex: 1;
+    background: linear-gradient(180deg, var(--color-primary) 50%, rgb(96, 96, 248) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.container_logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    color: var(--color-text-light, #ffffff);
+    text-align: center;
+}
+
+.container_logo .logo {
+    max-width: 120px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(10, 8, 75, 0.2));
+}
+
+.container_logo h1 {
+    font-size: 2.2rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 2px;
+}
+
+/* --- COLUNA DIREITA (Formulário) --- */
+.container_login {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Título e Subtítulo */
+.container_titulo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+}
+
+.container_titulo h1 {
+    color: var(--color-primary);
+    font-size: 1.75rem;
+    font-weight: var(--font-weight-bold);
+}
+
+.container_titulo p {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm, 0.9rem);
+    line-height: 1.4;
+}
+
+/* Input e Label */
+.container_insert {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.container_insert label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.insert {
+    width: 100%;
+    padding: 11px 14px;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-input);
+    border: 1.5px solid var(--color-bg-light);
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.insert:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(124, 114, 255, 0.2);
+}
+
+/* Botão Continuar */
+.botao_logar {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.95rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-light, #ffffff);
+    background-color: var(--color-secondary);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.botao_logar:hover {
+    background-color: var(--color-secondary-hover);
+}
+
+/* Link Voltar para o Login */
+.container_recuperar_senha {
+    text-align: center;
+    margin-top: 4px;
+}
+
+.container_recuperar_senha a {
+    color: var(--color-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.container_recuperar_senha a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+/* Rodapé */
+.container_footer {
+    padding: 16px 0;
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+    text-align: center;
+}
