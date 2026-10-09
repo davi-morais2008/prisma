@@ -14,14 +14,25 @@
                 <h1 class="history__title">Histórico de Manutenção</h1>
                 <div class="history__cards">
                     {% for os in OSfinalizado %}
-                    <div class="card-group">
-                        <p class="maintence-title">{{os.data_termino_manutencao}}</p>
-                        <div class="maintence-card">                
-                            <p>Responsável: {{os.nome}} {{os.sobrenome}}</p>
-                            <p>Falha: {{os.falha}}</p>
-                            <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
-                        </div> 
-                    </div>  
+                    <div class="card__group">
+                        <p class="maintence__title">{{os.data_termino_manutencao}}</p>
+                        <div class="maintence__card">
+                            <div class="upper__content">
+                                <div class="maintence__text">
+                                    <p>Responsável: {{os.nome}} {{os.sobrenome}}</p>
+                                    <p>Falha: {{os.falha}}</p>
+                                    <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
+                                </div>
+                                <div class="maintence__icon">
+                                    <button class="maint__btn" id="btn_hide">
+                                        <span class="material-icons">
+                                        arrow_drop_down
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
                     {% endfor %}
                 </div>
             </div>

@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=account_circle" />
+
     <title>{% block titulo %}{% endblock %}</title>
     <link rel="stylesheet" href="{{url_for('static', filename = 'src/styles/layout.css')}}">
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    
     {% block estilo %}
     {% endblock %}
 
@@ -70,7 +72,7 @@
         </nav>
 
         <div class="sidebar__user">
-            <span class="material-symbols-outlined">
+            <span class="material-icons">
                 account_circle
             </span>
         </div>
@@ -93,6 +95,7 @@
         </div>
     </footer>
 
-    <script src="static/src/js/header.js"></script>
+    <script src="/static/src/js/header.js"></script>
+
 </body>
 </html>

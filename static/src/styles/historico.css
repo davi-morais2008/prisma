@@ -23,16 +23,46 @@
       width: 80%;
 }
 
-.card-group {
+.card__group {
     margin: 25px 0;
 }
 
-.maintence-card{
+.maintence__title {
+    font-size: clamp(0.65rem, 2.5vw, 1rem);
+}
+
+.maintence__card{
     width: 100%;
-    height: 80px;
     padding: 10px;
     background-color: #ffffff;
     border-radius: 18px;
-    box-shadow: -4px 0px 0px 0px #000000, var(--shadow-md)
+    margin-top: 10px;
+    box-shadow: -4px 0px 0px 0px #000000, var(--shadow-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
+
+.maintence__icon {
+    margin: auto 0;
+}
+
+.upper__content {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.maint__btn{
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.maintence__text {
+    font-size: clamp(0.65rem, 2.5vw, 1rem);
+}
+
 
