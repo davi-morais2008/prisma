@@ -22,11 +22,8 @@ def pagina_login():
 def pagina_login_tecnico():
     login_do_usuario = request.form.get('cpf')
     senha_do_usuario = request.form.get('senha')
-
-    print(login_do_usuario)
-    print(senha_do_usuario)
-
-    if login_usuario(login_usuario,senha_usuario): 
+    
+    if login_usuario(login_do_usuario,senha_do_usuario): 
         return redirect('/login')
 
 
