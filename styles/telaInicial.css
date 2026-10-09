@@ -10,10 +10,9 @@
 
 body {
     background-color: var(--color-bg-main);
-    color: #333333;
+    color: var(--color-text-primary);
 }
 
-/* 2. Layout principal com CSS Grid */
 .home {
     width: 100%;
     min-height: 100vh;
@@ -26,24 +25,23 @@ body {
     gap: 24px;
 }
 
-/* 3. Barra de Pesquisa */
 .home__search-bar {
     width: 100%;
     max-width: 500px;
     height: 48px;
-    border-radius: 999px; /* Formato pílula como na imagem */
+    border-radius: var(--border-radius-pill); 
     border: 1px solid transparent;
     background-color: #ffffff;
     padding: 0 20px;
-    font-size: 0.95rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    font-size: var(--font-size-sm);
+    box-shadow: var(--shadow-sm);
     outline: none;
     transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .home__search-bar:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+    border-color: var(--color-secondary-hover);
+    box-shadow: var(--shadow-lg);
 }
 
 /* 4. Lista de Ordens de Serviço (Grid vertical) */
@@ -60,35 +58,33 @@ body {
 .work-order {
     width: 100%;
     padding: 20px 24px;
-    background-color: #ffffff;
-    border-radius: 20px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius-md);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     
-    /* Layout interno com Grid */
     display: grid;
     gap: 8px;
 
-    /* Borda lateral padrão */
     border-left: 6px solid #000000;
 }
 
 .work-order:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow-md);
 }
 
 
 .work-order__title {
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
     color: #1e293b;
 }
 
 .work-order__description {
-    font-size: 0.9rem;
-    color: #64748b;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondayr);
     line-height: 1.5;
 }
 
@@ -101,7 +97,7 @@ body {
     z-index: 1000;
     
     /* Oculto por padrão */
-    opacity: 1;
+    opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
 }
