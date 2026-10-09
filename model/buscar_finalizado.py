@@ -9,7 +9,7 @@ def buscar_os_finalizado():
     """
     conexao, cursor = conectar()
 
-    cursor.execute("SELECT * FROM ordens_servicos WHERE status_ordem == %s", ("Finalizado",))
+    cursor.execute("SELECT * FROM ordens_servicos WHERE status_ordem = %s", ("Finalizada",))
     resposta = cursor.fetchall()
     conexao.close()
 

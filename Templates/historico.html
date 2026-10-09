@@ -13,72 +13,14 @@
             <div class="history__content">
                 <h1 class="history__title">Histórico de Manutenção</h1>
                 <div class="history__cards">
+                    {% for os in OSfinalizado %}
                     <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
+                        <p class="maintence-title">{{os.data_termino_manutencao}}</p>
                         <div class="maintence-card">                
-                            <p>Teste</p>
+                            <p>Responsável: {{os.observacao}}</p>
                         </div> 
                     </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
+                    {% endfor %}
                 </div>
             </div>
         </main>

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session, flash, jsonify
 from model.login import login_usuario
+from model.buscar_finalizado import buscar_os_finalizado
 
 app = Flask(__name__)
 
@@ -8,7 +9,8 @@ app.secret_key = 'PRISMA_maintence'
 @app.route("/historico")
 
 def pagina_historico():
-    return render_template("historico.html")
+    OSfinalizado = buscar_os_finalizado()
+    return render_template("historico.html", OSfinalizado = OSfinalizado)
 
 @app.route('/')
 @app.route('/login')
