@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session, flash, jsonify
 from model.login import login_usuario
-
+from model.cadastro import cadastrar_usuario
 
 
 app = Flask(__name__)
@@ -25,6 +25,19 @@ def pagina_login_tecnico():
     
     if login_usuario(login_do_usuario,senha_do_usuario): 
         return redirect('/login')
+
+
+
+def pagina_cadastro():
+    return render_template('cadastro.html')
+
+
+@app.route('/cadastro')
+def pagina_cadastro():
+    
+    if cadastrar_usuario(): 
+        return redirect('/login')
+
 
 
 
