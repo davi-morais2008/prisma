@@ -18,6 +18,10 @@ body {
     min-height: 100vh;
 }
 
+.active{
+    display: flex;
+}
+
 .machines {
     width: 100%;
     max-width: 1200px;
@@ -170,9 +174,10 @@ body {
     color: var(--color-text-secondary);
 }
 
-/* ======================================= */
-/* =========   BLOCO: Cadastro  ============ */
-/* ======================================= */
+/* =============================================================== */
+/* ===  BLOCO: |MODAL| Cadastro (from de cadastro de máquinas  === */
+/* =============================================================== */
+
 
 .machines__register {
     position: fixed;
@@ -183,7 +188,7 @@ body {
     background-color: var(--color-glass-bg);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -272,7 +277,7 @@ body {
 }
 
 /* ========================================
-   BLOCO: MACHINE-DETAILS (Máquina Individual)
+   BLOCO: |MODAL| MACHINE-DETAILS (Máquina Individual)
    ======================================== */
 .machine-details {
     background-color: var(--color-bg-card);
@@ -282,7 +287,7 @@ body {
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
     z-index: 900;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
@@ -603,7 +608,7 @@ body {
 
 
 /* ========================================
-   BLOCO: MACHINE-EDIT (Modal Form Edição)
+   BLOCO: |MODAL| MACHINE-EDIT (Form Edição)
    ======================================== */
 .machine-edit {
     position: fixed;
@@ -617,7 +622,7 @@ body {
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
     z-index: 1000;
-    display: flex;
+    display: none;
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
@@ -894,14 +899,14 @@ body {
 
 
 /* =========================================================
-   BLOCO: delete-confirmation (Modal confirmação de delete)
+   BLOCO: |MODAL| delete-confirmation (confirmação de delete)
    ========================================================= */
 .delete-confirmation{
     width: 20%;
     z-index: 1000;
     position: absolute;
     background-color: var(--color-bg-main);
-    display: flex;
+    display: none;
     flex-direction: column;
     padding: 20px;
     border-radius: var(--border-radius-lg);
