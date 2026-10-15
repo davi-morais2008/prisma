@@ -19,6 +19,9 @@ body {
     padding: var(--font-size-xl) 0; 
 }
 
+/* ========================================
+   COMPONENTE: BUSCA (SEARCH)
+======================================== */
 .search {
     padding: 0 var(--border-radius-lg);
     display: flex;
@@ -69,6 +72,9 @@ body {
     background-size: 1em;
 }
 
+/* ========================================
+   COMPONENTE: LISTA DE USUÁRIOS
+======================================== */
 .user-list {
     display: flex;
     flex-direction: column;
@@ -97,7 +103,7 @@ body {
     height: 48px;
     min-width: 48px;
     min-height: 48px;
-    flex: 0 0 48px; 
+    flex: 0 0 48px;
     background-color: var(--color-primary);
     border-radius: 50%;
     color: var(--color-text-light);
@@ -119,7 +125,7 @@ body {
 }
 
 /* ========================================
-   MODAL
+   COMPONENTE: MODAL
 ======================================== */
 .modal {
     position: fixed;
@@ -127,7 +133,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    display: flex;
+    display: flex; 
     align-items: center;
     justify-content: center;
     z-index: 1000;
@@ -136,7 +142,7 @@ body {
 .modal__overlay {
     position: absolute;
     inset: 0;
-    background-color: rgba(10, 8, 75, 0.3); 
+    background-color: rgba(10, 8, 75, 0.4); 
     cursor: default;
 }
 
@@ -147,11 +153,32 @@ body {
     border-radius: var(--border-radius-lg); 
     box-shadow: var(--shadow-lg); 
     width: 90%;
-    max-width: 320px;
+    max-width: 380px; 
     padding: var(--font-size-xl) var(--font-size-lg); 
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+
+.modal__close {
+    position: absolute;
+    top: var(--font-size-md);
+    right: var(--font-size-md);
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.modal__close:hover,
+.modal__close:focus {
+    color: var(--color-primary);
+    outline: none;
 }
 
 .modal__icon-wrapper {
@@ -164,52 +191,51 @@ body {
     line-height: 1;
 }
 
-.modal__skeleton {
+
+.modal__info {
     background-color: var(--color-bg-card); 
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    box-shadow: var(--shadow-sm); 
 }
 
-.modal__skeleton p {
-    margin: 0;
-    color: var(--color-text-primary);
-}
-
-.modal__skeleton--title {
-    height: 32px;
+.modal__info--title {
     width: 85%;
+    padding: var(--font-size-sm) var(--font-size-md);
     border-radius: var(--border-radius-pill); 
     margin-bottom: var(--font-size-sm); 
 }
 
-.modal__skeleton--title p {
+.modal__info--title p {
     font-size: var(--font-size-md);
     font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
 }
 
-.modal__skeleton--subtitle {
-    height: 24px;
-    width: 50%;
+.modal__info--subtitle {
+    width: max-content;
+    padding: 8px var(--font-size-md); 
     border-radius: var(--border-radius-pill); 
     margin-bottom: var(--font-size-xl); 
 }
 
-.modal__skeleton--subtitle p {
+.modal__info--subtitle p {
     font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
 }
 
-.modal__skeleton--block {
-    height: 180px;
+.modal__info--block {
+    width: 100%;
+    min-height: 140px; 
     border-radius: var(--border-radius-lg); 
     align-items: flex-start; 
-    padding: var(--font-size-md);
+    padding: var(--font-size-lg);
 }
 
-.modal__skeleton--block p {
+.modal__info--block p {
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
-    text-align: center;
+    line-height: 1.5;
 }
