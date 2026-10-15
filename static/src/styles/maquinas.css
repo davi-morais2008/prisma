@@ -1,0 +1,1039 @@
+@import url('variables.css');
+
+/* ======================================= */
+/* ======   BLOCO: Principal/Titulo  ====== */
+/* ======================================= */
+
+/* Reset global */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--color-bg-main);
+    font-family: var(--font-family-base);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+}
+
+.active{
+    display: flex;
+}
+
+.machines {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.machines__title {
+    width: 100%;
+    text-align: center;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+}
+
+.machines__button-register {
+    background-color: var(--color-accent-orange);
+    width: 60px;
+    height: 60px;
+    border-radius: 35px;
+    border: 0;
+    font-family: var(--font-family-base);
+    font-size: 40px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-light);
+    cursor: pointer;
+    position: absolute;
+    right: 40px;
+    top: 40px;    
+    transition: ease-in 150ms;
+}
+
+.machines__button-register:hover {
+    background-color: var(--color-accent-peach);
+    transform: scale(1.05);
+}
+
+/* ======================================= */
+/* =========   BLOCO: Filtros  ============ */
+/* ======================================= */
+
+.machines__filters {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 0.5rem;
+}
+
+.filter-input-search {
+    width: 100%;
+    height: 48px;
+    padding: 0 1.25rem;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius-pill);
+    background-color: var(--color-bg-input);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-input-search:focus {
+    border-color: var(--color-secondary);
+    box-shadow: var(--shadow-md);
+}
+
+.filter-buttons {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.filter-button {
+    cursor: pointer;
+    width: 100%;
+    height: 40px;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius-pill);
+    background-color: var(--color-bg-card);
+    color: var(--color-text-secondary);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-text-light);
+    box-shadow: var(--shadow-md);
+}
+
+/* ======================================= */
+/* =========   BLOCO: Máquinas  ============ */
+/* ======================================= */
+
+.machines__machines-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+    max-width: 800px;
+    padding: 0 0.5rem;
+}
+
+.machine {
+    cursor: pointer;
+    width: 100%;
+    min-height: 200px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 1.25rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.machine:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.machine__machine-title {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    margin-bottom: 0.25rem;
+}
+
+.machine__machine-number {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-secondary);
+}
+
+/* =============================================================== */
+/* ===  BLOCO: |MODAL| Cadastro (from de cadastro de máquinas  === */
+/* =============================================================== */
+
+
+.machines__register {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.form-register {
+    width: 90%;
+    max-width: 450px;
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-family-base);
+}
+
+.form-register h3{
+    text-align: center;
+    margin: 0 0 30px 0;
+}
+
+.form-register label {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    margin-bottom: 1%;
+}
+
+.form-register__input-select,
+.form-register__input-text {
+    width: 100%;
+    height: 55px;
+    padding: 0 0.875rem;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-input);
+    border: 1px solid var(--color-bg-light);
+    border-radius: var(--border-radius-lg);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 10%;
+    background-color: var(--color-bg-light);
+}
+
+.form-register__input-select::placeholder,
+.form-register__input-text::placeholder{
+    color: #9994cc80;
+}
+
+#closeRegister{
+    align-self: flex-end;
+    color: var(--color-primary);
+    margin-bottom: 10px;
+}
+
+
+
+.form-register__input-select:focus,
+.form-register__input-text:focus {
+    border-color: var(--color-secondary);
+    box-shadow: var(--shadow-sm);
+}
+
+.form-register button[type="submit"] {
+    width: 100%;
+    height: 48px;
+    margin-top: 0.5rem;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    border: none;
+    border-radius: var(--border-radius-pill);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.form-register button[type="submit"]:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   BLOCO: |MODAL| MACHINE-DETAILS (Máquina Individual)
+   ======================================== */
+.machine-details {
+    background-color: var(--color-bg-card);
+    width: 95%;
+    max-width: 480px;
+    max-height: 90vh;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    z-index: 900;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 20px;
+    gap: 16px;
+    position: fixed;
+}
+
+/* --- CABEÇALHO DAS ESTATÍSTICAS E AÇÕES --- */
+.machine-details__statistics-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.machine-details__statistics-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--border-radius-sm);
+}
+
+.machine-details__action-button {
+    background: transparent;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.machine-details__action-button--edit {
+    color: var(--color-primary);
+}
+
+.machine-details__action-button--edit:hover {
+    background-color: var(--color-bg-light);
+    color: var(--color-secondary);
+    transform: scale(1.05);
+}
+
+.machine-details__action-button--delete {
+    color: var(--color-text-secondary);
+}
+
+.machine-details__action-button--delete:hover {
+    background-color: var(--color-bg-light);
+    color: var(--color-status-danger);
+    transform: scale(1.05);
+}
+
+/* --- LOGO / CABEÇALHO DA MÁQUINA --- */
+.machine-details__logo {
+    width: 100%;
+    background-color: var(--color-primary);
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+}
+
+.machine-details__logo-image {
+    height: 32px;
+    object-fit: contain;
+}
+
+.machine-details__logo-title {
+    color: var(--color-text-light);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+}
+
+.machine-details__close-button {
+    background: transparent;
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.machine-details__edit-button {
+    background: transparent;
+    width: 30px;
+    height: 30px;
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.machine-details__edit-button > img{
+    width: 10px;
+
+}
+
+/* --- INFORMAÇÕES PRIMÁRIAS --- */
+.machine-details__primary-info {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.machine-details__img-machine {
+    width: 45%;
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.machine-details__info-image {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: var(--border-radius-md);
+}
+
+.machine-details__info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+}
+
+.machine-details__type-title,
+.machine-details__number-title {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.machine-details__type-text,
+.machine-details__number-text {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0 0 6px 0;
+}
+
+/* --- ESTATÍSTICAS E MANUAL (100% FLEXBOX) --- */
+.machine-details__statistics {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    gap: 8px;
+}
+
+.machine-details__statistics-title {
+    width: 100%;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+}
+
+.machine-details__stat-container {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.machine-details__stat-group {
+    flex: 1;
+    background-color: var(--color-bg-light);
+    border-radius: var(--border-radius-md);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.machine-details__stat-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.machine-details__stat-icon {
+    font-size: var(--font-size-sm);
+}
+
+.machine-details__stat-text-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.machine-details__stat-label {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.machine-details__stat-value {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+
+.machine-details__stat-item--manual-machines {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.machine-details__manual-title {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.machine-details__manual-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+}
+
+.machine-details__manual-link:hover {
+    text-decoration: underline;
+}
+
+/* --- MANUTENÇÃO PREVENTIVA --- */
+.machine-details__prev-maintance {
+    background-color: var(--color-bg-light);
+    width: 90%;
+    border-radius: var(--border-radius-md);
+    padding: 12px 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.machine-details__prev-maintance-title {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.machine-details__prev-maintance-text {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+/* --- HISTÓRICO DE MANUTENÇÕES --- */
+.machine-details__maintance-history {
+    background-color: var(--color-bg-light);
+    width: 90%;
+    border-radius: var(--border-radius-md);
+    padding: 12px 16px;
+    box-sizing: border-box;
+}
+
+.machine-details__maintance-history-title {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.machine-details__maintances-list {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+}
+
+.machine-details__maintances-list th {
+    text-align: left;
+    color: var(--color-text-secondary);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--color-text-secondary);
+}
+
+.machine-details__maintances-list td {
+    padding: 6px 0;
+    color: var(--color-text-primary);
+}
+
+
+
+
+/* ========================================
+   BLOCO: |MODAL| MACHINE-EDIT (Form Edição)
+   ======================================== */
+.machine-edit {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--color-bg-card);
+    width: 90%;
+    max-width: 520px;
+    max-height: 85vh;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+/* --- CABEÇALHO --- */
+.machine-edit__logo {
+    width: 100%;
+    background-color: var(--color-primary);
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+.machine-edit__logo-image {
+    height: 32px;
+    object-fit: contain;
+}
+
+.machine-edit__logo-title {
+    color: var(--color-text-light);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+}
+
+.machine-edit__close-button {
+    background: transparent;
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- FORMULÁRIO & CONTAINERS --- */
+.machine-edit__form {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.machine-edit__section-title {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.machine-edit__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+}
+
+.machine-edit__label {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+}
+
+.machine-edit__input,
+.machine-edit__select {
+    width: 100%;
+    height: 38px;
+    padding: 0 10px;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-input);
+    border: 1px solid var(--color-bg-light);
+    border-radius: var(--border-radius-sm);
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.machine-edit__input:focus,
+.machine-edit__select:focus {
+    border-color: var(--color-secondary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* --- FOTO DA MÁQUINA + UPLOAD --- */
+.machine-edit__primary-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.machine-edit__img-container {
+    position: relative;
+    width: 110px;
+    height: 90px;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.machine-edit__info-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.machine-edit__img-upload-btn {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    padding: 6px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.machine-edit__file-input {
+    display: none;
+}
+
+.machine-edit__info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+/* --- ESTATÍSTICAS E PAINEL FLEX --- */
+.machine-edit__stat-container {
+    display: flex;
+    gap: 12px;
+}
+
+.machine-edit__stat-group {
+    flex: 1;
+    background-color: var(--color-bg-light);
+    border-radius: var(--border-radius-md);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.machine-edit__file-upload-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-bg-card);
+    padding: 6px 8px;
+    border-radius: var(--border-radius-sm);
+    border: 1px dashed var(--color-secondary);
+}
+
+.machine-edit__file-name {
+    font-family: var(--font-family-base);
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 110px;
+}
+
+.machine-edit__upload-button {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    color: var(--color-secondary);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+}
+
+/* --- SEÇÃO MANUTENÇÃO PREVENTIVA --- */
+.machine-edit__prev-maintance {
+    background-color: var(--color-bg-light);
+    border-radius: var(--border-radius-md);
+    padding: 12px;
+}
+
+.machine-edit__maintance-row {
+    display: flex;
+    gap: 12px;
+}
+
+/* --- TABELA EDITÁVEL --- */
+.machine-edit__maintance-history {
+    background-color: var(--color-bg-light);
+    border-radius: var(--border-radius-md);
+    padding: 12px;
+}
+
+.machine-edit__table-wrapper {
+    overflow-x: auto;
+}
+
+.machine-edit__maintances-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.machine-edit__maintances-list th {
+    text-align: left;
+    font-family: var(--font-family-base);
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    padding-bottom: 6px;
+}
+
+.machine-edit__input-table,
+.machine-edit__select-table {
+    width: 100%;
+    height: 28px;
+    font-family: var(--font-family-base);
+    font-size: 11px;
+    border: 1px solid var(--color-glass-border);
+    border-radius: 4px;
+    padding: 0 4px;
+    background-color: var(--color-bg-card);
+}
+
+/* --- BOTÕES DE AÇÃO --- */
+.machine-edit__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.machine-edit__button {
+    height: 40px;
+    padding: 0 20px;
+    border-radius: var(--border-radius-pill);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.machine-edit__button--cancel {
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-text-secondary);
+}
+
+.machine-edit__button--cancel:hover {
+    background-color: var(--color-bg-light);
+}
+
+.machine-edit__button--save {
+    background-color: var(--color-accent-orange);
+    color: var(--color-text-light);
+    box-shadow: var(--shadow-sm);
+}
+
+.machine-edit__button--save:hover {
+    background-color: var(--color-accent-peach);
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   BLOCO: |MODAL| delete-confirmation (confirmação de delete)
+   ========================================================= */
+.delete-confirmation{
+    width: 20%;
+    z-index: 1000;
+    position: absolute;
+    background-color: var(--color-bg-main);
+    display: none;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: var(--border-radius-lg);
+    gap: 30px;
+    box-shadow: 0px 2px 10px 0.4px gray;
+    top: 25%;
+}
+
+.delete-confirmation__close-button{
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    color: var(--color-primary);
+    border: none;
+    border-radius: 5px;
+    align-self: flex-end;
+    font-weight: var(--font-weight-bold);
+}
+
+.delete-confirmation__title{
+    font-size: var(--font-size-xl);
+    text-align: center;
+    color: var(--color-primary);
+}
+.danger-title {
+    color: var(--color-status-danger-dark);
+}
+
+.delete-confirmation__buttons{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+
+.button-confirmation{
+    width: 110px;
+    height: 40px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    font-size: var(--font-size-md);
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-bold);
+
+}
+
+.button-confirmation--cancel{
+    background-color: var(--color-accent-orange);
+    color: var(--color-primary);
+}
+
+.button-confirmation--delete{
+    background-color: var(--color-primary);
+    color: var(--color-bg-light);
+}
+
+.button-confirmation--cancel:hover{
+    background-color: var(--color-accent-peach);
+    transition: all 100ms ease-in;
+    transform: scale(1.02);
+}
+
+.button-confirmation--delete:hover{
+    background-color: var(--color-status-danger-dark);
+    transition: all 100ms ease-in;
+    transform: scale(1.02);
+
+}
+
+
+/* ======================================= */
+/* =========   MEDIA QUERIES  ============ */
+/* ======================================= */
+
+
+/* RESPONSIVIDADE MOBILE */
+@media (max-width: 600px) {
+    .machine-edit__stat-container,
+    .machine-edit__maintance-row {
+        flex-direction: column;
+    }
+
+    /* Corrige o container para o tamanho mobile */
+    .delete-confirmation{
+        width: 90%;
+        top: 35%;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .machines__button-register {
+        background-color: var(--color-accent-orange);
+        width: 40px;
+        height: 40px;
+        border-radius: 35px;
+        border: 0;
+        font-family: var(--font-family-base);
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-text-light);
+        cursor: pointer;
+        position: absolute;
+        right: 25px;
+        top: 90px;
+    }
+
+    .filter-input-search {
+        width: 85%;
+        align-self: flex-start;
+        height: 48px;
+        padding: 0 1.25rem;
+        border: 1px solid transparent;
+        border-radius: var(--border-radius-pill);
+        background-color: var(--color-bg-input);
+        font-family: var(--font-family-base);
+        font-size: var(--font-size-sm);
+        color: var(--color-text-primary);
+        box-shadow: var(--shadow-sm);
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .machine-details__stat-container {
+        flex-direction: column;
+    }
+}
