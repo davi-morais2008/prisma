@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-
+from model.usuario import buscar_usuario
 app = Flask(__name__)
 
 app.secret_key = 'PRISMA_maintence'
@@ -35,7 +35,15 @@ def pagina_login_tecnico():
     
     if login_usuario(login_do_usuario,senha_do_usuario): 
         return redirect('/login')
-    
+
+
+@app.route('/api/get/users')
+def api_get_users():
+    try:
+        usuarios =  buscar_usuario()
+        return jsonify(usuarios), 200
+    except Exception as e:
+        return jsonify({"status":"erro", "mensagem":str(e)}), 400
 
 
 
