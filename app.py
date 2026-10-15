@@ -25,7 +25,7 @@ def api_get_info_manutencao(id_ordem):
 @app.route('/')
 @app.route('/login')
 def pagina_login():
-    return render_template('login.html')
+    return render_template('cadastroLogin.html')
 
 
 @app.route('/login/post', methods = ['POST'])
@@ -35,6 +35,7 @@ def pagina_login_tecnico():
     
     if login_usuario(login_do_usuario,senha_do_usuario): 
         return redirect('/login')
+    
 
 
 
