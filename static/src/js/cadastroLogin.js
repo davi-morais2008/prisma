@@ -40,7 +40,18 @@ inputCadastroEmail.addEventListener('input', () => {
 });
 
 
-const requisicaoUsuarios = async () => {
+bntLogin.addEventListener('click', () => requisicaoUsuarios())
 
+const requisicaoUsuarios = async () => {
+    console.log('teste')
+    const response = await fetch('/api/get/users');
+
+    if (!response.ok){
+        console.log('ERRO NA REQUISIÇÃO');
+    }
+
+    const usuarios = await response.json()
+
+    console.log(usuarios)
 }
 
