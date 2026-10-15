@@ -239,3 +239,42 @@ body {
     color: var(--color-text-secondary);
     line-height: 1.5;
 }
+
+/* ========================================
+   COMPONENTE: AVATAR NA LISTA
+======================================== */
+.user-card__avatar {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    flex: 0 0 48px;
+    
+    border-radius: 50%;
+    object-fit: cover;
+    
+
+    background-color: var(--color-bg-light); 
+    box-shadow: var(--shadow-sm);
+}
+
+/* ========================================
+   COMPONENTE: AVATAR NO MODAL
+======================================== */
+.modal__avatar-wrapper {
+    margin-bottom: var(--font-size-md); 
+    display: flex;
+    justify-content: center;
+}
+
+.modal__avatar {
+    width: 80px; 
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: var(--color-bg-light);
+    
+
+    border: 3px solid var(--color-bg-main);
+    box-shadow: var(--shadow-sm);
+}
