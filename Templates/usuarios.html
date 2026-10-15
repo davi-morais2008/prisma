@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close,account_circle,badge,mail,delete,edit,save,photo_camera" />
     <link rel="stylesheet" href="../static/src/styles/variables.css">
     <link rel="stylesheet" href="../static/src/styles/usuarios.css">
     <title>Usuários</title>
@@ -30,58 +30,107 @@
         </section>
 
         <section class="user-list">
+            <!-- Card 1 -->
             <article class="user-card">
-
                 <img class="user-card__avatar"
                     src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
-                    alt="Foto de perfil Técnico">
+                    alt="Foto de perfil do técnico João">
+                
                 <div class="user-card__info">
-                    <p class="user-card__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum quis vero
-                        blanditiis corporis quas tenetur consequatur laborum nihil ex saepe?</p>
+                    <h3 class="user-card__name">João da Silva</h3>
+                    <p class="user-card__specialty">Manutenção de Redes</p>
+                    
+                    <div class="user-card__details">
+                        <div class="user-card__tag">
+                            <span class="material-symbols-outlined" aria-hidden="true">badge</span>
+                            <span>123.456.789-00</span>
+                        </div>
+                        <a href="mailto:joao.silva@exemplo.com" class="user-card__tag user-card__link">
+                            <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+                            <span>joao.silva@exemplo.com</span>
+                        </a>
+                    </div>
+
+                    <p class="user-card__text">Especialista sênior em infraestrutura de redes e cabeamento estruturado com mais de 10 anos de experiência na área.</p>
+                    
+                    <!-- Ações do Card -->
+                    <div class="user-card__actions">
+                        <button class="button button--secondary button--small" type="button" aria-label="Editar João da Silva">
+                            <span class="material-symbols-outlined" aria-hidden="true">edit</span>
+                            Editar
+                        </button>
+                        <button class="button button--danger button--small" type="button" aria-label="Inativar João da Silva">
+                            <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                            Inativar
+                        </button>
+                    </div>
                 </div>
             </article>
 
-
+            <!-- Card 2 -->
             <article class="user-card">
                 <img class="user-card__avatar"
                     src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80"
-                    alt="Foto de perfil Técnico">
+                    alt="Foto de perfil da técnica Maria">
+                
                 <div class="user-card__info">
-                    <p class="user-card__text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil
-                        laboriosam libero recusandae dolor vitae error qui mollitia omnis officiis sit.</p>
+                    <h3 class="user-card__name">Maria Oliveira</h3>
+                    <p class="user-card__specialty">Suporte Nível 2</p>
+
+                    <div class="user-card__details">
+                        <div class="user-card__tag">
+                            <span class="material-symbols-outlined" aria-hidden="true">badge</span>
+                            <span>987.654.321-00</span>
+                        </div>
+                        <a href="mailto:maria.oliveira@exemplo.com" class="user-card__tag user-card__link">
+                            <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+                            <span>maria.oliveira@exemplo.com</span>
+                        </a>
+                    </div>
+
+                    <p class="user-card__text">Profissional certificada, responsável por escalonamento de incidentes complexos e gestão de acesso.</p>
+
+                    <!-- Ações do Card -->
+                    <div class="user-card__actions">
+                        <button class="button button--secondary button--small" type="button" aria-label="Editar Maria Oliveira">
+                            <span class="material-symbols-outlined" aria-hidden="true">edit</span>
+                            Editar
+                        </button>
+                        <button class="button button--danger button--small" type="button" aria-label="Inativar Maria Oliveira">
+                            <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                            Inativar
+                        </button>
+                    </div>
                 </div>
             </article>
         </section>
     </main>
+    <!-- Modal de Detalhes do Usuário -->
+        <aside id="user-modal" class="modal" aria-labelledby="modal-title" aria-modal="true" role="dialog">
+            <!-- Overlay escuro para focar no conteúdo -->
+            <div class="modal__overlay" aria-label="Fechar modal"></div>
 
-    <!-- Modal -->
-    <aside id="user-modal" class="modal" aria-labelledby="modal-title" aria-modal="true" role="dialog">
-        <div class="modal__overlay" aria-label="Fechar modal"></div>
+            <!-- Conteúdo principal do modal -->
+            <div class="modal__content">
+                <button class="modal__close" aria-label="Fechar detalhes do usuário">
+                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                </button>
 
-        <div class="modal__content">
-            <button class="modal__close" aria-label="Fechar detalhes do usuário">
-                <span class="material-symbols-outlined" aria-hidden="true">close</span>
-            </button>
+                <div class="modal__header">
+                    <img class="modal__avatar"
+                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80"
+                        alt="Foto de perfil ampliada do técnico">
+                </div>
 
-            <div class="modal__avatar-wrapper">
-                <img class="modal__avatar"
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80"
-                    alt="Foto de perfil ampliada">
+                <div class="modal__body">
+                    <h2 id="modal-title" class="modal__title">João da Silva</h2>
+                    <p class="modal__subtitle">Manutenção de Redes</p>
+                    
+                    <div class="modal__description">
+                        <p>Especialista sênior em infraestrutura de redes e cabeamento estruturado com mais de 10 anos de experiência na área. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </div>
+                </div>
             </div>
-
-            <div class="modal__info modal__info--title">
-                <p id="modal-title">Nome do Técnico</p>
-            </div>
-
-            <div class="modal__info modal__info--subtitle">
-                <p>Área de especialização.</p>  
-            </div>
-
-            <div class="modal__info modal__info--block">
-                <p>Breve descrição sobre o técnico. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-        </div>
-    </aside>
+        </aside>
 </body>
-
 </html>
