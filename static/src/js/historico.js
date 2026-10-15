@@ -11,41 +11,40 @@ const textStart = document.querySelector('#text-start')
 const textFinal = document.querySelector('#text-final')
 
 maintBTN.forEach((btn) => {
-    btn.addEventListener('click', () => {
-        modalShow.classList.toggle('active');
+    btn.addEventListener('click', async () => {
 
-        const osID = btn.getAttribute('id_os')
+        const osID = btn.getAttribute('id_os');
 
-        try{
-            const resposta = await fetch(`http://127.0.0.1:8080/api/get/info_manutencao/${osID}`,{
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json; charset=utf-8',
-                    'Content-Type': 'application/json; charset=utf-8'
-                }}
-            )
+        const resposta = await fetch(`http://127.0.0.1:8080/api/get/info_manutencao/${osID}`,{
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json; charset=utf-8'
+            }}
+        );
 
-            if (!resposta.ok){
-                alert("ERRO AO CARREGAR INFORMAÇÃO!")
-            }
+        if (!resposta.ok){
+            alert("ERRO AO CARREGAR INFORMAÇÃO!");
+        }
 
-            else{
-                const dados = await resposta.json()
+        else{
+            const dados = await resposta.json();
 
-                console.log(dados)
+            console.log(dados);
 
-                textType.textContent = dados.tipo_modelo
-                textPatrimony.textContent = dados.numero_patrimonio
-                textProd.textContent = dados.nome + dados.sobrenome
-                textError.textContent = dados.error
-                textDate.textContent = dados.data_parada
-                textStart.textContent = dados.data_inicio_manutencao
-                textFinal.textContent = dados.data_termino_manutencao
-                
-            }
+            textType.textContent = dados.tipo_modelo
+            textPatrimony.textContent = dados.numero_patrimonio
+            textProd.textContent = dados.nome + ' ' + dados.sobrenome
+            textError.textContent = dados.descricao_problema
+            textDate.textContent = dados.data_parada
+            textStart.textContent = dados.data_inicio_manutencao
+            textFinal.textContent = dados.data_termino_manutencao        
+            
+            modalShow.classList.toggle('active');
         }
     })
 })
+
 
 closeBTN.forEach((btn) => {
     btn.addEventListener('click', () => {
