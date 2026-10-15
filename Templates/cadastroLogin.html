@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/src/styles/cadastro.css">
     <title>Página de Cadastro</title>
+    <script src="/static/src/js/cadastroLogin.js"></script>
 </head>
 
 <body class="body_cadastro">
@@ -25,7 +26,7 @@
                 <label for="signup" class="btn_toggle">Cadastrar</label>
             </div>
 
-            <form class="form_auth form_signin" action="/login" method="POST">
+            <form id="form-login" class="form_auth form_signin" action="/login" method="POST">
                 <div class="header_container">
                     <h1 class="titulo_cadastro">Acesse sua conta</h1>
                     <p class="subtitulo_cadastro">Insira seus dados para entrar</p>
@@ -47,7 +48,7 @@
                     <button id="btn-login" class="btn_submit" type="submit">Entrar</button>
                 </div>
             </form>
-            <form class="form_auth form_signup" action="/cadastro" method="POST">
+            <form id="form-cadastro" class="form_auth form_signup" action="/cadastro" method="POST">
                 <div class="header_container">
                     <h1 class="titulo_cadastro">Crie sua conta</h1>
                     <p class="subtitulo_cadastro">Preencha seus dados para começar</p>
@@ -55,26 +56,26 @@
 
                 <div class="campos_container">
                     <div class="form_group">
-                        <label class="form_label" for="nome">Nome Completo:</label>
-                        <input class="form_input" type="text" id="nome" name="nome" required>
+                        <label class="form_label" for="cadastro-nome">Nome Completo:</label>
+                        <input class="form_input" type="text" id="cadastro-nome" name="nome" required>
                     </div>
 
                     <div class="form_group">
-                        <label class="form_label" for="email">E-mail:</label>
-                        <input class="form_input" type="email" id="email" name="email" placeholder="seu@email.com" required>
+                        <label class="form_label" for="cadastro-email">E-mail:</label>
+                        <input class="form_input" type="email" id="cadastro-email" name="email" placeholder="seu@email.com" required>
                     </div>
 
                     <div class="form_group">
-                        <label class="form_label" for="cpf">CPF:</label>
-                        <input class="form_input" type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                        <label class="form_label" for="cadastro-cpf">CPF:</label>
+                        <input class="form_input" type="text" id="cadastro-cpf" name="cpf" placeholder="000.000.000-00" required>
                     </div>
                     <div class="form_group">
-                        <label class="form_label" for="pwd">Senha:</label>
-                        <input class="form_input" type="password" id="pwd" name="pwd" placeholder="••••••••" required>
+                        <label class="form_label" for="cadastro-pwd">Senha:</label>
+                        <input class="form_input" type="password" id="cadastro-pwd" name="pwd" placeholder="••••••••" required>
                     </div>
                     <div class="form_group">
-                        <label class="form_label" for="confirmpwd">Confirmar Senha:</label>
-                        <input class="form_input" type="password" id="confirmpwd" name="confirmpwd" placeholder="••••••••" required>
+                        <label class="form_label" for="cadastro-confirmpwd">Confirmar Senha:</label>
+                        <input class="form_input" type="password" id="cadastro-confirmpwd" name="confirmpwd" placeholder="••••••••" required>
                     </div>
 
                 </div>
