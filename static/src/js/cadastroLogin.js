@@ -38,3 +38,9 @@ inputCadastroEmail.addEventListener('input', () => {
         inputCadastroEmail.style.borderColor = "red";
     }
 });
+
+
+const requisicaoUsuarios = async () => {
+
+}
+
