@@ -69,7 +69,11 @@
     margin-top: 5px;
 }
 
-.machine-tech__overlay {
+.machine-tech__overlay{
+    display: none;
+}
+
+.machine-tech__overlay.active{
   position: fixed;
   top: 0;
   left: 200px;
@@ -235,7 +239,11 @@
     flex-direction: column;
   }
 
-  .machine-tech__overlay {
+  .machine-tech__overlay{
+    display: none;
+  }
+
+  .machine-tech__overlay.active {
   position: fixed;
   top: 0;
   left: 0;

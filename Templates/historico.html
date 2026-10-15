@@ -24,7 +24,7 @@
                                     <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
                                 </div>
                                 <div class="maintence__icon">
-                                    <button class="maint__btn" id="btn_hide">
+                                    <button class="maint__btn btn_show">
                                         <span class="material-icons">
                                         arrow_drop_down
                                         </span>
@@ -37,13 +37,13 @@
                 </div>
             </div>
 
-            <div class="machine-tech__overlay">
+            <div class="machine-tech__overlay" id="modal_show">
                 <div class="machine-tech">
                 <!-- CABEÇALHO -->
                 <div class="machine-tech__logo">
                     <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="machine-tech__logo-image">
                     <h1 class="machine-tech__logo-title">DETALHAMENTO DA MANUTENÇÃO</h1>
-                    <button type="button" class="machine-tech__close-button" aria-label="Fechar edição">
+                    <button type="button" class="machine-tech__close-button btn_close aria-label="Fechar edição">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
