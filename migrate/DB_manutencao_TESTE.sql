@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     sobrenome VARCHAR(100),
     email VARCHAR(255),
     senha VARCHAR(500),
-    status_usuario VARCHAR(100)
+    status_usuario VARCHAR(100),
 );
 
 CREATE UNIQUE INDEX UQ_EMAIL ON usuarios (email);
