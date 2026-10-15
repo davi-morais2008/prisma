@@ -1,32 +1,51 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Calendário</title>
 
-    <title>Meu Calendário</title>
-
-    <link rel="stylesheet" href="../styles/calendario.css">
+  <!-- FullCalendar CSS e JS via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  
+  <!-- CSS Personalizado -->
+  <link rel="stylesheet" href="../styles/calendario.css">
 </head>
-
 <body>
 
-    <main class="page-container">
+  <main class="page-container">
 
-        <h1>Meu Calendário</h1>
+    <div id="calendar"></div>
+  </main>
 
-        <div id="calendar"></div>
+  <!-- Modal Personalizado para Criar Eventos -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal-container">
+      <h2>Novo Evento</h2>
+      
+      <div class="form-group">
+        <label for="event-title">Nome do Evento</label>
+        <input type="text" id="event-title" placeholder="Ex: Reunião..." autocomplete="off">
+      </div>
 
-    </main>
+      <div class="form-group">
+        <label for="event-status">Categoria / Status</label>
+        <select id="event-status">
+          <option value="evento-primary">Geral (Roxo)</option>
+          <option value="evento-danger">Urgente (Vermelho)</option>
+          <option value="evento-warning">Atenção (Amarelo)</option>
+          <option value="evento-success">Concluído (Verde)</option>
+        </select>
+      </div>
 
+      <div class="modal-actions">
+        <button type="button" id="btn-cancelar" class="btn btn-secondary">Cancelar</button>
+        <button type="button" id="btn-salvar" class="btn btn-primary">Salvar Evento</button>
+      </div>
+    </div>
+  </div>
 
-    <!-- FullCalendar -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
-
-    <!-- Seu JavaScript -->
-    <script src="../src/js/script.js"></script>
-
+  <!-- JS Principal -->
+  <script src="../src/js/script.js"></script>
 </body>
-
 </html>
