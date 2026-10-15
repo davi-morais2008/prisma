@@ -9,7 +9,7 @@ def buscar_os_finalizado_ind(id_ordem):
     """
     conexao, cursor = conectar()
 
-    cursor.execute("""SELECT maquinas.numero_patrimonio, ordens_servicos.descricao_problema, usuarios.nome, usuarios.sobrenome, ordens_servicos.tipo_manutencao, ordens_servicos.data_parada, ordens_servicos.data_inicio_manutencao, ordens_servicos.data_termino_manutencao FROM db_manutencaods_em.ordens_servicos
+    cursor.execute("""SELECT maquinas.numero_patrimonio, maquinas.modelo_maquina, ordens_servicos.descricao_problema, usuarios.nome, ordens_servicos.tipo_manutencao, ordens_servicos.data_parada, ordens_servicos.data_inicio_manutencao, ordens_servicos.data_termino_manutencao FROM db_manutencaods_em.ordens_servicos
         INNER JOIN falhas ON ordens_servicos.id_falha = falhas.id_falha
         INNER JOIN maquinas ON ordens_servicos.id_maquina = maquinas.id_maquina
         INNER JOIN usuarios ON ordens_servicos.cpf = usuarios.cpf
