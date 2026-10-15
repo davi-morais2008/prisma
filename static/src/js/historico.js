@@ -32,9 +32,9 @@ maintBTN.forEach((btn) => {
 
             console.log(dados);
 
-            textType.textContent = dados.tipo_modelo
+            textType.textContent = dados.modelo_maquina
             textPatrimony.textContent = dados.numero_patrimonio
-            textProd.textContent = dados.nome + ' ' + dados.sobrenome
+            textProd.textContent = dados.nome
             textError.textContent = dados.descricao_problema
             textDate.textContent = dados.data_parada
             textStart.textContent = dados.data_inicio_manutencao
