@@ -82,7 +82,6 @@
             </div> -->
 
             <!-- DETALHES DA MÁQUINA (MODAL) -->
-            
             <div class="machine-edit">
                 <!-- CABEÇALHO -->
                 <div class="machine-edit__logo">
@@ -106,8 +105,8 @@
                             <label for="edit-machine-photo" class="machine-edit__img-upload-btn"
                                 aria-label="Alterar foto da máquina">
                                 <span class="material-symbols-outlined">
-photo_camera
-</span>
+                                    photo_camera
+                                </span>
                                 <input type="file" id="edit-machine-photo" class="machine-edit__file-input"
                                     accept="image/*">
                             </label>
@@ -255,7 +254,15 @@ photo_camera
                     </div>
                 </form>
             </div>
-
+            
+            <div class="delete-confirmation">
+                <button><span class="material-symbols-outlined">close</span></button>
+                <h3>Deseja Excluir esta Máquina do Sistema?</h3>
+                <div class="delete-confirmation__buttons">
+                    <button>Cancelar</button>
+                    <button>Excluír</button>
+                </div>
+            </div>
         </section>
     </main>
 </body>
