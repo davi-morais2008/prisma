@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/src/styles/cadastro.css">
     <title>Página de Cadastro</title>
-    <script src="/static/src/js/cadastroLogin.js"></script>
+
 </head>
 
 <body class="body_cadastro">
@@ -35,7 +35,7 @@
                 <div class="campos_container">
                     <div class="form_group">
                         <label class="form_label" for="login_cpf">CPF:</label>
-                        <input class="form_input" type="text" id="login_cpf" name="login_cpf" placeholder="000.000.000-00" required>
+                        <input class="form_input" type="text" id="login_cpf" name="login_cpf" placeholder="000.000.000-00" maxlength="11" required>
                     </div>
 
                     <div class="form_group">
@@ -67,7 +67,7 @@
 
                     <div class="form_group">
                         <label class="form_label" for="cadastro-cpf">CPF:</label>
-                        <input class="form_input" type="text" id="cadastro-cpf" name="cpf" placeholder="000.000.000-00" required>
+                        <input class="form_input" type="text" id="cadastro-cpf" name="cpf" placeholder="000.000.000-00" maxlength="11" required>
                     </div>
                     <div class="form_group">
                         <label class="form_label" for="cadastro-pwd">Senha:</label>
@@ -93,5 +93,5 @@
 
     </main>
 </body>
-
+<script src="/static/src/js/cadastroLogin.js"></script>
 </html>
