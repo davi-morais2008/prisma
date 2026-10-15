@@ -13,73 +13,118 @@
             <div class="history__content">
                 <h1 class="history__title">Histórico de Manutenção</h1>
                 <div class="history__cards">
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
-                    <div class="card-group">
-                        <p class="maintence-title">26/08/2008 - 16:42:00</p>
-                        <div class="maintence-card">                
-                            <p>Teste</p>
-                        </div> 
-                    </div>  
+                    {% for os in OSfinalizado %}
+                    <div class="card__group">
+                        <p class="maintence__title">{{os.data_termino_manutencao}}</p>
+                        <div class="maintence__card">
+                            <div class="upper__content">
+                                <div class="maintence__text">
+                                    <p>Responsável: {{os.nome}} {{os.sobrenome}}</p>
+                                    <p>Falha: {{os.falha}}</p>
+                                    <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
+                                </div>
+                                <div class="maintence__icon">
+                                    <button class="maint__btn btn_show" id_os="{{os.id_ordem}}">
+                                        <span class="material-icons">
+                                        arrow_drop_down
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
+
+            <div class="machine-tech__overlay" id="modal_show">
+                <div class="machine-tech">
+                <!-- CABEÇALHO -->
+                <div class="machine-tech__logo">
+                    <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="machine-tech__logo-image">
+                    <h1 class="machine-tech__logo-title">DETALHAMENTO DA MANUTENÇÃO</h1>
+                    <button type="button" class="machine-tech__close-button btn_close aria-label="Fechar edição">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="machine-tech__info">
+                    <!-- INFORMAÇÕES PRIMÁRIAS -->
+                    <div class="machine-tech__primary-info">
+                        <div class="machine-tech__img-container">
+                            <img src="/static/src/img/torno_mecanico.jpg" alt="Foto da máquina"
+                                class="machine-tech__info-image">
+                        </div>
+
+                        <div class="machine-tech__info-content">
+                            <div class="machine-tech__field">
+                                <p for="tech-type" class="machine-tech__label">Tipo / Modelo</p>
+                                <div id="tech-type" class="machine-tech__area">
+                                    <p id="text-type"></p>
+                                </div>
+                            </div>
+                            <div class="machine-tech__field">
+                                <p for="tech-patrimony" class="machine-tech__label">Patrimônio</p>
+                                <div id="tech-patrimony" class="machine-tech__area">
+                                    <p id="text-patrimony"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ESTATÍSTICAS E MANUAL (CAMPOS DE EDIÇÃO) -->
+                    <div class="machine-tech__statistics">
+                        <h3 class="machine-tech__section-title">Dados Estatísticos</h3>
+
+                        <div class="machine-tech__stat-container">
+                            <!-- Lado Esquerdo: Indicadores de Produção -->
+                            <div class="machine-tech__stat-group">
+                                <div class="machine-tech__field">
+                                    <p for="tech-prod" class="machine-tech__label">Responsável pela Manutenção:
+                                    </p>
+                                    <div id="tech-prod" class="machine-tech__area">
+                                        <p id="text-prod"></p>
+                                    </div>
+                                </div>
+
+                                <div class="tech-edit__field">
+                                    <p for="tech-error" class="machine-tech__label">Falha máquina:
+                                    </p>
+                                    <div id="tech-error" class="machine-tech__area">
+                                        <p id="text-error"></p>
+                                    </div>
+                                </div>
+
+                                <div class="machine-tech__field">
+                                    <p for="tech-date" class="machine-tech__label">Data Parada:</p>
+                                    <div id="tech-date" class="machine-tech__area">
+                                        <p id="text-date"></p>
+                                    </div>
+                                </div>
+
+                                <div class="machine-tech__field">
+                                    <p for="tech-start" class="machine-tech__label">Data Início Manutenção:</p>
+                                    <div id="tech-start" class="machine-tech__area">
+                                        <p id="text-start"></p>
+                                    </div>
+                                </div>
+
+                                <div class="machine-tech__field">
+                                    <p for="tech-final" class="machine-tech__label">Data Término Manutenção:</p>
+                                    <div id="tech-final" class="machine-tech__area">
+                                        <p id="text-final"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
         </main>
     {% endblock %}
