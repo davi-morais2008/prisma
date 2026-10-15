@@ -100,7 +100,24 @@
                 </div>
             </div>
         </div>
-        ```
+
+        <!-- Modal de Confirmação de Exclusão -->
+        <div class="modal" id="deleteModal">
+            <div class="modal__overlay" id="deleteModalOverlay"></div>
+
+            <div class="modal__card">
+                <h2 class="modal__title">Excluir Ordem de Serviço</h2>
+                <p class="modal__description">
+                    Tem certeza que deseja excluir esta ordem de serviço? Esta ação não poderá ser desfeita.
+                </p>
+
+                <div class="modal__confirm-actions">
+                    <button class="btn-secondary" id="btnCancelDelete">Cancelar</button>
+                    <button class="btn-danger" id="btnConfirmDelete">Sim, Excluir</button>
+                </div>
+            </div>
+        </div>
+
 
 
     </main>
