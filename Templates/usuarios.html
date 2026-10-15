@@ -8,9 +8,8 @@
     <link rel="stylesheet" href="../static/src/styles/usuarios.css">
     <title>Usuários</title>
 </head>
-
+<body>
     <main class="page__main">
-
         <section class="search">
             <form class="search__form" role="search">
                 <div class="search__input-group">
@@ -28,23 +27,38 @@
 
         <section class="user-list">
             <article class="user-card">
-                <span class="user-card__icon material-symbols-outlined" aria-hidden="true">
-                    account_circle
-                </span>
+                <span class="user-card__icon material-symbols-outlined" aria-hidden="true">account_circle</span>
                 <div class="user-card__info">
-                    <p class="user-card__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum quis vero blanditiis corporis quas tenetur consequatur laborum nihil ex saepe? Quia non voluptatibus aperiam, maxime architecto dolor quas dolore facilis?</p>
+                    <p class="user-card__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum quis vero blanditiis corporis quas tenetur consequatur laborum nihil ex saepe?</p>
                 </div>
             </article>
-
             <article class="user-card">
-                <span class="user-card__icon material-symbols-outlined" aria-hidden="true">
-                    account_circle
-                </span>
+                <span class="user-card__icon material-symbols-outlined" aria-hidden="true">account_circle</span>
                 <div class="user-card__info">
-                    <p class="user-card__text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil laboriosam libero recusandae dolor vitae error qui mollitia omnis officiis sit, blanditiis quos necessitatibus voluptatum accusantium consectetur ea maiores soluta nisi!</p>
+                    <p class="user-card__text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil laboriosam libero recusandae dolor vitae error qui mollitia omnis officiis sit.</p>
                 </div>
             </article>
         </section>
-
     </main>
+
+    <!-- Modal Centralizado -->
+    <aside id="user-modal" class="modal" aria-labelledby="modal-title" aria-modal="true" role="dialog">
+        <a href="#" class="modal__overlay" tabindex="-1" aria-label="Fechar modal"></a>
+        <div class="modal__content">
+            <div class="modal__icon-wrapper">
+                <span class="modal__icon material-symbols-outlined" aria-hidden="true">account_circle</span>
+            </div>
+            
+            <div class="modal__skeleton modal__skeleton--title">
+                <p>Nome do Técnico</p>
+            </div>
+            <div class="modal__skeleton modal__skeleton--subtitle">
+                <p>Área de especialização</p>
+            </div>
+            <div class="modal__skeleton modal__skeleton--block">
+                <p>Breve descrição sobre o técnico. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </div>
+    </aside>
+</body>
 </html>
