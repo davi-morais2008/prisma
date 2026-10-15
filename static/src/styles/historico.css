@@ -65,4 +65,8 @@
     font-size: clamp(0.65rem, 2.5vw, 1rem);
 }
 
+.maintence__text p{
+    margin-top: 5px;
+}
+
 
