@@ -11,6 +11,10 @@ body{
     margin-left: 200px;
 }
 
+main {
+    min-height: 92vh;
+}
+
 .header{
     display: none;
 }
@@ -45,11 +49,9 @@ body{
     object-fit: contain;
 }
 
-
 .sidebar__nav {
     flex: 1;
     margin-top: 1.5rem;
-    overflow-y: auto;
 }
 
 .sidebar__nav-list {
@@ -72,7 +74,7 @@ body{
     color: var(--color-text-muted);
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.7em;
     border-radius: 6px;
     transition: all var(--transition-speed) ease;
 }
@@ -95,7 +97,7 @@ body{
 }
 
 .sidebar__user .material-symbols-outlined {
-    font-size: 3rem;
+    font-size: 2rem;
     color: var(--color-text-muted);
 }
 
@@ -148,8 +150,8 @@ body{
     }
 
     .header {
-        background-color: #1e293b;
-        color: rgb(255, 255, 255);
+        background-color: var(--color-primary);
+        color: var(--color-text-light);
         position: relative;
         display: flex;
         flex-direction: column;
