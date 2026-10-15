@@ -186,7 +186,7 @@
   color: var(--color-text-secondary);
 }
 
-.machine-tech__input {
+.machine-tech__area {
   display: flex;
   width: 100%;
   height: 38px;
@@ -203,7 +203,7 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.machine-tech__input:focus {
+.machine-tech__area:focus {
   border-color: var(--color-secondary);
   box-shadow: var(--shadow-sm);
 }

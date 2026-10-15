@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, flash, jsonify
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
+from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 
 app = Flask(__name__)
 
@@ -11,6 +12,15 @@ app.secret_key = 'PRISMA_maintence'
 def pagina_historico():
     OSfinalizado = buscar_os_finalizado()
     return render_template("historico.html", OSfinalizado = OSfinalizado)
+
+@app.route("/api/get/info_manutencao/<int:id_ordem>", methods=["GET"])
+
+def api_get_info_manutencao(id_ordem):
+    try:
+        informacoes = buscar_os_finalizado_ind(id_ordem)
+        return jsonify(informacoes), 200
+    except Exception as e:
+        return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route('/')
 @app.route('/login')

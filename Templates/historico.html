@@ -24,7 +24,7 @@
                                     <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
                                 </div>
                                 <div class="maintence__icon">
-                                    <button class="maint__btn btn_show">
+                                    <button class="maint__btn btn_show" id_os="{{os.id_ordem}}">
                                         <span class="material-icons">
                                         arrow_drop_down
                                         </span>
@@ -62,15 +62,15 @@
 
                         <div class="machine-tech__info-content">
                             <div class="machine-tech__field">
-                                <label for="tech-type" class="machine-tech__label">Tipo / Modelo</label>
-                                <div id="tech-type" class="machine-tech__input">
-                                    <p>Gustavo</p>
+                                <p for="tech-type" class="machine-tech__label">Tipo / Modelo</p>
+                                <div id="tech-type" class="machine-tech__area">
+                                    <p id="text-type">Gustavo</p>
                                 </div>
                             </div>
                             <div class="machine-tech__field">
-                                <label for="tech-patrimony" class="machine-tech__label">Patrimônio</label>
-                                <div id="tech-patrimony" class="machine-tech__input">
-                                    <p></p>
+                                <p for="tech-patrimony" class="machine-tech__label">Patrimônio</p>
+                                <div id="tech-patrimony" class="machine-tech__area">
+                                    <p id="text-patrimony"></p>
                                 </div>
                             </div>
                         </div>
@@ -84,39 +84,39 @@
                             <!-- Lado Esquerdo: Indicadores de Produção -->
                             <div class="machine-tech__stat-group">
                                 <div class="machine-tech__field">
-                                    <label for="tech-prod-time" class="machine-tech__label">Responsável pela Manutenção:
-                                        </label>
-                                    <div id="tech-prod-time" class="machine-tech__input">
-                                        <p></p>
+                                    <p for="tech-prod" class="machine-tech__label">Responsável pela Manutenção:
+                                    </p>
+                                    <div id="tech-prod" class="machine-tech__area">
+                                        <p id="text-prod"></p>
                                     </div>
                                 </div>
 
                                 <div class="tech-edit__field">
-                                    <label for="tech-error" class="machine-tech__label">Falha máquina:
-                                        </label>
-                                    <div id="tech-error" class="machine-tech__input">
-                                        <p></p>
+                                    <p for="tech-error" class="machine-tech__label">Falha máquina:
+                                    </p>
+                                    <div id="tech-error" class="machine-tech__area">
+                                        <p id="text-error"></p>
                                     </div>
                                 </div>
 
                                 <div class="machine-tech__field">
-                                    <label for="tech-date" class="machine-tech__label">Data Parada:</label>
-                                    <div id="tech-date" class="machine-tech__input">
-                                        <p></p>
+                                    <p for="tech-date" class="machine-tech__label">Data Parada:</p>
+                                    <div id="tech-date" class="machine-tech__area">
+                                        <p id="text-date"></p>
                                     </div>
                                 </div>
 
                                 <div class="machine-tech__field">
-                                    <label for="tech-start" class="machine-tech__label">Data Início Manutenção:</label>
-                                    <div id="tech-start" class="machine-tech__input">
-                                        <p></p>
+                                    <p for="tech-start" class="machine-tech__label">Data Início Manutenção:</p>
+                                    <div id="tech-start" class="machine-tech__area">
+                                        <p id="text-start"></p>
                                     </div>
                                 </div>
 
                                 <div class="machine-tech__field">
-                                    <label for="tech-final" class="machine-tech__label">Data Término Manutenção:</label>
-                                    <div id="tech-final" class="machine-tech__input">
-                                        <p></p>
+                                    <p for="tech-final" class="machine-tech__label">Data Término Manutenção:</p>
+                                    <div id="tech-final" class="machine-tech__area">
+                                        <p id="text-final"></p>
                                     </div>
                                 </div>
                             </div>
