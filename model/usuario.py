@@ -41,7 +41,7 @@ def atualizar_usuario(cpf, nome,  email, status_usuario):
     try:
         cursor.execute("""
             UPDATE usuarios 
-            SET nome = %s, sobrenome = %s, email = %s, status_usuario = %s 
+            SET nome = %s,  email = %s, status_usuario = %s 
             WHERE cpf = %s
         """, (nome, email, status_usuario, cpf))
         
@@ -49,7 +49,7 @@ def atualizar_usuario(cpf, nome,  email, status_usuario):
         return True
     except Exception as e:
         print(f"Erro ao atualizar: {e}")
-        conexao.rollback()
+        conexao.rollback() #retorna o banco de dados para o que estava antes de dar algum erro.
         return False
     finally:
         conexao.close()
