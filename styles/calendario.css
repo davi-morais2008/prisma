@@ -1,82 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import 'variables.css';
 
-:root {
-  /* ========================================
-     CORES PRINCIPAIS
-     ======================================== */
-  --color-primary: #0A084B;
-  --color-primary-dark: #050428;
-
-  --color-secondary: #7C72FF;
-  --color-secondary-hover: #675CE6;
-
-  --color-accent-orange: #FFA834;
-  --color-accent-peach: #F6B179;
-
-  /* ========================================
-     BACKGROUNDS E SUPERFÍCIES
-     ======================================== */
-  --color-bg-main: #F0F2FF;
-  --color-bg-card: #FFFFFF;
-  --color-bg-input: #FFFFFF;
-  --color-bg-light: #EBEFFE;
-
-  --color-glass-bg: rgba(255, 255, 255, 0.45);
-  --color-glass-border: rgba(255, 255, 255, 0.6);
-  --glass-blur: blur(12px);
-
-  /* ========================================
-     STATUS / ALERTAS
-     ======================================== */
-  --color-status-danger: #FF8A8A;   /* Vermelho / Alerta */
-  --color-status-warning: #FFE885;  /* Amarelo / Atenção */
-  --color-status-success: #A3FFB8;  /* Verde / OK */
-
-  /* ========================================
-     TEXTOS
-     ======================================== */
-  --color-text-primary: #1C1B1F;
-  --color-text-secondary: #62606E;
-  --color-text-light: #FFFFFF;
-
-  /* ========================================
-     TIPOGRAFIA
-     ======================================== */
-  --font-family-base: 'Montserrat', sans-serif;
-
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-md: 1rem;
-  --font-size-lg: 1.25rem;
-  --font-size-xl: 1.5rem;
-
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-bold: 700;
-
-  /* ========================================
-     BORDAS E ARREDONDAMENTO
-     ======================================== */
-  --border-radius-sm: 8px;
-  --border-radius-md: 16px;
-  --border-radius-lg: 24px;
-  --border-radius-pill: 50px;
-
-  /* ========================================
-     SOMBRAS E ELEVAÇÕES
-     ======================================== */
-  --shadow-sm: 0px 2px 8px rgba(10, 8, 75, 0.06);
-  --shadow-md: 0px 4px 16px rgba(10, 8, 75, 0.1);
-  --shadow-lg: 0px 8px 24px rgba(10, 8, 75, 0.15);
-
-  --color-footer: #eaf1f8;
+/* Trava de scroll usando Dynamic Viewport Units (dvh) */
+html, body {
+  height: 100dvh;
+  overflow: hidden;
 }
 
-/* Trava de scroll para a página não estender */
-html, body {
-  height: 100vh;
-  overflow: hidden;
-  font-family: 'Montserrat', arial;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family-base);
 }
 
 body {
@@ -85,60 +19,62 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px;
+  padding: clamp(8px, 2vw, 16px);
 }
 
-/* Card Principal */
+/* Card Principal Responsivo com min() */
 .page-container {
-  width: 100%;
-  max-width: 1100px;
-  height: calc(100vh - 32px);
+  width: min(100%, 1200px);
+  height: calc(100dvh - clamp(16px, 4vw, 32px));
   display: flex;
   flex-direction: column;
   background-color: var(--color-bg-card);
-  border-radius: var(--border-radius-lg);
-  padding: 20px;
+  border-radius: clamp(12px, 3vw, var(--border-radius-lg));
+  padding: clamp(12px, 2.5vw, 20px);
   box-shadow: var(--shadow-md);
+  overflow: hidden;
 }
 
 .page-container h1 {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   color: var(--color-primary);
-  margin-bottom: 12px;
+  margin-bottom: clamp(6px, 1.5vw, 12px);
 }
 
 /* Container do Calendário */
 #calendar {
   flex: 1;
   min-height: 0;
+  width: 100%;
 }
 
 /* ========================================
-   ESTILIZAÇÃO DO FULLCALENDAR
+   ESTILIZAÇÃO RESPONSIVA DO FULLCALENDAR
    ======================================== */
 
 .fc {
   font-family: var(--font-family-base) !important;
+    overflow: hidden;
 }
 
-.fc-header-toolbar{
-    align-self: center;
-    width: 90%;
-
+/* Cabeçalho do calendário flexível e fluido */
+.fc .fc-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: clamp(8px, 1.5vw, 16px) !important;
 }
 
 .fc .fc-toolbar-title {
   font-size: var(--font-size-lg);
-  
   font-weight: var(--font-weight-bold);
   color: var(--color-primary);
 }
 
-.fc-toolbar-chunk{
-    width: 40%;
-}
-
+/* Botões com dimensionamento fluido */
 .fc .fc-button-primary {
   background-color: var(--color-primary) !important;
   border-color: var(--color-primary) !important;
@@ -146,13 +82,13 @@ body {
   border-radius: var(--border-radius-sm) !important;
   font-weight: var(--font-weight-medium);
   font-size: var(--font-size-sm);
+  padding: clamp(4px, 1vw, 8px) clamp(8px, 1.5vw, 12px) !important;
   box-shadow: var(--shadow-sm);
-  margin: 0px 10px;
+  margin-right: 3%;
+  margin-bottom: 10px;
   transition: all 0.2s ease;
 }
-.fc-button{
-    width: 50%;
-}
+
 .fc .fc-button-primary:hover {
   background-color: var(--color-primary-dark) !important;
   border-color: var(--color-primary-dark) !important;
@@ -168,7 +104,7 @@ body {
 }
 
 .fc th {
-  padding: 8px 0;
+  padding: clamp(4px, 1vw, 8px) 0;
   color: var(--color-text-secondary);
   font-weight: var(--font-weight-medium);
   font-size: var(--font-size-sm);
@@ -182,22 +118,25 @@ body {
   min-height: auto !important;
 }
 
-/* Blocos de Eventos */
+/* Blocos de Eventos adaptáveis */
 .fc-event {
   border: none !important;
   border-radius: var(--border-radius-sm) !important;
-  padding: 4px 8px !important;
+  padding: clamp(2px, 0.5vw, 4px) clamp(4px, 1vw, 8px) !important;
   margin: 2px !important;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .fc-daygrid-event-dot {
   display: none;
 }
 
-/* Classes de Cores dos Eventos */
+/* Status das Cores */
 .evento-danger {
   background-color: var(--color-status-danger) !important;
   color: #5C1D1D !important;
@@ -219,7 +158,7 @@ body {
 }
 
 /* ========================================
-   ESTILOS DO MODAL
+   MODAL RESPONSIVO SEM MEDIA QUERY
    ======================================== */
 
 .hidden {
@@ -228,25 +167,24 @@ body {
 
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  width: 100dvw;
+  height: 100dvh;
   background: rgba(10, 8, 75, 0.4);
   backdrop-filter: var(--glass-blur);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
+  padding: clamp(12px, 3vw, 24px);
   animation: fadeIn 0.2s ease-in-out;
 }
 
 .modal-container {
   background-color: var(--color-bg-card);
-  width: 80%;
-  max-width: 420px;
-  padding: 28px;
-  border-radius: var(--border-radius-lg);
+  width: min(100%, 420px);
+  padding: clamp(16px, 4vw, 28px);
+  border-radius: clamp(16px, 4vw, var(--border-radius-lg));
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--color-glass-border);
 }
@@ -255,14 +193,14 @@ body {
   font-size: var(--font-size-lg);
   color: var(--color-primary);
   font-weight: var(--font-weight-bold);
-  margin-bottom: 20px;
+  margin-bottom: clamp(12px, 2.5vw, 20px);
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 6px;
+  margin-bottom: 14px;
 }
 
 .form-group label {
@@ -273,8 +211,8 @@ body {
 
 .form-group input,
 .form-group select {
-  width: 90%;
-  padding: 12px 16px;
+  width: 100%;
+  padding: clamp(8px, 2vw, 12px) clamp(12px, 2.5vw, 16px);
   border: 1.5px solid var(--color-bg-light);
   border-radius: var(--border-radius-md);
   background-color: var(--color-bg-input);
@@ -291,18 +229,22 @@ body {
 
 .modal-actions {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 10px;
+  margin-top: clamp(16px, 3vw, 24px);
 }
 
 .btn {
-  padding: 10px 20px;
+  flex: 1 1 auto;
+  min-width: 100px;
+  padding: clamp(8px, 1.5vw, 10px) clamp(14px, 2.5vw, 20px);
   border-radius: var(--border-radius-pill);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   border: none;
+  text-align: center;
   transition: all 0.2s ease;
 }
 
