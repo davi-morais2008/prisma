@@ -62,6 +62,7 @@ body {
 .fc .fc-toolbar {
   display: flex;
   flex-wrap: wrap;
+  width: 98%;
   gap: 8px;
   justify-content: space-between;
   align-items: center;
