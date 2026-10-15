@@ -23,14 +23,14 @@ CREATE TABLE IF NOT EXISTS tipos_maquinas (
 CREATE TABLE IF NOT EXISTS usuarios (
  cpf VARCHAR(11) NOT NULL PRIMARY KEY,
  nome VARCHAR(100),
- sobrenome VARCHAR(100),
  email VARCHAR(255),
  senha VARCHAR(500),
- status_usuario VARCHAR(100)
+ status_usuario VARCHAR(100),
+ imagem_perfil VARCHAR(255)
+
 );
 
 CREATE UNIQUE INDEX UQ_EMAIL ON USUARIOS (email);
-
 
 CREATE TABLE IF NOT EXISTS falhas (
  id_falha INT PRIMARY KEY NOT NULL auto_increment,
@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS falhas (
 CREATE TABLE IF NOT EXISTS maquinas (
  id_maquina INT PRIMARY KEY NOT NULL auto_increment,
  id_tipo_maquina INT,
+ modelo_maquina VARCHAR(100),
  numero_patrimonio VARCHAR(255) NOT NULL,
  localizacao VARCHAR(255),
  manual_operacao VARCHAR(500),

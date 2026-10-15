@@ -1,104 +1,100 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const calendarEl = document.getElementById("calendar");
 
-    // Pega a div onde o calendário será criado
-    const calendarEl = document.getElementById("calendar");
+  // Elementos do Modal
+  const modalOverlay = document.getElementById("modal-overlay");
+  const eventTitleInput = document.getElementById("event-title");
+  const eventStatusSelect = document.getElementById("event-status");
+  const btnSalvar = document.getElementById("btn-salvar");
+  const btnCancelar = document.getElementById("btn-cancelar");
 
-    // Cria o calendário
-    const calendar = new FullCalendar.Calendar(calendarEl, {
+  let selectedDateInfo = null;
 
-        // Visualização inicial
-        initialView: "dayGridMonth",
+  const calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: "dayGridMonth",
+    locale: "pt-br",
+    selectable: true,
+    editable: true,
+    height: "100%", // Garante que o calendário não estoure a tela
 
-        // Português
-        locale: "pt-br",
+    headerToolbar: {
+      left: "prev,next today",
+      center: "title",
+      right: "dayGridMonth,timeGridWeek,timeGridDay"
+    },
 
-        // Permite clicar e selecionar dias
-        selectable: true,
+    buttonText: {
+      today: "Hoje",
+      month: "Mês",
+      week: "Semana",
+      day: "Dia"
+    },
 
-        // Permite arrastar eventos
-        editable: true,
+    events: [
+      { title: "Aula de programação", start: "2026-10-08", className: "evento-primary" },
+      { title: "Entrega do projeto", start: "2026-10-15", className: "evento-danger" },
+      { title: "Reunião", start: "2026-10-20T14:00:00", className: "evento-warning" },
+      { title: "Prova", start: "2026-10-23", className: "evento-danger" },
+      { title: "Apresentação", start: "2026-10-28", className: "evento-success" }
+    ],
 
-        // Cabeçalho
-        headerToolbar: {
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay"
-        },
+    // Clique num dia abre o modal
+    dateClick: function (info) {
+      selectedDateInfo = info;
+      eventTitleInput.value = "";
+      eventTitleInput.style.borderColor = "var(--color-bg-light)";
+      modalOverlay.classList.remove("hidden");
+      eventTitleInput.focus();
+    },
 
-        // Texto dos botões
-        buttonText: {
-            today: "Hoje",
-            month: "Mês",
-            week: "Semana",
-            day: "Dia"
-        },
+    // Clique num evento permite remover
+    eventClick: function (info) {
+      const remover = confirm(`Deseja remover o evento '${info.event.title}'?`);
+      if (remover) {
+        info.event.remove();
+      }
+    }
+  });
 
-        // Eventos
-        events: [
+  calendar.render();
 
-            {
-                title: "Aula de programação",
-                start: "2026-10-08"
-            },
+  // Funções de Controlo do Modal
+  function fecharModal() {
+    modalOverlay.classList.add("hidden");
+    selectedDateInfo = null;
+  }
 
-            {
-                title: "Entrega do projeto",
-                start: "2026-10-15"
-            },
+  function salvarEvento() {
+    const titulo = eventTitleInput.value.trim();
+    const statusClass = eventStatusSelect.value;
 
-            {
-                title: "Reunião",
-                start: "2026-10-20T14:00:00"
-            },
+    if (titulo && selectedDateInfo) {
+      calendar.addEvent({
+        title: titulo,
+        start: selectedDateInfo.dateStr,
+        className: statusClass
+      });
+      fecharModal();
+    } else {
+      eventTitleInput.style.borderColor = "var(--color-status-danger)";
+    }
+  }
 
-            {
-                title: "Prova",
-                start: "2026-10-23"
-            },
+  // Event Listeners
+  btnSalvar.addEventListener("click", salvarEvento);
+  btnCancelar.addEventListener("click", fecharModal);
 
-            {
-                title: "Apresentação",
-                start: "2026-10-28"
-            }
+  // Fechar ao clicar no fundo fosco
+  modalOverlay.addEventListener("click", function (e) {
+    if (e.target === modalOverlay) {
+      fecharModal();
+    }
+  });
 
-        ],
-
-        // Quando clicar em um dia
-        dateClick: function (info) {
-
-            const titulo = prompt(
-                "Digite o nome do evento:"
-            );
-
-            if (titulo) {
-
-                calendar.addEvent({
-                    title: titulo,
-                    start: info.dateStr
-                });
-
-            }
-
-        },
-
-        // Quando clicar em um evento
-        eventClick: function (info) {
-
-            const remover = confirm(
-                "Deseja remover o evento '" +
-                info.event.title +
-                "'?"
-            );
-
-            if (remover) {
-                info.event.remove();
-            }
-
-        }
-
-    });
-
-    // Mostra o calendário
-    calendar.render();
-
+  // Salvar com a tecla Enter
+  eventTitleInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      salvarEvento();
+    }
+  });
 });
