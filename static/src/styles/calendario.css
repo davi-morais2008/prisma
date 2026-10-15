@@ -1,0 +1,274 @@
+@import 'variables.css';
+
+/* Trava de scroll usando Dynamic Viewport Units (dvh) */
+html, body {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family-base);
+}
+
+body {
+  background-color: var(--color-bg-main);
+  color: var(--color-text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(8px, 2vw, 16px);
+}
+
+/* Card Principal Responsivo com min() */
+.page-container {
+  width: min(100%, 1200px);
+  height: calc(100dvh - clamp(16px, 4vw, 32px));
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-card);
+  border-radius: clamp(12px, 3vw, var(--border-radius-lg));
+  padding: clamp(12px, 2.5vw, 20px);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.page-container h1 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin-bottom: clamp(6px, 1.5vw, 12px);
+}
+
+/* Container do Calendário */
+#calendar {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+/* ========================================
+   ESTILIZAÇÃO RESPONSIVA DO FULLCALENDAR
+   ======================================== */
+
+.fc {
+  font-family: var(--font-family-base) !important;
+    overflow: hidden;
+}
+
+/* Cabeçalho do calendário flexível e fluido */
+.fc .fc-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  width: 98%;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: clamp(8px, 1.5vw, 16px) !important;
+}
+
+.fc .fc-toolbar-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+/* Botões com dimensionamento fluido */
+.fc .fc-button-primary {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-text-light) !important;
+  border-radius: var(--border-radius-sm) !important;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  padding: clamp(4px, 1vw, 8px) clamp(8px, 1.5vw, 12px) !important;
+  box-shadow: var(--shadow-sm);
+  margin-right: 3%;
+  margin-bottom: 10px;
+  transition: all 0.2s ease;
+}
+
+.fc .fc-button-primary:hover {
+  background-color: var(--color-primary-dark) !important;
+  border-color: var(--color-primary-dark) !important;
+}
+
+.fc .fc-button-active {
+  background-color: var(--color-secondary) !important;
+  border-color: var(--color-secondary) !important;
+}
+
+.fc td, .fc th {
+  border-color: var(--color-bg-light) !important;
+}
+
+.fc th {
+  padding: clamp(4px, 1vw, 8px) 0;
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+}
+
+.fc .fc-day-today {
+  background-color: var(--color-bg-light) !important;
+}
+
+.fc .fc-daygrid-day-frame {
+  min-height: auto !important;
+}
+
+/* Blocos de Eventos adaptáveis */
+.fc-event {
+  border: none !important;
+  border-radius: var(--border-radius-sm) !important;
+  padding: clamp(2px, 0.5vw, 4px) clamp(4px, 1vw, 8px) !important;
+  margin: 2px !important;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fc-daygrid-event-dot {
+  display: none;
+}
+
+/* Status das Cores */
+.evento-danger {
+  background-color: var(--color-status-danger) !important;
+  color: #5C1D1D !important;
+}
+
+.evento-warning {
+  background-color: var(--color-status-warning) !important;
+  color: #614D00 !important;
+}
+
+.evento-success {
+  background-color: var(--color-status-success) !important;
+  color: #0E471E !important;
+}
+
+.evento-primary {
+  background-color: var(--color-secondary) !important;
+  color: var(--color-text-light) !important;
+}
+
+/* ========================================
+   MODAL RESPONSIVO SEM MEDIA QUERY
+   ======================================== */
+
+.hidden {
+  display: none !important;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100dvw;
+  height: 100dvh;
+  background: rgba(10, 8, 75, 0.4);
+  backdrop-filter: var(--glass-blur);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: clamp(12px, 3vw, 24px);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.modal-container {
+  background-color: var(--color-bg-card);
+  width: min(100%, 420px);
+  padding: clamp(16px, 4vw, 28px);
+  border-radius: clamp(16px, 4vw, var(--border-radius-lg));
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-glass-border);
+}
+
+.modal-container h2 {
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: clamp(12px, 2.5vw, 20px);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: clamp(8px, 2vw, 12px) clamp(12px, 2.5vw, 16px);
+  border: 1.5px solid var(--color-bg-light);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-bg-input);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--color-secondary);
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: clamp(16px, 3vw, 24px);
+}
+
+.btn {
+  flex: 1 1 auto;
+  min-width: 100px;
+  padding: clamp(8px, 1.5vw, 10px) clamp(14px, 2.5vw, 20px);
+  border-radius: var(--border-radius-pill);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  border: none;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--color-accent-orange);
+  color: var(--color-primary-dark);
+  font-weight: var(--font-weight-bold);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-peach);
+}
+
+.btn-secondary {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-secondary);
+}
+
+.btn-secondary:hover {
+  background-color: #dce3fe;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

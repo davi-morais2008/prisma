@@ -23,16 +23,240 @@
       width: 80%;
 }
 
-.card-group {
+.card__group {
     margin: 25px 0;
 }
 
-.maintence-card{
+.maintence__title {
+    font-size: clamp(0.65rem, 2.5vw, 1rem);
+}
+
+.maintence__card{
     width: 100%;
-    height: 80px;
     padding: 10px;
     background-color: #ffffff;
     border-radius: 18px;
-    box-shadow: -4px 0px 0px 0px #000000, var(--shadow-md)
+    margin-top: 10px;
+    box-shadow: -4px 0px 0px 0px #000000, var(--shadow-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
+
+.maintence__icon {
+    margin: auto 0;
+}
+
+.upper__content {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.maint__btn{
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.maintence__text {
+    font-size: clamp(0.65rem, 2.5vw, 1rem);
+}
+
+.maintence__text p{
+    margin-top: 5px;
+}
+
+.machine-tech__overlay{
+    display: none;
+}
+
+.machine-tech__overlay.active{
+  position: fixed;
+  top: 0;
+  left: 200px;
+  width: calc(100vw - 200px);
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  z-index: 1000;
+}
+
+.machine-tech {
+  background-color: var(--color-bg-card);
+  width: 90%;
+  max-width: 520px;
+  max-height: 85vh;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: auto;
+}
+
+.machine-tech__logo {
+  width: 100%;
+  background-color: var(--color-primary);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.machine-tech__logo-image {
+  height: 32px;
+  object-fit: contain;
+}
+
+.machine-tech__logo-title {
+  color: var(--color-text-light);
+  font-family: var(--font-family-base);
+  font-size: clamp(0.65rem, 2.5vw, 1rem);
+  font-weight: var(--font-weight-bold);
+}
+
+.machine-tech__close-button {
+  background: transparent;
+  border: none;
+  color: var(--color-text-light);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.machine-tech__info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.machine-tech__primary-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.machine-tech__img-container {
+  position: relative;
+  width: 110px;
+  height: 90px;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.machine-tech__info-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.machine-tech__info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.machine-tech__field,
+.tech-edit__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.machine-tech__label {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.machine-tech__area {
+  display: flex;
+  width: 100%;
+  height: 38px;
+  padding: 0 10px;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-input);
+  border: 1px solid var(--color-bg-light);
+  border-radius: var(--border-radius-sm);
+  outline: none;
+  box-sizing: border-box;
+  align-items: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.machine-tech__area:focus {
+  border-color: var(--color-secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+
+.machine-tech__section-title {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.machine-tech__stat-container {
+  display: flex;
+  gap: 12px;
+}
+
+.machine-tech__stat-group {
+  flex: 1;
+  background-color: var(--color-bg-light);
+  border-radius: var(--border-radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* RESPONSIVIDADE MOBILE */
+@media (max-width: 768px) {
+  .machine-tech__stat-container {
+    flex-direction: column;
+  }
+
+  .machine-tech__overlay{
+    display: none;
+  }
+
+  .machine-tech__overlay.active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  z-index: 1000;
+  }
+}
+
 
