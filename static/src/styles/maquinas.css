@@ -18,9 +18,7 @@ body {
     min-height: 100vh;
 }
 
-.machine-edit.active,
-.machine__register.active,
-.delete-confirmation.active{
+.active{
     display: flex;
 }
 
@@ -179,152 +177,329 @@ body {
 /* =============================================================== */
 /* ===  BLOCO: |MODAL| Cadastro (from de cadastro de máquinas  === */
 /* =============================================================== */
-
-
 /* =============================================================== */
-/* ===  BLOCO: |MODAL| Cadastro (Form de cadastro de máquinas) === */
+/* === BLOCO: |MODAL| Cadastro (Form de cadastro de máquinas) === */
 /* =============================================================== */
-
-.machines__register {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--color-glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+/* ========================================
+   CONTAINER DO MODAL & CABEÇALHO
+   ======================================== */
+.machine-modal {
+  width: 90%;
+  max-width: 540px;
+  height: 800px;
+  margin: 0 auto;
+  background-color: var(--color-bg-card);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  font-family: var(--font-family-base);
+  position: absolute;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
 }
 
-.form-register {
-    background-color: var(--color-bg-card);
-    width: 90%;
-    max-width: 480px;
-    max-height: 90vh;
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-lg);
-    display: flex;
+.machine-modal__header {
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+}
+
+.machine-modal__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.machine-modal__logo {
+  color: var(--color-text-light);
+}
+
+.machine-modal__title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.machine-modal__close-button {
+  background: transparent;
+  border: none;
+  color: var(--color-text-light);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: var(--border-radius-sm);
+  transition: opacity 0.2s ease;
+}
+
+.machine-modal__close-button:hover {
+  opacity: 0.8;
+}
+
+/* ========================================
+   FORMULÁRIO PRINCIPAL E SEÇÕES
+   ======================================== */
+.machine-form {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Topo - Avatar e Infos Principais */
+.machine-form__top-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.machine-form__avatar-wrapper {
+  position: relative;
+  width: 110px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+.machine-form__avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.machine-form__avatar-upload {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  border: 2px solid var(--color-bg-card);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.2s ease;
+}
+
+.machine-form__avatar-upload:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.machine-form__basic-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Containers das Seções */
+.machine-form__section {
+  border: none;
+  padding: var(--font-size-sm);
+  margin: 0;
+  background-color: var(--color-bg-light);
+  border-radius: var(--border-radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.machine-form__section-title {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+  padding: 0;
+  float: left;
+  width: 100%;
+}
+
+/* Layout Grid Interno */
+.machine-form__grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.machine-form__grid--2-cols {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.machine-form__column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Campos de Formulário */
+.machine-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.machine-form__label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.machine-form__input,
+.machine-form__select {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-input);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-sm);
+  box-shadow: 0px 2px 5px #282d6e48;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.machine-form__input:focus,
+.machine-form__select:focus {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 2px rgba(124, 114, 255, 0.2);
+}
+
+/* Custom Upload Button PDF */
+.machine-form__file-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--color-bg-card);
+  border: 1.5px dashed var(--color-secondary);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.machine-form__file-button:hover {
+  background-color: rgba(124, 114, 255, 0.05);
+}
+
+.machine-form__file-name {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;
+}
+
+.machine-form__file-action {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-secondary);
+}
+
+.machine-form__file-input {
+  display: none;
+}
+
+/* ========================================
+   TABELA DE HISTÓRICO
+   ======================================== */
+.machine-form__table-wrapper {
+  overflow-x: auto;
+}
+
+.machine-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.machine-table__header {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+  padding-bottom: 0.5rem;
+}
+
+.machine-table__cell {
+  padding: 0.25rem;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-primary);
+  vertical-align: middle;
+}
+
+.machine-table__input,
+.machine-table__select {
+  padding: 0.4rem;
+  font-size: var(--font-size-xs);
+  background-color: var(--color-bg-card);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Botão de Submissão */
+.machine-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.machine-form__submit-button {
+  background-color: var(--color-accent-orange);
+  color: var(--color-text-light);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius-pill);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.1s ease, filter 0.2s ease;
+}
+
+.machine-form__submit-button:hover {
+  filter: brightness(1.05);
+}
+
+.machine-form__submit-button:active {
+  transform: scale(0.98);
+}
+
+/* ========================================
+   RESPONSIVIDADE (MEDIA QUERIES)
+   ======================================== */
+@media (max-width: 480px) {
+  .machine-form__grid--2-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .machine-form__top-section {
     flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-/* --- CABEÇALHO --- */
-.form-register__header {
-    width: 100%;
-    background-color: var(--color-primary);
-    height: 56px;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    box-sizing: border-box;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
+    text-align: center;
+  }
 
-.form-register__title {
-    color: var(--color-text-light);
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-bold);
-    margin: 0;
-}
+  .machine-form__actions {
+    justify-content: stretch;
+  }
 
-.form-register__close-button {
-    background: transparent;
-    border: none;
-    color: var(--color-text-light);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* --- CORPO DO FORMULÁRIO --- */
-.form-register__body {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.form-register__field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  .machine-form__submit-button {
     width: 100%;
-}
-
-.form-register__label {
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-secondary);
-}
-
-.form-register__input-select,
-.form-register__input-text {
-    width: 100%;
-    height: 38px;
-    padding: 0 10px;
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-xs);
-    color: var(--color-text-primary);
-    background-color: var(--color-bg-input);
-    border: 1px solid var(--color-bg-light);
-    border-radius: var(--border-radius-sm);
-    outline: none;
-    box-sizing: border-box;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.form-register__input-select::placeholder,
-.form-register__input-text::placeholder {
-    color: var(--color-text-secondary);
-    opacity: 0.7;
-}
-
-.form-register__input-select:focus,
-.form-register__input-text:focus {
-    border-color: var(--color-secondary);
-    box-shadow: var(--shadow-sm);
-}
-
-/* --- AÇÕES DO FORMULÁRIO --- */
-.form-register__actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 8px;
-}
-
-.form-register__button {
-    height: 40px;
-    padding: 0 20px;
-    border-radius: var(--border-radius-pill);
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-bold);
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s ease;
-}
-
-.form-register__button--submit {
-    background-color: var(--color-accent-orange);
-    color: var(--color-text-light);
-    box-shadow: var(--shadow-sm);
-}
-
-.form-register__button--submit:hover {
-    background-color: var(--color-accent-peach);
-    transform: translateY(-1px);
+  }
 }
 /* ========================================
    BLOCO: |MODAL| MACHINE-DETAILS (Máquina Individual)
@@ -1036,6 +1211,14 @@ body {
 
 
 /* RESPONSIVIDADE MOBILE */
+
+@media(max-width: 400px){
+    .machine-modal{
+        max-height: 600px;
+    }
+}
+
+
 @media (max-width: 600px) {
     .machine-edit__stat-container,
     .machine-edit__maintance-row {
