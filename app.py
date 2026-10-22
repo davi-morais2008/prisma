@@ -51,4 +51,8 @@ def pagina_maquinas():
 def pagina_usuarios():
     return render_template('usuarios.html')
 
+@app.route('/calendario')
+def pagina_calendario():
+    return render_template('calendario.html')
+
 app.run(host="0.0.0.0", port=8080, debug=True)
