@@ -8,7 +8,7 @@
 }
 
 .history{
-  background-color: var(--color-bg-main);;
+  background-color: var(--color-bg-main);
 }
 
 .history__content{
@@ -79,17 +79,16 @@
 
 .machine-tech__overlay.active{
   position: fixed;
-  top: 0;
-  left: 200px;
-  width: calc(100vw - 200px);
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  
+  inset: 0;
+  width: 100dvw;
+  height: 100dvh;
+  background: rgba(10, 8, 75, 0.4);
+  backdrop-filter: var(--glass-blur);
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  z-index: 1000;
+  z-index: 9999;
+  padding: clamp(12px, 3vw, 24px);
 }
 
 .machine-tech {

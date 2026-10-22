@@ -9,9 +9,11 @@
   {% endblock %}
 
   {% block conteudo %}
-      <main class="page-container">
-        <h1>Meu Calendário</h1>
-        <div id="calendar"></div>
+      <main class="calendar">
+        <div class="page-container">
+          <h1>Meu Calendário</h1>
+          <div id="calendar"></div>
+        </div>
       </main>
 
       <!-- Modal Personalizado para Criar Eventos -->
@@ -43,5 +45,6 @@
   {% endblock %}
 
   {% block script %}
+      <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
       <script src="../static/src/js/calendario.js"></script>
   {% endblock %}

@@ -9,6 +9,7 @@
 
 body{
     margin-left: 200px;
+    background-color: var(--color-bg-main);
 }
 
 main {
