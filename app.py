@@ -23,6 +23,7 @@ def api_get_info_manutencao(id_ordem):
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route('/')
+
 @app.route('/login')
 def pagina_login():
     return render_template('cadastroLogin.html')
