@@ -2,7 +2,10 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
+import flask_mail
+from flask_mail import Mail, Message
+from werkzeug.security import generate_password_hash
 app = Flask(__name__)
 
 app.secret_key = 'PRISMA_maintence'
