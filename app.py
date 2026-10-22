@@ -28,7 +28,6 @@ def api_get_info_manutencao(id_ordem):
 def pagina_login():
     return render_template('cadastroLogin.html')
 
-
 @app.route('/login/post', methods = ['POST'])
 def pagina_login_tecnico():
     login_do_usuario = request.form.get('cpf')
@@ -36,8 +35,6 @@ def pagina_login_tecnico():
     
     if login_usuario(login_do_usuario,senha_do_usuario): 
         return redirect('/login')
-
-
 
 @app.route('/recuperar_senha', methods = ['GET'])
 def pagina_recuperar_senha():
@@ -48,7 +45,7 @@ def pagina_recuperar_senha():
 def pagina_maquinas():
     return render_template('maquinas.html')
 
-@app.route('/perfil', methods = ['GET'])
+@app.route('/usuarios', methods = ['GET'])
 def pagina_usuarios():
     return render_template('usuarios.html')
 
