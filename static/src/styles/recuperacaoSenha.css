@@ -1,10 +1,12 @@
 @import 'variables.css';
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: var(--font-family-base);
 }
+
 /* Fundo da tela centralizado com Sticky Footer */
 body {
     min-height: 100vh;
@@ -15,28 +17,31 @@ body {
     background-color: var(--color-bg-main);
     padding: 20px;
 }
+
 /* Container Principal Card */
 .container_main {
-    height: 85vh;
-    width: 60%;
-    
+    width: min(92%, 950px); /* Responsivo: ocupa 92% da tela até o limite de 950px */
+    min-height: 520px;
+    height: auto; /* Permite crescer verticalmente quando as colunas empilharem */
+    display: flex;
+    flex-wrap: wrap; /* Permite o empilhamento automático */
     background-color: var(--color-bg-card);
     border-radius: var(--border-radius-lg);
-    display: flex;
     overflow: hidden;
     box-shadow: var(--shadow-md);
-    min-height: 520px;
     margin: auto 0;
 }
+
 /* --- COLUNA ESQUERDA (Logo e Gradiente) --- */
 .section_logo {
-    
-    flex: 1;
+    flex: 1 1 300px; /* Cresce e encolhe com base mínima de 300px */
+    padding: clamp(30px, 5vw, 50px) 20px;
     background: linear-gradient(180deg, var(--color-primary) 50%, rgb(96, 96, 248) 100%);
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .container_logo {
     display: flex;
     flex-direction: column;
@@ -45,27 +50,31 @@ body {
     color: var(--color-text-light, #ffffff);
     text-align: center;
 }
+
 .container_logo .logo {
-    width: 250px;
+    width: 100%;
+    max-width: 250px; /* Garante que não ultrapasse 250px em telas maiores */
     height: auto;
     object-fit: contain;
     filter: drop-shadow(0 10px 20px rgba(10, 8, 75, 0.2));
 }
+
 .container_logo h1 {
-    font-size: 2.2rem;
+    font-size: clamp(1.5rem, 3vw, 2.2rem); /* Fonte fluida */
     font-weight: var(--font-weight-bold);
     letter-spacing: 2px;
 }
+
 /* --- COLUNA DIREITA (Formulário) --- */
 .container_login {
-    width: 50%;
-    flex: 1;
-    padding: 30px 50px;
+    flex: 1 1 300px; /* Cresce e encolhe com base mínima de 300px */
+    padding: clamp(20px, 4vw, 50px); /* Padding dinâmico conforme o tamanho da tela */
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 20px;
 }
+
 /* Título e Subtítulo */
 .container_titulo {
     display: flex;
@@ -73,27 +82,31 @@ body {
     gap: 6px;
     text-align: center;
 }
+
 .container_titulo h1 {
     color: var(--color-primary);
-    font-size: 1.75rem;
-
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem); /* Fonte fluida */
 }
+
 .container_titulo p {
     color: var(--color-text-secondary);
     font-size: var(--font-size-sm, 0.9rem);
     line-height: 1.4;
 }
+
 /* Input e Label */
 .container_insert {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
+
 .container_insert label {
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--color-text-secondary);
 }
+
 .insert {
     width: 100%;
     padding: 11px 14px;
@@ -105,10 +118,12 @@ body {
     outline: none;
     transition: all 0.2s ease;
 }
+
 .insert:focus {
     border-color: var(--color-secondary);
     box-shadow: 0 0 0 3px rgba(124, 114, 255, 0.2);
 }
+
 /* Botão Continuar */
 .botao_logar {
     width: 100%;
@@ -122,14 +137,17 @@ body {
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
+
 .botao_logar:hover {
     background-color: var(--color-secondary-hover);
 }
+
 /* Link Voltar para o Login */
 .container_recuperar_senha {
     text-align: center;
     margin-top: 4px;
 }
+
 .container_recuperar_senha a {
     color: var(--color-secondary);
     font-size: 0.85rem;
@@ -137,10 +155,12 @@ body {
     text-decoration: none;
     transition: color 0.2s ease;
 }
+
 .container_recuperar_senha a:hover {
     color: var(--color-primary);
     text-decoration: underline;
 }
+
 /* Rodapé */
 .container_footer {
     padding: 16px 0;
