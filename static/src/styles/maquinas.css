@@ -179,6 +179,10 @@ body {
 /* =============================================================== */
 
 
+/* =============================================================== */
+/* ===  BLOCO: |MODAL| Cadastro (Form de cadastro de máquinas) === */
+/* =============================================================== */
+
 .machines__register {
     position: fixed;
     top: 0;
@@ -195,59 +199,94 @@ body {
 }
 
 .form-register {
-    width: 90%;
-    max-width: 450px;
     background-color: var(--color-bg-card);
-    border: 1px solid var(--color-glass-border);
+    width: 90%;
+    max-width: 480px;
+    max-height: 90vh;
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
-    padding: 2rem;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* --- CABEÇALHO --- */
+.form-register__header {
+    width: 100%;
+    background-color: var(--color-primary);
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.form-register__title {
+    color: var(--color-text-light);
     font-family: var(--font-family-base);
-}
-
-.form-register h3{
-    text-align: center;
-    margin: 0 0 30px 0;
-}
-
-.form-register label {
     font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+}
+
+.form-register__close-button {
+    background: transparent;
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- CORPO DO FORMULÁRIO --- */
+.form-register__body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-register__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+}
+
+.form-register__label {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
     font-weight: var(--font-weight-medium);
-    color: var(--color-text-primary);
-    margin-bottom: 1%;
+    color: var(--color-text-secondary);
 }
 
 .form-register__input-select,
 .form-register__input-text {
     width: 100%;
-    height: 55px;
-    padding: 0 0.875rem;
+    height: 38px;
+    padding: 0 10px;
     font-family: var(--font-family-base);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
     color: var(--color-text-primary);
     background-color: var(--color-bg-input);
     border: 1px solid var(--color-bg-light);
-    border-radius: var(--border-radius-lg);
+    border-radius: var(--border-radius-sm);
     outline: none;
+    box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    margin-bottom: 10%;
-    background-color: var(--color-bg-light);
 }
 
 .form-register__input-select::placeholder,
-.form-register__input-text::placeholder{
-    color: #9994cc80;
+.form-register__input-text::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 0.7;
 }
-
-#closeRegister{
-    align-self: flex-end;
-    color: var(--color-primary);
-    margin-bottom: 10px;
-}
-
-
 
 .form-register__input-select:focus,
 .form-register__input-text:focus {
@@ -255,27 +294,36 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
-.form-register button[type="submit"] {
-    width: 100%;
-    height: 48px;
-    margin-top: 0.5rem;
-    background-color: var(--color-primary);
-    color: var(--color-text-light);
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-bold);
-    border: none;
+/* --- AÇÕES DO FORMULÁRIO --- */
+.form-register__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.form-register__button {
+    height: 40px;
+    padding: 0 20px;
     border-radius: var(--border-radius-pill);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
     cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.form-register__button--submit {
+    background-color: var(--color-accent-orange);
+    color: var(--color-text-light);
     box-shadow: var(--shadow-sm);
-    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.form-register button[type="submit"]:hover {
-    background-color: var(--color-primary-dark);
-    transform: translateY(-2px);
+.form-register__button--submit:hover {
+    background-color: var(--color-accent-peach);
+    transform: translateY(-1px);
 }
-
 /* ========================================
    BLOCO: |MODAL| MACHINE-DETAILS (Máquina Individual)
    ======================================== */
