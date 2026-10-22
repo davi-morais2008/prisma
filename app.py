@@ -28,10 +28,23 @@ def api_get_info_manutencao(id_ordem):
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route('/')
-
 @app.route('/login')
 def pagina_login():
     return render_template('cadastroLogin.html')
+
+@app.route('/login/post', methods=['POST'])
+def post_login():
+    usuarios = buscar_usuario()
+    usuario = request.form.get('login_cpf')
+    senha = request.form.get('login_senha')
+    session['user'] = (usuario, senha)
+    for user in usuarios:
+        if user['cpf'] == usuario and user['senha'] == senha:
+            print('CERTO')
+        else:
+            return render_template('cadastroLogin.html', mensagem = True)
+    return redirect('/login')
+
 
 @app.route('/recuperacaoSenha', methods = ['GET'])
 def pagina_recuperar_senha():
@@ -44,14 +57,6 @@ def pagina_maquinas():
 @app.route('/usuarios', methods = ['GET'])
 def pagina_usuarios():
     return render_template('usuarios.html')
-
-@app.route('/usuarios/api_get/users')
-def api_get_users():
-    try:
-        usuarios = buscar_usuario()
-        return jsonify(usuarios), 200
-    except Exception as e:
-            return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
     
 @app.route('/calendario')
