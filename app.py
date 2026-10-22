@@ -40,8 +40,8 @@ def post_login():
     
     for user in usuarios:
         if user['cpf'] == usuario and user['senha'] == senha:
-            redirect('/telaInicial')
             session['user'] = (usuario, senha)
+            return redirect('/telaInicial')
         else:
             flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
             return redirect('/login')
