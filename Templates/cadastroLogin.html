@@ -14,24 +14,33 @@
 
         <!-- Coluna Esquerda: Formulários -->
         <div class="coluna_formulario">
-
+            
             <!-- Inputs radio ocultos no topo da coluna para controlar ambos os formulários -->
             <input type="radio" id="signin" name="toggle_auth" class="toggle_radio" checked>
             <input type="radio" id="signup" name="toggle_auth" class="toggle_radio">
-
-           
+            
+            
             <div class="toggle_container">
                 <div class="toggle_indicator"></div>
                 <label for="signin" class="btn_toggle">Entrar</label>
                 <label for="signup" class="btn_toggle">Cadastrar</label>
             </div>
-
+            
             <form id="form-login" class="form_auth form_signin" action="/login/post" method="POST">
+                
                 <div class="header_container">
                     <h1 class="titulo_cadastro">Acesse sua conta</h1>
                     <p class="subtitulo_cadastro">Insira seus dados para entrar</p>
                 </div>
-
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                   {% if messages %}
+                       <ul style="list-style: none; padding: 0; margin: 15px 0; width: 100%; font-family: sans-serif;">
+                       {% for category, message in messages %}
+                           <li class="{{ category }}" style="padding: 12px 16px; margin-bottom: 8px; border-radius: 6px; font-size: 14px; font-weight: 500; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">{{ message }}</li>
+                       {% endfor %}
+                       </ul>
+                   {% endif %}
+                   {% endwith %}
                 <div class="campos_container">
                     <div class="form_group">
                         <label class="form_label" for="login_cpf">CPF:</label>
@@ -49,8 +58,6 @@
                     <a href="/recuperar_senha">Recuperar senha</a>
                 </div>
 
-                {% if mensagem %}
-                <h3 class="mensagem_erro-login">Usuário ou Senha incorretos. Tente Novamente!</h3>
             </form>
             <form id="form-cadastro" class="form_auth form_signup" action="/cadastro" method="POST">
                 <div class="header_container">
