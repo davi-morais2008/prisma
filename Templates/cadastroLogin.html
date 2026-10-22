@@ -26,7 +26,7 @@
                 <label for="signup" class="btn_toggle">Cadastrar</label>
             </div>
 
-            <form id="form-login" class="form_auth form_signin" action="/login" method="POST">
+            <form id="form-login" class="form_auth form_signin" action="/login/post" method="POST">
                 <div class="header_container">
                     <h1 class="titulo_cadastro">Acesse sua conta</h1>
                     <p class="subtitulo_cadastro">Insira seus dados para entrar</p>
@@ -49,6 +49,8 @@
                     <a href="/recuperar_senha">Recuperar senha</a>
                 </div>
 
+                {% if mensagem %}
+                <h3 class="mensagem_erro-login">Usuário ou Senha incorretos. Tente Novamente!</h3>
             </form>
             <form id="form-cadastro" class="form_auth form_signup" action="/cadastro" method="POST">
                 <div class="header_container">
@@ -95,5 +97,4 @@
 
     </main>
 </body>
-<script src="/static/src/js/cadastroLogin.js"></script>
 </html>
