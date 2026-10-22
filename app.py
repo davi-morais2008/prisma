@@ -33,14 +33,6 @@ def api_get_info_manutencao(id_ordem):
 def pagina_login():
     return render_template('cadastroLogin.html')
 
-@app.route('/login/post', methods = ['POST'])
-def pagina_login_tecnico():
-    login_do_usuario = request.form.get('cpf')
-    senha_do_usuario = request.form.get('senha')
-    
-    if login_usuario(login_do_usuario,senha_do_usuario): 
-        return redirect('/login')
-
 @app.route('/recuperacaoSenha', methods = ['GET'])
 def pagina_recuperar_senha():
     return render_template('recuperacaoSenha.html')
@@ -53,6 +45,15 @@ def pagina_maquinas():
 def pagina_usuarios():
     return render_template('usuarios.html')
 
+@app.route('/usuarios/api_get/users')
+def api_get_users():
+    try:
+        usuarios = buscar_usuario()
+        return jsonify(usuarios), 200
+    except Exception as e:
+            return jsonify({"status": "erro", "mensagem": str(e)}), 500
+
+    
 @app.route('/calendario')
 def pagina_calendario():
     return render_template('calendario.html')
