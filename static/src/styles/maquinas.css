@@ -18,7 +18,7 @@ body {
     min-height: 100vh;
 }
 
-.active{
+.active {
     display: flex;
 }
 
@@ -54,7 +54,7 @@ body {
     cursor: pointer;
     position: absolute;
     right: 40px;
-    top: 40px;    
+    top: 40px;
     transition: ease-in 150ms;
 }
 
@@ -177,288 +177,345 @@ body {
 /* =============================================================== */
 /* ===  BLOCO: |MODAL| Cadastro (from de cadastro de máquinas  === */
 /* =============================================================== */
-/* =============================================================== */
-/* === BLOCO: |MODAL| Cadastro (Form de cadastro de máquinas) === */
-/* =============================================================== */
+
 /* ========================================
    CONTAINER DO MODAL & CABEÇALHO
    ======================================== */
 .machine-modal {
-  width: 90%;
-  max-width: 540px;
-  height: 800px;
-  margin: 0 auto;
-  background-color: var(--color-bg-card);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-lg);
-  font-family: var(--font-family-base);
-  position: absolute;
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  z-index: 1000;
+    width: 90%;
+    max-width: 540px;
+    height: 800px;
+    margin: 0 auto;
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    font-family: var(--font-family-base);
+    position: fixed;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
 }
 
 .machine-modal__header {
-  background-color: var(--color-primary);
-  color: var(--color-text-light);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 1.25rem;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
 }
 
 .machine-modal__brand {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .machine-modal__logo {
-  color: var(--color-text-light);
+    color: var(--color-text-light);
 }
 
 .machine-modal__title {
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 0;
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+    width: 100%;
+    text-align: center;
 }
 
 .machine-modal__close-button {
-  background: transparent;
-  border: none;
-  color: var(--color-text-light);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem;
-  border-radius: var(--border-radius-sm);
-  transition: opacity 0.2s ease;
+    background: transparent;
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    border-radius: var(--border-radius-sm);
+    transition: opacity 0.2s ease;
 }
 
 .machine-modal__close-button:hover {
-  opacity: 0.8;
+    opacity: 0.8;
 }
 
 /* ========================================
    FORMULÁRIO PRINCIPAL E SEÇÕES
    ======================================== */
 .machine-form {
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
 }
 
 /* Topo - Avatar e Infos Principais */
 .machine-form__top-section {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .machine-form__avatar-wrapper {
-  position: relative;
-  width: 110px;
-  height: 90px;
-  flex-shrink: 0;
+    position: relative;
+    width: 110px;
+    height: 90px;
+    flex-shrink: 0;
 }
 
 .machine-form__avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .machine-form__avatar-upload {
-  position: absolute;
-  bottom: -4px;
-  right: -4px;
-  background-color: var(--color-primary);
-  color: var(--color-text-light);
-  border: 2px solid var(--color-bg-card);
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: background-color 0.2s ease;
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    border: 2px solid var(--color-bg-card);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: background-color 0.2s ease;
 }
 
 .machine-form__avatar-upload:hover {
-  background-color: var(--color-primary-dark);
+    background-color: var(--color-primary-dark);
 }
 
 .machine-form__basic-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
 }
 
 /* Containers das Seções */
 .machine-form__section {
-  border: none;
-  padding: var(--font-size-sm);
-  margin: 0;
-  background-color: var(--color-bg-light);
-  border-radius: var(--border-radius-md);
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+    border: none;
+    padding: var(--font-size-sm);
+    margin: 0;
+    background-color: var(--color-bg-light);
+    border-radius: var(--border-radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .machine-form__section-title {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  text-transform: uppercase;
-  margin-bottom: 0.25rem;
-  padding: 0;
-  float: left;
-  width: 100%;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+    padding: 0;
+    float: left;
+    width: 100%;
 }
 
 /* Layout Grid Interno */
 .machine-form__grid {
-  display: grid;
-  gap: 0.75rem;
+    display: grid;
+    gap: 0.75rem;
 }
 
 .machine-form__grid--2-cols {
-  grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .machine-form__column {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 /* Campos de Formulário */
 .machine-form__field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
 }
 
 .machine-form__label {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
 }
 
 .machine-form__input,
 .machine-form__select {
-  width: 100%;
-  padding: 0.6rem 0.75rem;
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-primary);
-  background-color: var(--color-bg-input);
-  border: 1px solid transparent;
-  border-radius: var(--border-radius-sm);
-  box-shadow: 0px 2px 5px #282d6e48;
-  outline: none;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-input);
+    border: 1px solid transparent;
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0px 2px 5px #282d6e48;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .machine-form__input:focus,
 .machine-form__select:focus {
-  border-color: var(--color-secondary);
-  box-shadow: 0 0 0 2px rgba(124, 114, 255, 0.2);
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 2px rgba(124, 114, 255, 0.2);
 }
 
 /* Custom Upload Button PDF */
 .machine-form__file-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 0.75rem;
-  background-color: var(--color-bg-card);
-  border: 1.5px dashed var(--color-secondary);
-  border-radius: var(--border-radius-sm);
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--color-bg-card);
+    border: 1.5px dashed var(--color-secondary);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .machine-form__file-button:hover {
-  background-color: rgba(124, 114, 255, 0.05);
+    background-color: rgba(124, 114, 255, 0.05);
 }
 
 .machine-form__file-name {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 110px;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 110px;
 }
 
 .machine-form__file-action {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-secondary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-secondary);
 }
 
 .machine-form__file-input {
-  display: none;
+    display: none;
 }
 
 /* ========================================
    TABELA DE HISTÓRICO
    ======================================== */
-.machine-form__table-wrapper {
-  overflow-x: auto;
-}
-
-.machine-table {
+/* ========================================
+   CONTAINER DO HISTÓRICO DE MANUTENÇÕES
+   ======================================== */
+.machine-history {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   width: 100%;
-  border-collapse: collapse;
-  text-align: left;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-.machine-table__header {
+/* Cabeçalho para telas Desktop e Tablet */
+.machine-history__header {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1fr 1.5fr;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+}
+
+.machine-history__column-title {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-secondary);
-  padding-bottom: 0.5rem;
 }
 
-.machine-table__cell {
-  padding: 0.25rem;
-  font-size: var(--font-size-xs);
-  color: var(--color-text-primary);
-  vertical-align: middle;
+/* Lista de registros */
+.machine-history__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
 }
 
-.machine-table__input,
-.machine-table__select {
-  padding: 0.4rem;
-  font-size: var(--font-size-xs);
+/* Card individual para cada manutenção */
+.machine-history__item {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1fr 1.5fr;
+  gap: 0.5rem;
+  align-items: center;
   background-color: var(--color-bg-card);
-  border: none;
+  padding: 0.5rem;
   border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
   width: 100%;
   box-sizing: border-box;
 }
 
-/* Botão de Submissão */
-.machine-form__actions {
+.machine-history__field {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 0.5rem;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0; /* Previne que o conteúdo estoure a célula da grid */
+}
+
+/* Rótulos auxiliares ocultos no Desktop */
+.machine-history__label {
+  display: none;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+}
+
+.machine-history__value {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Inputs e Selects estilizados */
+.machine-history__input,
+.machine-history__select {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.4rem 0.5rem;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-light);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-sm);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.machine-history__input:focus,
+.machine-history__select:focus {
+  border-color: var(--color-secondary);
+  background-color: var(--color-bg-card);
 }
 
 .machine-form__submit-button {
-  background-color: var(--color-accent-orange);
+  background-color: var(--color-primary);
   color: var(--color-text-light);
   font-family: var(--font-family-base);
   font-size: var(--font-size-sm);
@@ -480,27 +537,65 @@ body {
 }
 
 /* ========================================
-   RESPONSIVIDADE (MEDIA QUERIES)
+   RESPONSIVIDADE - TABLET E MOBILE (< 600px)
    ======================================== */
-@media (max-width: 480px) {
-  .machine-form__grid--2-cols {
-    grid-template-columns: 1fr;
+@media (max-width: 600px) {
+  .machine-history__header {
+    display: none; /* Oculta o cabeçalho no mobile */
   }
 
-  .machine-form__top-section {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  .machine-history__item {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas para mobile padrão */
+    gap: 0.75rem 0.5rem;
+    padding: 0.75rem;
   }
 
-  .machine-form__actions {
-    justify-content: stretch;
+  .machine-history__label {
+    display: block; /* Exibe os rótulos */
+  }
+}
+
+/* ========================================
+   AJUSTE ESPECÍFICO IPHONE SE (< 375px)
+   ======================================== */
+@media (max-width: 375px) {
+  .machine-history__item {
+    grid-template-columns: 1fr; /* Coluna única no iPhone SE */
+    gap: 0.5rem;
+  }
+
+  .machine-history__field {
+    width: 100%;
   }
 
   .machine-form__submit-button {
-    width: 100%;
+    width: 100%; /* Garante que o botão ocupe toda a largura */
   }
 }
+
+/* ========================================
+   RESPONSIVIDADE (MEDIA QUERIES)
+   ======================================== */
+@media (max-width: 480px) {
+    .machine-form__grid--2-cols {
+        grid-template-columns: 1fr;
+    }
+
+    .machine-form__top-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .machine-form__actions {
+        justify-content: stretch;
+    }
+
+    .machine-form__submit-button {
+        width: 100%;
+    }
+}
+
 /* ========================================
    BLOCO: |MODAL| MACHINE-DETAILS (Máquina Individual)
    ======================================== */
@@ -615,7 +710,8 @@ body {
     align-items: center;
     justify-content: center;
 }
-.machine-details__edit-button > img{
+
+.machine-details__edit-button>img {
     width: 10px;
 
 }
@@ -1126,7 +1222,7 @@ body {
 /* =========================================================
    BLOCO: |MODAL| delete-confirmation (confirmação de delete)
    ========================================================= */
-.delete-confirmation{
+.delete-confirmation {
     width: 20%;
     z-index: 1000;
     position: absolute;
@@ -1140,7 +1236,7 @@ body {
     top: 25%;
 }
 
-.delete-confirmation__close-button{
+.delete-confirmation__close-button {
     cursor: pointer;
     width: 25px;
     height: 25px;
@@ -1151,16 +1247,17 @@ body {
     font-weight: var(--font-weight-bold);
 }
 
-.delete-confirmation__title{
+.delete-confirmation__title {
     font-size: var(--font-size-xl);
     text-align: center;
     color: var(--color-primary);
 }
+
 .danger-title {
     color: var(--color-status-danger-dark);
 }
 
-.delete-confirmation__buttons{
+.delete-confirmation__buttons {
     width: 100%;
     height: 70px;
     display: flex;
@@ -1169,7 +1266,7 @@ body {
 }
 
 
-.button-confirmation{
+.button-confirmation {
     width: 110px;
     height: 40px;
     border-radius: 15px;
@@ -1181,23 +1278,23 @@ body {
 
 }
 
-.button-confirmation--cancel{
+.button-confirmation--cancel {
     background-color: var(--color-accent-orange);
     color: var(--color-primary);
 }
 
-.button-confirmation--delete{
+.button-confirmation--delete {
     background-color: var(--color-primary);
     color: var(--color-bg-light);
 }
 
-.button-confirmation--cancel:hover{
+.button-confirmation--cancel:hover {
     background-color: var(--color-accent-peach);
     transition: all 100ms ease-in;
     transform: scale(1.02);
 }
 
-.button-confirmation--delete:hover{
+.button-confirmation--delete:hover {
     background-color: var(--color-status-danger-dark);
     transition: all 100ms ease-in;
     transform: scale(1.02);
@@ -1212,21 +1309,22 @@ body {
 
 /* RESPONSIVIDADE MOBILE */
 
-@media(max-width: 400px){
-    .machine-modal{
+@media(max-width: 400px) {
+    .machine-modal {
         max-height: 600px;
     }
 }
 
 
 @media (max-width: 600px) {
+
     .machine-edit__stat-container,
     .machine-edit__maintance-row {
         flex-direction: column;
     }
 
     /* Corrige o container para o tamanho mobile */
-    .delete-confirmation{
+    .delete-confirmation {
         width: 90%;
         top: 35%;
     }
