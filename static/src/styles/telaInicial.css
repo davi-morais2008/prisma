@@ -85,9 +85,10 @@
 }
 
 .work-order__description {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondayr);
-    line-height: 1.5;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
 }
 
 /* Modificadores de urgência para as Ordens de Serviço */
