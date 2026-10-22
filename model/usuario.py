@@ -22,8 +22,6 @@ def buscar_usuario():
     return resposta
 
 
-from database.conexao import conectar
-
 def atualizar_usuario(cpf, nome,  email, status_usuario):
     """
     Altera as informações de um usuário no banco de dados.
