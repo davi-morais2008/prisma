@@ -8,12 +8,12 @@
   --color-primary-dark: #050428;
 
   /* Roxo / Violeta (Botões secundários e destaques) */
-  --color-secondary: #110891;
-  --color-secondary-hover: #0a0079;
+  --color-secondary: #2213ff;
+  --color-secondary-hover: #494853;
 
   /* Laranja / Amarelo (Botões de ação primária e alertas) */
   --color-accent-orange: #FFA834;
-  --color-accent-peach: #ff9137;
+  --color-accent-peach: #ffb937;
 
   /* ========================================
      BACKGROUNDS E SUPERFÍCIES
@@ -32,6 +32,7 @@
      STATUS / ALERTAS (Calendário e Cards)
      ======================================== */
   --color-status-danger: #FF8A8A;  /* Vermelho / Alerta */
+  --color-status-danger-dark: #ff4b4b;
   --color-status-warning: #FFE885; /* Amarelo / Atenção */
   --color-status-success: #A3FFB8; /* Verde / OK */
       
