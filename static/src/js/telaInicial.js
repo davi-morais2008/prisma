@@ -69,6 +69,7 @@ btnCancelUpdate.addEventListener('click', closeEditModal)
 btnCancelDelete.addEventListener('click', closeDeleteModal)
 btnConfirmDelete.addEventListener('click', () => {
     closeDeleteModal();
+    closeOrderModal();
     //aqui tambem deve ser adicionado a logica de exclusão da OS no BCD
 })
 
