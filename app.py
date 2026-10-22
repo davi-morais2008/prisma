@@ -7,6 +7,11 @@ app = Flask(__name__)
 
 app.secret_key = 'PRISMA_maintence'
 
+
+@app.route("/telaInicial")
+def pagina_inicial():
+    return render_template("telaInicial.html")
+
 @app.route("/historico")
 
 def pagina_historico():
@@ -48,5 +53,9 @@ def pagina_maquinas():
 @app.route('/usuarios', methods = ['GET'])
 def pagina_usuarios():
     return render_template('usuarios.html')
+
+@app.route('/calendario')
+def pagina_calendario():
+    return render_template('calendario.html')
 
 app.run(host="0.0.0.0", port=8080, debug=True)
