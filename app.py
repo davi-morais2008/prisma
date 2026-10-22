@@ -38,7 +38,7 @@ def pagina_login_tecnico():
 
 
 
-@app.route('/recuperar_senha')
+@app.route('/recuperar_senha', methods = ['GET'])
 def pagina_recuperar_senha():
     return render_template('recuperacao_senha.html')
 
