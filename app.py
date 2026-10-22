@@ -41,9 +41,9 @@ def pagina_login_tecnico():
     if login_usuario(login_do_usuario,senha_do_usuario): 
         return redirect('/login')
 
-@app.route('/recuperar_senha', methods = ['GET'])
+@app.route('/recuperacaoSenha', methods = ['GET'])
 def pagina_recuperar_senha():
-    return render_template('recuperacao_senha.html')
+    return render_template('recuperacaoSenha.html')
 
 @app.route('/maquinas', methods = ['GET'])
 def pagina_maquinas():
