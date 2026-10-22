@@ -35,11 +35,11 @@
                 <img class="user-card__avatar"
                     src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
                     alt="Foto de perfil do técnico João">
-                
+
                 <div class="user-card__info">
                     <h3 class="user-card__name">João da Silva</h3>
                     <p class="user-card__specialty">Manutenção de Redes</p>
-                    
+
                     <div class="user-card__details">
                         <div class="user-card__tag">
                             <span class="material-symbols-outlined" aria-hidden="true">badge</span>
@@ -51,15 +51,18 @@
                         </a>
                     </div>
 
-                    <p class="user-card__text">Especialista sênior em infraestrutura de redes e cabeamento estruturado com mais de 10 anos de experiência na área.</p>
-                    
+                    <p class="user-card__text">Especialista sênior em infraestrutura de redes e cabeamento estruturado
+                        com mais de 10 anos de experiência na área.</p>
+
                     <!-- Ações do Card -->
                     <div class="user-card__actions">
-                        <button class="button button--secondary button--small" type="button" aria-label="Editar João da Silva">
+                        <button class="button button--secondary button--small" type="button"
+                            aria-label="Editar João da Silva">
                             <span class="material-symbols-outlined" aria-hidden="true">edit</span>
                             Editar
                         </button>
-                        <button class="button button--danger button--small" type="button" aria-label="Inativar João da Silva">
+                        <button class="button button--danger button--small" type="button"
+                            aria-label="Inativar João da Silva">
                             <span class="material-symbols-outlined" aria-hidden="true">delete</span>
                             Inativar
                         </button>
@@ -72,7 +75,7 @@
                 <img class="user-card__avatar"
                     src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80"
                     alt="Foto de perfil da técnica Maria">
-                
+
                 <div class="user-card__info">
                     <h3 class="user-card__name">Maria Oliveira</h3>
                     <p class="user-card__specialty">Suporte Nível 2</p>
@@ -88,14 +91,17 @@
                         </a>
                     </div>
 
-                    <p class="user-card__text">Profissional certificada, responsável por escalonamento de incidentes complexos e gestão de acesso.</p>
+                    <p class="user-card__text">Profissional certificada, responsável por escalonamento de incidentes
+                        complexos e gestão de acesso.</p>
 
                     <div class="user-card__actions">
-                        <button class="button button--secondary button--small" type="button" aria-label="Editar Maria Oliveira">
+                        <button class="button button--secondary button--small" type="button"
+                            aria-label="Editar Maria Oliveira">
                             <span class="material-symbols-outlined" aria-hidden="true">edit</span>
                             Editar
                         </button>
-                        <button class="button button--danger button--small" type="button" aria-label="Inativar Maria Oliveira">
+                        <button class="button button--danger button--small" type="button"
+                            aria-label="Inativar Maria Oliveira">
                             <span class="material-symbols-outlined" aria-hidden="true">delete</span>
                             Inativar
                         </button>
@@ -105,31 +111,61 @@
         </section>
     </main>
     <!-- Modal de Detalhes do Usuário -->
-        <aside id="user-modal" class="modal" aria-labelledby="modal-title" aria-modal="true" role="dialog">
+    <aside id="user-modal" class="modal" aria-labelledby="modal-title" aria-modal="true" role="dialog">
 
-            <div class="modal__overlay" aria-label="Fechar modal"></div>
+        <div class="modal__overlay" aria-label="Fechar modal"></div>
 
 
-            <div class="modal__content">
-                <button class="modal__close" aria-label="Fechar detalhes do usuário">
-                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
-                </button>
+        <div class="modal__content">
+            <button class="modal__close" aria-label="Fechar detalhes do usuário">
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+            </button>
 
-                <div class="modal__header">
-                    <img class="modal__avatar"
-                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80"
-                        alt="Foto de perfil ampliada do técnico">
-                </div>
+            <div class="modal__header">
+                <img class="modal__avatar"
+                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80"
+                    alt="Foto de perfil ampliada do técnico">
+            </div>
 
-                <div class="modal__body">
-                    <h2 id="modal-title" class="modal__title">João da Silva</h2>
-                    <p class="modal__subtitle">Manutenção de Redes</p>
-                    
-                    <div class="modal__description">
-                        <p>Especialista sênior em infraestrutura de redes e cabeamento estruturado com mais de 10 anos de experiência na área. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    </div>
+            <div class="modal__body">
+                <h2 id="modal-title" class="modal__title">João da Silva</h2>
+                <p class="modal__subtitle">Manutenção de Redes</p>
+
+                <div class="modal__description">
+                    <p>Especialista sênior em infraestrutura de redes e cabeamento estruturado com mais de 10 anos de
+                        experiência na área. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 </div>
             </div>
-        </aside>
+        </div>
+    </aside>
+
+    <aside id="modal-inactivate" class="modal" aria-labelledby="modal-inactivate-title" aria-modal="true" role="dialog">
+        <div class="modal__overlay" aria-label="Fechar modal"></div>
+
+        <div class="modal__content">
+            <button class="modal__close" aria-label="Cancelar inativação">
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+            </button>
+
+            <div class="modal__header">
+                <h2 id="modal-inactivate-title" class="modal__title">Inativar Usuário</h2>
+            </div>
+
+            <div class="modal__body">
+                <p class="modal__description">Tem certeza que deseja inativar este usuário? Esta ação impedirá o acesso
+                    dele ao sistema, mas poderá ser revertida futuramente.</p>
+            </div>
+
+            <div class="modal__actions">
+                <button class="button button--secondary" id="btn-cancel-inactivate" type="button">
+                    Cancelar
+                </button>
+                <button class="button button--danger" id="btn-confirm-inactivate" type="button">
+                    Sim, inativar
+                </button>
+            </div>
+        </div>
+    </aside>
 </body>
+
 </html>
