@@ -22,7 +22,7 @@ def buscar_usuario():
     return resposta
 
 
-def atualizar_usuario(cpf, nome,  email, status_usuario):
+def atualizar_usuario(cpf, nome,  email):
     """
     Altera as informações de um usuário no banco de dados.
 
@@ -30,7 +30,6 @@ def atualizar_usuario(cpf, nome,  email, status_usuario):
         cpf (str): CPF do usuário que será atualizado.
         nome (str): Novo nome.
         email (str): Novo email.
-        status_usuario (str): Novo status.
 
     Retorna:
         bool: True se a atualização foi realizada com sucesso, False em caso de erro.
@@ -39,9 +38,9 @@ def atualizar_usuario(cpf, nome,  email, status_usuario):
     try:
         cursor.execute("""
             UPDATE usuarios 
-            SET nome = %s,  email = %s, status_usuario = %s 
+            SET nome = %s,  email = %s
             WHERE cpf = %s
-        """, (nome, email, status_usuario, cpf))
+        """, (nome, email, cpf))
         
         conexao.commit()
         return True
