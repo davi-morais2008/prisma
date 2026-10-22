@@ -57,8 +57,4 @@ def pagina_usuarios():
 def pagina_calendario():
     return render_template('calendario.html')
 
-@app.route('/perfil')
-def pagina_perfil():
-    return render_template('perfil.html')
-
 app.run(host="0.0.0.0", port=8080, debug=True)
