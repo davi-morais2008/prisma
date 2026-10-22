@@ -7,6 +7,11 @@ app = Flask(__name__)
 
 app.secret_key = 'PRISMA_maintence'
 
+
+@app.route("/telaInicial")
+def pagina_inicial():
+    return render_template("telaInicial.html")
+
 @app.route("/historico")
 
 def pagina_historico():
