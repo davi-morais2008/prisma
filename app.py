@@ -42,4 +42,8 @@ def pagina_login_tecnico():
 def pagina_maquinas():
     return render_template('maquinas.html')
 
+@app.route('/perfil', methods = ['GET'])
+def pagina_usuarios():
+    return render_template('usuarios.html')
+
 app.run(host="0.0.0.0", port=8080, debug=True)
