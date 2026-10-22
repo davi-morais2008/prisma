@@ -37,10 +37,11 @@ def post_login():
     usuarios = buscar_usuario()
     usuario = request.form.get('login_cpf')
     senha = request.form.get('login_senha')
-    session['user'] = (usuario, senha)
+    
     for user in usuarios:
         if user['cpf'] == usuario and user['senha'] == senha:
-            print('CERTO')
+            redirect('/telaInicial')
+            session['user'] = (usuario, senha)
         else:
             flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
             return redirect('/login')
