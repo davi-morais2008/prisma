@@ -7,6 +7,11 @@ app = Flask(__name__)
 
 app.secret_key = 'PRISMA_maintence'
 
+
+@app.route("/telaInicial")
+def pagina_inicial():
+    return render_template("telaInicial.html")
+
 @app.route("/historico")
 
 def pagina_historico():
@@ -23,10 +28,10 @@ def api_get_info_manutencao(id_ordem):
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route('/')
+
 @app.route('/login')
 def pagina_login():
     return render_template('cadastroLogin.html')
-
 
 @app.route('/login/post', methods = ['POST'])
 def pagina_login_tecnico():
@@ -36,15 +41,20 @@ def pagina_login_tecnico():
     if login_usuario(login_do_usuario,senha_do_usuario): 
         return redirect('/login')
 
+@app.route('/recuperacaoSenha', methods = ['GET'])
+def pagina_recuperar_senha():
+    return render_template('recuperacaoSenha.html')
 
-@app.route('/api/get/users')
-def api_get_users():
-    try:
-        usuarios =  buscar_usuario()
-        return jsonify(usuarios), 200
-    except Exception as e:
-        return jsonify({"status":"erro", "mensagem":str(e)}), 400
+@app.route('/maquinas', methods = ['GET'])
+def pagina_maquinas():
+    return render_template('maquinas.html')
 
+@app.route('/usuarios', methods = ['GET'])
+def pagina_usuarios():
+    return render_template('usuarios.html')
 
+@app.route('/calendario')
+def pagina_calendario():
+    return render_template('calendario.html')
 
 app.run(host="0.0.0.0", port=8080, debug=True)
