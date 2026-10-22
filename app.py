@@ -15,9 +15,9 @@ app.config['SECRET_KEY'] = 'PRISMA_maintence'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'seu_email_empresa@gmail.com'
-app.config['MAIL_PASSWORD'] = 'abcd efgh ijkl mnop'
-app.config['MAIL_DEFAULT_SENDER'] = ('Minha Empresa', 'seu_email_empresa@gmail.com')
+app.config['MAIL_USERNAME'] = 'gustavocaua934@gmail.com'
+app.config['MAIL_PASSWORD'] = 'srqt tyry lwjd qcxh'
+app.config['MAIL_DEFAULT_SENDER'] = ('PRISMA', 'gustavocaua934@gmail.com')
 
 mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
@@ -26,6 +26,7 @@ serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 # 1. Rota para solicitar a recuperação de senha
 # -------------------------------------------------------------------
 @app.route('/esqueci-senha', methods=['GET', 'POST'])
+@app.route('/recuperacaoSenha', methods=['GET', 'POST']) # <--- Aceita as duas URLs para a mesma função
 def esqueci_senha():
     if request.method == 'POST':
         email = request.form.get('email')
@@ -37,16 +38,16 @@ def esqueci_senha():
             token = serializer.dumps(email, salt='recuperar-senha-salt')
             link_redefinicao = url_for('redefinir_senha', token=token, _external=True)
 
-            msg = Message('Recuperação de Senha', recipients=[email])
+            msg = Message('Recuperação de Senha - PRISMA', recipients=[email])
             msg.body = f'Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos.'
-
+            
             try:
                 mail.send(msg)
             except Exception:
                 flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
                 return redirect(url_for('esqueci_senha'))
 
-        flash('Se o e-mail estiver cadastrado, você receberá um link de redefinição.', 'info')
+        flash('Se o e-mail estiver cadastrado, você receberá um link de redefinção.', 'info')
         return redirect(url_for('esqueci_senha'))
 
     return render_template('recuperacaoSenha.html')
@@ -73,9 +74,9 @@ def redefinir_senha(token):
         atualizar_senha_usuario(email, senha_hash)
 
         flash('Sua senha foi alterada com sucesso!', 'success')
-        return redirect(url_for('login'))
+        return redirect(url_for('pagina_login'))
 
-    return render_template('recuperacaoSenha.html', token=token)
+    return render_template('redefinir_senha.html', token=token)
 
 @app.route("/telaInicial")
 def pagina_inicial():
@@ -109,9 +110,7 @@ def pagina_login_tecnico():
     if login_usuario(login_do_usuario,senha_do_usuario): 
         return redirect('/login')
 
-@app.route('/recuperacaoSenha', methods = ['GET'])
-def pagina_recuperar_senha():
-    return render_template('recuperacaoSenha.html')
+
 
 @app.route('/maquinas', methods = ['GET'])
 def pagina_maquinas():
