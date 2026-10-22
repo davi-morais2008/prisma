@@ -17,32 +17,31 @@
         <div class="home__orders">
 
             <article class="work-order work-order--baixa">
-                <h3 class="work-order__title">Título da Ordem de Serviiço</h3>
+                <h3 class="work-order__title">Título da Ordem de Serviço</h3>
                 <p class="work-order__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum, minus
                     nostrum! Aspernatur repellat eos nemo, in dicta autem animi porro </p>
             </article>
 
             <article class="work-order work-order--media">
-                <h3 class="work-order__title">Título da Ordem de Serviiço</h3>
+                <h3 class="work-order__title">Título da Ordem de Serviço</h3>
                 <p class="work-order__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum, minus
                     nostrum! Aspernatur repellat eos nemo, in dicta autem animi porro </p>
             </article>
 
             <article class="work-order work-order--alta">
-                <h3 class="work-order__title">Título da Ordem de Serviiço</h3>
+                <h3 class="work-order__title">Título da Ordem de Serviço</h3>
                 <p class="work-order__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum, minus
                     nostrum! Aspernatur repellat eos nemo, in dicta autem animi porro </p>
             </article>
 
         </div>
 
+        <!-- Modal de Abrir OS -->
         <div class="modal" id="orderModal">
             <div class="modal__overlay" id="modalOverlay"></div>
 
-            <div class="modal__card">          
-
+            <div class="modal__card">
                 <!-- Conteúdo do Modal -->
-                <!-- Botões de Ação -->
                 <div class="modal__actions">
                     <button class="btn btn--edit" id="btnEdit">
                         <img src="/static/src/img/btn-edit.png" alt="Edit Button">
@@ -56,13 +55,74 @@
                     Descrição da ordem de serviço selecionada...
                 </p>
 
-                
+
                 <button class="btn--close" id="btnClose">
                     Fechar
                 </button>
             </div>
         </div>
+
+        <!-- Modal de editar Ordem de Serviço -->
+        <div class="modal-form" id="updateModal">
+            <div class="modal-form__overlay" id="updateModalOverlay"></div>
+
+            <div class="modal-form__card">
+
+                <div class="modal-form__form">
+
+                    <form class="form" >
+
+                        <label class="form__label" for="machine">
+                            Tipo de Máquina:
+                        </label>
+                        <select class="form__select" id="machine" name="machine">
+                            <option value="Fresa">Fresa</option>
+                            <option value="Torno">Torno</option>
+                        </select>
+
+                        <label class="form__label" for="number">Número de Patrimônio:</label>
+                        <input class="form__input" type="number" id="number" name="number">
+
+                        <label class="form__label" for="problem">Tipo de problema:</label>
+
+                        <select class="form__select" id="problem" name="problem">
+                            <option value="Freio Elétrico">Freio Elétrico</option>
+                            <option value="Broca">Broca</option>
+                        </select>
+
+                        <label class="form__label" for="description">Descrição do problema:</label>
+                        <input class="form__input" type="text" id="description" name="description">
+
+                        <button class="btn btn--update" type="submit">Concluir</button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Confirmação de Exclusão -->
+        <div class="modal" id="deleteModal">
+            <div class="modal__overlay" id="deleteModalOverlay"></div>
+
+            <div class="modal__card">
+                <h2 class="modal__title">Excluir Ordem de Serviço</h2>
+                <p class="modal__description">
+                    Tem certeza que deseja excluir esta ordem de serviço? Esta ação não poderá ser desfeita.
+                </p>
+
+                <div class="modal__confirm-actions">
+                    <button class="btn-cancel" id="btnCancelDelete">Cancelar</button>
+                    <button class="btn-remove" id="btnConfirmDelete">Sim, Excluir</button>
+                </div>
+            </div>
+        </div>
+
+
+
     </main>
+
+    <script src="/static/src/js/telaInicial.js"></script>
 </body>
 
 </html>

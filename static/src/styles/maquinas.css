@@ -18,7 +18,9 @@ body {
     min-height: 100vh;
 }
 
-.active{
+.machine-edit.active,
+.machine__register.active,
+.delete-confirmation.active{
     display: flex;
 }
 

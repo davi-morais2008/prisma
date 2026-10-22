@@ -7,6 +7,10 @@
     font-family: var(--font-family-base);
 }
 
+.history{
+  background-color: var(--color-bg-main);;
+}
+
 .history__content{
     width: 100%;
     display: flex;
