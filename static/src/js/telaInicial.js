@@ -7,6 +7,7 @@ const orderModal = document.getElementById('orderModal');
 const modalTitle = document.getElementById('modalTitle');
 const modalDescription = document.getElementById('modalDescription');
 const btnClose = document.getElementById('btnClose');
+const btnDelete = document.getElementById('btnDelete')
 const modalOverlay = document.getElementById('modalOverlay');
 
 // Modal 2: Edição da OS
@@ -15,11 +16,15 @@ const btnEdit = document.getElementById('btnEdit');
 const updateModalOverlay = document.getElementById('updateModalOverlay');
 const updateForm = updateModal.querySelector('.form');
 
-// -------------------------------------------------------------
-// 2. Funções para Abrir e Fechar Modais
-// -------------------------------------------------------------
+// Modal 3: Confirmar exclusão
+const deleteModal = document.getElementById('deleteModal')
+const deleteModalOverlay = document.getElementById('deleteModalOverlay')
+const btnCancel = document.getElementById('btnCancelDelete')
+const btnConfirm = document.getElementById('btnConfirmDelete')
 
-// Abrir Modal 1 (carregando título e descrição da OS clicada)
+
+// Funções para Abrir e Fechar Modais
+// Abrir Modal 1
 function openOrderModal(title, description) {
     if (title) modalTitle.textContent = title;
     if (description) modalDescription.textContent = description;
@@ -42,6 +47,14 @@ function closeUpdateModal() {
     updateModal.classList.remove('active');
 }
 
+// Abrir modal 3
+function openDeleteModal (){
+    closeOrderModal()
+    deleteModal.classList.add('active')
+}
+function closeDeleteModal (){
+    deleteModal.classList.remove('active')
+}
 
 // Clique em qualquer card de Ordem de Serviço
 workOrders.forEach(order => {
@@ -57,10 +70,33 @@ if (btnEdit) {
     btnEdit.addEventListener('click', openUpdateModal);
 }
 
-// Fechar Modal 1 (Botão "Fechar" ou Clicar fora do card/overlay)
+// Fechar Modal 1 - Botão "Fechar" ou Clicar fora do card/overlay
 if (btnClose) btnClose.addEventListener('click', closeOrderModal);
 if (modalOverlay) modalOverlay.addEventListener('click', closeOrderModal);
 
 // Fechar Modal 2 (Clicar fora do card/overlay)
 if (updateModalOverlay) updateModalOverlay.addEventListener('click', closeUpdateModal);
 
+// Modal de Confirmar Exclusão
+if (btnDelete) {
+    btnDelete.addEventListener('click', openDeleteModal);
+}
+
+// Fechar Modal 3 no botão "Cancelar"
+if (btnCancel) {
+    btnCancel.addEventListener('click', closeDeleteModal);
+}
+
+// Fechar Modal 3 ao clicar no fundo escuro (overlay)
+if (deleteModalOverlay) {
+    deleteModalOverlay.addEventListener('click', closeDeleteModal);
+}
+
+// Ação de confirmar exclusão
+if (btnConfirm) {
+    btnConfirm.addEventListener('click', () => {
+        // Aqui deve ser adicionado a Lógica de Exclusão da Ordem de Serviço
+        
+        closeDeleteModal();
+    });
+}
