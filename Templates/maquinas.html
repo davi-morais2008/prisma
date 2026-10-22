@@ -54,36 +54,185 @@
             </div>
 
             <!-- FORMULÁRIO DE CADASTRO DE MÁQUINAS -->
-            <div class="machines__register">
-                <form action="" class="form-register">
-                    <button id="closeRegister" type="button" class="machine-details__close-button" aria-label="Fechar detalhes">
+            <div class="machine-modal" aria-labelledby="modal-title">
+                <!-- Cabeçalho do Modal -->
+                <header class="machine-modal__header">
+                    <div class="machine-modal__brand">
+                        <svg class="machine-modal__logo" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 2 22 22 22 12 2"></polygon>
+                        </svg>
+                        <h2 id="modal-title" class="machine-modal__title">EDITAR MÁQUINA</h2>
+                    </div>
+                    <button type="button" class="machine-modal__close-button" aria-label="Fechar janela">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                     </button>
-                    <h3>CADASTRAR NOVA MÁQUINA</h3>
-                    <label for="type-machine">Tipo de Máquina</label>
-                    <select name="type-machine" id="type-machine" class="form-register__input-select">
-                    </select>
+                </header>
 
-                    <label for="number-machine">Número do Patrimônio</label>
-                    <input placeholder="Ex: TM-9921" type="text" id="number-machine" class="form-register__input-text">
+                <!-- Formulário Principal -->
+                <form action="#" class="machine-form">
 
-                    <label for="location-machine">Localização/Setor</label>
-                    <input placeholder="Oficina 9-B" type="text" id="location-machine" class="form-register__input-text">
+                    <!-- Topo: Foto e Dados Básicos -->
+                    <div class="machine-form__top-section">
+                        <div class="machine-form__avatar-wrapper">
+                            <img src="assets/machine-preview.png" alt="Injetora de Plástico"
+                                class="machine-form__avatar-img">
+                            <button type="button" class="machine-form__avatar-upload"
+                                aria-label="Alterar imagem da máquina">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+                                    </path>
+                                    <circle cx="12" cy="13" r="4"></circle>
+                                </svg>
+                            </button>
+                        </div>
 
-                    <label for="status-machine">Status da Máquina</label>
-                    <select name="status-machine" id="status-machine" class="form-register__input-select"></select>
+                        <div class="machine-form__basic-info">
+                            <div class="machine-form__field">
+                                <label for="type-machine" class="machine-form__label">Tipo / Modelo</label>
+                                <input type="text" id="type-machine" class="machine-form__input"
+                                    value="Injetora de Plástico - Modelo H500">
+                            </div>
 
-                    <button type="submit">Cadastrar Máquina</button>
+                            <div class="machine-form__field">
+                                <label for="number-machine" class="machine-form__label">Patrimônio</label>
+                                <input type="text" id="number-machine" class="machine-form__input" value="MAQ-SP-0014">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção 1: Estatísticas e Parâmetros -->
+                    <fieldset class="machine-form__section">
+                        <legend class="machine-form__section-title">EDITAR ESTATÍSTICAS & PARÂMETROS</legend>
+
+                        <div class="machine-form__grid machine-form__grid--2-cols">
+                            <!-- Coluna Esquerda -->
+                            <div class="machine-form__column">
+                                <div class="machine-form__field">
+                                    <label for="production-time" class="machine-form__label">Tempo de Produção
+                                        (h)</label>
+                                    <input type="number" id="production-time" class="machine-form__input" value="145">
+                                </div>
+
+                                <div class="machine-form__field">
+                                    <label for="total-hours" class="machine-form__label">Total Horas Funcionando</label>
+                                    <input type="number" id="total-hours" class="machine-form__input" value="1240">
+                                </div>
+
+                                <div class="machine-form__field">
+                                    <label for="accumulated-cost" class="machine-form__label">Custo Acumulado
+                                        (R$)</label>
+                                    <input type="text" id="accumulated-cost" class="machine-form__input"
+                                        value="15500.00">
+                                </div>
+
+                                <div class="machine-form__field">
+                                    <label for="parts-changed" class="machine-form__label">Peças Alteradas
+                                        (Total)</label>
+                                    <input type="number" id="parts-changed" class="machine-form__input" value="8">
+                                </div>
+                            </div>
+
+                            <!-- Coluna Direita -->
+                            <div class="machine-form__column">
+                                <div class="machine-form__field">
+                                    <label for="downtime" class="machine-form__label">Tempo de Parada (h)</label>
+                                    <input type="number" id="downtime" class="machine-form__input" value="12">
+                                </div>
+
+                                <div class="machine-form__field">
+                                    <span class="machine-form__label">Manual da Máquina (PDF)</span>
+                                    <label for="manual-upload" class="machine-form__file-button">
+                                        <span class="machine-form__file-name">MANUAL_DE_OPER...</span>
+                                        <span class="machine-form__file-action">Upload PDF</span>
+                                        <input type="file" id="manual-upload" class="machine-form__file-input"
+                                            accept=".pdf">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Seção 2: Agendar Manutenção Preventiva -->
+                    <fieldset class="machine-form__section">
+                        <legend class="machine-form__section-title">AGENDAR MANUTENÇÃO PREVENTIVA</legend>
+                        <div class="machine-form__grid machine-form__grid--2-cols">
+                            <div class="machine-form__field">
+                                <label for="status-machine" class="machine-form__label">Status</label>
+                                <select id="status-machine" class="machine-form__select">
+                                    <option value="agendada" selected>Agendada</option>
+                                    <option value="em-dia">Em dia</option>
+                                    <option value="pendente">Pendente</option>
+                                </select>
+                            </div>
+
+                            <div class="machine-form__field">
+                                <label for="scheduled-date" class="machine-form__label">Data Agendada</label>
+                                <input type="date" id="scheduled-date" class="machine-form__input" value="2024-12-15">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Seção 3: Histórico de Manutenções -->
+                    <fieldset class="machine-form__section">
+                        <legend class="machine-form__section-title">HISTÓRICO DE MANUTENÇÕES</legend>
+                        <div class="machine-form__table-wrapper">
+                            <table class="machine-table">
+                                <thead class="machine-table__head">
+                                    <tr class="machine-table__row">
+                                        <th class="machine-table__header">Data</th>
+                                        <th class="machine-table__header">Tipo</th>
+                                        <th class="machine-table__header">Técnico</th>
+                                        <th class="machine-table__header">Observações</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="machine-table__body">
+                                    <tr class="machine-table__row">
+                                        <td class="machine-table__cell"><input type="date" class="machine-table__input"
+                                                value="2024-11-10"></td>
+                                        <td class="machine-table__cell">
+                                            <select class="machine-table__select">
+                                                <option value="preventiva" selected>Preventi...</option>
+                                            </select>
+                                        </td>
+                                        <td class="machine-table__cell">João Silva</td>
+                                        <td class="machine-table__cell">Verificação de óleo</td>
+                                    </tr>
+                                    <tr class="machine-table__row">
+                                        <td class="machine-table__cell"><input type="date" class="machine-table__input"
+                                                value="2024-10-05"></td>
+                                        <td class="machine-table__cell">
+                                            <select class="machine-table__select">
+                                                <option value="corretiva" selected>Corretiva</option>
+                                            </select>
+                                        </td>
+                                        <td class="machine-table__cell">Ana Costa</td>
+                                        <td class="machine-table__cell">Troca de rolamento</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+
+                    <!-- Ações do Form -->
+                    <div class="machine-form__actions">
+                        <button type="submit" class="machine-form__submit-button">Salvar Alterações</button>
+                    </div>
+
                 </form>
             </div>
 
+
+
             <!-- DETALHES DA MÁQUINA (MODAL) -->
-            
-<!-- DETALHES DA MÁQUINA (MODAL) -->
+
+            <!-- DETALHES DA MÁQUINA (MODAL) -->
             <div class="machine-details">
                 <!-- CABEÇALHO -->
                 <div class="machine-details__logo">
@@ -181,7 +330,7 @@
                                     <strong class="machine-details__stat-value">R$ 15.500,00</strong>
                                 </div>
                             </div>
-                            
+
                             <div class="machine-details__stat-item machine-details__stat-item--manual-machines">
                                 <h4 class="machine-details__manual-title">MANUAL DA MÁQUINA</h4>
                                 <a href="#" class="machine-details__manual-link">
@@ -426,10 +575,12 @@
                     </div>
                 </form>
             </div>
-            
+
             <div class="delete-confirmation">
-                <button class="delete-confirmation__close-button"><span class="material-symbols-outlined">close</span></button>
-                <h3 class="delete-confirmation__title">Deseja <span class="danger-title">EXCLUIR</span> esta Máquina do Sistema?</h3>
+                <button class="delete-confirmation__close-button"><span
+                        class="material-symbols-outlined">close</span></button>
+                <h3 class="delete-confirmation__title">Deseja <span class="danger-title">EXCLUIR</span> esta Máquina do
+                    Sistema?</h3>
                 <div class="delete-confirmation__buttons">
                     <button class="button-confirmation button-confirmation--cancel">Cancelar</button>
                     <button class="button-confirmation button-confirmation--delete">Excluír</button>
