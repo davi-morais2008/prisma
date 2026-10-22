@@ -549,4 +549,5 @@ body {
 #modal-inactivate .modal__content {
     max-width: 450px;
     padding: var(--font-size-xl);
+    
 }
