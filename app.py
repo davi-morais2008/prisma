@@ -1,22 +1,87 @@
-from flask import Flask, render_template, request, redirect, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, session, flash, jsonify, url_for
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
+from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
+from werkzeug.security import generate_password_hash
 import flask_mail
 from flask_mail import Mail, Message
-from werkzeug.security import generate_password_hash
+
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'PRISMA_maintence'
 
-app.secret_key = 'PRISMA_maintence'
+# Configurações do Gmail da empresa
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'seu_email_empresa@gmail.com'
+app.config['MAIL_PASSWORD'] = 'abcd efgh ijkl mnop'
+app.config['MAIL_DEFAULT_SENDER'] = ('Minha Empresa', 'seu_email_empresa@gmail.com')
 
+mail = Mail(app)
+serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
+# -------------------------------------------------------------------
+# 1. Rota para solicitar a recuperação de senha
+# -------------------------------------------------------------------
+@app.route('/esqueci-senha', methods=['GET', 'POST'])
+def esqueci_senha():
+    if request.method == 'POST':
+        email = request.form.get('email')
+
+        # Chama a função do model para buscar no banco
+        usuario = buscar_usuario_por_email(email)
+
+        if usuario:
+            token = serializer.dumps(email, salt='recuperar-senha-salt')
+            link_redefinicao = url_for('redefinir_senha', token=token, _external=True)
+
+            msg = Message('Recuperação de Senha', recipients=[email])
+            msg.body = f'Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos.'
+
+            try:
+                mail.send(msg)
+            except Exception:
+                flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
+                return redirect(url_for('esqueci_senha'))
+
+        flash('Se o e-mail estiver cadastrado, você receberá um link de redefinição.', 'info')
+        return redirect(url_for('esqueci_senha'))
+
+    return render_template('recuperacaoSenha.html')
+
+# -------------------------------------------------------------------
+# 2. Rota para redefinir a senha
+# -------------------------------------------------------------------
+@app.route('/reset-senha/<token>', methods=['GET', 'POST'])
+def redefinir_senha(token):
+    try:
+        email = serializer.loads(token, salt='recuperar-senha-salt', max_age=1800)
+    except SignatureExpired:
+        flash('O link expirou. Solicite uma nova recuperação.', 'warning')
+        return redirect(url_for('esqueci_senha'))
+    except BadTimeSignature:
+        flash('Link inválido ou corrompido.', 'danger')
+        return redirect(url_for('esqueci_senha'))
+
+    if request.method == 'POST':
+        nova_senha = request.form.get('senha')
+        senha_hash = generate_password_hash(nova_senha)
+
+        # Chama a função do model para atualizar a senha no banco
+        atualizar_senha_usuario(email, senha_hash)
+
+        flash('Sua senha foi alterada com sucesso!', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('recuperacaoSenha.html', token=token)
 
 @app.route("/telaInicial")
 def pagina_inicial():
     return render_template("telaInicial.html")
 
 @app.route("/historico")
-
 def pagina_historico():
     OSfinalizado = buscar_os_finalizado()
     return render_template("historico.html", OSfinalizado = OSfinalizado)
