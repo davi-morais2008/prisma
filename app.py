@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-
+from model.usuario import buscar_usuario
 app = Flask(__name__)
 
 app.secret_key = 'PRISMA_maintence'
@@ -28,18 +28,25 @@ def api_get_info_manutencao(id_ordem):
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route('/')
-
 @app.route('/login')
 def pagina_login():
     return render_template('cadastroLogin.html')
 
-@app.route('/login/post', methods = ['POST'])
-def pagina_login_tecnico():
-    login_do_usuario = request.form.get('cpf')
-    senha_do_usuario = request.form.get('senha')
+@app.route('/login/post', methods=['POST'])
+def post_login():
+    usuarios = buscar_usuario()
+    usuario = request.form.get('login_cpf')
+    senha = request.form.get('login_senha')
     
-    if login_usuario(login_do_usuario,senha_do_usuario): 
-        return redirect('/login')
+    for user in usuarios:
+        if user['cpf'] == usuario and user['senha'] == senha:
+            session['user'] = (usuario, senha)
+            return redirect('/telaInicial')
+        else:
+            flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
+            return redirect('/login')
+
+
 
 @app.route('/recuperacaoSenha', methods = ['GET'])
 def pagina_recuperar_senha():
@@ -53,6 +60,7 @@ def pagina_maquinas():
 def pagina_usuarios():
     return render_template('usuarios.html')
 
+    
 @app.route('/calendario')
 def pagina_calendario():
     return render_template('calendario.html')
