@@ -22,13 +22,14 @@
 .main_container {
     width: 100%;
     max-width: 1050px;
+
     background-color: var(--color-bg-card);
     border-radius: var(--border-radius-lg);
     display: flex;
     flex-wrap: wrap-reverse;
     overflow: hidden;
     box-shadow: var(--shadow-md);
-    min-height: min(680px, 100vh);
+    min-height: min(720px, 100vh);
 }
 
 /* --- COLUNA ESQUERDA --- */
