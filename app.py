@@ -42,8 +42,9 @@ def post_login():
         if user['cpf'] == usuario and user['senha'] == senha:
             print('CERTO')
         else:
-            return render_template('cadastroLogin.html', mensagem = True)
-    return redirect('/login')
+            flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
+            return redirect('/login')
+
 
 
 @app.route('/recuperacaoSenha', methods = ['GET'])
