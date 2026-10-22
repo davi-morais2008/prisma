@@ -39,25 +39,25 @@ inputCadastroEmail.addEventListener('input', () => {
     }
 });
 
-console.log(bntLogin)
-bntLogin.addEventListener('click', () => requisicaoUsuarios())
+// console.log(bntLogin)
+// bntLogin.addEventListener('click', () => requisicaoUsuarios())
 
-const requisicaoUsuarios = async () => {
-    console.log('teste')
-    const response = await fetch(`http://127.0.0.1:8080/usuarios/api_get/users`,{
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json; charset=utf-8',
-                'Content-Type': 'application/json; charset=utf-8'
-            }}
-        );
+// const requisicaoUsuarios = async () => {
+//     console.log('teste')
+//     const response = await fetch(`http://127.0.0.1:8080/usuarios/api_get/users`,{
+//             method: 'GET',
+//             headers: {
+//                 'Accept': 'application/json; charset=utf-8',
+//                 'Content-Type': 'application/json; charset=utf-8'
+//             }}
+//         );
 
-    if (!response.ok){
-        console.log('ERRO NA REQUISIÇÃO');
-    }
+//     if (!response.ok){
+//         console.log('ERRO NA REQUISIÇÃO');
+//     }
 
-    const usuarios = await response.json()
+//     const usuarios = await response.json()
 
-    console.log(usuarios)
-}
+//     console.log(usuarios)
+// }
 
