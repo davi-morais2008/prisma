@@ -13,13 +13,11 @@ def pagina_inicial():
     return render_template("telaInicial.html")
 
 @app.route("/historico")
-
 def pagina_historico():
     OSfinalizado = buscar_os_finalizado()
     return render_template("historico.html", OSfinalizado = OSfinalizado)
 
 @app.route("/api/get/info_manutencao/<int:id_ordem>", methods=["GET"])
-
 def api_get_info_manutencao(id_ordem):
     try:
         informacoes = buscar_os_finalizado_ind(id_ordem)
