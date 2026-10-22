@@ -82,6 +82,178 @@
             </div>
 
             <!-- DETALHES DA MÁQUINA (MODAL) -->
+            
+<!-- DETALHES DA MÁQUINA (MODAL) -->
+            <div class="machine-details">
+                <!-- CABEÇALHO -->
+                <div class="machine-details__logo">
+                    <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="machine-details__logo-image">
+                    <h1 class="machine-details__logo-title">PRISMA</h1>
+                    <button class="machine-details__close-button" aria-label="Fechar detalhes">
+                        <span class="material-symbols-outlined">
+                            close
+                        </span>
+                    </button>
+                </div>
+
+                <!-- INFORMAÇÕES PRIMÁRIAS -->
+                <div class="machine-details__primary-info">
+                    <div class="machine-details__img-machine">
+                        <img src="/static/src/img/torno_mecanico.jpg" alt="Injetora de Plástico - Modelo H500"
+                            class="machine-details__info-image">
+                    </div>
+                    <div class="machine-details__info-content">
+                        <div class="machine-details__type">
+                            <h2 class="machine-details__type-title">TIPO:</h2>
+                            <p class="machine-details__type-text">Injetora de Plástico - Modelo H500</p>
+                        </div>
+                        <div class="machine-details__number">
+                            <h2 class="machine-details__number-title">PATRIMÔNIO:</h2>
+                            <p class="machine-details__number-text">MAQ-SP-0014</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ESTATÍSTICAS E MANUAL (COM BOTÕES DE AÇÃO) -->
+                <div class="machine-details__statistics">
+                    <div class="machine-details__statistics-header">
+                        <h3 class="machine-details__statistics-title">ESTATÍSTICAS DA MÁQUINA</h3>
+                        <div class="machine-details__statistics-actions">
+                            <!-- BOTÃO EDITAR (LÁPIS) -->
+                            <button class="machine-details__action-button machine-details__action-button--edit"
+                                aria-label="Editar estatísticas da máquina">
+                                <span class="material-symbols-outlined">
+                                    edit_square
+                                </span>
+                            </button>
+                            <!-- BOTÃO DELETAR (LIXEIRA) -->
+                            <button class="machine-details__action-button machine-details__action-button--delete"
+                                aria-label="Excluir máquina">
+                                <span class="material-symbols-outlined">
+                                    delete
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="machine-details__stat-container">
+                        <!-- Lado Esquerdo: Indicadores de Funcionamento -->
+                        <div class="machine-details__stat-group">
+                            <div class="machine-details__stat-item">
+                                <span class="machine-details__stat-icon">🕒</span>
+                                <div class="machine-details__stat-text-group">
+                                    <span class="machine-details__stat-label">Tempo de Produção:</span>
+                                    <strong class="machine-details__stat-value">145h</strong>
+                                </div>
+                            </div>
+
+                            <div class="machine-details__stat-item">
+                                <span class="machine-details__stat-icon">🕒</span>
+                                <div class="machine-details__stat-text-group">
+                                    <span class="machine-details__stat-label">Total Horas Funcionando:</span>
+                                    <strong class="machine-details__stat-value">1240h</strong>
+                                </div>
+                            </div>
+
+                            <div class="machine-details__stat-item">
+                                <span class="machine-details__stat-icon">⚙️</span>
+                                <div class="machine-details__stat-text-group">
+                                    <span class="machine-details__stat-label">Peças Alteradas (Total):</span>
+                                    <strong class="machine-details__stat-value">8</strong>
+                                </div>
+                            </div>
+
+                            <div class="machine-details__stat-item">
+                                <span class="machine-details__stat-icon">🚫</span>
+                                <div class="machine-details__stat-text-group">
+                                    <span class="machine-details__stat-label">Tempo de Parada:</span>
+                                    <strong class="machine-details__stat-value">12h</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lado Direito: Parada e Manuais -->
+                        <div class="machine-details__stat-group">
+                            <div class="machine-details__stat-item">
+                                <span class="machine-details__stat-icon">💵</span>
+                                <div class="machine-details__stat-text-group">
+                                    <span class="machine-details__stat-label">Custo Acumulado:</span>
+                                    <strong class="machine-details__stat-value">R$ 15.500,00</strong>
+                                </div>
+                            </div>
+                            
+                            <div class="machine-details__stat-item machine-details__stat-item--manual-machines">
+                                <h4 class="machine-details__manual-title">MANUAL DA MÁQUINA</h4>
+                                <a href="#" class="machine-details__manual-link">
+                                    <span>MANUAL_DE_OPERACAO.PDF</span>
+                                    <span class="machine-details__manual-icon">📥</span>
+                                </a>
+                                <a href="#" class="machine-details__manual-link">
+                                    <span>MANUAL_DE_OPERACAO.PDF</span>
+                                    <span class="machine-details__manual-icon">📄</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MANUTENÇÃO PREVENTIVA -->
+                <div class="machine-details__prev-maintance">
+                    <h3 class="machine-details__prev-maintance-title">MANUTENÇÃO PREVENTIVA AGENDADA</h3>
+                    <p class="machine-details__prev-maintance-text">Status: Agendada - 15/12/2024</p>
+                </div>
+
+                <!-- HISTÓRICO DE MANUTENÇÕES -->
+                <div class="machine-details__maintance-history">
+                    <h3 class="machine-details__maintance-history-title">HISTÓRICO DE MANUTENÇÕES (Últimas 5)</h3>
+                    <table class="machine-details__maintances-list">
+                        <thead>
+                            <tr>
+                                <th scope="col">Data</th>
+                                <th scope="col">Tipo de Manutenção</th>
+                                <th scope="col">Técnico</th>
+                                <th scope="col">Observações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>10/11/2024</td>
+                                <td>Preventiva</td>
+                                <td>João Silva</td>
+                                <td>Verificação de óleo</td>
+                            </tr>
+                            <tr>
+                                <td>05/10/2024</td>
+                                <td>Corretiva</td>
+                                <td>Ana Costa</td>
+                                <td>Troca de rolamento</td>
+                            </tr>
+                            <tr>
+                                <td>05/10/2024</td>
+                                <td>Corretiva</td>
+                                <td>Ana Costa</td>
+                                <td>Troca de rolamento</td>
+                            </tr>
+                            <tr>
+                                <td>03/10/2024</td>
+                                <td>Preventiva</td>
+                                <td>João Silva</td>
+                                <td>Verificação de óleo</td>
+                            </tr>
+                            <tr>
+                                <td>05/10/2024</td>
+                                <td>Corretiva</td>
+                                <td>Ana Costa</td>
+                                <td>Troca de rolamento</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+            <!-- EDIÇÃO DE MÁQUINA MODAL -->
             <div class="machine-edit">
                 <!-- CABEÇALHO -->
                 <div class="machine-edit__logo">
