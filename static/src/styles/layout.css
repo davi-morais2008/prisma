@@ -170,7 +170,7 @@ main {
     /* Dropdown escondido por padrão no mobile */
     .dropdown-menu {
         display: none;
-        background-color: #334155;
+        background-color: #07244d;
         flex-direction: column;
     }
 

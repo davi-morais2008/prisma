@@ -45,7 +45,6 @@ def pagina_login_tecnico():
 def pagina_recuperar_senha():
     return render_template('recuperacao_senha.html')
 
-
 @app.route('/maquinas', methods = ['GET'])
 def pagina_maquinas():
     return render_template('maquinas.html')
