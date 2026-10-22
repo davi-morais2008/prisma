@@ -39,5 +39,8 @@ def pagina_login_tecnico():
     
 
 
+@app.route('/maquinas', methods = ['GET'])
+def pagina_maquians():
+    return render_template('maquinas.html')
 
 app.run(host="0.0.0.0", port=8080, debug=True)
