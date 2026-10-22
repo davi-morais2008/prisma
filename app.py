@@ -40,8 +40,24 @@ def pagina_login_tecnico():
     
     if login_usuario(login_do_usuario,senha_do_usuario): 
         return redirect('/login')
-    
 
 
+
+@app.route('/recuperar_senha', methods = ['GET'])
+def pagina_recuperar_senha():
+    return render_template('recuperacao_senha.html')
+
+
+@app.route('/maquinas', methods = ['GET'])
+def pagina_maquinas():
+    return render_template('maquinas.html')
+
+@app.route('/perfil', methods = ['GET'])
+def pagina_usuarios():
+    return render_template('usuarios.html')
+
+@app.route('/calendario')
+def pagina_calendario():
+    return render_template('calendario.html')
 
 app.run(host="0.0.0.0", port=8080, debug=True)
