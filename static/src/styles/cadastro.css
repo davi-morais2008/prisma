@@ -233,6 +233,17 @@
     filter: drop-shadow(0 20px 30px rgba(10, 8, 75, 0.15));
 }
 
+
+
+.dark_mode_button{
+    position:relative;
+    left: -75px;
+    top: 0px;
+    cursor: pointer;
+
+}
+
+
 @view-transition {
     navigation: auto;
 }
