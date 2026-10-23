@@ -15,12 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
     locale: "pt-br",
     selectable: true,
     editable: true,
-    height: "100%", // Garante que o calendário não estoure a tela
+    height: "100%",
 
     headerToolbar: {
-      left: "prev,next today",
-      center: "title",
-      right: "dayGridMonth,timeGridWeek,timeGridDay"
+    left: 'prev,today,next',
+    center: 'title',
+    right: 'dayGridMonth,timeGridWeek,timeGridDay'
     },
 
     buttonText: {

@@ -1,23 +1,17 @@
 from database.conexao import conectar
 
-def recuperar_senha(cpf):
-    """
-    Função SELECT para retornar o email do usuario logado.
 
-    Parâmetros:
-        cpf(str): CPF do Usuário.
-
-    Retorna:
-        bool: True se o usuário foi encontrado, False se ocorreu algum erro.
-    """
+def buscar_usuario_por_email(email):
     conexao, cursor = conectar()
-
-    cursor.execute("SELECT email FROM usuarios WHERE cpf = %s", (cpf,))
-    resposta = cursor.fetchone()
+    cursor.execute("SELECT * FROM usuarios WHERE email = %s", (email,))
+    usuario = cursor.fetchone()
+    cursor.close()
     conexao.close()
+    return usuario
 
-    if resposta == None:
-        return False
-    else:
-        return True
-    
+def atualizar_senha_usuario(email, nova_senha_hash):
+    conexao, cursor = conectar()
+    cursor.execute("UPDATE usuarios SET senha = %s WHERE email = %s", (nova_senha_hash, email))
+    conexao.commit()
+    cursor.close()
+    conexao.close()
