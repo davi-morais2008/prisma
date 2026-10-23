@@ -133,7 +133,7 @@ body {
 
 .profile-card__tag--link:hover,
 .profile-card__tag--link:focus {
-    background-color: var(--color-secondary);
+    background-color: var(--color-accent-orange);
     color: var(--color-text-light);
 }
 
