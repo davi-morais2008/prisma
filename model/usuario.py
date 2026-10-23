@@ -1,6 +1,6 @@
 from database.conexao import conectar
 
-def buscar_usuario():
+def buscar_usuario(usuario=False):
     """
     Busca todos os usuários cadastrados no banco de dados juntamente com suas respectivas especialidades.
 
@@ -10,10 +10,20 @@ def buscar_usuario():
     """
 
     conexao, cursor = conectar()
+    if usuario:
+        cursor.execute("""SELECT 
+    IF(
+        EXISTS (SELECT 1 FROM usuarios WHERE cpf = %s), 
+        (SELECT cpf FROM usuarios WHERE cpf = %s), 
+        (SELECT email FROM usuarios WHERE email = %s)
+    ) AS resultado;""", (usuario[0], usuario[0], usuario[1]))
+        
+        resposta = cursor.fetchall()
+        return(resposta)
     cursor.execute("""SELECT usuarios.cpf, usuarios.nome, usuarios.email, usuarios.senha, especialidades.especialidade FROM usuarios
-                      INNER JOIN tecnicos_especialidades 
+                      LEFT JOIN tecnicos_especialidades 
                         ON usuarios.cpf = tecnicos_especialidades.cpf
-                      INNER JOIN especialidades 
+                      LEFT JOIN especialidades 
                         ON tecnicos_especialidades.id_especialidade = especialidades.id_especialidade""")
     resposta = cursor.fetchall()
     conexao.commit()
