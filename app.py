@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.usuario import buscar_usuario
+from model.usuario import buscar_usuario, 
+from model.cadastro import cadastrar_usuario
 app = Flask(__name__)
 
 app.secret_key = 'PRISMA_maintence'
@@ -44,6 +45,25 @@ def post_login():
             flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
             return redirect('/login')
 
+@app.route('/cadastro/post', methods = ['POST'])
+def post_cadastro():
+    usuarios = buscar_usuario()
+    username = request.form.get("cadastro-nome")
+    user_email = request.form.get("cadastro-email")
+    user_cpf = request.form.get("cadastro-cpf")
+    user_pwd = request.form.get("cadastro-pwd")
+    user_confirm_pwd = request.form.get("cadastro-confirmpwd")
+    for user in usuarios:
+        if user['cpf'] == user_cpf:
+            flash ('Este CPF já está cadastro no sistema. Tente o Cadastro Novamente!', 'error')
+            return redirect('/login')
+        if user['email'] == user_email:
+            flash('Este email já está vinculado a uma conta. Tente o Cadastro Novamente!', 'error')
+            return redirect('/login')
+        elif user_pwd == user_confirm_pwd:
+            cadastrar_usuario(user_cpf, username, )
+
+
 
 
 @app.route('/recuperacaoSenha', methods = ['GET'])
@@ -62,5 +82,7 @@ def pagina_usuarios():
 @app.route('/calendario')
 def pagina_calendario():
     return render_template('calendario.html')
+
+
 
 app.run(host="0.0.0.0", port=8080, debug=True)
