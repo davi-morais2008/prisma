@@ -63,10 +63,11 @@ def consultar_ordem_servico() -> list[tuple]:
     os.id_ordem,
     tm.tipo_maquina AS nome_maquina,
     m.numero_patrimonio,
-    f.falha AS descricao_falha,
+    f.falha,
     u.nome AS tecnico_responsavel,
     os.status_ordem,
     os.tipo_manutencao,
+    os.descricao_problema,
     os.data_inicio_manutencao
 FROM ordens_servicos os
 INNER JOIN maquinas m ON os.id_maquina = m.id_maquina
@@ -76,6 +77,7 @@ INNER JOIN usuarios u ON os.cpf = u.cpf;
 ''')
     resposta = cursor.fetchall()
     return resposta
+
 
 def atribuir_ordem_servico(cpf:str, id:int) -> bool:
     """
