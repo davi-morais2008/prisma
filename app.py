@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-
+from model.usuario import buscar_usuario
 app = Flask(__name__)
 
 app.secret_key = 'PRISMA_maintence'
@@ -13,13 +13,11 @@ def pagina_inicial():
     return render_template("telaInicial.html")
 
 @app.route("/historico")
-
 def pagina_historico():
     OSfinalizado = buscar_os_finalizado()
     return render_template("historico.html", OSfinalizado = OSfinalizado)
 
 @app.route("/api/get/info_manutencao/<int:id_ordem>", methods=["GET"])
-
 def api_get_info_manutencao(id_ordem):
     try:
         informacoes = buscar_os_finalizado_ind(id_ordem)
@@ -28,18 +26,25 @@ def api_get_info_manutencao(id_ordem):
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route('/')
-
 @app.route('/login')
 def pagina_login():
     return render_template('cadastroLogin.html')
 
-@app.route('/login/post', methods = ['POST'])
-def pagina_login_tecnico():
-    login_do_usuario = request.form.get('cpf')
-    senha_do_usuario = request.form.get('senha')
+@app.route('/login/post', methods=['POST'])
+def post_login():
+    usuarios = buscar_usuario()
+    usuario = request.form.get('login_cpf')
+    senha = request.form.get('login_senha')
     
-    if login_usuario(login_do_usuario,senha_do_usuario): 
-        return redirect('/login')
+    for user in usuarios:
+        if user['cpf'] == usuario and user['senha'] == senha:
+            session['user'] = (usuario, senha)
+            return redirect('/telaInicial')
+        else:
+            flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
+            return redirect('/login')
+
+
 
 @app.route('/recuperacaoSenha', methods = ['GET'])
 def pagina_recuperar_senha():
@@ -53,8 +58,13 @@ def pagina_maquinas():
 def pagina_usuarios():
     return render_template('usuarios.html')
 
+    
 @app.route('/calendario')
 def pagina_calendario():
     return render_template('calendario.html')
+
+@app.route('/perfil')
+def pagina_perfil():
+    return render_template('perfil.html')
 
 app.run(host="0.0.0.0", port=8080, debug=True)
