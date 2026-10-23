@@ -15,34 +15,16 @@
         <input class="home__search-bar" type="search" placeholder="Pesquisar">
 
         <div class="home__orders">
-
-            <article class="work-order work-order--baixa">
+            {% for os in ordem_servico %}
+            <article class="work-order work-order--baixa" id_order="{{os.id_ordem}}">
                 <h3 class="work-order__title">2008-09-09 00:00:00</h3>
                 <div class="work-order__description">
-                    <p>Responsável: Guxta Pera</p>
-                    <p>Falha: Falha no freio</p>
-                    <p>Número Patrimônio: 27384938244</p>
+                    <p>Responsável: {{os.tecnico_responsavel}}</p>
+                    <p>Falha: {{os.falha}}</p>
+                    <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
                 </div>
             </article>
-
-            <article class="work-order work-order--media">
-                <h3 class="work-order__title">2008-09-09 00:00:00</h3>
-                <div class="work-order__description">
-                    <p>Responsável: Fernando Odilon</p>
-                    <p>Falha: Falha no freio</p>
-                    <p>Número Patrimônio: 27384938244</p>
-                </div>
-            </article>
-
-            <article class="work-order work-order--alta">
-                <h3 class="work-order__title">2008-09-09 00:00:00</h3>
-                <div class="work-order__description">
-                    <p>Responsável: Davi Morais</p>
-                    <p>Falha: Falha no freio</p>
-                    <p>Número Patrimônio: 27384938244</p>
-                </div>
-            </article>
-
+            {% endfor %}
         </div>
 
         <!-- Modal de Detalhes da Ordem de Serviço (OS) -->
