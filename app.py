@@ -41,42 +41,37 @@ def post_login():
         if user['cpf'] == usuario and user['senha'] == senha:
             session['user'] = (usuario, senha)
             return redirect('/telaInicial')
-        else:
-            flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
-            return redirect('/login')
+    flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
+    return redirect('/login')
+
 
 @app.route('/cadastro/post', methods = ['POST'])
 def post_cadastro():
-    usuarios = buscar_usuario()
     username = request.form.get("cadastro-nome")
     user_email = request.form.get("cadastro-email")
     user_cpf = request.form.get("cadastro-cpf")
     user_pwd = request.form.get("cadastro-pwd")
     user_confirm_pwd = request.form.get("cadastro-confirmpwd")
-    print(buscar_usuario(('0000050000', 'admin.root@aluno.senai.br')))
+    if buscar_usuario((user_cpf, user_email))[0]['resultado'] == user_cpf:
+        flash ('Este CPF já está cadastrado no sistema. Tente o Cadastro Novamente!', 'error')
+        return redirect('/login')
+    if buscar_usuario((user_cpf, user_email))[0]['resultado'] == user_email:
+        flash('Este email já está vinculado a uma conta. Tente o Cadastro Novamente!', 'error')
+        return redirect('/login')
+    if user_pwd != user_confirm_pwd:
+        flash('As senhas não correspondem entre si. Tente o Cadastro Novamente!', 'error')
+        return redirect('/login')
+    try:
+        if cadastrar_usuario(user_cpf, username, user_email, user_pwd):
+            flash('Efetue o Login para acessar o Sistema', 'sucsses')
+            return redirect('/login')
+        else:
+            flash('Erro ao cadastrar-se. Tente Novamente', 'error')
+            return redirect('/login')
+    except Exception as e:
+        flash('Erro ao cadastrar-se. Tente Novamente', 'error')
     return redirect('/login')
-    # for user in usuarios:
-    #     print(user['cpf'])
-    #     print(user_cpf)
-    #     if user['cpf'] == user_cpf:
-    #         flash ('Este CPF já está cadastro no sistema. Tente o Cadastro Novamente!', 'error')
-    #         return redirect('/login')
-    #     if user['email'] == user_email:
-    #         flash('Este email já está vinculado a uma conta. Tente o Cadastro Novamente!', 'error')
-    #         return redirect('/login')
-    #     elif user_pwd == user_confirm_pwd:
-    #         try:
-    #             if cadastrar_usuario(user_cpf, username, user_email, user_pwd):
-    #                 flash('Efetue o Login para acessar o Sistema', 'sucsses')
-    #                 return redirect('/login')
-    #             else:
-    #                 flash('Erro ao cadastrar-se. Tente Novamente', 'error')
-    #                 return redirect('/login')
-    #         except Exception as e:
-    #             flash('Erro ao cadastrar-se. Tente Novamente', 'error')
-    # return redirect('/login')
-
-
+    
 
 
 
