@@ -10,7 +10,7 @@ def buscar_usuario():
     """
 
     conexao, cursor = conectar()
-    cursor.execute("""SELECT usuarios.cpf, usuarios.nome, usuarios.sobrenome, usuarios.email, especialidades.especialidade FROM usuarios
+    cursor.execute("""SELECT usuarios.cpf, usuarios.nome, usuarios.email, usuarios.senha, especialidades.especialidade FROM usuarios
                       INNER JOIN tecnicos_especialidades 
                         ON usuarios.cpf = tecnicos_especialidades.cpf
                       INNER JOIN especialidades 
@@ -22,9 +22,7 @@ def buscar_usuario():
     return resposta
 
 
-from database.conexao import conectar
-
-def atualizar_usuario(cpf, nome,  email, status_usuario):
+def atualizar_usuario(cpf, nome,  email):
     """
     Altera as informações de um usuário no banco de dados.
 
@@ -32,7 +30,6 @@ def atualizar_usuario(cpf, nome,  email, status_usuario):
         cpf (str): CPF do usuário que será atualizado.
         nome (str): Novo nome.
         email (str): Novo email.
-        status_usuario (str): Novo status.
 
     Retorna:
         bool: True se a atualização foi realizada com sucesso, False em caso de erro.
@@ -41,9 +38,9 @@ def atualizar_usuario(cpf, nome,  email, status_usuario):
     try:
         cursor.execute("""
             UPDATE usuarios 
-            SET nome = %s,  email = %s, status_usuario = %s 
+            SET nome = %s,  email = %s
             WHERE cpf = %s
-        """, (nome, email, status_usuario, cpf))
+        """, (nome, email, cpf))
         
         conexao.commit()
         return True
@@ -53,3 +50,4 @@ def atualizar_usuario(cpf, nome,  email, status_usuario):
         return False
     finally:
         conexao.close()
+

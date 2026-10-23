@@ -35,11 +35,11 @@
                 <img class="user-card__avatar"
                     src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
                     alt="Foto de perfil do técnico João">
-                
+
                 <div class="user-card__info">
                     <h3 class="user-card__name">João da Silva</h3>
                     <p class="user-card__specialty">Manutenção de Redes</p>
-                    
+
                     <div class="user-card__details">
                         <div class="user-card__tag">
                             <span class="material-symbols-outlined" aria-hidden="true">badge</span>
@@ -51,15 +51,18 @@
                         </a>
                     </div>
 
-                    <p class="user-card__text">Especialista sênior em infraestrutura de redes e cabeamento estruturado com mais de 10 anos de experiência na área.</p>
-                    
+                    <p class="user-card__text">Especialista sênior em infraestrutura de redes e cabeamento estruturado
+                        com mais de 10 anos de experiência na área.</p>
+
                     <!-- Ações do Card -->
                     <div class="user-card__actions">
-                        <button class="button button--secondary button--small" type="button" aria-label="Editar João da Silva">
+                        <button class="button button--secondary button--small" type="button"
+                            aria-label="Editar João da Silva">
                             <span class="material-symbols-outlined" aria-hidden="true">edit</span>
                             Editar
                         </button>
-                        <button class="button button--danger button--small" type="button" aria-label="Inativar João da Silva">
+                        <button class="button button--danger button--small" type="button"
+                            aria-label="Inativar João da Silva">
                             <span class="material-symbols-outlined" aria-hidden="true">delete</span>
                             Inativar
                         </button>
@@ -72,7 +75,7 @@
                 <img class="user-card__avatar"
                     src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80"
                     alt="Foto de perfil da técnica Maria">
-                
+
                 <div class="user-card__info">
                     <h3 class="user-card__name">Maria Oliveira</h3>
                     <p class="user-card__specialty">Suporte Nível 2</p>
@@ -88,14 +91,17 @@
                         </a>
                     </div>
 
-                    <p class="user-card__text">Profissional certificada, responsável por escalonamento de incidentes complexos e gestão de acesso.</p>
+                    <p class="user-card__text">Profissional certificada, responsável por escalonamento de incidentes
+                        complexos e gestão de acesso.</p>
 
                     <div class="user-card__actions">
-                        <button class="button button--secondary button--small" type="button" aria-label="Editar Maria Oliveira">
+                        <button class="button button--secondary button--small" type="button"
+                            aria-label="Editar Maria Oliveira">
                             <span class="material-symbols-outlined" aria-hidden="true">edit</span>
                             Editar
                         </button>
-                        <button class="button button--danger button--small" type="button" aria-label="Inativar Maria Oliveira">
+                        <button class="button button--danger button--small" type="button"
+                            aria-label="Inativar Maria Oliveira">
                             <span class="material-symbols-outlined" aria-hidden="true">delete</span>
                             Inativar
                         </button>
@@ -104,32 +110,51 @@
             </article>
         </section>
     </main>
-    <!-- Modal de Detalhes do Usuário -->
-        <aside id="user-modal" class="modal" aria-labelledby="modal-title" aria-modal="true" role="dialog">
+<!-- MODAL EDIÇÃO DE USUÁRIO -->
+<div class="user-edit" id="modalEditUser" role="dialog" aria-modal="true" aria-labelledby="user-edit-title">
+    <div class="user-edit__overlay" aria-label="Fechar edição"></div>
+    
+    <div class="user-edit__content">
+        <!-- CABEÇALHO -->
+        <header class="user-edit__header">
+            <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="user-edit__logo">
+            <h2 id="user-edit-title" class="user-edit__title">EDITAR USUÁRIO</h2>
+            <button type="button" class="user-edit__close-button" aria-label="Fechar modal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </header>
 
-            <div class="modal__overlay" aria-label="Fechar modal"></div>
-
-
-            <div class="modal__content">
-                <button class="modal__close" aria-label="Fechar detalhes do usuário">
-                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
-                </button>
-
-                <div class="modal__header">
-                    <img class="modal__avatar"
-                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80"
-                        alt="Foto de perfil ampliada do técnico">
-                </div>
-
-                <div class="modal__body">
-                    <h2 id="modal-title" class="modal__title">João da Silva</h2>
-                    <p class="modal__subtitle">Manutenção de Redes</p>
-                    
-                    <div class="modal__description">
-                        <p>Especialista sênior em infraestrutura de redes e cabeamento estruturado com mais de 10 anos de experiência na área. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    </div>
-                </div>
+        <!-- FORMULÁRIO -->
+        <form class="user-edit__form">
+            <div class="user-edit__field">
+                <label for="user-edit-name" class="user-edit__label">Nome Completo</label>
+                <input type="text" id="user-edit-name" class="user-edit__input" value="João da Silva" required>
             </div>
-        </aside>
-</body>
+
+            <div class="user-edit__field">
+                <label for="user-edit-specialty" class="user-edit__label">Especialidade</label>
+                <select id="user-edit-specialty" class="user-edit__select" required>
+                    <option value="" disabled selected>Carregando especialidades...</option>
+                </select>
+            </div>
+
+            <div class="user-edit__field">
+                <label for="user-edit-email" class="user-edit__label">E-mail</label>
+                <input type="email" id="user-edit-email" class="user-edit__input" value="joao.silva@exemplo.com" required>
+            </div>
+
+            <div class="user-edit__actions">
+                <button type="submit" class="button button--secondary">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../static/src/js/usuarios.js"></script>
+</body> 
+
 </html>

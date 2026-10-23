@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRISMA - Redefinir Senha</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='src/styles/recuperacaoSenha.css') }}">
+</head>
+<body>
+    <main class="container_main">
+        <section class="section_logo">
+            <div class="container_logo">
+                <img class="logo" src="{{ url_for('static', filename='src/img/EmblemaPrisma.png') }}" alt="Logo Prisma">
+            </div>
+        </section>
+
+        <form class="container_login" action="{{ url_for('redefinir_senha', token=token) }}" method="POST">
+            <div class="container_titulo">
+                <h1>Criar nova senha</h1>
+                <p>Digite a sua nova senha abaixo para atualizar sua conta.</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}" style="color: red; margin-bottom: 10px;">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <div class="container_insert">
+                <label for="senha">Nova Senha:</label>
+                <input
+                    class="insert"
+                    type="password"
+                    id="senha"
+                    name="senha"
+                    required
+                    placeholder="Digite a nova senha"
+                >
+            </div>
+
+            <div>
+                <button class="botao_logar botoes" type="submit">
+                    Salvar Nova Senha
+                </button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
