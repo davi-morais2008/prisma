@@ -1,13 +1,12 @@
 from database.conexao import conectar
 
-def cadastrar_usuario(cpf:str, nome:str, sobrenome:str, email:str, senha:str) -> bool:
+def cadastrar_usuario(cpf:str, nome:str, email:str, senha:str) -> bool:
     """
     Cadastra um novo usuário na tabela 'usuarios' do banco de dados.
 
     Parâmetros:
         cpf (str): CPF do usuário.
         nome (str): Primeiro nome do usuário.
-        sobrenome (str): Sobrenome do usuário.
         email (str): Endereço de e-mail do usuário.
         senha (str): Senha de acesso do usuário.
 
@@ -16,8 +15,8 @@ def cadastrar_usuario(cpf:str, nome:str, sobrenome:str, email:str, senha:str) ->
     """
     conexao, cursor = conectar()
     try:
-        cursor.execute('''INSERT INTO usuarios(cpf, nome, sobrenome, email, senha)
-          VALUES(%s, %s, %s, %s, %s)''', (cpf, nome, sobrenome, email, senha))
+        cursor.execute('''INSERT INTO usuarios(cpf, nome, email, senha)
+          VALUES(%s, %s, %s, %s)''', (cpf, nome, email, senha))
         conexao.commit()
         conexao.close()
         return True
