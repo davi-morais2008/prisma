@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
+from model.OS import consultar_ordem_servico
 from model.usuario import buscar_usuario
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
 from model.consultaMaquinas import consultar_maquinas
@@ -82,7 +83,16 @@ def redefinir_senha(token):
 
 @app.route("/telaInicial")
 def pagina_inicial():
-    return render_template("telaInicial.html")
+    ordem_servico = consultar_ordem_servico()
+    return render_template("telaInicial.html", ordem_servico = ordem_servico)
+
+@app.route("/api/get/ordens_servico/", methods=["GET"])
+def api_get_ordem():
+    try:
+        ordens = consultar_ordem_servico()
+        return jsonify(ordens), 200
+    except Exception as e:
+            return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route("/historico")
 def pagina_historico():
