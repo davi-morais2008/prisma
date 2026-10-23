@@ -1,11 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard</title>
+    
+    <link rel="stylesheet" href="../static/src/styles/painelGeral.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script src="/static/src/js/painelGeral.js" defer></script>
 </head>
 <body>
-    
+
+    <main class="dashboard_container">
+        <header class="dashboard_header">
+            <h1 class="titulo_dashboard">Painel de Desempenho</h1>
+            <button class="btn_refresh" onclick="carregarDadosDashboard()">Atualizar Dados</button>
+        </header>
+
+        <!-- Cards de Indicadores -->
+        <section class="kpi_grid">
+            <article class="kpi_card">
+                <span class="kpi_titulo">Total de Vendas</span>
+                <span class="kpi_valor" id="kpi-vendas">R$ 0,00</span>
+            </article>
+            <article class="kpi_card">
+                <span class="kpi_titulo">Novos Clientes</span>
+                <span class="kpi_valor" id="kpi-clientes">0</span>
+            </article>
+            <article class="kpi_card">
+                <span class="kpi_titulo">Taxa de Conversão</span>
+                <span class="kpi_valor" id="kpi-conversao">0%</span>
+            </article>
+        </section>
+
+        <!-- Área do Gráfico -->
+        <section class="chart_card">
+            <canvas id="meuGrafico"></canvas>
+        </section>
+    </main>
+
 </body>
-</html>
+</html> 
