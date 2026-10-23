@@ -16,7 +16,7 @@ def cadastrar_usuario(cpf:str, nome:str, email:str, senha:str) -> bool:
     conexao, cursor = conectar()
     try:
         cursor.execute('''INSERT INTO usuarios(cpf, nome, email, senha)
-          VALUES(%s, %s, %s, %s)''', (cpf, nome, email, senha))
+        VALUES(%s, %s, %s, %s)''', (cpf, nome, email, senha))
         conexao.commit()
         conexao.close()
         return True
