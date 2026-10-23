@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Perfil</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_circle,badge,mail,delete,edit" />
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_circle,badge,mail" />
+    <link rel="stylesheet" href="../static/src/styles/perfil.css">
 </head>
 <body>
-    <main class="profile-page">
-        <section class="profile-card" aria-label="Informações do seu perfil">
+    <main class="profile">
+        <article class="profile-card" aria-label="Informações do utilizador">
             
-            <img class="profile-card__avatar" 
-                 src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80" 
-                 alt="Sua foto de perfil">
-            
-            <div class="profile-card__content">
-                <header class="profile-card__header">
-                    <h1 class="profile-card__name">João da Silva</h1>
-                    <p class="profile-card__role">Manutenção de Redes</p>
-                </header>
-                
+            <div class="profile-card__avatar-wrapper">
+                <img class="profile-card__avatar" 
+                     src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80" 
+                     alt="Foto de perfil de João da Silva">
+            </div>
+
+            <h1 class="profile-card__name">João da Silva</h1>
+            <h2 class="profile-card__role">Manutenção de Redes</h2>
+
+            <div class="profile-card__details">
                 <address class="profile-card__contact">
                     <div class="profile-card__tag">
                         <span class="material-symbols-outlined" aria-hidden="true">badge</span>
@@ -32,12 +32,18 @@
                     </a>
                 </address>
 
-                <p class="profile-card__description">
-                    Especialista sênior em infraestrutura de redes e cabeamento estruturado com mais de 10 anos de experiência na área.
-                </p>
+                <div class="profile-card__actions">
+                    
+                    <button class="button button--secondary" type="button" aria-label="Editar perfil">
+                        <span class="material-symbols-outlined" aria-hidden="true">edit</span>
+                        Editar
+                    </button>
+
+                </div>
+                
                 </div>
             </div>
-        </section>
+        </article>
     </main>
 </body>
 </html>
