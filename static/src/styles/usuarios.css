@@ -533,21 +533,6 @@ body {
     line-height: 1.6;
 }
 
-/* ========================================
-   COMPONENTE: MODAL ACTIONS
-======================================== */
-.modal__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--font-size-sm);
-    margin-top: var(--font-size-lg);
-    width: 100%;
-    justify-content: center;
-}
 
-/* Ajuste opcional para garantir que o modal de aviso fique harmonioso */
-#modal-inactivate .modal__content {
-    max-width: 450px;
-    padding: var(--font-size-xl);
-    
-}
+/* ========================================
+   COMPONENTE: USER EDIT MODAL
