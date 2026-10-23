@@ -133,14 +133,15 @@ workOrders.forEach(order => {
 
     });
 });
-// fechar modal OS
+// Fechar modal OS
 btnClose.addEventListener('click', closeOrderModal)
 overlayModal.addEventListener('click', closeOrderModal)
 btnDelete.addEventListener('click', openDeleteModal) // abre o modal para confirmar exclusão
 
-// abrir modal de edição
+// Abrir modal de edição
 btnEdit.addEventListener('click', openEditModal)
-// fechar modal de edição
+
+// Fechar modal de edição
 btnCloseUpdate.addEventListener('click', closeEditModal)
 overlayUpdate.addEventListener('click', closeEditModal)
 btnCancelUpdate.addEventListener('click', closeEditModal)
