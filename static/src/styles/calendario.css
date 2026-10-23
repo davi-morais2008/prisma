@@ -1,10 +1,6 @@
 @import 'variables.css';
 
 /* Trava de scroll usando Dynamic Viewport Units (dvh) */
-html, body {
-  height: 100dvh;
-  overflow: hidden;
-}
 
 * {
   box-sizing: border-box;
@@ -13,18 +9,16 @@ html, body {
   font-family: var(--font-family-base);
 }
 
-body {
-  background-color: var(--color-bg-main);
-  color: var(--color-text-primary);
+.calendar {
+  width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: clamp(8px, 2vw, 16px);
+  flex-direction: column;
 }
 
 /* Card Principal Responsivo com min() */
 .page-container {
-  width: min(100%, 1200px);
+  width: min(90%, 1200px);
   height: calc(100dvh - clamp(16px, 4vw, 32px));
   display: flex;
   flex-direction: column;
@@ -32,11 +26,11 @@ body {
   border-radius: clamp(12px, 3vw, var(--border-radius-lg));
   padding: clamp(12px, 2.5vw, 20px);
   box-shadow: var(--shadow-md);
-  overflow: hidden;
+  margin: 20px 0;
 }
 
 .page-container h1 {
-  font-size: var(--font-size-xl);
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: var(--font-weight-bold);
   color: var(--color-primary);
   margin-bottom: clamp(6px, 1.5vw, 12px);
@@ -64,9 +58,13 @@ body {
   flex-wrap: wrap;
   width: 98%;
   gap: 8px;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   margin-bottom: clamp(8px, 1.5vw, 16px) !important;
+}
+
+.fc-scrollgrid{
+  overflow: hidden;
 }
 
 .fc .fc-toolbar-title {
@@ -137,6 +135,25 @@ body {
   display: none;
 }
 
+.fc-toolbar-chunk{
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.fc-button-group button{
+  margin: 2px !important;
+  font-size: 1rem !important;
+}
+
+.fc-toolbar-title {
+  text-transform: uppercase;
+  font-size: clamp(0.75rem, 2.5vw, 1.25rem) !important;
+  text-align: center;
+}
+
 /* Status das Cores */
 .evento-danger {
   background-color: var(--color-status-danger) !important;
@@ -178,7 +195,6 @@ body {
   align-items: center;
   z-index: 9999;
   padding: clamp(12px, 3vw, 24px);
-  animation: fadeIn 0.2s ease-in-out;
 }
 
 .modal-container {
@@ -266,6 +282,62 @@ body {
 
 .btn-secondary:hover {
   background-color: #dce3fe;
+}
+
+@media (max-width: 960px) {
+  .fc-button-group button{
+    margin: 2px !important;
+    font-size: clamp(0.25rem, 2.5vw, 0.5rem) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .fc-toolbar-chunk{
+    margin: 0 !important;
+  }
+  
+  .fc-button-group{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+
+  .fc-button-group button{
+    margin: 0 !important;
+    font-size: clamp(0.5rem, 2.5vw, 0.75rem) !important;
+  }
+
+  .fc-prev-button {
+    order: 1;
+  }
+
+  .fc-next-button {
+    order: 2;
+  }
+
+  .fc-today-button {
+    order: 3;
+    grid-column: span 2;
+    width: 100%;
+  }
+
+  .fc-dayGridMonth-button{
+    order: 2;
+  }
+
+  .fc-timeGridWeek-button{
+    order: 3;
+    grid-column: span 2;
+    width: 100%;
+  }
+
+  .fc-timeGridDay-button{
+    order: 1;
+  }
+
+  .fc-col-header-cell-cushion{
+    font-size: 10px;
+  }
 }
 
 @keyframes fadeIn {
