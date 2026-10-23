@@ -8,6 +8,7 @@ const overlayModal = document.querySelector('#modalOverlay')
 const btnClose = document.querySelector('#btnClose')
 const btnEdit = document.querySelector('#btnEdit')
 const btnDelete = document.querySelector('#btnDelete')
+const tecResponsavel = document.querySelector('#tecnico_responsavel')
 
 // MODAL DE EDIÇÃO
 const editModal = document.querySelector('.order-edit');
@@ -25,33 +26,53 @@ function openOrderModal() {
     orderModal.classList.add('active')
 }
 
-function closeOrderModal(){
+function closeOrderModal() {
     orderModal.classList.remove('active')
 }
 
-function openEditModal(){
+function openEditModal() {
     editModal.classList.add('active')
 }
 
-function closeEditModal(){
+function closeEditModal() {
     editModal.classList.remove('active')
 }
 
-function openDeleteModal(){
+function openDeleteModal() {
     deleteModal.classList.add('active')
 }
 
-function closeDeleteModal(){
+function closeDeleteModal() {
     deleteModal.classList.remove('active')
 }
 
+
 // CLIQUES
 
-//abrir modal OS
+// abrir modal OS
 workOrders.forEach(order => {
-    order.addEventListener('click', () => {
-        // necessario colocar logica de abrir a ordem serviço certa aqui
-        openOrderModal();
+    order.addEventListener('click', async () => {
+
+        const resposta = await fetch(`http://127.0.0.1:8080/api/get/ordens_servico/`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json; charset=utf-8',
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    }
+    );
+
+        if (!resposta.ok) {
+        alert("ERRO AO CARREGADAR DADOS!")
+    } else {
+
+        const ordens = await resposta.json();
+        ordens.forEach(os => {
+           tecResponsavel.appendChild(os.tecnico_responsavel)
+            openOrderModal();
+        });
+    }
+
     });
 });
 // fechar modal OS
