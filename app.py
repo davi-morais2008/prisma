@@ -22,9 +22,7 @@ app.config['MAIL_DEFAULT_SENDER'] = ('PRISMA', 'gustavocaua934@gmail.com')
 mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
-# -------------------------------------------------------------------
-# 1. Rota para solicitar a recuperação de senha
-# -------------------------------------------------------------------
+
 @app.route('/esqueci-senha', methods=['GET', 'POST'])
 @app.route('/recuperacaoSenha', methods=['GET', 'POST']) # <--- Aceita as duas URLs para a mesma função
 def esqueci_senha():
@@ -52,9 +50,7 @@ def esqueci_senha():
 
     return render_template('recuperacaoSenha.html')
 
-# -------------------------------------------------------------------
-# 2. Rota para redefinir a senha
-# -------------------------------------------------------------------
+
 @app.route('/reset-senha/<token>', methods=['GET', 'POST'])
 def redefinir_senha(token):
     try:
