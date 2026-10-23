@@ -29,28 +29,37 @@ Máquinas
 
         <div class="machines__machines-grid">
             <article class="machine">
-                <h3 class="machine__machine-title">Máquina 01</h3>
-                <p class="machine__machine-number">Patrimônio 01</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 02</h3>
-                <p class="machine__machine-number">Patrimônio 02</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 03</h3>
-                <p class="machine__machine-number">Patrimônio 03</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 04</h3>
-                <p class="machine__machine-number">Patrimônio 04</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 05</h3>
-                <p class="machine__machine-number">Patrimônio 05</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 06</h3>
-                <p class="machine__machine-number">Patrimônio 06</p>
+                <figure class="machine__media">
+                    <img src="maquina.url_imagem" alt="Prévia visual da Máquina 01 - Torno CNC X200"
+                        class="machine__image" loading="lazy" />
+                    <span class="machine__status machine__status--active" aria-label="Status: Operacional">
+                        Operacional
+                    </span>
+                </figure>
+
+                <div class="machine__content">
+                    <header class="machine__header">
+                        <h3 class="machine__title">Máquina 01</h3>
+                        <p class="machine__number">Patrimônio: 01</p>
+                    </header>
+
+                    <dl class="machine__details">
+                        <div class="machine__detail-item">
+                            <dt class="machine__detail-label">Modelo:</dt>
+                            <dd class="machine__detail-value">Torno CNC X200</dd>
+                        </div>
+                        <div class="machine__detail-item">
+                            <dt class="machine__detail-label">Setor:</dt>
+                            <dd class="machine__detail-value">Usinagem A</dd>
+                        </div>
+                    </dl>
+
+                    <footer class="machine__footer">
+                        <button type="button" class="machine__button" aria-label="Ver detalhes da Máquina 01">
+                            Ver Detalhes
+                        </button>
+                    </footer>
+                </div>
             </article>
         </div>
 
@@ -615,8 +624,8 @@ Máquinas
                 </form>
             </div>
         </div>
-        
-        
+
+
 
     </section>
     <script src="/static/src/js/maquinas.js"></script>
