@@ -137,3 +137,43 @@ body {
     color: var(--color-text-light);
 }
 
+/* Ações / Botões */
+.profile-card__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+/* ========================================
+   COMPONENTE: BUTTONS
+======================================== */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--border-radius-pill);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    border: none;
+    cursor: pointer;
+    flex: 1; 
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.button:active {
+    transform: scale(0.98);
+}
+
+.button--secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-text-light);
+}
+
+.button--secondary:hover,
+.button--secondary:focus {
+    background-color: var(--color-secondary-hover);
+}
