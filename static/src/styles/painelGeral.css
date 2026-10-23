@@ -4,7 +4,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: var(--font-family-base, sans-serif);
+    font-family: var(--font-family-base, Arial, sans-serif);
 }
 
 body {
@@ -22,8 +22,8 @@ body {
     width: 100%;
     max-width: 1050px;
     background-color: var(--color-bg-card);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
+    border-radius: var(--border-radius-lg, 12px);
+    box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1));
     padding: clamp(20px, 4vw, 40px);
     display: flex;
     flex-direction: column;
@@ -42,7 +42,7 @@ body {
 .titulo_dashboard {
     color: var(--color-primary);
     font-size: clamp(1.4rem, 2.5vw, 1.75rem);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold, 700);
 }
 
 .btn_refresh {
@@ -61,7 +61,7 @@ body {
     background-color: var(--color-secondary-hover);
 }
 
-/* Container dos Cards KPI */
+/* Grid de Cards KPI */
 .kpi_grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -86,16 +86,17 @@ body {
 
 .kpi_valor {
     font-size: 1.5rem;
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold, 700);
     color: var(--color-text-primary);
 }
 
-/* Container do Gráfico */
+/* Container do Gráfico (Obrigatório ter altura para renderizar) */
 .chart_card {
     background-color: var(--color-bg-card);
     border: 1.5px solid var(--color-bg-light);
     border-radius: 10px;
     padding: 20px;
-    height: 350px;
+    height: 380px;
     position: relative;
+    width: 100%;
 }

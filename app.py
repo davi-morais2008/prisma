@@ -76,6 +76,24 @@ def redefinir_senha(token):
     return render_template('redefinir_senha.html', token=token)
 
 
+@app.route('/painelgeral')
+def dashvoard():
+    return render_template('painelGeral.html') # ou o nome da sua página html
+
+# Esta rota precisa existir e corresponder exatamente ao caminho do fetch()
+@app.route('/api/dados')
+def get_dados():
+    return jsonify({
+        "vendas_mensais": {
+            "labels": ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"],
+            "valores": [1200, 1900, 3100, 2500, 4200, 3800]
+        },
+        "kpis": {
+            "total_vendas": "16.700,00",
+            "novos_clientes": 4,
+            "taxa_conversao": "66,7%"
+        }
+    })
 
 
 @app.route("/telaInicial")

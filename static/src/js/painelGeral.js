@@ -1,24 +1,20 @@
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Inicializa a busca de dados assim que o DOM estiver pronto
-    carregarDadosDashboard();
-});
-
 let meuGrafico = null;
 
 async function carregarDadosDashboard() {
+    console.log("Iniciando busca de dados no Flask...");
     try {
         const resposta = await fetch('/api/dados');
         if (!resposta.ok) {
-            throw new Error(`Erro na requisição: ${resposta.status}`);
+            throw new Error(`Erro no servidor HTTP: ${resposta.status}`);
         }
 
         const dados = await resposta.json();
+        console.log("Dados recebidos da API:", dados);
 
         // 1. Atualiza os cards de KPI
         atualizarKPIs(dados.kpis);
 
-        // 2. Renderiza ou atualiza o gráfico
+        // 2. Renderiza o gráfico
         renderizarGrafico(dados.vendas_mensais);
 
     } catch (erro) {
@@ -27,6 +23,8 @@ async function carregarDadosDashboard() {
 }
 
 function atualizarKPIs(kpis) {
+    if (!kpis) return;
+    
     const elVendas = document.getElementById('kpi-vendas');
     const elClientes = document.getElementById('kpi-clientes');
     const elConversao = document.getElementById('kpi-conversao');
@@ -37,20 +35,34 @@ function atualizarKPIs(kpis) {
 }
 
 function renderizarGrafico(dadosGrafico) {
+    if (!dadosGrafico) {
+        console.error("Dados do gráfico inválidos ou indefinidos.");
+        return;
+    }
+
     const canvas = document.getElementById('meuGrafico');
-    if (!canvas) return;
+    if (!canvas) {
+        console.error("Elemento <canvas id='meuGrafico'> não foi encontrado no HTML.");
+        return;
+    }
+
+    // Verifica se a biblioteca Chart.js foi carregada no navegador
+    if (typeof Chart === 'undefined') {
+        console.error("A biblioteca Chart.js não foi carregada! Verifique a tag <script> do CDN no HTML.");
+        return;
+    }
 
     const ctx = canvas.getContext('2d');
 
-    // Se já existir uma instância do gráfico, destrói antes de recriar
+    // Destrói o gráfico anterior caso já exista para evitar sobreposição
     if (meuGrafico) {
         meuGrafico.destroy();
     }
 
-    // Obtém as cores primárias do CSS computado para integrar com o tema
+    // Obtém variáveis de cor do CSS com fallback para valores padrão
     const estiloComputado = getComputedStyle(document.documentElement);
     const corSecundaria = estiloComputado.getPropertyValue('--color-secondary').trim() || '#7c72ff';
-    const corTexto = estiloComputado.getPropertyValue('--color-text-primary').trim() || '#333';
+    const corTexto = estiloComputado.getPropertyValue('--color-text-primary').trim() || '#333333';
 
     meuGrafico = new Chart(ctx, {
         type: 'bar',
@@ -71,10 +83,7 @@ function renderizarGrafico(dadosGrafico) {
                 legend: {
                     labels: {
                         color: corTexto,
-                        font: {
-                            family: 'inherit',
-                            weight: '600'
-                        }
+                        font: { weight: '600' }
                     }
                 }
             },
@@ -90,4 +99,13 @@ function renderizarGrafico(dadosGrafico) {
             }
         }
     });
+
+    console.log("Gráfico renderizado com sucesso!");
+}
+
+// Garante a execução independente de quando o DOM terminar de carregar
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', carregarDadosDashboard);
+} else {
+    carregarDadosDashboard();
 }
