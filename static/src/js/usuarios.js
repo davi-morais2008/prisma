@@ -48,4 +48,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (closeBtnInativar) closeBtnInativar.addEventListener("click", fecharModalInativar);
     if (cancelBtnInativar) cancelBtnInativar.addEventListener("click", fecharModalInativar);
     if (overlayInativar) overlayInativar.addEventListener("click", fecharModalInativar);
+
+
+    // ==========================================
+    // 3. ACESSIBILIDADE GLOBAL (TECLA ESC)
+    // ==========================================
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            // Fecha o modal de edição se estiver aberto
+            if (modalEdit && modalEdit.classList.contains("user-edit--active")) {
+                closeModalEdit();
+            }
+            // Fecha o modal de inativação se estiver aberto
+            if (modalInativar && modalInativar.classList.contains("modal--active")) {
+                fecharModalInativar();
+            }
+        }
+    });
 });
