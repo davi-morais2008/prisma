@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.usuario import buscar_usuario, 
+from model.usuario import buscar_usuario
 from model.cadastro import cadastrar_usuario
 app = Flask(__name__)
 
@@ -53,15 +53,29 @@ def post_cadastro():
     user_cpf = request.form.get("cadastro-cpf")
     user_pwd = request.form.get("cadastro-pwd")
     user_confirm_pwd = request.form.get("cadastro-confirmpwd")
-    for user in usuarios:
-        if user['cpf'] == user_cpf:
-            flash ('Este CPF já está cadastro no sistema. Tente o Cadastro Novamente!', 'error')
-            return redirect('/login')
-        if user['email'] == user_email:
-            flash('Este email já está vinculado a uma conta. Tente o Cadastro Novamente!', 'error')
-            return redirect('/login')
-        elif user_pwd == user_confirm_pwd:
-            cadastrar_usuario(user_cpf, username, )
+    print(buscar_usuario(('0000050000', 'admin.root@aluno.senai.br')))
+    return redirect('/login')
+    # for user in usuarios:
+    #     print(user['cpf'])
+    #     print(user_cpf)
+    #     if user['cpf'] == user_cpf:
+    #         flash ('Este CPF já está cadastro no sistema. Tente o Cadastro Novamente!', 'error')
+    #         return redirect('/login')
+    #     if user['email'] == user_email:
+    #         flash('Este email já está vinculado a uma conta. Tente o Cadastro Novamente!', 'error')
+    #         return redirect('/login')
+    #     elif user_pwd == user_confirm_pwd:
+    #         try:
+    #             if cadastrar_usuario(user_cpf, username, user_email, user_pwd):
+    #                 flash('Efetue o Login para acessar o Sistema', 'sucsses')
+    #                 return redirect('/login')
+    #             else:
+    #                 flash('Erro ao cadastrar-se. Tente Novamente', 'error')
+    #                 return redirect('/login')
+    #         except Exception as e:
+    #             flash('Erro ao cadastrar-se. Tente Novamente', 'error')
+    # return redirect('/login')
+
 
 
 
