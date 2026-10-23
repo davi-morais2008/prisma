@@ -53,3 +53,6 @@ def atualizar_usuario(cpf, nome,  email, status_usuario):
         return False
     finally:
         conexao.close()
+
+
+
