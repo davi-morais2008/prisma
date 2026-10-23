@@ -16,7 +16,7 @@
 
         <div class="home__orders">
             {% for os in ordem_servico %}
-            <article class="work-order work-order--baixa" id_order="{{id_ordem}}">
+            <article class="work-order work-order--baixa" id_order="{{os.id_ordem}}">
                 <h3 class="work-order__title">2008-09-09 00:00:00</h3>
                 <div class="work-order__description">
                     <p>Responsável: {{os.tecnico_responsavel}}</p>
