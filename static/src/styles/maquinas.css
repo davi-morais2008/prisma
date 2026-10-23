@@ -35,12 +35,20 @@ body {
     gap: 1.5rem;
 }
 
-.machines__title {
+.machines__header{
+    display: grid;
     width: 100%;
+    padding: 0 0.5rem;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.machines__title {
     text-align: center;
     font-size: var(--font-size-xl);
     font-weight: var(--font-weight-bold);
     color: var(--color-primary);
+    margin: auto 0;
+    grid-column: 2;
 }
 
 .machines__button-register {
@@ -54,10 +62,8 @@ body {
     font-weight: var(--font-weight-bold);
     color: var(--color-text-light);
     cursor: pointer;
-    position: absolute;
-    right: 40px;
-    top: 40px;    
     transition: ease-in 150ms;
+    margin-left: auto;
 }
 
 .machines__button-register:hover {
@@ -1014,13 +1020,10 @@ body {
         font-weight: var(--font-weight-bold);
         color: var(--color-text-light);
         cursor: pointer;
-        position: absolute;
-        right: 25px;
-        top: 90px;
     }
 
     .filter-input-search {
-        width: 85%;
+        width: 100%;
         align-self: flex-start;
         height: 48px;
         padding: 0 1.25rem;
