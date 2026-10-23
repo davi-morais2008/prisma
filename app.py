@@ -7,9 +7,12 @@ from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_ema
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
 import flask_mail
+import os
 from flask_mail import Mail, Message
 
-app = Flask(__name__)
+template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+app = Flask(__name__, template_folder=template_dir)
+
 app.config['SECRET_KEY'] = 'PRISMA_maintence'
 
 # Configurações do Gmail da empresa
