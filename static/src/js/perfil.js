@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const overlay = modal.querySelector(".user-edit__overlay");
     
     // Seleciona todos os botões de "Editar" (botões secundários nos cards)
-    const editButtons = document.querySelectorAll(".user-card__actions .button--secondary");
+    const editButtons = document.querySelectorAll(".profile-card__actions .button--secondary");
 
     // 2. Funções de Controle
     const openModal = () => {
