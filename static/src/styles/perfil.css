@@ -177,3 +177,21 @@ body {
 .button--secondary:focus {
     background-color: var(--color-secondary-hover);
 }
+
+/* Oculta o modal por padrão */
+.user-edit {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+/* Mostra o modal quando a classe ativa é adicionada */
+.user-edit.user-edit--active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
