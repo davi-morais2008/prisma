@@ -3,6 +3,8 @@ VALUES('Técnico em Eletromecânica');
 
 INSERT INTO usuarios(cpf, nome, email, senha, status_usuario)
 VALUES('47126589832', 'Guxta Pereira', 'gustavo.h.pereira13@aluno.senai.br', 'gu1234', 'Ativo');
+VALUES('00000000000', 'admin root', 'admin.root@aluno.senai.br', 'senai603Prisma', 'Ativo');
+
 
 INSERT INTO tecnicos_especialidades
 VALUES('47126589832', 1);
@@ -33,3 +35,6 @@ VALUES(2, 1, 47126589832, 'Finalizada', 'Corretiva', 'Ferrou no freio da máquin
 
 INSERT INTO fases_manutencao(id_ordem, status, fase, data, observacao)
 VALUES(1, 'Em andamento', 'Trocando o Freio', '2008-08-28', 'Precisa de peça nova.');
+
+
+SELECT * FROM usuarios;
