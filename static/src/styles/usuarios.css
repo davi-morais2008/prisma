@@ -597,7 +597,7 @@ body {
 }
 
 .button--cancel:hover {
-    background-color: #dce4ff; /* Ligeiro escurecimento do bg-light para hover */
+    background-color: #dce4ff; 
 }
 
 
@@ -725,7 +725,7 @@ body {
     padding: var(--font-size-sm) var(--font-size-md);
     font-family: var(--font-family-base);
     background-color: var(--color-bg-input);
-    border: 1px solid #e0e0e0; /* Borda sutil para inputs em fundo branco */
+    border: 1px solid #e0e0e0; 
     border-radius: var(--border-radius-pill);
     box-shadow: var(--shadow-sm);
     color: var(--color-text-primary);
@@ -738,7 +738,7 @@ body {
     border-color: var(--color-secondary);
 }
 
-/* Ajuste específico para o Select */
+
 .user-edit__select {
     appearance: auto;
     cursor: pointer;
