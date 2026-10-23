@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     
-
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='src/styles/painelGeral.css') }}">
     
-    <!-- 1º Biblioteca Chart.js CDN -->
+    <!-- Chart.js (Biblioteca) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
- <!-- Certo (para o Flask carregar): -->
-<link rel="stylesheet" href="{{ url_for('static', filename='src/styles/painelGeral.css') }}">
-<script src="{{ url_for('static', filename='js/painelGeral.js') }}" defer></script>
+    <!-- Seu JS com o caminho correto -->
+    <script src="{{ url_for('static', filename='src/js/painelGeral.js') }}" defer></script>
 </head>
 <body>
 

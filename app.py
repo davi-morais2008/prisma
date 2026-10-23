@@ -9,6 +9,7 @@ from werkzeug.security import generate_password_hash
 import flask_mail
 from flask_mail import Mail, Message
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'PRISMA_maintence'
 
@@ -77,24 +78,75 @@ def redefinir_senha(token):
 
 
 @app.route('/painelgeral')
-def dashvoard():
-    return render_template('painelGeral.html') # ou o nome da sua página html
+def painel_geral():
+    return render_template('painelGeral.html')
 
-# Esta rota precisa existir e corresponder exatamente ao caminho do fetch()
 @app.route('/api/dados')
 def get_dados():
-    return jsonify({
-        "vendas_mensais": {
-            "labels": ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"],
-            "valores": [1200, 1900, 3100, 2500, 4200, 3800]
-        },
-        "kpis": {
-            "total_vendas": "16.700,00",
-            "novos_clientes": 4,
-            "taxa_conversao": "66,7%"
-        }
-    })
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True) # Retorna os dados como dicionário
 
+        # 1. Total de Ordens de Serviço
+        cursor.execute("SELECT COUNT(*) AS total FROM ordens_servicos")
+        total_os = cursor.fetchone()['total']
+
+        # 2. Ordens em Andamento / Pendentes
+        cursor.execute("""
+            SELECT COUNT(*) AS total 
+            FROM ordens_servicos 
+            WHERE status_ordem NOT IN ('Concluída', 'Finalizada', 'Cancelada')
+        """)
+        os_pendentes = cursor.fetchone()['total']
+
+        # 3. Total de Máquinas Cadastradas
+        cursor.execute("SELECT COUNT(*) AS total FROM maquinas")
+        maquinas_total = cursor.fetchone()['total']
+
+        # 4. Total de Falhas Registradas
+        cursor.execute("SELECT COUNT(*) AS total FROM falhas")
+        falhas_total = cursor.fetchone()['total']
+
+        # 5. Gráfico: OS por Mês (agrupadas pela data de início)
+        cursor.execute("""
+            SELECT 
+                DATE_FORMAT(data_inicio_manutencao, '%b') AS mes,
+                COUNT(*) AS total
+            FROM ordens_servicos
+            WHERE data_inicio_manutencao IS NOT NULL
+            GROUP BY MONTH(data_inicio_manutencao), mes
+            ORDER BY MONTH(data_inicio_manutencao)
+            LIMIT 6
+        """)
+        res_os_mes = cursor.fetchall()
+
+        labels_mes = [row['mes'] for row in res_os_mes] if res_os_mes else ["Jan", "Fev", "Mar"]
+        valores_mes = [row['total'] for row in res_os_mes] if res_os_mes else [0, 0, 0]
+
+        return jsonify({
+            "kpis": {
+                "total_os": total_os,
+                "os_pendentes": os_pendentes,
+                "maquinas_ativas": maquinas_total,
+                "total_falhas": falhas_total
+            },
+            "os_por_mes": {
+                "labels": labels_mes,
+                "valores": valores_mes
+            }
+        })
+
+    except mysql.connector.Error as err:
+        print(f"=== ERRO CONEXÃO MYSQL: {err} ===")
+        return jsonify({"erro": str(err)}), 500
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conn and conn.is_connected():
+            conn.close()
 
 @app.route("/telaInicial")
 def pagina_inicial():
