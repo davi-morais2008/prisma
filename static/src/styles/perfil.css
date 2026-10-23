@@ -137,11 +137,3 @@ body {
     color: var(--color-text-light);
 }
 
-/* Descrição Textual */
-.profile-card__description {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    text-align: center;
-    padding: 0 0.5rem;
-}
