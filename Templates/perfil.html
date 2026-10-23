@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Perfil</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_circle,badge,mail" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_circle,badge,mail,edit" />
     <link rel="stylesheet" href="../static/src/styles/perfil.css">
 </head>
 <body>
@@ -45,5 +45,41 @@
             </div>
         </article>
     </main>
+    <div class="user-edit" id="modalEditUser" role="dialog" aria-modal="true" aria-labelledby="user-edit-title">
+    <div class="user-edit__overlay" aria-label="Fechar edição"></div>
+    
+    <div class="user-edit__content">
+        <!-- CABEÇALHO -->
+        <header class="user-edit__header">
+            <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="user-edit__logo">
+            <h2 id="user-edit-title" class="user-edit__title">EDITAR USUÁRIO</h2>
+            <button type="button" class="user-edit__close-button" aria-label="Fechar modal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </header>
+
+        <!-- FORMULÁRIO -->.
+        <form class="user-edit__form">
+            <div class="user-edit__field">
+                <label for="user-edit-name" class="user-edit__label">Nome Completo</label>
+                <input type="text" id="user-edit-name" class="user-edit__input" value="João da Silva" required>
+            </div>
+
+            <div class="user-edit__field">
+                <label for="user-edit-email" class="user-edit__label">E-mail</label>
+                <input type="email" id="user-edit-email" class="user-edit__input" value="joao.silva@exemplo.com" required>
+            </div>
+
+            <div class="user-edit__actions">
+                <button type="submit" class="button button--secondary">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+
+</div>
 </body>
 </html>
