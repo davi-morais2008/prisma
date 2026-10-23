@@ -147,40 +147,163 @@ body {
     padding: 0 0.5rem;
 }
 
+/* ========================================
+   BLOCO: Machine Card
+   ======================================== */
+/* ========================================
+   BLOCO: Machine Card
+   ======================================== */
 .machine {
-    cursor: pointer;
-    width: 100%;
-    min-height: 200px;
-    background-color: var(--color-bg-card);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-sm);
-    padding: 1.25rem 1.75rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 360px;
+  background-color: var(--color-bg-card);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-family-base);
+  color: var(--color-text-primary);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .machine:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
 }
 
-.machine__machine-title {
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-primary);
-    margin-bottom: 0.25rem;
+/* Área de Mídia / Imagem */
+.machine__media {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  margin: 0;
+  background-color: var(--color-bg-light);
+  overflow: hidden;
 }
 
-.machine__machine-number {
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-regular);
-    color: var(--color-text-secondary);
+.machine__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Badge de Status sobreposta à imagem */
+.machine__status {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--border-radius-pill);
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+}
+
+/* Modificadores de Status */
+.machine__status--active {
+  background-color: var(--color-status-success);
+  color: var(--color-primary-dark);
+}
+
+.machine__status--warning {
+  background-color: var(--color-status-warning);
+  color: var(--color-primary-dark);
+}
+
+.machine__status--danger {
+  background-color: var(--color-status-danger);
+  color: var(--color-text-light);
+}
+
+/* Conteúdo do Card */
+.machine__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--font-size-md);
+  padding: var(--font-size-lg);
+  flex-grow: 1;
+}
+
+/* Header & Identificação */
+.machine__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.machine__title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+
+.machine__number {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+/* Lista de Especificações */
+.machine__details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.75rem;
+  background-color: var(--color-bg-light);
+  border-radius: var(--border-radius-sm);
+}
+
+.machine__detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-sm);
+}
+
+.machine__detail-label {
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-regular);
+}
+
+.machine__detail-value {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Rodapé e Ação */
+.machine__footer {
+  margin-top: auto;
+}
+
+.machine__button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: var(--border-radius-pill);
+  background-color: var(--color-secondary);
+  color: var(--color-text-light);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.machine__button:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+.machine__button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 /* =============================================================== */
