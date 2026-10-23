@@ -85,9 +85,10 @@
 }
 
 .work-order__description {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondayr);
-    line-height: 1.5;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
 }
 
 /* Modificadores de urgência para as Ordens de Serviço */
@@ -106,345 +107,783 @@
     /* Vermelho (Urgência Alta) */
 }
 
-/* MODAL ORDEM DE SERVICO */
+/* ==========================================================================
+   MODAL DE DETALHES DA ORDEM DE SERVIÇO (BEM & PRISMA DESIGN SYSTEM)
+   ========================================================================== */
 
-.modal {
+/* Container Principal do Modal */
+.order-details {
     position: fixed;
     inset: 0;
-    display: none; /* Oculto por padrão */
-    place-items: center; /* Centralização via Grid */
-
-}
-
-
-
-.modal__overlay {
-    position: absolute;
-    inset: 0;
-    background-color: rgba(15, 23, 42, 0.4);
-    backdrop-filter: blur(4px);
-}
-
-.modal__card {
-    position: relative;
-    width: 90%;
-    max-width: 500px;
-    background-color: #ffffff;
-    border-radius: var(--border-radius-md);
-    padding: 28px 24px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-
-
-    display: grid;
-    gap: 16px;
-}
-
-
-.modal__title {
-    font-size: 1.25rem;
-    color: #0f172a;
-}
-
-.modal__description {
-    font-size: 0.95rem;
-    color: #475569;
-    line-height: 1.6;
-}
-
-.modal__actions {
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-    justify-content: end;
-    align-items: center;
-}
-
-.btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 34px;
-    width: 34px;
-    border-radius: 14px;
-    border: none;
-    font-weight: 500;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
-}
-
-img {
-    height: 22px;
-}
-
-.btn:hover {
-    opacity: 0.9;
-}
-
-
-.btn--edit {
-    background-color: var(--color-bg-light);
-    color: var(--color-text-light);
-}
-
-.btn--delete {
-    background-color: var(--color-status-danger);
-    color: #ffffff;
-}
-
-.btn--close {
-    width: 100%;
-    height: 48px;
-    margin-top: 0.5rem;
-    background-color: var(--color-primary);
-    color: var(--color-text-light);
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-);
-    font-weight: var(--font-weight-bold);
-    border: none;
-    border-radius: var(--border-radius-pill);
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.btn--close:hover{
-    background-color: var(--color-primary-dark);
-    transform:translateY(-2px);
-}
-
-/* ========================== MODAL UPDATE ========================== */
-.modal-form {
-    position: fixed;
-    inset: 0;
-    user-select: none;
+    z-index: 900;
     display: none; 
     align-items: center;
     justify-content: center;
-    padding: 14px;
-
+    padding: var(--border-radius-sm);
 }
 
-/* ===== SOBREPOSIÇÃO ===== */
-.modal-form__overlay {
+.order-details.active{
+    display: flex;
+}
+
+
+/* Overlay Escuro com Blur */
+.order-details__overlay {
     position: absolute;
     inset: 0;
-
-    background: rgba(15, 15, 45, 0.15);
-    backdrop-filter: blur(5px);
+    background-color: var(--color-glass-bg);
+    backdrop-filter: var(--glass-blur);
 }
 
-
-.modal-form__card {
+/* Card Container da Modal */
+.order-details__card {
     position: relative;
-
     width: 100%;
     max-width: 500px;
     max-height: 90vh;
-
-    overflow-y: auto;
-
     background-color: var(--color-bg-card);
-    border-radius: 24px;
-
-    box-shadow: 0 10px 40px rgba(20, 20, 60, 0.12);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.modal-form__form {
+/* Cabeçalho Fixo Escuro */
+.order-details__header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     width: 100%;
-    padding: 20px;
+    height: 56px;
+    background-color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--border-radius-md);
+    box-sizing: border-box;
 }
 
-/* ===== FORMULÁRIO ===== */
-.form {
+.order-details__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--border-radius-sm);
+}
+
+.order-details__brand-image {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+}
+
+.order-details__brand-title {
+    color: var(--color-text-light);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+}
+
+.order-details__close-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.order-details__close-btn:hover {
+    background-color: var(--color-primary-dark);
+    transform: scale(1.05);
+}
+
+/* Corpo do Modal Rolável */
+.order-details__body {
+    padding: var(--border-radius-md);
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: var(--border-radius-md);
+}
+
+/* Informações Primárias */
+.order-details__primary-info {
+    display: flex;
+    align-items: center;
+    gap: var(--border-radius-md);
+}
+
+.order-details__image-container {
+    width: 40%;
+    height: 100px;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.order-details__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.order-details__primary-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.order-details__info-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.order-details__label {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+}
+
+.order-details__value {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+/* Badge de Status */
+.order-details__badge {
+    display: inline-block;
+    width: fit-content;
+    padding: 2px 10px;
+    border-radius: var(--border-radius-pill);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+}
+
+.order-details__badge--success {
+    background-color: var(--color-status-success);
+    color: var(--color-primary-dark);
+}
+
+/* Seções Internas */
+.order-details__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--border-radius-sm);
+}
+
+.order-details__section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.order-details__section-title {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* Ações (Editar / Deletar) */
+.order-details__actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.order-details__action-btn {
+    background: transparent;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.order-details__action-btn--edit {
+    color: var(--color-primary);
+}
+
+.order-details__action-btn--edit:hover {
+    background-color: var(--color-bg-light);
+    color: var(--color-secondary);
+    transform: scale(1.08);
+}
+
+.order-details__action-btn--delete {
+    color: var(--color-text-secondary);
+}
+
+.order-details__action-btn--delete:hover {
+    background-color: var(--color-bg-light);
+    color: var(--color-status-danger);
+    transform: scale(1.08);
+}
+
+/* Grid das Estatísticas */
+.order-details__grid {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+/* Container Clarinho para Grupos de Dados */
+.order-details__card-group {
+    flex: 1;
+    background-color: var(--color-bg-light);
+    border-radius: var(--border-radius-md);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.order-details__stat-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.order-details__stat-icon {
+    font-size: var(--font-size-md);
+    color: var(--color-primary);
+}
+
+.order-details__stat-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-details__stat-label {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.order-details__stat-value {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+/* Bloco de Descrição Longa */
+.order-details__description-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.order-details__description-text {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* ==========================================================================
+   MODAL DE EDIÇÃO DE ORDEM DE SERVIÇO (BEM & PRISMA DESIGN SYSTEM)
+   ========================================================================== */
+
+/* Container Principal do Modal */
+.order-edit {
+    position: fixed;
+    inset: 0;
+    z-index: 950;
+    display: none; /* Alterar para 'flex' via JS */
+    align-items: center;
+    justify-content: center;
+    padding: var(--border-radius-sm);
+}
+
+.order-edit.active{
+    display: flex;
+}
+
+/* Overlay Escuro com Blur */
+.order-edit__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-glass-bg);
+    backdrop-filter: var(--glass-blur);
+}
+
+/* Card Container */
+.order-edit__card {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Cabeçalho Fixo Escuro */
+.order-edit__header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    height: 56px;
+    background-color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--border-radius-md);
+    box-sizing: border-box;
+}
+
+.order-edit__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--border-radius-sm);
+}
+
+.order-edit__brand-image {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+}
+
+.order-edit__brand-title {
+    color: var(--color-text-light);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.order-edit__close-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.order-edit__close-btn:hover {
+    background-color: var(--color-primary-dark);
+    transform: scale(1.05);
+}
+
+/* Formulário e Corpo Rolável */
+.order-edit__form {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+}
+
+.order-edit__body {
+    padding: var(--border-radius-md);
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: var(--border-radius-md);
+}
+
+/* Grupos do Formulário (<fieldset>) */
+.order-edit__section {
+    border: none;
+    margin: 0;
+    padding: var(--border-radius-sm);
+    background-color: var(--color-bg-light);
+    border-radius: var(--border-radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.order-edit__section-title {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    text-transform: uppercase;
+    padding: 0 4px;
+    float: left;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+/* Grid Layout dos Campos */
+.order-edit__grid {
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: 100%;
 }
 
-/* ===== LABELS ===== */
-.form__label {
-    margin-top: 8px;
-    color: var(--color-text-primary);
-    font-size: var(--font-size-md);
-    font-weight: 400;
-    line-height: 1.3;
+.order-edit__grid--2-col {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
 }
 
-/* ===== CAMPOS DE ENTRADA ===== */
-.form__input,
-.form__select {
+.order-edit__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.order-edit__field--full {
+    grid-column: 1 / -1;
+}
+
+/* Rótulos de Entrada */
+.order-edit__label {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+}
+
+/* Controles de Entrada (Input, Select, Textarea) */
+.order-edit__input,
+.order-edit__select,
+.order-edit__textarea {
     width: 100%;
-    height: 55px;
-    padding: 0 0.875rem;
+    box-sizing: border-box;
     font-family: var(--font-family-base);
     font-size: var(--font-size-sm);
     color: var(--color-text-primary);
     background-color: var(--color-bg-input);
     border: 1px solid var(--color-bg-light);
     border-radius: var(--border-radius-sm);
+    padding: 8px 12px;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-input[type="number"] {
-    appearance: textfield;
-    -moz-appearance: textfield;
+.order-edit__input,
+.order-edit__select {
+    height: 40px;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.order-edit__textarea {
+    resize: vertical;
+    min-height: 70px;
 }
 
-/* ===== EFEITO DE FOCO ===== */
-.form__input:focus,
-.form__select:focus {
-    border-color: var(--color-primary-dark);
+/* Efeito de Foco nos Campos */
+.order-edit__input:focus,
+.order-edit__select:focus,
+.order-edit__textarea:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 2px rgba(124, 114, 255, 0.2);
 }
 
-/* ===== BOTÃO BASE ===== */
-.btn {
-    border: none;
-    font-family: inherit;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
+/* Rodapé Fixo de Ações */
+.order-edit__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--border-radius-sm);
+    padding: var(--border-radius-sm) var(--border-radius-md);
+    background-color: var(--color-bg-card);
+    border-top: 1px solid var(--color-bg-light);
 }
 
-/* ===== BOTÃO CONCLUIR ===== */
-.btn--update {
-    width: 100%;
-    height: 48px;
-    margin-top: 0.5rem;
-    background-color: var(--color-primary);
-    color: var(--color-text-light);
+/* Botões de Ação */
+.order-edit__btn {
+    height: 42px;
+    padding: 0 20px;
     font-family: var(--font-family-base);
-    font-size: var(--font-size-);
+    font-size: var(--font-size-sm);
     font-weight: var(--font-weight-bold);
-    border: none;
     border-radius: var(--border-radius-pill);
     cursor: pointer;
-    box-shadow: var(--shadow-sm);
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-
-
-.btn--update:hover {
-    background-color: var(--color-primary-dark);
-    transform:translateY(-2px);
+.order-edit__btn--cancel {
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-text-secondary);
 }
 
+.order-edit__btn--cancel:hover {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-primary);
+}
 
-/* Layout das Ações de Confirmação de Exclusão */
+.order-edit__btn--submit {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    border: none;
+    box-shadow: var(--shadow-sm);
+}
 
-.modal-confirm {
+.order-edit__btn--submit:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ==========================================================================
+   MODAL DE CONFIRMAÇÃO DE EXCLUSÃO (BEM & PRISMA DESIGN SYSTEM)
+   ========================================================================== */
+
+/* Container Principal do Modal */
+.order-delete {
     position: fixed;
     inset: 0;
-    display: grid;
-    place-items: center;
-    opacity: 1;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+    z-index: 1000;
+    display: none; 
+    align-items: center;
+    justify-content: center;
+    padding: var(--border-radius-sm);
 }
 
-.modal__confirm-actions {
+.order-delete.active{
     display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-    margin-top: 8px;
 }
 
-/* Botão Cancelar */
-.btn-cancel {
-    height: 44px;
-    padding: 0 20px;
-    border-radius: 12px;
-    border: 1px solid #cbd5e1;
-    background-color: transparent;
-    color: #475569;
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
+/* Overlay Translucido com Blur */
+.order-delete__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-glass-bg);
+    backdrop-filter: var(--glass-blur);
 }
 
-.btn-cancel:hover {
-    background-color: #f1f5f9;
-    color: #0f172a;
+/* Card Container Compacto */
+.order-delete__card {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-/* Botão Excluir (Ação Destrutiva) */
-.btn-remove {
-    height: 44px;
-    padding: 0 20px;
-    border-radius: 12px;
+/* Cabeçalho Fixo Escuro */
+.order-delete__header {
+    width: 100%;
+    height: 56px;
+    background-color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--border-radius-md);
+    box-sizing: border-box;
+}
+
+.order-delete__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--border-radius-sm);
+}
+
+.order-delete__brand-image {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+}
+
+.order-delete__brand-title {
+    color: var(--color-text-light);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.order-delete__close-btn {
+    background: transparent;
     border: none;
-    background-color: #ef4444;
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 0.9rem;
+    color: var(--color-text-light);
     cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.btn-remove:hover {
-    transform:translateY(-2px);
-    background-color: #dc2626;
-}
-
-/* Classe que exibe o Modal de Detalhes da OS */
-.modal.active {
-    display: grid;
-    pointer-events: all;
-}
-
-/* Transição e bloqueio de cliques no Modal de Formulário enquanto fechado */
-.modal-form {
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-/* Classe que exibe o Modal de Edição */
-.modal-form.active {
     display: flex;
-    pointer-events: all;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
+.order-delete__close-btn:hover {
+    background-color: var(--color-primary-dark);
+    transform: scale(1.05);
+}
 
+/* Corpo do Alerta */
+.order-delete__body {
+    padding: var(--border-radius-lg) var(--border-radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--border-radius-md);
+}
 
-/* ===== RESPONSIVIDADE ===== */
-@media (max-width: 600px) {
-    .modal-form {
-        padding: 12px;
+/* Wrapper do Ícone de Alerta */
+.order-delete__icon-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--border-radius-pill);
+    background-color: var(--color-bg-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.order-delete__icon {
+    font-size: 2.25rem;
+    color: var(--color-status-danger);
+}
+
+/* Bloco de Mensagens */
+.order-delete__content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.order-delete__heading {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.order-delete__description {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Rodapé de Ações */
+.order-delete__footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--border-radius-sm);
+    padding: var(--border-radius-sm) var(--border-radius-md) var(--border-radius-md);
+    background-color: var(--color-bg-card);
+}
+
+/* Botões de Ação */
+.order-delete__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 42px;
+    padding: 0 20px;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--border-radius-pill);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.order-delete__btn .material-symbols-outlined {
+    font-size: var(--font-size-md);
+}
+
+/* Botão Cancelar (Neutro/Seguro) */
+.order-delete__btn--cancel {
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-text-secondary);
+}
+
+.order-delete__btn--cancel:hover {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-primary);
+}
+
+/* Botão Confirmar Exclusão (Destrutivo) */
+.order-delete__btn--confirm {
+    background-color: var(--color-status-danger);
+    color: var(--color-text-primary);
+    border: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.order-delete__btn--confirm:hover {
+    background-color: #ff6b6b;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Responsividade para Telas Menores */
+@media (max-width: 480px) {
+    .order-details__primary-info {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
-    .modal-form__card {
-        max-height: 95vh;
-        border-radius: 22px;
+    .order-details__image-container {
+        width: 100%;
+        height: 120px;
     }
 
-    .modal-form__form {
-        padding: 24px 20px 30px;
+    .order-details__grid {
+        flex-direction: column;
     }
 
-    .form__label {
-        font-size: 19px;
-        margin-top: 14px;
+    .order-edit__grid--2-col {
+        grid-template-columns: 1fr;
     }
 
-    .form__input,
-    .form__select {
-        height: 62px;
-        font-size: 16px;
+    .order-edit__footer {
+        flex-direction: column-reverse;
     }
 
-    .btn--update {
-        min-height: 60px;
-        margin-top: 36px;
-        font-size: 19px;
+    .order-edit__btn {
+        width: 100%;
+    }
+
+    .order-delete__footer {
+        flex-direction: column-reverse;
+    }
+
+    .order-delete__btn {
+        width: 100%;
     }
 }
 
@@ -468,10 +907,3 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 }
 
-/* Dispositivos Pequenos (Celulares) */
-@media (max-width: 480px) {
-    .modal__actions {
-        /* No celular, os botões empilham verticalmente caso faltar espaço */
-        grid-template-columns: 1fr;
-    }
-}
