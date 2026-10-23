@@ -73,3 +73,35 @@ const btnCancelDelete = document.querySelector('.button-confirmation--cancel');
 const btnConfirmDelete = document.querySelector('.button-confirmation--delete');
 
 
+machineCards.forEach((machine) => {
+    machine.addEventListener('click', () => {
+        detailsModalContainer.classList.add('active')
+    })
+})
+
+btnEditFromDetails.addEventListener('click', () => {
+    editModalOverlay.classList.add('active')
+})
+
+btnDeleteFromDetails.addEventListener('click', () => {
+    deleteConfirmationModal.classList.add('active')
+})
+
+
+btnCloseCreateModal.addEventListener('click', () => {createModalContainer.classList.remove('active')}
+)
+
+btnCloseDeleteModal.addEventListener('click', () => {deleteConfirmationModal.classList.remove('active')}
+)
+btnCancelDelete.addEventListener('click', () => {deleteConfirmationModal.classList.remove('active')}
+)
+
+
+btnCloseDetailsModal.addEventListener('click', () => {detailsModalContainer.classList.remove('active')}
+)
+
+btnCloseEditModal.addEventListener('click', () => {editModalOverlay.classList.remove('active')}
+)
+btnCancelEdit.addEventListener('click', () => {editModalOverlay.classList.remove('active')}
+)
+
