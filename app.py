@@ -161,10 +161,6 @@ def pagina_maquinas():
     maquinas = consultar_maquinas()
     return render_template('maquinas.html', maquinas = maquinas)
 
-@app.route('/maquinas;')
-
-
-
 @app.route('/usuarios', methods = ['GET'])
 def pagina_usuarios():
     return render_template('usuarios.html')
