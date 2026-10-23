@@ -5,6 +5,7 @@ from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico
 from model.usuario import buscar_usuario
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
+from model.consultaMaquinas import consultar_maquinas
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
 import flask_mail
@@ -157,7 +158,12 @@ def post_cadastro():
 
 @app.route('/maquinas', methods = ['GET'])
 def pagina_maquinas():
-    return render_template('maquinas.html')
+    maquinas = consultar_maquinas()
+    return render_template('maquinas.html', maquinas = maquinas)
+
+@app.route('/maquinas;')
+
+
 
 @app.route('/usuarios', methods = ['GET'])
 def pagina_usuarios():

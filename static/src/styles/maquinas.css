@@ -19,7 +19,8 @@ body {
 }
 
 .machine-edit__overlay.active,
-.machine__register.active,
+.machine-modal.active,
+.machine-details.active,
 .delete-confirmation.active{
     display: flex;
 }
@@ -191,8 +192,8 @@ body {
    ======================================== */
 .machine-modal {
     width: 90%;
-    max-width: 540px;
-    height: 800px;
+    max-width: 720px;
+    max-height: 85vh;
     margin: 0 auto;
     background-color: var(--color-bg-card);
     border-radius: var(--border-radius-lg);
@@ -200,7 +201,7 @@ body {
     font-family: var(--font-family-base);
     position: fixed;
     overflow-x: hidden;
-    display: flex;
+    display: none;
     flex-direction: column;
     z-index: 1000;
 }
@@ -610,7 +611,7 @@ body {
 .machine-details {
     background-color: var(--color-bg-card);
     width: 95%;
-    max-width: 480px;
+    max-width: 720px;;
     max-height: 90vh;
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
@@ -957,7 +958,7 @@ body {
 .machine-edit {
     background-color: var(--color-bg-card);
     width: 90%;
-    max-width: 520px;
+    max-width: 720px;;
     max-height: 85vh;
     border-radius: 24px 0 0 24px;
     box-shadow: var(--shadow-lg);
@@ -1338,7 +1339,7 @@ body {
 
 @media(max-width: 400px) {
     .machine-modal {
-        max-height: 600px;
+        max-height: 75vh;
     }
 }
 
