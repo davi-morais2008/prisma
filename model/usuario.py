@@ -21,9 +21,9 @@ def buscar_usuario(usuario=False):
         resposta = cursor.fetchall()
         return(resposta)
     cursor.execute("""SELECT usuarios.cpf, usuarios.nome, usuarios.email, usuarios.senha, especialidades.especialidade FROM usuarios
-                      INNER JOIN tecnicos_especialidades 
+                      LEFT JOIN tecnicos_especialidades 
                         ON usuarios.cpf = tecnicos_especialidades.cpf
-                      INNER JOIN especialidades 
+                      LEFT JOIN especialidades 
                         ON tecnicos_especialidades.id_especialidade = especialidades.id_especialidade""")
     resposta = cursor.fetchall()
     conexao.commit()
