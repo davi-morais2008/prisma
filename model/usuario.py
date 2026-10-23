@@ -89,4 +89,8 @@ def buscar_perfil(cpf):
     cursor.close()
     conexao.close()
 
+    #o "GROUP_CONCAT" traz todas as especialidades do usuário em um só campo.
+    #o "LEFT JOIN" é como se fosse um inner join, mas não dá erro quando não tem informações no campo, porque ele está só ao lado da tabela, e não DENTRO dela como o "INNER JOIN"
+
+
     return resposta
