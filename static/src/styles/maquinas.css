@@ -18,7 +18,7 @@ body {
     min-height: 100vh;
 }
 
-.machine-edit.active,
+.machine-edit__overlay.active,
 .machine__register.active,
 .delete-confirmation.active{
     display: flex;
@@ -618,22 +618,34 @@ body {
 /* ========================================
    BLOCO: |MODAL| MACHINE-EDIT (Form Edição)
    ======================================== */
-.machine-edit {
+
+.machine-edit__overlay{
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    inset: 0;
+    width: 100dvw;
+    height: 100dvh;
+    background: rgba(10, 8, 75, 0.4);
+    backdrop-filter: var(--glass-blur);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: clamp(12px, 3vw, 24px);
+}
+
+.machine-edit {
     background-color: var(--color-bg-card);
     width: 90%;
     max-width: 520px;
     max-height: 85vh;
-    border-radius: var(--border-radius-lg);
+    border-radius: 24px 0 0 24px;
     box-shadow: var(--shadow-lg);
-    z-index: 1000;
-    display: none;
+
+    display: flex;
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
+    margin: auto;
 }
 
 
@@ -641,8 +653,9 @@ body {
 .machine-edit__logo {
     width: 100%;
     background-color: var(--color-primary);
-    height: 56px;
+    height: 56px; 
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
@@ -657,7 +670,7 @@ body {
 .machine-edit__logo-title {
     color: var(--color-text-light);
     font-family: var(--font-family-base);
-    font-size: var(--font-size-md);
+    font-size: clamp(0.65rem, 2.5vw, 1rem);
     font-weight: var(--font-weight-bold);
 }
 
@@ -786,6 +799,12 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+
+.machine-edit__statistics{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .machine-edit__file-upload-wrapper {
