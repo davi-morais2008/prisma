@@ -78,6 +78,9 @@ def redefinir_senha(token):
 
     return render_template('redefinir_senha.html', token=token)
 
+
+
+
 @app.route("/telaInicial")
 def pagina_inicial():
     return render_template("telaInicial.html")
