@@ -85,18 +85,43 @@ const btnConfirmDelete = document.querySelector('.button-confirmation--delete');
 
 async function requestMachine() {
 
-    const responde = await fetch()
-    
+    const resposta = await fetch(`http://127.0.0.1:8080/maquinas/api_request_machines`,{
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json; charset=utf-8'
+            }}
+        );
+        if (!resposta.ok){
+            alert("ERRO AO CARREGAR INFORMAÇÃO!");
+        }
+    let maquinas = await resposta.json()
+    return maquinas
 }
 
 machineButtons.forEach((machineButton) => {
 
-    machineButton.addEventListener('click', () => {
+    machineButton.addEventListener('click', async () => {
         detailsModalContainer.classList.add('active')
-    })
+        let machines = await requestMachine()
+        machines.forEach((machine) => {
+            // console.log(machine)
+            // console.log(machineButton.getAttribute('id'))
+            if (machine.id_maquina == machineButton.getAttribute('id')){
+                let machineDetails = machines[(machineButton.getAttribute('id')) - 1]
+                console.log(machineDetails)
+                // detailsImage.src = machineDetails.url_imagem;
+
+                // detailsTypeText.textContent = machineDetails.tipo_maquina;
+                // detailsPatrimonyText.textContent = machineDetails.numero_patrimonio;
+
+                // detailsPreventiveStatusText.textContent = `Status: ${machineDetails.status_preventiva} - ${machineDetails.data_preventiva}`;
+            }
+            
+        })
     
 
-})
+})})
 
 btnEditFromDetails.addEventListener('click', () => {
     editModalOverlay.classList.add('active')
