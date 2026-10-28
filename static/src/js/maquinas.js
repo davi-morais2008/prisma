@@ -4,7 +4,10 @@
 const btnRegisterMachine = document.querySelector('.machines__button-register');
 const inputSearchMachine = document.querySelector('.filter-input-search');
 const filterButtons = document.querySelectorAll('.filter-button');
-const machineCards = document.querySelectorAll('.machines__machines-grid .machine');
+const machineButtons = document.querySelectorAll('.machine__button');
+
+
+
 
 // ==========================================
 // 2. MODAL: CADASTRAR NOVA MÁQUINA
@@ -29,15 +32,21 @@ const createScheduledDateInput = document.getElementById('scheduled-date');
 // ==========================================
 // 3. MODAL: DETALHES DA MÁQUINA
 // ==========================================
+
 const detailsModalContainer = document.querySelector('.machine-details');
+const detailsTypeText = document.querySelector('.machine-details__type-text');
+const detailsPatrimonyText = document.querySelector('.machine-details__number-text');
+
+const detailsStatValues = document.querySelectorAll('.machine-details__stat-value');
+const detailsPreventiveStatusText = document.querySelector('.machine-details__prev-maintance-text');
+const detailsHistoryTableBody = document.querySelector('.machine-details__maintances-list tbody');
+
 const btnCloseDetailsModal = document.querySelector('.machine-details__close-button');
 const btnEditFromDetails = document.querySelector('.machine-details__action-button--edit');
 const btnDeleteFromDetails = document.querySelector('.machine-details__action-button--delete');
 
 // Elementos de Exibição de Informações
 const detailsImage = document.querySelector('.machine-details__info-image');
-const detailsType = document.querySelector('.machine-details__type-text');
-const detailsPatrimony = document.querySelector('.machine-details__number-text');
 const detailsManualLinks = document.querySelectorAll('.machine-details__manual-link');
 
 // ==========================================
@@ -73,10 +82,20 @@ const btnCancelDelete = document.querySelector('.button-confirmation--cancel');
 const btnConfirmDelete = document.querySelector('.button-confirmation--delete');
 
 
-machineCards.forEach((machine) => {
-    machine.addEventListener('click', () => {
+
+async function requestMachine() {
+
+    const responde = await fetch()
+    
+}
+
+machineButtons.forEach((machineButton) => {
+
+    machineButton.addEventListener('click', () => {
         detailsModalContainer.classList.add('active')
     })
+    
+
 })
 
 btnEditFromDetails.addEventListener('click', () => {
