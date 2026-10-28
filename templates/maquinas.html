@@ -28,9 +28,10 @@ Máquinas
         </div>
 
         <div class="machines__machines-grid">
+            {% for maquina in maquinas %}
             <article class="machine">
                 <figure class="machine__media">
-                    <img src="maquina.url_imagem" alt="Prévia visual da Máquina 01 - Torno CNC X200"
+                    <img src="{{maquina.url_imagem}}" alt="Prévia visual da Máquina 01 - Torno CNC X200"
                         class="machine__image" loading="lazy" />
                     <span class="machine__status machine__status--active" aria-label="Status: Operacional">
                         Operacional
@@ -39,18 +40,18 @@ Máquinas
 
                 <div class="machine__content">
                     <header class="machine__header">
-                        <h3 class="machine__title">Máquina 01</h3>
-                        <p class="machine__number">Patrimônio: 01</p>
+                        <h3 class="machine__title">{{maquina.tipo_maquina}}</h3>
+                        <p class="machine__number">Patrimônio: {{maquina.numero_patrimonio}}</p>
                     </header>
 
                     <dl class="machine__details">
                         <div class="machine__detail-item">
                             <dt class="machine__detail-label">Modelo:</dt>
-                            <dd class="machine__detail-value">Torno CNC X200</dd>
+                            <dd class="machine__detail-value">{{maquina.modelo_maquina}}</dd>
                         </div>
                         <div class="machine__detail-item">
                             <dt class="machine__detail-label">Setor:</dt>
-                            <dd class="machine__detail-value">Usinagem A</dd>
+                            <dd class="machine__detail-value">{{maquina.localizacao}}</dd>
                         </div>
                     </dl>
 
@@ -61,6 +62,7 @@ Máquinas
                     </footer>
                 </div>
             </article>
+            {% endfor %}
         </div>
 
         <!-- FORMULÁRIO DE CADASTRO DE MÁQUINAS -->
