@@ -161,6 +161,12 @@ def pagina_maquinas():
     maquinas = consultar_maquinas()
     return render_template('maquinas.html', maquinas = maquinas)
 
+
+@app.route('/maquinas/api_request_machines', methods = ['GET'])
+def maquinas_api_get():
+    maquinas = consultar_maquinas()
+    return jsonify(maquinas), 200
+
 @app.route('/usuarios', methods = ['GET'])
 def pagina_usuarios():
     return render_template('usuarios.html')
