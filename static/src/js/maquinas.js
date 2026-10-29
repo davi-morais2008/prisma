@@ -14,7 +14,8 @@ const machineButtons = document.querySelectorAll('.machine__button');
 // ==========================================
 const createModalContainer = document.querySelector('.machine-modal__overlay');
 const btnCloseCreateModal = document.querySelector('.machine-modal__close-button');
-const createMachineForm = document.querySelector('.machine-form');
+const createMachineForm = document.querySelector('.machine-form__submit-button');
+const btnCreateMachine = document.querySelector('.machine-form');
 
 // Inputs do Formulário de Cadastro
 const createAvatarInput = document.querySelector('.machine-form__avatar-upload');
@@ -29,6 +30,18 @@ const createManualFileInput = document.getElementById('manual-upload');
 const createStatusSelect = document.getElementById('status-machine');
 const createScheduledDateInput = document.getElementById('scheduled-date');
 
+// Leitura direta do .value e .files
+const avatarFile = createAvatarInput.querySelector('input[type="file"]')?.files[0];
+const typeValue = createTypeInput.value;
+const numberValue = createNumberInput.value;
+const productionTimeValue = createProductionTimeInput.value;
+const totalHoursValue = createTotalHoursInput.value;
+const accumulatedCostValue = createAccumulatedCostInput.value;
+const partsChangedValue = createPartsChangedInput.value;
+const downtimeValue = createDowntimeInput.value;
+const manualFile = createManualFileInput.files[0];
+const statusValue = createStatusSelect.value;
+const scheduledDateValue = createScheduledDateInput.value;
 // ==========================================
 // 3. MODAL: DETALHES DA MÁQUINA
 // ==========================================
@@ -131,9 +144,9 @@ btnDeleteFromDetails.addEventListener('click', () => {
     deleteConfirmationModal.classList.add('active')
 })
 
-btnRegisterMachine.addEventListener('click', () => {createModalContainer.classList.add('active')
-    console.log('certo')
-})
+
+
+btnRegisterMachine.addEventListener('click', () => {createModalContainer.classList.add('active')})
 btnCloseCreateModal.addEventListener('click', () => {createModalContainer.classList.remove('active')}
 )
 
