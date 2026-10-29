@@ -76,10 +76,10 @@ const btnSaveEdit = document.querySelector('.machine-edit__button--save');
 // ==========================================
 // 5. MODAL: CONFIRMAÇÃO DE EXCLUSÃO
 // ==========================================
-const deleteConfirmationModal = document.querySelector('.delete-confirmation');
-const btnCloseDeleteModal = document.querySelector('.delete-confirmation__close-button');
-const btnCancelDelete = document.querySelector('.button-confirmation--cancel');
-const btnConfirmDelete = document.querySelector('.button-confirmation--delete');
+const deleteConfirmationModal = document.querySelector('.order-delete');
+const btnCloseDeleteModal = document.querySelector('.order-delete__close-btn');
+const btnCancelDelete = document.querySelector('.order-delete__btn--cancel');
+const btnConfirmDelete = document.querySelector('.order-delete__btn--confirm');
 
 
 
