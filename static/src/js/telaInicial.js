@@ -94,7 +94,7 @@ workOrders.forEach(order => {
 
         const idOrder = event.currentTarget.getAttribute('id_order');
 
-        const resposta = await fetch(`http://127.0.0.1:8080/api/get/ordens_servico/`, {
+        const resposta = await fetch(`https://prisma-maintenance.onrender.com/api/get/ordens_servico/`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json; charset=utf-8',

@@ -15,7 +15,7 @@ maintBTN.forEach((btn) => {
 
         const osID = btn.getAttribute('id_os');
 
-        const resposta = await fetch(`http://127.0.0.1:8080/api/get/info_manutencao/${osID}`,{
+        const resposta = await fetch(`https://prisma-maintenance.onrender.com/api/get/info_manutencao/${osID}`,{
             method: 'GET',
             headers: {
                 'Accept': 'application/json; charset=utf-8',
