@@ -90,8 +90,9 @@ Máquinas
                     <!-- Topo: Foto e Dados Básicos -->
                     <div class="machine-form__top-section">
                         <div class="machine-form__avatar-wrapper">
-                            <img src="https://placehold.co/200x200/0A084B/FFFFFF?text=Imagem+M%C3%A1quina" id="image-preview"
-                                alt="Foto de pré-visualização da máquina" class="machine-form__avatar-img">
+                            <img src="https://placehold.co/200x200/0A084B/FFFFFF?text=Imagem+M%C3%A1quina"
+                                id="image-preview-edit" alt="Foto de pré-visualização da máquina"
+                                class="machine-form__avatar-img">
                             <label class="machine-form__avatar-upload" aria-label="Alterar imagem da máquina">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -100,7 +101,7 @@ Máquinas
                                     </path>
                                     <circle cx="12" cy="13" r="4"></circle>
                                 </svg>
-                                <input name="file" id="image-preview-input" type="file" name="avatar-upload"
+                                <input name="file" id="image-preview-input-edit" type="file" name="avatar-upload"
                                     accept="image/*" style="display: none;">
                             </label>
                         </div>
@@ -184,8 +185,8 @@ Máquinas
                                     <label for="manual-upload" class="custom-file-button">
                                         Procurar Arquivo
                                     </label>
-                                    <span id="file-name" class="file-name">Nenhum ficheiro escolhido</span>
-                                    <input type="file" id="manual-upload" accept=".pdf" hidden />
+                                    <span id="file-name-edit" class="file-name">Nenhum ficheiro escolhido</span>
+                                    <input type="file" id="manual-upload-edit" accept=".pdf" hidden />
                                 </div>
                             </div>
                         </div>
@@ -541,15 +542,14 @@ Máquinas
                     <!-- INFORMAÇÕES PRIMÁRIAS -->
                     <div class="machine-edit__primary-info">
                         <div class="machine-edit__img-container">
-                            <img src="/static/src/img/torno_mecanico.jpg" alt="Foto da máquina"
+                            <img src="/static/src/img/torno_mecanico.jpg" id="preview-edit-img" alt="Foto da máquina"
                                 class="machine-edit__info-image">
-                            <label for="edit-machine-photo" class="machine-edit__img-upload-btn"
-                                aria-label="Alterar foto da máquina">
+                            <label for="preview-edit-img-button" class="machine-edit__img-upload-btn" aria-label="Alterar foto da máquina">
                                 <span class="material-symbols-outlined">
                                     photo_camera
                                 </span>
-                                <input type="file" id="edit-machine-photo" class="machine-edit__file-input"
-                                    accept="image/*">
+                                <input type="file" id="preview-edit-img-button" name="edit-machine-img"
+                                    class="machine-edit__file-input" accept="image/*">
                             </label>
                         </div>
 
@@ -605,16 +605,13 @@ Máquinas
                                         <input type="number" id="edit-stop-time" class="machine-edit__input" value="12">
                                     </div>
 
-                                    <div class="machine-edit__field machine-edit__field--manual">
-                                        <label class="machine-edit__label">Manual da Máquina (PDF)</label>
-                                        <div class="machine-edit__file-upload-wrapper">
-                                            <span class="machine-edit__file-name">MANUAL_DE_OPERACAO.PDF</span>
-                                            <label for="edit-manual-file" class="machine-edit__upload-button">
-                                                Upload PDF
-                                                <input type="file" id="edit-manual-file"
-                                                    class="machine-edit__file-input" accept=".pdf">
-                                            </label>
-                                        </div>
+                                    <div class="file-upload-container">
+                                        <label for="edit-stop-time" class="machine-edit__label">Manual PDF</label>
+                                        <label for="manual-upload" class="custom-file-button">
+                                            Procurar Arquivo
+                                        </label>
+                                        <span id="file-name" class="file-name">Nenhum ficheiro escolhido</span>
+                                        <input type="file" id="manual-upload" accept=".pdf" hidden />
                                     </div>
                                 </div>
                             </div>
