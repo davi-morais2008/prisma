@@ -246,6 +246,76 @@
     filter: drop-shadow(0 20px 30px rgba(10, 8, 75, 0.15));
 }
 
+
+/* 1. Preparar o container pai para ancorar o posicionamento absoluto */
+.coluna_formulario {
+  position: relative;
+  /* Mantenha o restante das suas regras do coluna_formulario aqui */
+}
+
+/* 2. Bloco: Theme Toggle */
+.theme-toggle {
+  /* Posicionamento fora do fluxo normal dos formulários */
+  position: absolute;
+  top: clamp(15px, 1vw, 15px);
+  right: clamp(5px, 1vw, 15px);
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-secondary);
+  border: none;
+  border-radius: var(--border-radius-pill);
+  padding: clamp(6px, 1.5vw, 10px);
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Elemento: Ícone interno responsivo */
+.theme-toggle__icon {
+  /* Tamanho fluido que se adapta entre mobile e desktop */
+  width: clamp(20px, 2vw, 25px);
+  height: clamp(20px, 2vw, 25px);
+  object-fit: contain;
+  background-color: transparent;
+  pointer-events: none;
+
+}
+
+.theme-toggle:hover {
+  transform: scale(1.08);
+  box-shadow: var(--shadow-md);
+  background-color: var(--color-secondary-hover);
+}
+
+
+[data-theme="dark"] .toggle_container {
+    background-color: var(--color-bg-light); /* Usa o fundo invertido */
+}
+
+[data-theme="dark"] .toggle_indicator {
+    background-color: var(--color-bg-card);
+}
+
+[data-theme="dark"] .btn_toggle {
+    color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] #signin:checked ~ .toggle_container label[for="signin"],
+[data-theme="dark"] #signup:checked ~ .toggle_container label[for="signup"] {
+    color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .btn_pwd {
+    color: var(--color-text-primary);
+}
+
+
+
+
 @view-transition {
     navigation: auto;
 }

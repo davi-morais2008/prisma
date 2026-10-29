@@ -79,11 +79,14 @@
     border-radius: var(--border-radius-pill);
     background-color: var(--color-bg-input);
     font-family: var(--font-family-base);
+    padding: 0 20px;
     font-size: var(--font-size-sm);
     color: var(--color-text-primary);
     box-shadow: var(--shadow-sm);
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .home__search-bar:focus {
@@ -150,7 +153,7 @@
 .work-order__title {
     font-size: var(--font-size-md);
     font-weight: var(--font-weight-bold);
-    color: #1e293b;
+    color: var(--color-text-primary);
 }
 
 .work-order__description {
