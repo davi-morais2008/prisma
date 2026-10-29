@@ -43,6 +43,57 @@ def atualizar_maquina(id):
     except:
         return False
 
+def atualizar_editar_maquina(id, tipo_maquina, numero_patrimonio, tempo_producao, total_horas, custo_acumulado, pecas_alteradas, tempo_parada, status_preventiva, data_preventiva):
+    """
+    Atualiza todos os dados de uma máquina no banco de dados com base no seu ID.
+
+    Parâmetros:
+        id (int): ID da máquina.
+        tipo_maquina (str): Tipo/Modelo da máquina.
+        numero_patrimonio (str/int): Número de patrimônio.
+        tempo_producao (float/int): Tempo de produção em horas.
+        total_horas (float/int): Total de horas funcionando.
+        custo_acumulado (float): Custo acumulado em R$.
+        pecas_alteradas (int): Total de peças alteradas.
+        tempo_parada (float/int): Tempo de parada em horas.
+        status_preventiva (str): Status da manutenção preventiva.
+        data_preventiva (str): Data agendada da preventiva.
+
+    Retorna:
+        bool: True se a atualização foi realizada com sucesso, False se ocorreu algum erro.
+    """
+    conexao, cursor = conectar()
+    try:
+        cursor.execute( """
+            UPDATE maquinas 
+            SET tipo_maquina = %s,
+                numero_patrimonio = %s,
+                tempo_producao = %s,
+                total_horas = %s,
+                custo_acumulado = %s,
+                pecas_alteradas = %s,
+                tempo_parada = %s,
+                status_preventiva = %s,
+                data_preventiva = %s
+            WHERE id_maquina = %s
+        """, (
+            tipo_maquina,
+            numero_patrimonio,
+            tempo_producao,
+            total_horas,
+            custo_acumulado,
+            pecas_alteradas,
+            tempo_parada,
+            status_preventiva,
+            data_preventiva,
+            id
+        ))
+        conexao.commit()
+        conexao.close()
+        return True
+    except:
+        return False
+
 def deletar_maquina(id):
     """
     Desativa uma máquina no banco de dados (soft delete), alterando a flag 'is_inativa'
