@@ -8,7 +8,7 @@ from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_ema
 from model.consultaMaquinas import consultar_maquinas
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
-import flask_mail
+from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
 
@@ -28,7 +28,7 @@ serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 
 @app.route('/esqueci-senha', methods=['GET', 'POST'])
-@app.route('/recuperacaoSenha', methods=['GET', 'POST']) # <--- Aceita as duas URLs para a mesma função
+@app.route('/recuperacaoSenha', methods=['GET', 'POST'])
 def esqueci_senha():
     if request.method == 'POST':
         email = request.form.get('email')
@@ -159,13 +159,34 @@ def post_cadastro():
 @app.route('/maquinas', methods = ['GET'])
 def pagina_maquinas():
     maquinas = consultar_maquinas()
-    return render_template('maquinas.html', maquinas = maquinas)
+    tipos_maquinas = consulta_tipo_maquinas()
+    return render_template('maquinas.html', maquinas = maquinas, tipos_maquinas = tipos_maquinas)
 
 
 @app.route('/maquinas/api_request_machines', methods = ['GET'])
 def maquinas_api_get():
     maquinas = consultar_maquinas()
     return jsonify(maquinas), 200
+
+@app.route('/maquinas/post_register_machine', methods = ['POST'])
+def maquinas_post_register():
+    avatar_file = request.files.get("avatar-upload")
+    type_machine = request.form.get("type-machine")
+    number_machine = request.form.get("number-machine")
+    model_machine = request.form.get("model-machine")
+    location_machine = request.form.get("location-machine")
+    production_time = request.form.get("production-time")
+    total_hours = request.form.get("total-hours")
+    accumulated_cost = request.form.get("accumulated-cost")
+    parts_changed = request.form.get("parts-changed")
+    downtime = request.form.get("downtime")
+    manual_file = request.files.get("manual-upload")
+    status_machine = request.form.get("status-machine")
+    scheduled_date = request.form.get("scheduled-date")
+    cadastrar_maquina(type_machine, int(number_machine), model_machine, location_machine, "TESTE", status_machine)
+
+
+    return redirect('/maquinas')
 
 @app.route('/usuarios', methods = ['GET'])
 def pagina_usuarios():
