@@ -143,21 +143,17 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
     width: 100%;
-    max-width: 800px;
     padding: 0 0.5rem;
 }
 
 /* ========================================
    BLOCO: Machine Card
    ======================================== */
-/* ========================================
-   BLOCO: Machine Card
-   ======================================== */
+
 .machine {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 360px;
   background-color: var(--color-bg-card);
   border-radius: var(--border-radius-md);
   box-shadow: var(--shadow-md);
@@ -424,7 +420,7 @@ body {
 
 .machine-form__avatar-upload {
     position: absolute;
-    bottom: -4px;
+    bottom: -91px;
     right: -4px;
     background-color: var(--color-primary);
     color: var(--color-text-light);
@@ -520,6 +516,48 @@ body {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.machine-form__file-input{
+    cursor: pointer;
+}
+
+.file-upload-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 2px dashed #6366f1; /* Borda tracejada semelhante à da imagem */
+  border-radius: 8px;
+  background-color: #f8fafc;
+  font-family: sans-serif;
+}
+
+/* Botão personalizado */
+.custom-file-button {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.custom-file-button:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* Texto do nome do ficheiro */
+.file-name {
+  color: #64748b;
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+}
+
+
 .machine-form__input:focus,
 .machine-form__select:focus {
     border-color: var(--color-secondary);
@@ -558,9 +596,6 @@ body {
     color: var(--color-secondary);
 }
 
-.machine-form__file-input {
-    display: none;
-}
 
 /* ========================================
    TABELA DE HISTÓRICO
@@ -719,6 +754,8 @@ body {
     gap: 0.5rem;
   }
 
+
+
   .machine-history__field {
     width: 100%;
   }
@@ -737,6 +774,10 @@ body {
     .machine-form__grid--2-cols {
         grid-template-columns: 1fr;
     }
+
+      .machine-form__avatar-upload{
+    bottom: -10px;
+  }
 
     .machine-form__top-section {
         flex-direction: column;
@@ -1650,6 +1691,7 @@ body {
 @media (max-width: 600px) {
     .machines__machines-grid {
     grid-template-columns: 1fr;
+    width: 100%;
   }
 
     .machine-edit__stat-container,
