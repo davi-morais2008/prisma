@@ -43,6 +43,26 @@ def atualizar_maquina(id):
     except:
         return False
 
+def deletar_maquina(id):
+    """
+    Desativa uma máquina no banco de dados (soft delete), alterando a flag 'is_inativa'
+    para preservar o histórico de manutenções.
+
+    Parâmetros:
+        id (int): ID da máquina que será inativada.
+
+    Retorna:
+        bool: True se a inativação foi realizada com sucesso, False se ocorreu algum erro.
+    """
+    conexao, cursor = conectar()
+    try:
+        cursor.execute("UPDATE maquinas SET is_inativa = TRUE WHERE id_maquina = %s", (id,))
+        conexao.commit()
+        conexao.close()
+        return True
+    except:
+        return False
+
 def consulta_tipo_maquinas():
     """
     Função SELECT para retornar os dados dos tipos das máquinas.
