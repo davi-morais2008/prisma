@@ -6,14 +6,16 @@ const machineButtons = document.querySelectorAll('.machine__button');
 const createModalContainer = document.querySelector('.machine-modal__overlay');
 const btnCloseCreateModal = document.querySelector('.machine-modal__close-button');
 const createMachineForm = document.querySelector('.machine-form');
+
 const imgPreviewInput = document.getElementById('image-preview-input');
 const imgPreview = document.getElementById('image-preview');
+const filePreviewInput = document.getElementById('manual-upload');
 const filePreview = document.getElementById('file-name');
-const filePreviewInput = document.getElementById('manual-upload')
 
-
-
-
+const imgPreviewInputEdit = document.getElementById('preview-edit-img-button');
+const imgPreviewEdit = document.getElementById('preview-edit-img');
+const filePreviewInputEdit = document.getElementById('manual-upload-edit');
+const filePreviewEdit = document.getElementById('file-name-edit');
 
 const createAvatarInput = document.querySelector('.machine-form__avatar-upload');
 const createTypeInput = document.getElementById('type-machine');
@@ -66,6 +68,7 @@ const btnCloseEditModal = document.querySelector('.machine-edit__close-button');
 const editMachineForm = document.querySelector('.machine-edit__form');
 
 const editPhotoInput = document.getElementById('edit-machine-photo');
+const editPhotoPreview = document.getElementById('preview-edit-img');
 const editTypeInput = document.getElementById('edit-type');
 const editPatrimonyInput = document.getElementById('edit-patrimony');
 const editLocationInput = document.getElementById('edit-location');
@@ -75,6 +78,7 @@ const editCostInput = document.getElementById('edit-cost');
 const editPartsInput = document.getElementById('edit-parts');
 const editStopTimeInput = document.getElementById('edit-stop-time');
 const editManualFileInput = document.getElementById('edit-manual-file');
+const editManualFileName = document.getElementById('edit-file-name');
 const editMaintanceStatusSelect = document.getElementById('edit-maintance-status');
 const editMaintanceDateInput = document.getElementById('edit-maintance-date');
 
@@ -85,6 +89,39 @@ const btnCloseDeleteModal = document.querySelector('.order-delete__close-btn');
 const btnCancelDeleteHeader = document.getElementById('btnCancelDeleteHeader');
 const btnCancelDelete = document.getElementById('btnCancelDelete');
 const btnConfirmDelete = document.getElementById('btnConfirmDelete');
+
+function setupImagePreview(inputElement, imgElement) {
+    if (!inputElement || !imgElement) return;
+
+    inputElement.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const tempUrl = URL.createObjectURL(file);
+            imgElement.src = tempUrl;
+            imgElement.style.display = 'block';
+        }
+    });
+}
+
+function setupFilePreview(inputElement, labelElement) {
+    if (!inputElement || !labelElement) return;
+
+    inputElement.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            labelElement.textContent = file.name;
+        }
+    });
+}
+
+setupImagePreview(imgPreviewInput, imgPreview);
+setupFilePreview(filePreviewInput, filePreview);
+
+setupImagePreview(imgPreviewInputEdit, imgPreviewEdit);
+setupFilePreview(filePreviewInputEdit, filePreviewEdit);
+
+
+
 
 async function requestMachine() {
     try {
@@ -103,6 +140,27 @@ async function requestMachine() {
     } catch (error) {
         console.error("Erro na requisição:", error);
         return [];
+    }
+}
+
+async function fillEditModal(machineId) {
+    const machines = await requestMachine();
+    const machine = machines.find((item) => item.id_maquina == machineId);
+
+    if (machine) {
+        if (editTypeInput) editTypeInput.value = machine.id_tipo_maquina || machine.tipo_maquina || '';
+        if (editPatrimonyInput) editPatrimonyInput.value = machine.numero_patrimonio || '';
+        if (editLocationInput) editLocationInput.value = machine.localizacao || '';
+        if (editProdTimeInput) editProdTimeInput.value = machine.tempo_producao || '';
+        if (editWorkHoursInput) editWorkHoursInput.value = machine.total_horas || '';
+        if (editCostInput) editCostInput.value = machine.custo_acumulado || '';
+        if (editPartsInput) editPartsInput.value = machine.pecas_alteradas || '';
+        if (editStopTimeInput) editStopTimeInput.value = machine.tempo_parada || '';
+        if (editMaintanceStatusSelect) editMaintanceStatusSelect.value = machine.status_preventiva || '';
+        if (editMaintanceDateInput) editMaintanceDateInput.value = machine.data_preventiva || '';
+        if (editPhotoPreview && machine.url_imagem) {
+            editPhotoPreview.src = machine.url_imagem;
+        }
     }
 }
 
@@ -158,7 +216,10 @@ machineButtons.forEach((machineButton) => {
     });
 });
 
-btnEditFromDetails.addEventListener('click', () => {
+btnEditFromDetails.addEventListener('click', async () => {
+    if (selectedMachineId) {
+        await fillEditModal(selectedMachineId);
+    }
     editModalOverlay.classList.add('active');
 });
 
@@ -166,6 +227,36 @@ btnDeleteFromDetails.addEventListener('click', () => {
     deleteConfirmationModal.classList.add('active');
 });
 
+if (btnConfirmDelete) {
+    btnConfirmDelete.addEventListener('click', async () => {
+        try {
+            const response = await fetch('/maquinas/api_delete_machines', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: selectedMachineId
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro no envio: ${response.status}`);
+            }
+
+            const resultado = await response.json();
+            console.log('Máquina Inativada:', resultado);
+
+        } catch (error) {
+            console.error('Falha ao inativar Máquina:', error);
+            alert('Não foi possível inativar a máquina.');
+        }
+
+        detailsModalContainer.classList.remove('active');
+        deleteConfirmationModal.classList.remove('active');
+        window.location.reload();
+    });
+}
 
 btnRegisterMachine.addEventListener('click', () => { createModalContainer.classList.add('active'); });
 btnCloseCreateModal.addEventListener('click', () => { createModalContainer.classList.remove('active'); });
@@ -178,54 +269,3 @@ btnCancelEdit.addEventListener('click', () => { editModalOverlay.classList.remov
 if (btnCloseDeleteModal) btnCloseDeleteModal.addEventListener('click', () => { deleteConfirmationModal.classList.remove('active'); });
 if (btnCancelDeleteHeader) btnCancelDeleteHeader.addEventListener('click', () => { deleteConfirmationModal.classList.remove('active'); });
 if (btnCancelDelete) btnCancelDelete.addEventListener('click', () => { deleteConfirmationModal.classList.remove('active'); });
-if (btnConfirmDelete) btnConfirmDelete.addEventListener('click', async () => {
-    try {
-        const response = await fetch('/maquinas/api_delete_machines', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: selectedMachineId
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro no envio: ${response.status}`);
-        }
-
-        const resultado = await response.json();
-        console.log('Máquina Deletada:', resultado);
-
-    } catch (error) {
-        console.error('Falha ao deletar Máquina:', error);
-        alert('Não foi possível deletar.');
-    }
-
-    detailsModalContainer.classList.remove('active')
-    window.location.reload();
-})
-
-console.log(imgPreview, imgPreviewInput)
-
-imgPreviewInput.addEventListener('change', (event) => {
-    let arquivo = event.target.files[0]
-
-    if (arquivo) {
-        // Cria uma URL temporária apontando para o arquivo local
-        const urlTemporaria = URL.createObjectURL(arquivo);
-
-        imgPreview.src = urlTemporaria;
-        imgPreview.style.display = 'block';
-    }
-});
-
-filePreviewInput.addEventListener('change', (event) => {
-    let arquivo = event.target.files[0]
-
-    if (arquivo) {
-
-        filePreview.textContent = arquivo.name
-
-    }
-});
