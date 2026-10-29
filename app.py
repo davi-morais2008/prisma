@@ -177,5 +177,5 @@ def pagina_calendario():
 @app.route('/perfil')
 def pagina_perfil():
     return render_template('perfil.html')
-
-app.run(host="0.0.0.0", port=8080, debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080, debug=True)
