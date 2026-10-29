@@ -6,6 +6,14 @@ const machineButtons = document.querySelectorAll('.machine__button');
 const createModalContainer = document.querySelector('.machine-modal__overlay');
 const btnCloseCreateModal = document.querySelector('.machine-modal__close-button');
 const createMachineForm = document.querySelector('.machine-form');
+const imgPreviewInput = document.getElementById('image-preview-input');
+const imgPreview = document.getElementById('image-preview');
+const filePreview = document.getElementById('file-name');
+const filePreviewInput = document.getElementById('manual-upload')
+
+
+
+
 
 const createAvatarInput = document.querySelector('.machine-form__avatar-upload');
 const createTypeInput = document.getElementById('type-machine');
@@ -103,7 +111,7 @@ machineButtons.forEach((machineButton) => {
         detailsModalContainer.classList.add('active');
         const machines = await requestMachine();
         const buttonId = machineButton.getAttribute('id');
-        
+
         selectedMachineId = buttonId;
 
         const machine = machines.find((item) => item.id_maquina == buttonId);
@@ -112,7 +120,7 @@ machineButtons.forEach((machineButton) => {
             if (detailsImage) detailsImage.src = machine.url_imagem || '/static/src/img/torno_mecanico.jpg';
             if (detailsTypeText) detailsTypeText.textContent = machine.tipo_maquina || 'N/A';
             if (detailsPatrimonyText) detailsPatrimonyText.textContent = machine.numero_patrimonio || 'N/A';
-            
+
             if (detailsStatValues && detailsStatValues.length >= 5) {
                 detailsStatValues[0].textContent = `${machine.tempo_producao || 0}h`;
                 detailsStatValues[1].textContent = `${machine.total_horas || 0}h`;
@@ -171,7 +179,7 @@ if (btnCloseDeleteModal) btnCloseDeleteModal.addEventListener('click', () => { d
 if (btnCancelDeleteHeader) btnCancelDeleteHeader.addEventListener('click', () => { deleteConfirmationModal.classList.remove('active'); });
 if (btnCancelDelete) btnCancelDelete.addEventListener('click', () => { deleteConfirmationModal.classList.remove('active'); });
 if (btnConfirmDelete) btnConfirmDelete.addEventListener('click', async () => {
-     try {
+    try {
         const response = await fetch('/maquinas/api_delete_machines', {
             method: 'POST',
             headers: {
@@ -197,3 +205,27 @@ if (btnConfirmDelete) btnConfirmDelete.addEventListener('click', async () => {
     detailsModalContainer.classList.remove('active')
     window.location.reload();
 })
+
+console.log(imgPreview, imgPreviewInput)
+
+imgPreviewInput.addEventListener('change', (event) => {
+    let arquivo = event.target.files[0]
+
+    if (arquivo) {
+        // Cria uma URL temporária apontando para o arquivo local
+        const urlTemporaria = URL.createObjectURL(arquivo);
+
+        imgPreview.src = urlTemporaria;
+        imgPreview.style.display = 'block';
+    }
+});
+
+filePreviewInput.addEventListener('change', (event) => {
+    let arquivo = event.target.files[0]
+
+    if (arquivo) {
+
+        filePreview.textContent = arquivo.name
+
+    }
+});
