@@ -157,18 +157,28 @@ main {
 
 /* Estilização base do botão de tema */
 .theme-toggle {
-    background: none;
+    background: transparent;
     border: none;
+    outline: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0.5rem;
-    border-radius: var(--border-radius-sm); /* Usa a variável do seu variables.css */
+    border-radius: var(--border-radius-sm);
+    transition: background 0.3s ease;
 }
 
 .theme-toggle:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--color-bg-hover);
+}
+
+.sidebar_light_dark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0;
 }
 
 /* Ajuste sutil no hover para o modo escuro */
@@ -179,8 +189,11 @@ main {
 .theme-toggle__icon {
     width: 24px;
     height: 24px;
-    background-color: white;
     object-fit: contain;
+}
+
+.dark-mode .theme-toggle__icon {
+    filter: invert(1); 
 }
 
 @media (max-width: 768px) {
