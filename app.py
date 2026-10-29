@@ -42,27 +42,27 @@ def esqueci_senha():
         email = request.form.get('email')
         usuario = buscar_usuario_por_email(email)
 
-    if usuario:
-        token = serializer.dumps(email, salt="recuperar-senha-salt")
-        link_redefinicao = url_for("redefinir_senha", token=token, _external=True)
+        if usuario:
+            token = serializer.dumps(email, salt="recuperar-senha-salt")
+            link_redefinicao = url_for("redefinir_senha", token=token, _external=True)
 
-        msg = Message("Recuperação de Senha - PRISMA", recipients=[email])
-        msg.body = f"Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos."
+            msg = Message("Recuperação de Senha - PRISMA", recipients=[email])
+            msg.body = f"Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos."
 
-        try:
-            # Força o encerramento explícito da conexão SMTP após o disparo
-            with mail.connect() as conn:
-                conn.send(msg)
-        except Exception as e:
-            print(f"Erro ao enviar o e-mail: {e}", flush=True)
-            flash("Erro ao enviar o e-mail. Tente novamente mais tarde.", "danger")
+            try:
+                # Força o encerramento explícito da conexão SMTP após o disparo
+                with mail.connect() as conn:
+                    conn.send(msg)
+            except Exception as e:
+                print(f"Erro ao enviar o e-mail: {e}", flush=True)
+                flash("Erro ao enviar o e-mail. Tente novamente mais tarde.", "danger")
+                return redirect(url_for("esqueci_senha"))
+
+            flash(
+                "Se o e-mail estiver cadastrado, você receberá um link de redefinição.",
+                "info",
+            )
             return redirect(url_for("esqueci_senha"))
-
-        flash(
-            "Se o e-mail estiver cadastrado, você receberá um link de redefinição.",
-            "info",
-        )
-        return redirect(url_for("esqueci_senha"))
 
     return render_template('recuperacaoSenha.html')
 
