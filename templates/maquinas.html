@@ -29,6 +29,7 @@ Máquinas
 
         <div class="machines__machines-grid">
             {% for maquina in maquinas %}
+            {% if maquina.is_inativa == 0 %}
             <article class="machine">
                 <figure class="machine__media">
                     <img src="{{maquina.url_imagem}}" alt="Prévia visual da Máquina 01 - Torno CNC X200"
@@ -63,6 +64,8 @@ Máquinas
                     </footer>
                 </div>
             </article>
+
+            {% endif %}
             {% endfor %}
         </div>
 
@@ -508,6 +511,7 @@ Máquinas
                         </button>
                         <button type="button" class="order-delete__btn order-delete__btn--confirm"
                             id="btnConfirmDelete">
+                            
                             <span class="material-symbols-outlined" aria-hidden="true">delete</span>
                             Sim, Excluir
                         </button>
