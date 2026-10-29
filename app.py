@@ -14,7 +14,7 @@ from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
 import os
 from dotenv import load_dotenv
-
+import traceback
 load_dotenv()
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
@@ -50,19 +50,17 @@ def esqueci_senha():
             msg.body = f"Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos."
 
             try:
-                # Força o encerramento explícito da conexão SMTP após o disparo
                 with mail.connect() as conn:
                     conn.send(msg)
             except Exception as e:
-                print(f"Erro ao enviar o e-mail: {e}", flush=True)
+    # Exibe a falha exata nos logs do Render
+                print("=" * 50, flush=True)
+                print("ERRO DETALHADO NO DISPARO DE EMAIL:", flush=True)
+                traceback.print_exc()
+                print("=" * 50, flush=True)
+
                 flash("Erro ao enviar o e-mail. Tente novamente mais tarde.", "danger")
                 return redirect(url_for("esqueci_senha"))
-
-            flash(
-                "Se o e-mail estiver cadastrado, você receberá um link de redefinição.",
-                "info",
-            )
-            return redirect(url_for("esqueci_senha"))
 
     return render_template('recuperacaoSenha.html')
 
