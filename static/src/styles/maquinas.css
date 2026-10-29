@@ -1416,86 +1416,221 @@ body {
 /* =========================================================
    BLOCO: |MODAL| delete-confirmation (confirmação de delete)
    ========================================================= */
-.delete-confirmation {
-    width: 20%;
-    z-index: 1001;
-    position: absolute;
-    background-color: var(--color-bg-main);
-    display: none;
-    flex-direction: column;
-    padding: 20px;
-    border-radius: var(--border-radius-lg);
-    gap: 30px;
-    box-shadow: 0px 2px 10px 0.4px gray;
-    top: 25%;
-}
-
-.delete-confirmation__close-button {
-    cursor: pointer;
-    width: 25px;
-    height: 25px;
-    color: var(--color-primary);
-    border: none;
-    border-radius: 5px;
-    align-self: flex-end;
-    font-weight: var(--font-weight-bold);
-}
-
-.delete-confirmation__title {
-    font-size: var(--font-size-xl);
-    text-align: center;
-    color: var(--color-primary);
-}
-
-.danger-title {
-    color: var(--color-status-danger-dark);
-}
-
-.delete-confirmation__buttons {
-    width: 100%;
-    height: 70px;
-    display: flex;
-    justify-content: space-evenly;
+/* Container Principal do Modal */
+.order-delete {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none; 
     align-items: center;
+    justify-content: center;
+    padding: var(--border-radius-sm);
 }
 
 
-.button-confirmation {
-    width: 110px;
-    height: 40px;
-    border-radius: 15px;
-    border: none;
-    cursor: pointer;
-    font-size: var(--font-size-md);
-    font-family: var(--font-family-base);
-    font-weight: var(--font-weight-bold);
-
+.order-delete.active{
+    display: flex;
 }
 
-.button-confirmation--cancel {
-    background-color: var(--color-accent-orange);
-    color: var(--color-primary);
+
+/* Overlay Translucido com Blur */
+.order-delete__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-glass-bg);
+    backdrop-filter: var(--glass-blur);
 }
 
-.button-confirmation--delete {
+
+/* Card Container Compacto */
+.order-delete__card {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+/* Cabeçalho Fixo Escuro */
+.order-delete__header {
+    width: 100%;
+    height: 56px;
     background-color: var(--color-primary);
-    color: var(--color-bg-light);
-}
-
-.button-confirmation--cancel:hover {
-    background-color: var(--color-accent-peach);
-    transition: all 100ms ease-in;
-    transform: scale(1.02);
-}
-
-.button-confirmation--delete:hover {
-    background-color: var(--color-status-danger-dark);
-    transition: all 100ms ease-in;
-    transform: scale(1.02);
-
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--border-radius-md);
+    box-sizing: border-box;
 }
 
 
+.order-delete__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--border-radius-sm);
+}
+
+
+.order-delete__brand-image {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+}
+
+
+.order-delete__brand-title {
+    color: var(--color-text-light);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+    text-transform: uppercase;
+}
+
+
+.order-delete__close-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+
+.order-delete__close-btn:hover {
+    background-color: var(--color-primary-dark);
+    transform: scale(1.05);
+}
+
+
+/* Corpo do Alerta */
+.order-delete__body {
+    padding: var(--border-radius-lg) var(--border-radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--border-radius-md);
+}
+
+
+/* Wrapper do Ícone de Alerta */
+.order-delete__icon-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--border-radius-pill);
+    background-color: var(--color-bg-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+
+.order-delete__icon {
+    font-size: 2.25rem;
+    color: var(--color-status-danger);
+}
+
+
+/* Bloco de Mensagens */
+.order-delete__content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+.order-delete__heading {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+
+.order-delete__description {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+
+/* Rodapé de Ações */
+.order-delete__footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--border-radius-sm);
+    padding: var(--border-radius-sm) var(--border-radius-md) var(--border-radius-md);
+    background-color: var(--color-bg-card);
+}
+
+
+/* Botões de Ação */
+.order-delete__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 42px;
+    padding: 0 20px;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--border-radius-pill);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+
+.order-delete__btn .material-symbols-outlined {
+    font-size: var(--font-size-md);
+}
+
+
+/* Botão Cancelar (Neutro/Seguro) */
+.order-delete__btn--cancel {
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-text-secondary);
+}
+
+
+.order-delete__btn--cancel:hover {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-primary);
+}
+
+
+/* Botão Confirmar Exclusão (Destrutivo) */
+.order-delete__btn--confirm {
+    background-color: var(--color-status-danger);
+    color: var(--color-text-primary);
+    border: none;
+    box-shadow: var(--shadow-sm);
+}
+
+
+.order-delete__btn--confirm:hover {
+    background-color: #ff6b6b;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
 /* ======================================= */
 /* =========   MEDIA QUERIES  ============ */
 /* ======================================= */
