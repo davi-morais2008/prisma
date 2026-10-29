@@ -133,15 +133,136 @@ body {
 
 .profile-card__tag--link:hover,
 .profile-card__tag--link:focus {
+    background-color: var(--color-accent-orange);
+    color: var(--color-text-light);
+}
+
+/* Ações / Botões */
+.profile-card__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+/* ========================================
+   COMPONENTE: BUTTONS
+======================================== */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--border-radius-pill);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    border: none;
+    cursor: pointer;
+    flex: 1; 
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.button:active {
+    transform: scale(0.98);
+}
+
+.button--secondary {
     background-color: var(--color-secondary);
     color: var(--color-text-light);
 }
 
-/* Descrição Textual */
-.profile-card__description {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    text-align: center;
-    padding: 0 0.5rem;
+.button--secondary:hover,
+.button--secondary:focus {
+    background-color: var(--color-secondary-hover);
+}
+
+/* Oculta o modal por padrão */
+.user-edit {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+/* Mostra o modal quando a classe ativa é adicionada */
+.user-edit.user-edit--active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Fundo escuro atrás da janela */
+.user-edit__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+/* Janela do modal (caixa branca) */
+.user-edit__content {
+    position: relative;
+    z-index: 2;
+    background-color: var(--color-bg-light, #ffffff);
+    width: 90%;
+    max-width: 500px;
+    padding: 2rem;
+    border-radius: var(--border-radius-lg, 12px);
+    box-shadow: var(--shadow-lg, 0 10px 25px rgba(0,0,0,0.2));
+}
+
+/* Restrição do tamanho da logo */
+.user-edit__logo {
+    max-width: 80px; /* Limita o tamanho da logo */
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+/* Organização do cabeçalho da janela */
+.user-edit__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+/* Posicionamento do botão de fechar (X) */
+.user-edit__close-button {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-secondary, #666);
+    padding: 0.5rem;
+}
+
+/* Organização do formulário interno */
+.user-edit__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.user-edit__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.user-edit__input {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
 }
