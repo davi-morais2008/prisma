@@ -562,6 +562,12 @@ body {
   .machine-history__label {
     display: block; /* Exibe os rótulos */
   }
+  .machine-details{
+    height: 80vh;
+  }
+  .machine-edit{
+    height: 80vh;
+  }
 }
 
 /* ========================================
@@ -603,6 +609,7 @@ body {
     .machine-form__submit-button {
         width: 100%;
     }
+
 }
 
 /* ========================================
@@ -612,7 +619,7 @@ body {
     background-color: var(--color-bg-card);
     width: 95%;
     max-width: 720px;;
-    max-height: 90vh;
+    max-height: 85vh;
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
     z-index: 900;
@@ -624,6 +631,8 @@ body {
     padding-bottom: 20px;
     gap: 16px;
     position: fixed;
+    top: 50px;
+    border: 1px solid #20206e36;
 }
 
 /* --- CABEÇALHO DAS ESTATÍSTICAS E AÇÕES --- */
@@ -953,6 +962,7 @@ body {
     align-items: center;
     z-index: 9999;
     padding: clamp(12px, 3vw, 24px);
+
 }
 
 .machine-edit {
@@ -962,12 +972,13 @@ body {
     max-height: 85vh;
     border-radius: 24px 0 0 24px;
     box-shadow: var(--shadow-lg);
-
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
     margin: auto;
+    position: fixed;
+    top: 50px;
 }
 
 
@@ -1252,7 +1263,7 @@ body {
    ========================================================= */
 .delete-confirmation {
     width: 20%;
-    z-index: 1000;
+    z-index: 1001;
     position: absolute;
     background-color: var(--color-bg-main);
     display: none;
