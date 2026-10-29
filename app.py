@@ -8,6 +8,7 @@ from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_ema
 from model.consultaMaquinas import consultar_maquinas
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
+from werkzeug.middleware.proxy_fix import ProxyFix
 import flask_mail
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
@@ -16,10 +17,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'PRISMA_maintence') 
 app.config['PREFERRED_URL_SCHEME'] = 'https'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.getenv( 'MAIL_USERNAME' ,'gustavocaua934@gmail.com')
 app.config['MAIL_PASSWORD'] = os.getenv ('MAIL_PASSWORD')
