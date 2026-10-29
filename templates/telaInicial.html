@@ -16,11 +16,12 @@
             <div class="home__orders">
                 {% for os in ordem_servico %}
                 <article class="work-order work-order--baixa" id_order="{{os.id_ordem}}">
-                    <h3 class="work-order__title">2008-09-09 00:00:00</h3>
+                    <h3 class="work-order__title">Número da Ordem: {{os.id_ordem}}</h3>
                     <div class="work-order__description">
                         <p>Responsável: {{os.tecnico_responsavel}}</p>
-                        <p>Falha: {{os.falha}}</p>
                         <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
+                        <p>Máquina: {{os.nome_maquina}}</p>
+                        <p>Data Parada: {{os.data_parada}}</p>
                     </div>
                 </article>
                 {% endfor %}
@@ -134,14 +135,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="order-details__stat-item">
-                                        <span class="material-symbols-outlined order-details__stat-icon"
-                                            aria-hidden="true">check_circle</span>
-                                        <div class="order-details__stat-text">
-                                            <span class="order-details__stat-label">Data de Término Real:</span>
-                                            <strong class="order-details__stat-value" id="data_termino">Em Aberto</strong>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </section>
@@ -277,11 +270,6 @@
                                             name="data_inicio">
                                     </div>
 
-                                    <div class="order-edit__field order-edit__field--full">
-                                        <label class="order-edit__label" for="edit_data_termino">Data Término Real</label>
-                                        <input class="order-edit__input" type="datetime-local" id="edit_data_termino"
-                                            name="data_termino">
-                                    </div>
                                 </div>
                             </fieldset>
 
