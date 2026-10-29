@@ -25,13 +25,10 @@ def cadastrar_ordem_servico(id_maquina: int, id_falha: int, cpf: str, status_os:
         cursor.execute('''
         INSERT INTO ordens_servicos (
         id_maquina,
-        id_falha,
+        descricao_problema,
         cpf,
-        status_ordem,
         tipo_manutencao, 
         descricao_problema, 
-        data_inicio_manutencao, 
-        data_termino_manutencao, 
         data_parada, 
         data_prev_inicio_manutencao, 
         data_prev_termino_manutencao) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
