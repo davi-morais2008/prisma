@@ -726,6 +726,8 @@ body {
   .machine-form__submit-button {
     width: 100%; /* Garante que o botão ocupe toda a largura */
   }
+
+
 }
 
 /* ========================================
@@ -1646,6 +1648,9 @@ body {
 
 
 @media (max-width: 600px) {
+    .machines__machines-grid {
+    grid-template-columns: 1fr;
+  }
 
     .machine-edit__stat-container,
     .machine-edit__maintance-row {
