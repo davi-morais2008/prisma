@@ -14,20 +14,18 @@ from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
 import os
 from dotenv import load_dotenv
-import traceback
+
 load_dotenv()
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'PRISMA_maintence') 
 app.config['PREFERRED_URL_SCHEME'] = 'https'
-# Configurações do Gmail usando TLS na porta 587 (Evita Timeout no Render)
+# Configurações do Gmail usando SSL na porta 465 (Compatível com Render)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = os.getenv(
-    'MAIL_USERNAME', 'gustavocaua934@gmail.com'
-)
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'gustavocaua934@gmail.com')
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = ('PRISMA', app.config['MAIL_USERNAME'])
 
@@ -43,24 +41,21 @@ def esqueci_senha():
         usuario = buscar_usuario_por_email(email)
 
         if usuario:
-            token = serializer.dumps(email, salt="recuperar-senha-salt")
-            link_redefinicao = url_for("redefinir_senha", token=token, _external=True)
+            token = serializer.dumps(email, salt='recuperar-senha-salt')
+            link_redefinicao = url_for('redefinir_senha', token=token, _external=True)
 
-            msg = Message("Recuperação de Senha - PRISMA", recipients=[email])
-            msg.body = f"Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos."
-
+            msg = Message('Recuperação de Senha - PRISMA', recipients=[email])
+            msg.body = f'Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos.'
+            
             try:
-                with mail.connect() as conn:
-                    conn.send(msg)
+                mail.send(msg)
             except Exception as e:
-    # Exibe a falha exata nos logs do Render
-                print("=" * 50, flush=True)
-                print("ERRO DETALHADO NO DISPARO DE EMAIL:", flush=True)
-                traceback.print_exc()
-                print("=" * 50, flush=True)
+                print(f"Erro ao enviar o e-mail: {e}")
+                flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
+                return redirect(url_for('esqueci_senha'))
 
-                flash("Erro ao enviar o e-mail. Tente novamente mais tarde.", "danger")
-                return redirect(url_for("esqueci_senha"))
+        flash('Se o e-mail estiver cadastrado, você receberá um link de redefinição.', 'info')
+        return redirect(url_for('esqueci_senha'))
 
     return render_template('recuperacaoSenha.html')
 
