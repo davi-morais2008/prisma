@@ -189,6 +189,12 @@ def maquinas_post_register():
 @app.route('/maquinas/api_delete_machines', methods = ['POST'])
 def maquinas_delete_machines():
     id_machine = request.get_json()
+    deletar_maquina(int(id_machine['id']))
+    return jsonify({"status": "sucesso", "mensagem": "Máquina Deletada!"}), 200
+
+@app.route('/maquinas/update_machines', methods = ['POST'])
+def maquinas_update_machines():
+    id_machine = request.get_json()
     print(id_machine['id'])
     deletar_maquina(int(id_machine['id']))
     return jsonify({"status": "sucesso", "mensagem": "Máquina Deletada!"}), 200
