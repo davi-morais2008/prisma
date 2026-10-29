@@ -21,9 +21,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'PRISMA_maintence') 
 app.config['PREFERRED_URL_SCHEME'] = 'https'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.getenv( 'MAIL_USERNAME' ,'gustavocaua934@gmail.com')
 app.config['MAIL_PASSWORD'] = os.getenv ('MAIL_PASSWORD')
@@ -183,4 +181,6 @@ def pagina_calendario():
 def pagina_perfil():
     return render_template('perfil.html')
 
-app.run(host="0.0.0.0", port=8080, debug=True)
+if __name__ == '__main__':
+    # Roda localmente na porta 8080
+    app.run(host="0.0.0.0", port=8080, debug=True)
