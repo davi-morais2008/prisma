@@ -15,7 +15,8 @@ async function carregarDadosDashboard() {
         atualizarKPIs(dados.kpis);
 
         // 2. Renderiza o gráfico
-        renderizarGrafico(dados.os_por_mes);
+        renderizarGrafico('meuGrafico', dados.os_por_mes, 'Total de Ordens nos últimos meses', '#2213ff');
+        renderizarGrafico('falhasGrafico', dados.falhas_quantidade, 'Maiores índices de Falhas', '#ff0000');
 
     } catch (erro) {
         console.error('Erro ao carregar dados do dashboard:', erro);
@@ -28,23 +29,27 @@ function atualizarKPIs(kpis) {
     const elTotalOs = document.getElementById('kpi-total');
     const elOsRest = document.getElementById('kpi-resto');
     const elMaqTotal = document.getElementById('kpi-maqtotal');
+    const elTotalParada = document.getElementById('kpi-totalparada');
+    const elTotalAtiva = document.getElementById('kpi-totalativa');
     const elTotalFalha = document.getElementById('kpi-totalfalha');
 
     if (elTotalOs) elTotalOs.textContent = kpis.total_os;
     if (elOsRest) elOsRest.textContent = kpis.os_pendentes;
     if (elMaqTotal) elMaqTotal.textContent = kpis.maquinas_ativas;
-    if (elTotalFalha) elTotalFalha.textContent = kpis.total_falhas;
+    if (elTotalParada) elTotalParada.textContent = kpis.maquinas_paradas;
+    if (elTotalAtiva) elTotalAtiva.textContent = (kpis.maquinas_ativas - kpis.maquinas_paradas);
+    if (elTotalFalha) elTotalFalha.textContent = kpis.falhas_computadas;
 }
 
-function renderizarGrafico(dadosGrafico) {
+function renderizarGrafico(nomeGrafico, dadosGrafico, mensagem, cor) {
     if (!dadosGrafico) {
         console.error("Dados do gráfico inválidos ou indefinidos.");
         return;
     }
 
-    const canvas = document.getElementById('meuGrafico');
+    const canvas = document.getElementById(nomeGrafico);
     if (!canvas) {
-        console.error("Elemento <canvas id='meuGrafico'> não foi encontrado no HTML.");
+        console.error(`Elemento <canvas id=${nomeGrafico}> não foi encontrado no HTML.`);
         return;
     }
 
@@ -57,25 +62,25 @@ function renderizarGrafico(dadosGrafico) {
     const ctx = canvas.getContext('2d');
 
     // Destrói o gráfico anterior caso já exista para evitar sobreposição
-    if (meuGrafico) {
-        meuGrafico.destroy();
+    const graficoExistente = Chart.getChart(canvas);
+    if (graficoExistente) {
+        graficoExistente.destroy();
     }
 
     // Obtém variáveis de cor do CSS com fallback para valores padrão
     const estiloComputado = getComputedStyle(document.documentElement);
-    const corSecundaria = estiloComputado.getPropertyValue('--color-secondary').trim() || '#7c72ff';
     const corTexto = estiloComputado.getPropertyValue('--color-text-primary').trim() || '#333333';
 
-    meuGrafico = new Chart(ctx, {
+    nomeGrafico = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: dadosGrafico.labels,
             datasets: [{
-                label: 'Total de Ordens nos últimos meses:',
+                label: mensagem,
                 data: dadosGrafico.valores,
-                backgroundColor: corSecundaria,
+                backgroundColor: cor,
                 borderRadius: 6,
-                borderWidth: 0
+                borderWidth: 0,
             }]
         },
         options: {
@@ -85,7 +90,8 @@ function renderizarGrafico(dadosGrafico) {
                 legend: {
                     labels: {
                         color: corTexto,
-                        font: { weight: '600' }
+                        font: { weight: '600' },
+                        fontSize: 10
                     }
                 }
             },

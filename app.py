@@ -94,11 +94,16 @@ def get_dados():
                 "total_os": informacoes["total_os"],
                 "os_pendentes": informacoes["os_pendentes"],
                 "maquinas_ativas": informacoes["maquinas_total"],
-                "total_falhas": informacoes["falhas_total"]
+                "maquinas_paradas": informacoes["maquinas_paradas"],
+                "falhas_computadas": informacoes["falhas_computadas"]
             },
             "os_por_mes": {
                 "labels": informacoes["labels_mes"],
                 "valores": informacoes["valores_mes"]
+            },
+            "falhas_quantidade":{
+                "labels": informacoes["labels_falha"],
+                "valores": informacoes["valores_falha"]
             }
         })
     except Exception as e:
