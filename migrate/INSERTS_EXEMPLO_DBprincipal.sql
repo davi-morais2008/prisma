@@ -2,8 +2,8 @@ INSERT INTO especialidades(especialidade)
 VALUES('Técnico em Eletromecânica');
 
 INSERT INTO usuarios(cpf, nome, email, senha, status_usuario)
-VALUES('47126589832', 'Guxta Pereira', 'gustavo.h.pereira13@aluno.senai.br', 'gu1234', 'Ativo');
-VALUES('00000000000', 'admin root', 'admin.root@aluno.senai.br', 'senai603Prisma', 'Ativo');
+VALUES('47126589832', 'Guxta Pereira', 'gustavo.h.pereira13@aluno.senai.br', 'gu1234', 'Ativo'), 
+('00000000000', 'admin root', 'admin.root@aluno.senai.br', 'senai603Prisma', 'Ativo');
 
 
 INSERT INTO tecnicos_especialidades
