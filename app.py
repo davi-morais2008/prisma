@@ -8,7 +8,7 @@ from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_ema
 from model.consultaMaquinas import consultar_maquinas
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
-from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina
+from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
 
@@ -193,11 +193,34 @@ def maquinas_delete_machines():
     return jsonify({"status": "sucesso", "mensagem": "Máquina Deletada!"}), 200
 
 @app.route('/maquinas/update_machines', methods = ['POST'])
-def maquinas_update_machines():
-    id_machine = request.get_json()
-    print(id_machine['id'])
-    deletar_maquina(int(id_machine['id']))
-    return jsonify({"status": "sucesso", "mensagem": "Máquina Deletada!"}), 200
+def maquinas_update_machines(id):
+    avatar_file = request.files.get("edit-machine-img")
+    type_machine = request.form.get("edit-type")
+    number_machine = request.form.get("edit-patrimony")
+    production_time = request.form.get("edit-prod-time")
+    total_hours = request.form.get("edit-work-hours")
+    accumulated_cost = request.form.get("edit-cost")
+    parts_changed = request.form.get("edit-parts")
+    downtime = request.form.get("edit-stop-time")
+    manual_file = request.files.get("manual-upload")
+    status_machine = request.form.get("edit-maintance-status")
+    scheduled_date = request.form.get("edit-maintance-date")
+
+    atualizar_editar_maquina(
+        id,
+        type_machine,
+        number_machine,
+        production_time,
+        total_hours,
+        accumulated_cost,
+        parts_changed,
+        downtime,
+        status_machine,
+        scheduled_date
+    )
+
+    return redirect('/maquinas')
+
 
 
 @app.route('/usuarios', methods = ['GET'])
