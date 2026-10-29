@@ -32,11 +32,21 @@
                     <h1 class="titulo_cadastro">Acesse sua conta</h1>
                     <p class="subtitulo_cadastro">Insira seus dados para entrar</p>
                 </div>
-                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% with messages = get_flashed_messages(category_filter=['error']) %}
                    {% if messages %}
                        <ul style="list-style: none; padding: 0; margin: 15px 0; width: 100%; font-family: sans-serif;">
-                       {% for category, message in messages %}
+                       {% for message in messages %}
                            <li class="{{ category }}" style="padding: 12px 16px; margin-bottom: 8px; border-radius: 6px; font-size: 14px; font-weight: 500; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">{{ message }}</li>
+                       {% endfor %}
+                       </ul>
+                   {% endif %}
+                   {% endwith %}
+
+                {% with messages = get_flashed_messages(category_filter=['sucsses']) %}
+                   {% if messages %}
+                       <ul style="list-style: none; padding: 0; margin: 15px 0; width: 100%; font-family: sans-serif;">
+                       {% for message in messages %}
+                           <li class="{{ category }}" style="padding: 12px 16px; margin-bottom: 8px; border-radius: 6px; font-size: 14px; font-weight: 500; background-color: #d7f8d9; color: #1c7227; border: 1px solid #d7f8d9; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">{{ message }}</li>
                        {% endfor %}
                        </ul>
                    {% endif %}
@@ -55,38 +65,47 @@
 
                 <div class="form_actions">
                     <button class="btn_submit" type="submit">Entrar</button>
-                    <a href="/recuperacaoSenha" class='btn_pwd'>Recuperar senha</a>
+                    <a href="/recuperacaoSenha" class='btn_pwd'>Esqueceu a senha?</a>
                 </div>
 
             </form>
-            <form id="form-cadastro" class="form_auth form_signup" action="/cadastro" method="POST">
+            <form id="form-cadastro" class="form_auth form_signup" action="/cadastro/post" method="POST">
                 <div class="header_container">
                     <h1 class="titulo_cadastro">Crie sua conta</h1>
                     <p class="subtitulo_cadastro">Preencha seus dados para começar</p>
                 </div>
-
+                {% with messages = get_flashed_messages(category_filter=['error']) %}
+                   {% if messages %}
+                       <ul style="list-style: none; padding: 0; margin: 15px 0; width: 100%; font-family: sans-serif;">
+                       {% for message in messages %}
+                           <li class="{{ category }}" style="padding: 12px 16px; margin-bottom: 8px; border-radius: 6px; font-size: 14px; font-weight: 500; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">{{ message }}</li>
+                       {% endfor %}
+                       </ul>
+                   {% endif %}
+                   {% endwith %}
                 <div class="campos_container">
+                    
                     <div class="form_group">
                         <label class="form_label" for="cadastro-nome">Nome Completo:</label>
-                        <input class="form_input" type="text" id="cadastro-nome" name="nome" required>
+                        <input class="form_input" type="text" id="cadastro-nome" name="cadastro-nome" required>
                     </div>
 
                     <div class="form_group">
                         <label class="form_label" for="cadastro-email">E-mail:</label>
-                        <input class="form_input" type="email" id="cadastro-email" name="email" placeholder="seu@email.com" required>
+                        <input class="form_input" type="email" id="cadastro-email" name="cadastro-email" placeholder="seu@email.com" required>
                     </div>
 
                     <div class="form_group">
                         <label class="form_label" for="cadastro-cpf">CPF:</label>
-                        <input class="form_input" type="text" id="cadastro-cpf" name="cpf" placeholder="000.000.000-00" maxlength="11" required>
+                        <input class="form_input" type="text" id="cadastro-cpf" name="cadastro-cpf" placeholder="000.000.000-00" maxlength="11" required>
                     </div>
                     <div class="form_group">
                         <label class="form_label" for="cadastro-pwd">Senha:</label>
-                        <input class="form_input" type="password" id="cadastro-pwd" name="pwd" placeholder="••••••••" required>
+                        <input class="form_input" type="password" id="cadastro-pwd" name="cadastro-pwd" placeholder="••••••••" required>
                     </div>
                     <div class="form_group">
                         <label class="form_label" for="cadastro-confirmpwd">Confirmar Senha:</label>
-                        <input class="form_input" type="password" id="cadastro-confirmpwd" name="confirmpwd" placeholder="••••••••" required>
+                        <input class="form_input" type="password" id="cadastro-confirmpwd" name="cadastro-confirmpwd" placeholder="••••••••" required>
                     </div>
 
                 </div>

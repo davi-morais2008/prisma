@@ -9,41 +9,110 @@
 }
 
 
-
 .home {
     width: 100%;
+    max-width: 1200px;
     min-height: 100vh;
-    padding: 20px 16px;
+    padding: 2rem 1rem;
+    margin: 0 auto;
     background-color: var(--color-bg-main);
     color: var(--color-text-primary);
-    /* Grid de 2 linhas: Busca no topo e lista de ordens ocupando o restante */
-    display: grid;
-    grid-template-rows: auto 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-items: center;
     gap: 24px;
 }
 
-.home__search-bar {
+.home__header{
+    display: grid;
     width: 100%;
-    max-width: 500px;
-    height: 48px;
-    border-radius: var(--border-radius-pill);
-    border: 1px solid transparent;
-    background-color: #ffffff;
-    padding: 0 20px;
-    font-size: var(--font-size-sm);
-    box-shadow: var(--shadow-sm);
-   
+    padding: 0 0.5rem;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.home__title{
+    text-align: center;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    margin: auto 0;
+    grid-column: 2;
+}
+
+.home__button-register{
+    background-color: var(--color-accent-orange);
+    width: 60px;
+    height: 60px;
+    border-radius: 35px;
+    border: 0;
+    font-family: var(--font-family-base);
+    font-size: 40px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-light);
     cursor: pointer;
-    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    transition: ease-in 150ms;
+    margin-left: auto;
+}
+
+.home__button-register:hover{
+    background-color: var(--color-accent-peach);
+    transform: scale(1.05);
 }
 
 
+.home__order-filters{
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 0.5rem;
+}
+
+.home__search-bar {
+    width: 100%;
+    height: 48px;
+    padding: 0 1.25rem;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius-pill);
+    background-color: var(--color-bg-input);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
 
 .home__search-bar:focus {
     border-color: var(--color-secondary-hover);
     box-shadow: var(--shadow-lg);
 }
+
+.order-filter-buttons{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.filter-button{
+    cursor: pointer;
+    width: 100%;
+    height: 40px;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius-pill);
+    background-color: var(--color-bg-card);
+    color: var(--color-text-secondary);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
 
 /* 4. Lista de Ordens de Serviço (Grid vertical) */
 .home__orders {
@@ -651,6 +720,257 @@
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
 }
+
+/* ==========================================================================
+   MODAL DE CADASTRO DE ORDEM DE SERVIÇO 
+   ========================================================================== */
+.order-create {
+    position: fixed;
+    inset: 0;
+    z-index: 950;
+    display: none; /* Alterar para 'flex' via JS */
+    align-items: center;
+    justify-content: center;
+    padding: var(--border-radius-sm);
+}
+
+.order-create.active {
+    display: flex;
+}
+
+/* Overlay Escuro com Blur */
+.order-create__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-glass-bg);
+    backdrop-filter: var(--glass-blur);
+}
+
+/* Card Container */
+.order-create__card {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Cabeçalho Fixo Escuro */
+.order-create__header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    height: 56px;
+    background-color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--border-radius-md);
+    box-sizing: border-box;
+}
+
+.order-create__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--border-radius-sm);
+}
+
+.order-create__brand-image {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+}
+
+.order-create__brand-title {
+    color: var(--color-text-light);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.order-create__close-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.order-create__close-btn:hover {
+    background-color: var(--color-primary-dark);
+    transform: scale(1.05);
+}
+
+/* Formulário e Corpo Rolável */
+.order-create__form {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+}
+
+.order-create__body {
+    padding: var(--border-radius-md);
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: var(--border-radius-md);
+}
+
+/* Grupos do Formulário (<fieldset>) */
+.order-create__section {
+    border: none;
+    margin: 0;
+    padding: var(--border-radius-sm);
+    background-color: var(--color-bg-light);
+    border-radius: var(--border-radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.order-create__section-title {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    text-transform: uppercase;
+    padding: 0 4px;
+    float: left;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+/* Grid Layout dos Campos */
+.order-create__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.order-create__grid--2-col {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.order-create__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.order-create__field--full {
+    grid-column: 1 / -1;
+}
+
+/* Rótulos de Entrada */
+.order-create__label {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+}
+
+/* Controles de Entrada (Input, Select, Textarea) */
+.order-create__input,
+.order-create__select,
+.order-create__textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-input);
+    border: 1px solid var(--color-bg-light);
+    border-radius: var(--border-radius-sm);
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-create__input,
+.order-create__select {
+    height: 40px;
+}
+
+.order-create__textarea {
+    resize: vertical;
+    min-height: 70px;
+}
+
+/* Efeito de Foco nos Campos */
+.order-create__input:focus,
+.order-create__select:focus,
+.order-create__textarea:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 2px rgba(124, 114, 255, 0.2);
+}
+
+/* Rodapé Fixo de Ações */
+.order-create__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--border-radius-sm);
+    padding: var(--border-radius-sm) var(--border-radius-md);
+    background-color: var(--color-bg-card);
+    border-top: 1px solid var(--color-bg-light);
+}
+
+/* Botões de Ação */
+.order-create__btn {
+    height: 42px;
+    padding: 0 20px;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--border-radius-pill);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.order-create__btn--cancel {
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-text-secondary);
+}
+
+.order-create__btn--cancel:hover {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-primary);
+}
+
+.order-create__btn--submit {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    border: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.order-create__btn--submit:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+
+
 
 /* ==========================================================================
    MODAL DE CONFIRMAÇÃO DE EXCLUSÃO (BEM & PRISMA DESIGN SYSTEM)

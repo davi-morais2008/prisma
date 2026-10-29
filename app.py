@@ -2,12 +2,15 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico
 from model.usuario import buscar_usuario
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
 from model.dashboard import buscar_dados_dashboard
+from model.consultaMaquinas import consultar_maquinas
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
 import flask_mail
+from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
 
 
@@ -103,7 +106,16 @@ def get_dados():
 
 @app.route("/telaInicial")
 def pagina_inicial():
-    return render_template("telaInicial.html")
+    ordem_servico = consultar_ordem_servico()
+    return render_template("telaInicial.html", ordem_servico = ordem_servico)
+
+@app.route("/api/get/ordens_servico/", methods=["GET"])
+def api_get_ordem():
+    try:
+        ordens = consultar_ordem_servico()
+        return jsonify(ordens), 200
+    except Exception as e:
+            return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route("/historico")
 def pagina_historico():
@@ -133,15 +145,48 @@ def post_login():
         if user['cpf'] == usuario and user['senha'] == senha:
             session['user'] = (usuario, senha)
             return redirect('/telaInicial')
-        else:
-            flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
+    flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
+    return redirect('/login')
+
+
+@app.route('/cadastro/post', methods = ['POST'])
+def post_cadastro():
+    username = request.form.get("cadastro-nome")
+    user_email = request.form.get("cadastro-email")
+    user_cpf = request.form.get("cadastro-cpf")
+    user_pwd = request.form.get("cadastro-pwd")
+    user_confirm_pwd = request.form.get("cadastro-confirmpwd")
+    if buscar_usuario((user_cpf, user_email))[0]['resultado'] == user_cpf:
+        flash ('Este CPF já está cadastrado no sistema. Tente o Cadastro Novamente!', 'error')
+        return redirect('/login')
+    if buscar_usuario((user_cpf, user_email))[0]['resultado'] == user_email:
+        flash('Este email já está vinculado a uma conta. Tente o Cadastro Novamente!', 'error')
+        return redirect('/login')
+    if user_pwd != user_confirm_pwd:
+        flash('As senhas não correspondem entre si. Tente o Cadastro Novamente!', 'error')
+        return redirect('/login')
+    try:
+        if cadastrar_usuario(user_cpf, username, user_email, user_pwd):
+            flash('Efetue o Login para acessar o Sistema', 'sucsses')
             return redirect('/login')
+        else:
+            flash('Erro ao cadastrar-se. Tente Novamente', 'error')
+            return redirect('/login')
+    except Exception as e:
+        flash('Erro ao cadastrar-se. Tente Novamente', 'error')
+    return redirect('/login')
+    
 
 
 
 @app.route('/maquinas', methods = ['GET'])
 def pagina_maquinas():
-    return render_template('maquinas.html')
+    maquinas = consultar_maquinas()
+    return render_template('maquinas.html', maquinas = maquinas)
+
+@app.route('/maquinas;')
+
+
 
 @app.route('/usuarios', methods = ['GET'])
 def pagina_usuarios():

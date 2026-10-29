@@ -25,13 +25,10 @@ def cadastrar_ordem_servico(id_maquina: int, id_falha: int, cpf: str, status_os:
         cursor.execute('''
         INSERT INTO ordens_servicos (
         id_maquina,
-        id_falha,
+        descricao_problema,
         cpf,
-        status_ordem,
         tipo_manutencao, 
         descricao_problema, 
-        data_inicio_manutencao, 
-        data_termino_manutencao, 
         data_parada, 
         data_prev_inicio_manutencao, 
         data_prev_termino_manutencao) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
@@ -56,26 +53,37 @@ def consultar_ordem_servico() -> list[tuple]:
     Retorna:
         list[tuple]: Lista de tuplas contendo os dados detalhados das ordens de serviço.
     """
-    
     conexao, cursor = conectar()
-    cursor.execute('''
-    SELECT 
-    os.id_ordem,
-    tm.tipo_maquina AS nome_maquina,
-    m.numero_patrimonio,
-    f.falha AS descricao_falha,
-    u.nome AS tecnico_responsavel,
-    os.status_ordem,
-    os.tipo_manutencao,
-    os.data_inicio_manutencao
-FROM ordens_servicos os
-INNER JOIN maquinas m ON os.id_maquina = m.id_maquina
-INNER JOIN tipos_maquinas tm ON m.id_tipo_maquina = tm.id_tipo_maquina
-INNER JOIN falhas f ON os.id_falha = f.id_falha
-INNER JOIN usuarios u ON os.cpf = u.cpf;
-''')
-    resposta = cursor.fetchall()
-    return resposta
+    try:
+        cursor.execute('''
+            SELECT 
+                os.id_ordem,
+                tm.tipo_maquina AS nome_maquina,
+                m.numero_patrimonio,
+                f.falha,
+                u.nome AS tecnico_responsavel,
+                os.status_ordem,
+                os.tipo_manutencao,
+                os.descricao_problema,
+                os.data_parada,
+                os.data_prev_inicio_manutencao,
+                os.data_prev_termino_manutencao,
+                os.data_inicio_manutencao,
+                os.data_termino_manutencao
+            FROM ordens_servicos os
+            INNER JOIN maquinas m ON os.id_maquina = m.id_maquina
+            INNER JOIN tipos_maquinas tm ON m.id_tipo_maquina = tm.id_tipo_maquina
+            LEFT JOIN falhas f ON os.id_falha = f.id_falha
+            LEFT JOIN usuarios u ON os.cpf = u.cpf
+            WHERE status_ordem <> %s
+            ORDER BY id_ordem;
+        ''', ("Finalizada",))
+        resposta = cursor.fetchall()
+        return resposta
+    finally:
+        cursor.close()
+        conexao.close()
+
 
 def atribuir_ordem_servico(cpf:str, id:int) -> bool:
     """

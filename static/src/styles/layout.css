@@ -7,12 +7,33 @@
     font-family: var(--font-family-base);
 }
 
+/* Largura da barra vertical */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* A trilha (fundo onde a barra desliza) */
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+/* O "puxador" da barra (a parte que você arrasta) */
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+}
+
+/* Cor do puxador ao passar o mouse */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 body{
     margin-left: 200px;
+    background-color: var(--color-bg-main);
 }
 
 main {
-    min-height: 92vh;
+    min-height: 100vh;
 }
 
 .header{

@@ -154,6 +154,42 @@
     </div>
 </div>
 
+<!-- Componente Modal de Confirmação de Inativação -->
+<div class="modal" id="modalInativarUser">
+    <div class="modal__overlay" id="overlayInativar"></div>
+    
+    <div class="modal__content modal__content--danger">
+        <button class="modal__close" id="btnFecharModalInativar" aria-label="Fechar modal">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+
+        <div class="modal__header modal__header--center">
+            <div class="modal__icon-alert">
+                <span class="material-symbols-outlined">delete</span>
+            </div>
+            <h2 class="modal__title modal__title--primary">Inativar Usuário</h2>
+        </div>
+
+        <div class="modal__body modal__body--spaced">
+            <p class="modal__description">
+                Tem certeza que deseja inativar o usuário <strong id="nomeUsuarioInativar" class="modal__strong-text"></strong>?
+            </p>
+            <p class="modal__disclaimer">
+                Esta ação poderá ser revertida posteriormente.
+            </p>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="modal__actions-row">
+            <button type="button" class="button button--small button--cancel" id="btnCancelarInativar">
+                Cancelar
+            </button>
+            <button type="button" class="button button--danger button--small" id="btnConfirmarInativar">
+                Sim, Inativar.
+            </button>
+        </div>
+    </div>
+</div>
 <script src="../static/src/js/usuarios.js"></script>
 </body> 
 
