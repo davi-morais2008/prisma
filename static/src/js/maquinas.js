@@ -12,7 +12,7 @@ const machineButtons = document.querySelectorAll('.machine__button');
 // ==========================================
 // 2. MODAL: CADASTRAR NOVA MÁQUINA
 // ==========================================
-const createModalContainer = document.querySelector('.machine-modal');
+const createModalContainer = document.querySelector('.machine-modal__overlay');
 const btnCloseCreateModal = document.querySelector('.machine-modal__close-button');
 const createMachineForm = document.querySelector('.machine-form');
 
@@ -33,7 +33,7 @@ const createScheduledDateInput = document.getElementById('scheduled-date');
 // 3. MODAL: DETALHES DA MÁQUINA
 // ==========================================
 
-const detailsModalContainer = document.querySelector('.machine-details');
+const detailsModalContainer = document.querySelector('.machine-details__overlay');
 const detailsTypeText = document.querySelector('.machine-details__type-text');
 const detailsPatrimonyText = document.querySelector('.machine-details__number-text');
 
@@ -131,7 +131,9 @@ btnDeleteFromDetails.addEventListener('click', () => {
     deleteConfirmationModal.classList.add('active')
 })
 
-
+btnRegisterMachine.addEventListener('click', () => {createModalContainer.classList.add('active')
+    console.log('certo')
+})
 btnCloseCreateModal.addEventListener('click', () => {createModalContainer.classList.remove('active')}
 )
 
