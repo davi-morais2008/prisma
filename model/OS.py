@@ -77,8 +77,10 @@ def consultar_ordem_servico() -> list[tuple]:
             INNER JOIN maquinas m ON os.id_maquina = m.id_maquina
             INNER JOIN tipos_maquinas tm ON m.id_tipo_maquina = tm.id_tipo_maquina
             LEFT JOIN falhas f ON os.id_falha = f.id_falha
-            LEFT JOIN usuarios u ON os.cpf = u.cpf;
-        ''')
+            LEFT JOIN usuarios u ON os.cpf = u.cpf
+            WHERE status_ordem <> %s
+            ORDER BY id_ordem;
+        ''', ("Finalizada",))
         resposta = cursor.fetchall()
         return resposta
     finally:
