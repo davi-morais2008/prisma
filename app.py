@@ -36,17 +36,6 @@ mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 
-from threading import Thread
-
-def enviar_email_async(app, msg):
-    with app.app_context():
-        try:
-            connection = mail.connect()
-            connection.send(msg)
-            connection.close()
-        except Exception as e:
-            print(f"Erro no envio assíncrono: {e}", flush=True)
-
 @app.route('/esqueci-senha', methods=['GET', 'POST'])
 @app.route('/recuperacaoSenha', methods=['GET', 'POST'])
 def esqueci_senha():
@@ -61,13 +50,20 @@ def esqueci_senha():
             msg = Message('Recuperação de Senha - PRISMA', recipients=[email])
             msg.body = f'Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos.'
             
-            # Dispara o e-mail em segundo plano
-            Thread(target=enviar_email_async, args=(app._get_current_object(), msg)).start()
+            try:
+                with mail.connect() as conn:
+                    conn.send(msg)
+            except Exception as e:
+                # Exibe apenas a mensagem direta do erro no log do Render
+                print(f"ERRO EMAIL: {e}", flush=True)
+                flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
+                return redirect(url_for('esqueci_senha'))
 
         flash('Se o e-mail estiver cadastrado, você receberá um link de redefinição.', 'info')
         return redirect(url_for('esqueci_senha'))
 
     return render_template('recuperacaoSenha.html')
+
 
 @app.route('/reset-senha/<token>', methods=['GET', 'POST'])
 def redefinir_senha(token):
