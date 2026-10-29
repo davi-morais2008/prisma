@@ -1,6 +1,8 @@
 from database.conexao import conectar
 
-def cadastrar_maquina(id_tipo_maquina, nmr_patrimonio, localizacao, manual_operacao, status_maquina ):
+def cadastrar_maquina(id_tipo_maquina, nmr_patrimonio, modelo_maquina, localizacao, manual_operacao, status_maquina ):
+
+    
     """
     Cadastra uma nova máquina na tabela 'maquinas' do banco de dados.
 
@@ -14,14 +16,13 @@ def cadastrar_maquina(id_tipo_maquina, nmr_patrimonio, localizacao, manual_opera
     Retorna:
         bool: True se o cadastro foi realizado com sucesso, False se ocorreu algum erro.
     """
+    print(id_tipo_maquina, nmr_patrimonio, localizacao, manual_operacao, status_maquina)
     conexao, cursor = conectar()
-    try:
-        cursor.execute("INSERT INTO maquinas (id_tipo_maquina, numero_patrimonio, localizacao, manual_operacao, status_maquina) VALUES (%s, %s, %s, %s, %s)", (id_tipo_maquina, nmr_patrimonio, localizacao, manual_operacao, status_maquina))
-        conexao.commit()
-        conexao.close()
-        return True
-    except:
-        return False
+
+    cursor.execute("INSERT INTO maquinas (id_tipo_maquina, numero_patrimonio, modelo_maquina, localizacao, manual_operacao, status_maquina) VALUES (%s, %s, %s, %s, %s, %s)", (id_tipo_maquina, nmr_patrimonio, modelo_maquina, localizacao, manual_operacao, status_maquina))
+    conexao.commit()
+    conexao.close()
+
 
 def atualizar_maquina(id):
     """
@@ -41,3 +42,18 @@ def atualizar_maquina(id):
         return True
     except:
         return False
+
+def consulta_tipo_maquinas():
+    """
+    Função SELECT para retornar os dados dos tipos das máquinas.
+
+    Retorna:
+        Variável "resposta"
+    """
+    conexao, cursor = conectar()
+
+    cursor.execute("SELECT id_tipo_maquina, tipo_maquina FROM tipos_maquinas")
+    resposta = cursor.fetchall()
+    conexao.close()
+
+    return resposta
