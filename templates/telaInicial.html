@@ -334,7 +334,7 @@ Página Inicial
             </header>
 
             <!-- FORMULÁRIO DE CADASTRO -->
-            <form class="order-create__form" id="formCreateOrder">
+            <form class="order-create__form" id="formCreateOrder" method="post" action="/telaInicial/post-register-order">
                 <div class="order-create__body">
 
                     <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
@@ -345,7 +345,7 @@ Página Inicial
                         
                             <div class="order-create__field">
                                 <label class="order-create__label" for="create_numero_patrimonio">Número de Patrimônio</label>
-                                <input class="order-create__input" type="text" id="create_numero_patrimonio"
+                                <input class="order-create__input" type="text" id="create_numero_patrimonio" name="numero_patrimonio"
                                     name="numero_patrimonio" placeholder="Número de Patrimônio" required>
                             </div>
 
@@ -364,8 +364,15 @@ Página Inicial
                             <div class="order-create__field">
                                 <label class="order-create__label" for="create_tecnico_responsavel">Técnico
                                     Responsável</label>
-                                <input class="order-create__input" type="text" id="create_tecnico_responsavel"
+                                <select class="order-create__input" type="text" id="create_tecnico_responsavel"
                                     name="tecnico_responsavel" placeholder="Nome do técnico" required>
+                                    <option value="" disabled selected>Selecione...</option>
+                                    {% for tecnico in tecnicos %}
+                                    {% if tecnico.status_usuario == 'Ativo' %}
+                                    <option value="{{tecnico.cpf}}" >{{tecnico.nome}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                     </fieldset>
@@ -378,21 +385,21 @@ Página Inicial
                             <div class="order-create__field">
                                 <label class="order-create__label" for="create_data_prev_inicio">Prev. Início
                                     Manutenção</label>
-                                <input class="order-create__input" type="datetime-local" id="create_data_prev_inicio"
-                                    name="data_prev_inicio_manutencao" required>
+                                <input class="order-create__input" type="date" id="create_data_prev_inicio"
+                                    name="data_prev_inicio" min="1000-01-01" max="9999-12-31" required>
                             </div>
 
                             <div class="order-create__field">
                                 <label class="order-create__label" for="create_data_prev_termino">Prev. Término
                                     Manutenção</label>
-                                <input class="order-create__input" type="datetime-local" id="create_data_prev_termino"
-                                    name="data_prev_termino_manutencao" required>
+                                <input class="order-create__input" type="date" id="create_data_prev_termino"
+                                    name="data_prev_termino" min="1000-01-01" max="9999-12-31" required>
                             </div>
 
                             <div class="order-create__field">
                                 <label class="order-create__label" for="create_data_parada">Data da Parada</label>
-                                <input class="order-create__input" type="datetime-local" id="create_data_parada"
-                                    name="data_parada">
+                                <input class="order-create__input" type="date" id="data_parada"
+                                    name="data_parada" min="1000-01-01" max="9999-12-31">
                             </div>
 
                         
