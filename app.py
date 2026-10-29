@@ -8,7 +8,7 @@ from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_ema
 from model.consultaMaquinas import consultar_maquinas
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
-from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas
+from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
 
@@ -184,9 +184,15 @@ def maquinas_post_register():
     status_machine = request.form.get("status-machine")
     scheduled_date = request.form.get("scheduled-date")
     cadastrar_maquina(type_machine, int(number_machine), model_machine, location_machine, "TESTE", status_machine)
-
-
     return redirect('/maquinas')
+
+@app.route('/maquinas/api_delete_machines', methods = ['POST'])
+def maquinas_delete_machines():
+    id_machine = request.get_json()
+    print(id_machine['id'])
+    deletar_maquina(int(id_machine['id']))
+    return jsonify({"status": "sucesso", "mensagem": "Máquina Deletada!"}), 200
+
 
 @app.route('/usuarios', methods = ['GET'])
 def pagina_usuarios():
