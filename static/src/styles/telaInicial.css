@@ -131,7 +131,7 @@
 .order-details__overlay {
     position: absolute;
     inset: 0;
-    background-color: var(--color-glass-bg);
+    background-color: rgba(10, 8, 75, 0.4);
     backdrop-filter: var(--glass-blur);
 }
 
@@ -425,7 +425,7 @@
 .order-edit__overlay {
     position: absolute;
     inset: 0;
-    background-color: var(--color-glass-bg);
+    background-color: rgba(10, 8, 75, 0.4);
     backdrop-filter: var(--glass-blur);
 }
 
@@ -675,7 +675,7 @@
 .order-delete__overlay {
     position: absolute;
     inset: 0;
-    background-color: var(--color-glass-bg);
+    background-color: rgba(10, 8, 75, 0.4);
     backdrop-filter: var(--glass-blur);
 }
 
