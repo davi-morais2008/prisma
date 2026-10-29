@@ -25,7 +25,6 @@ const dataPrevInicio = document.querySelector('#data_prev_inicio_manutencao')
 const dataPrevTermino = document.querySelector('#data_prev_termino_manutencao')
 const dataParada = document.querySelector('#data_parada')
 const dataInicioReal = document.querySelector('#data_inicio')
-const dataTerminoReal = document.querySelector('#data_termino')
 
 // Diagnóstico e Falha
 const falhaIdentificada = document.querySelector('#falha')
@@ -120,7 +119,6 @@ workOrders.forEach(order => {
                     dataPrevTermino.textContent = formatarDataPT(os.data_prev_termino_manutencao);
                     dataParada.textContent = formatarDataPT(os.data_parada);
                     dataInicioReal.textContent = formatarDataPT(os.data_inicio_manutencao);
-                    dataTerminoReal.textContent = formatarDataPT(os.data_termino_manutencao);
 
                     falhaIdentificada.textContent = os.falha;
                     descricaoProblema.textContent = os.descricao_problema;
