@@ -48,9 +48,11 @@ def esqueci_senha():
             msg.body = f'Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos.'
             
             try:
-                mail.send(msg)
+                with mail.connect() as conn:
+                    conn.send(msg)
             except Exception as e:
-                print(f"Erro ao enviar o e-mail: {e}")
+                # Exibe apenas a mensagem direta do erro no log do Render
+                print(f"ERRO EMAIL: {e}", flush=True)
                 flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
                 return redirect(url_for('esqueci_senha'))
 
