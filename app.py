@@ -4,6 +4,7 @@ from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.usuario import buscar_usuario
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
+from model.dashboard import buscar_dados_dashboard
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
 import flask_mail
@@ -77,76 +78,28 @@ def redefinir_senha(token):
     return render_template('redefinir_senha.html', token=token)
 
 
-@app.route('/painelgeral')
+@app.route('/painelGeral')
 def painel_geral():
     return render_template('painelGeral.html')
 
 @app.route('/api/dados')
 def get_dados():
-    conn = None
-    cursor = None
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True) # Retorna os dados como dicionário
-
-        # 1. Total de Ordens de Serviço
-        cursor.execute("SELECT COUNT(*) AS total FROM ordens_servicos")
-        total_os = cursor.fetchone()['total']
-
-        # 2. Ordens em Andamento / Pendentes
-        cursor.execute("""
-            SELECT COUNT(*) AS total 
-            FROM ordens_servicos 
-            WHERE status_ordem NOT IN ('Concluída', 'Finalizada', 'Cancelada')
-        """)
-        os_pendentes = cursor.fetchone()['total']
-
-        # 3. Total de Máquinas Cadastradas
-        cursor.execute("SELECT COUNT(*) AS total FROM maquinas")
-        maquinas_total = cursor.fetchone()['total']
-
-        # 4. Total de Falhas Registradas
-        cursor.execute("SELECT COUNT(*) AS total FROM falhas")
-        falhas_total = cursor.fetchone()['total']
-
-        # 5. Gráfico: OS por Mês (agrupadas pela data de início)
-        cursor.execute("""
-            SELECT 
-                DATE_FORMAT(data_inicio_manutencao, '%b') AS mes,
-                COUNT(*) AS total
-            FROM ordens_servicos
-            WHERE data_inicio_manutencao IS NOT NULL
-            GROUP BY MONTH(data_inicio_manutencao), mes
-            ORDER BY MONTH(data_inicio_manutencao)
-            LIMIT 6
-        """)
-        res_os_mes = cursor.fetchall()
-
-        labels_mes = [row['mes'] for row in res_os_mes] if res_os_mes else ["Jan", "Fev", "Mar"]
-        valores_mes = [row['total'] for row in res_os_mes] if res_os_mes else [0, 0, 0]
-
+        informacoes = buscar_dados_dashboard()
         return jsonify({
             "kpis": {
-                "total_os": total_os,
-                "os_pendentes": os_pendentes,
-                "maquinas_ativas": maquinas_total,
-                "total_falhas": falhas_total
+                "total_os": informacoes["total_os"],
+                "os_pendentes": informacoes["os_pendentes"],
+                "maquinas_ativas": informacoes["maquinas_total"],
+                "total_falhas": informacoes["falhas_total"]
             },
             "os_por_mes": {
-                "labels": labels_mes,
-                "valores": valores_mes
+                "labels": informacoes["labels_mes"],
+                "valores": informacoes["valores_mes"]
             }
         })
-
-    except mysql.connector.Error as err:
-        print(f"=== ERRO CONEXÃO MYSQL: {err} ===")
-        return jsonify({"erro": str(err)}), 500
-
-    finally:
-        if cursor:
-            cursor.close()
-        if conn and conn.is_connected():
-            conn.close()
+    except Exception as e:
+        return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route("/telaInicial")
 def pagina_inicial():

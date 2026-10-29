@@ -1,3 +1,12 @@
+{% extends "layout.html" %}
+
+    {% block titulo %}
+        Painel Geral
+    {% endblock %}
+
+    {% block estilo %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='src/styles/painelGeral.css') }}">
+    {% endblock %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -6,7 +15,7 @@
     <title>Dashboard</title>
     
     <!-- CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='src/styles/painelGeral.css') }}">
+    
     
     <!-- Chart.js (Biblioteca) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -25,16 +34,20 @@
         <!-- Cards de Indicadores -->
         <section class="kpi_grid">
             <article class="kpi_card">
-                <span class="kpi_titulo">Total de Vendas</span>
-                <span class="kpi_valor" id="kpi-vendas">R$ 0,00</span>
+                <span class="kpi_titulo">Total de Ordens de Serviço:</span>
+                <span class="kpi_valor" id="kpi-total">R$ 0,00</span>
             </article>
             <article class="kpi_card">
-                <span class="kpi_titulo">Novos Clientes</span>
-                <span class="kpi_valor" id="kpi-clientes">0</span>
+                <span class="kpi_titulo">Ordens em Aberto:</span>
+                <span class="kpi_valor" id="kpi-resto">0</span>
             </article>
             <article class="kpi_card">
-                <span class="kpi_titulo">Taxa de Conversão</span>
-                <span class="kpi_valor" id="kpi-conversao">0%</span>
+                <span class="kpi_titulo">Total de Máquinas:</span>
+                <span class="kpi_valor" id="kpi-maqtotal">0%</span>
+            </article>
+            <article class="kpi_card">
+                <span class="kpi_titulo">Total de Falhas:</span>
+                <span class="kpi_valor" id="kpi-totalfalha">0%</span>
             </article>
         </section>
 

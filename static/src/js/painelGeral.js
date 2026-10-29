@@ -15,7 +15,7 @@ async function carregarDadosDashboard() {
         atualizarKPIs(dados.kpis);
 
         // 2. Renderiza o gráfico
-        renderizarGrafico(dados.vendas_mensais);
+        renderizarGrafico(dados.os_por_mes);
 
     } catch (erro) {
         console.error('Erro ao carregar dados do dashboard:', erro);
@@ -25,13 +25,15 @@ async function carregarDadosDashboard() {
 function atualizarKPIs(kpis) {
     if (!kpis) return;
     
-    const elVendas = document.getElementById('kpi-vendas');
-    const elClientes = document.getElementById('kpi-clientes');
-    const elConversao = document.getElementById('kpi-conversao');
+    const elTotalOs = document.getElementById('kpi-total');
+    const elOsRest = document.getElementById('kpi-resto');
+    const elMaqTotal = document.getElementById('kpi-maqtotal');
+    const elTotalFalha = document.getElementById('kpi-totalfalha');
 
-    if (elVendas) elVendas.textContent = `R$ ${kpis.total_vendas}`;
-    if (elClientes) elClientes.textContent = kpis.novos_clientes;
-    if (elConversao) elConversao.textContent = kpis.taxa_conversao;
+    if (elTotalOs) elTotalOs.textContent = kpis.total_os;
+    if (elOsRest) elOsRest.textContent = kpis.os_pendentes;
+    if (elMaqTotal) elMaqTotal.textContent = kpis.maquinas_ativas;
+    if (elTotalFalha) elTotalFalha.textContent = kpis.total_falhas;
 }
 
 function renderizarGrafico(dadosGrafico) {
@@ -69,7 +71,7 @@ function renderizarGrafico(dadosGrafico) {
         data: {
             labels: dadosGrafico.labels,
             datasets: [{
-                label: 'Vendas Mensais',
+                label: 'Total de Ordens nos últimos meses:',
                 data: dadosGrafico.valores,
                 backgroundColor: corSecundaria,
                 borderRadius: 6,
