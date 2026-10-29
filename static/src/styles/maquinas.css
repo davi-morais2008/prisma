@@ -19,8 +19,8 @@ body {
 }
 
 .machine-edit__overlay.active,
-.machine-modal.active,
-.machine-details.active,
+.machine-modal__overlay.active,
+.machine-details__overlay.active,
 .delete-confirmation.active{
     display: flex;
 }
@@ -313,6 +313,23 @@ body {
 /* ========================================
    CONTAINER DO MODAL & CABEÇALHO
    ======================================== */
+
+.machine-modal__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
 .machine-modal {
     width: 90%;
     max-width: 720px;
@@ -324,7 +341,7 @@ body {
     font-family: var(--font-family-base);
     position: fixed;
     overflow-x: hidden;
-    display: none;
+    display: flex;
     flex-direction: column;
     z-index: 1000;
 }
@@ -738,6 +755,21 @@ body {
 /* ========================================
    BLOCO: |MODAL| MACHINE-DETAILS (Máquina Individual)
    ======================================== */
+
+.machine-details__overlay {
+    position: fixed;
+    inset: 0; 
+    width: 100vw;
+    height: 100vh;
+    background-color: #0a084b63; 
+    backdrop-filter: blur(6px); 
+    -webkit-backdrop-filter: blur(6px); 
+    display: none;
+    justify-content: center;
+    align-items: center; 
+    z-index: 900;
+}
+
 .machine-details {
     background-color: var(--color-bg-card);
     width: 95%;
@@ -746,7 +778,7 @@ body {
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
     z-index: 900;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
