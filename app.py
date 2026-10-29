@@ -94,6 +94,25 @@ def api_get_ordem():
     except Exception as e:
             return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
+@app.route("/telaInicial/post-register-order", methods=["POST"])
+def register_os():
+    nmr_patrimonio = request.form.get('create_numero_patrimonio')
+    tipo_manutencao = request.form.get('create_tipo_manutencao')
+    tec_responsavel = request.form.get('create_tecnico_responsavel')
+    prev_data_inicio = request.form.get('create_data_prev_inicio')
+    prev_data_termino = request.form.get('create_data_prev_termino')
+    data_parada = request.form.get('create_data_parada')
+    desc_problema = request.form.get('create_desc_problem')
+    ordens = consultar_ordem_servico()
+
+    for os in ordens:
+        if os.numero_patrimonio == nmr_patrimonio and os.tecnico_responsavel:
+            cadastrar_ordem_servico(desc_problema, tec_responsavel, tipo_manutencao, data_parada, prev_data_inicio, prev_data_termino)
+            return redirect("/telaInicial")
+
+
+
+
 @app.route("/historico")
 def pagina_historico():
     OSfinalizado = buscar_os_finalizado()
