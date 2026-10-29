@@ -20,11 +20,13 @@ app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'PRISMA_maintence') 
 app.config['PREFERRED_URL_SCHEME'] = 'https'
+# Configurações do Gmail usando SSL na porta 465 (Compatível com Render)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.getenv( 'MAIL_USERNAME' ,'gustavocaua934@gmail.com')
-app.config['MAIL_PASSWORD'] = os.getenv ('MAIL_PASSWORD')
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'gustavocaua934@gmail.com')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = ('PRISMA', app.config['MAIL_USERNAME'])
 
 mail = Mail(app)
@@ -48,7 +50,7 @@ def esqueci_senha():
             try:
                 mail.send(msg)
             except Exception as e:
-                print(f"Erro ao enviar e-mail: {e}")
+                print(f"Erro ao enviar o e-mail: {e}")
                 flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
                 return redirect(url_for('esqueci_senha'))
 
