@@ -84,7 +84,8 @@ def redefinir_senha(token):
 @app.route("/telaInicial")
 def pagina_inicial():
     ordem_servico = consultar_ordem_servico()
-    return render_template("telaInicial.html", ordem_servico = ordem_servico)
+    tecnicos = buscar_usuario()
+    return render_template("telaInicial.html", ordem_servico = ordem_servico, tecnicos = tecnicos)
 
 @app.route("/api/get/ordens_servico/", methods=["GET"])
 def api_get_ordem():
@@ -96,19 +97,44 @@ def api_get_ordem():
 
 @app.route("/telaInicial/post-register-order", methods=["POST"])
 def register_os():
-    nmr_patrimonio = request.form.get('create_numero_patrimonio')
-    tipo_manutencao = request.form.get('create_tipo_manutencao')
-    tec_responsavel = request.form.get('create_tecnico_responsavel')
-    prev_data_inicio = request.form.get('create_data_prev_inicio')
-    prev_data_termino = request.form.get('create_data_prev_termino')
-    data_parada = request.form.get('create_data_parada')
-    desc_problema = request.form.get('create_desc_problem')
-    ordens = consultar_ordem_servico()
+    maquinas = consultar_maquinas()
+    nmr_patrimonio = request.form.get('numero_patrimonio')
+    tipo_manutencao = request.form.get('tipo_manutencao')
+    tec_responsavel = request.form.get('tecnico_responsavel')
+    prev_data_inicio = request.form.get('data_prev_inicio')
+    prev_data_termino = request.form.get('data_prev_termino')
+    data_parada = request.form.get('data_parada')
+    desc_problema = request.form.get('desc_problema')
 
-    for os in ordens:
-        if os.numero_patrimonio == nmr_patrimonio and os.tecnico_responsavel:
-            cadastrar_ordem_servico(desc_problema, tec_responsavel, tipo_manutencao, data_parada, prev_data_inicio, prev_data_termino)
-            return redirect("/telaInicial")
+    print(nmr_patrimonio, tipo_manutencao, tec_responsavel, prev_data_inicio, prev_data_termino, data_parada, desc_problema)
+
+    id_maquina = None
+
+    for maquina in maquinas:
+        if str(maquina['numero_patrimonio']) == str(nmr_patrimonio):
+            id_maquina = maquina['id_maquina']
+            print(id_maquina)
+
+    if id_maquina is None:
+        return "Máquina não encontrada com o patrimônio informado", 400
+
+    cadastrar_ordem_servico(id_maquina, 
+                            1, 
+                            tec_responsavel,
+                            'Ativa', 
+                            tipo_manutencao, 
+                            desc_problema,
+                            '2008-08-28',
+                            '2008-08-29', 
+                            data_parada, 
+                            prev_data_inicio, 
+                            prev_data_termino)
+    return redirect('/telaInicial')
+
+
+    
+
+
 
 
 
