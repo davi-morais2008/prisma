@@ -1,61 +1,48 @@
 {% extends "layout.html" %}
 
     {% block titulo %}
-        Painel Geral
+        Dashboard
     {% endblock %}
 
     {% block estilo %}
         <link rel="stylesheet" href="{{ url_for('static', filename='src/styles/painelGeral.css') }}">
     {% endblock %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    
-    <!-- CSS -->
-    
-    
-    <!-- Chart.js (Biblioteca) -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Seu JS com o caminho correto -->
-    <script src="{{ url_for('static', filename='src/js/painelGeral.js') }}" defer></script>
-</head>
-<body>
 
-    <main class="dashboard_container">
-        <header class="dashboard_header">
-            <h1 class="titulo_dashboard">Painel de Desempenho</h1>
-            <button class="btn_refresh" onclick="carregarDadosDashboard()">Atualizar Dados</button>
-        </header>
+    {% block conteudo %}
+        <main class="dashboard_container">
+            <div class="dashboard_header">
+                <h1 class="titulo_dashboard">Painel de Desempenho</h1>
+                <button class="btn_refresh" onclick="carregarDadosDashboard()">Atualizar Dados</button>
+            </div>
 
-        <!-- Cards de Indicadores -->
-        <section class="kpi_grid">
-            <article class="kpi_card">
-                <span class="kpi_titulo">Total de Ordens de Serviço:</span>
-                <span class="kpi_valor" id="kpi-total">R$ 0,00</span>
-            </article>
-            <article class="kpi_card">
-                <span class="kpi_titulo">Ordens em Aberto:</span>
-                <span class="kpi_valor" id="kpi-resto">0</span>
-            </article>
-            <article class="kpi_card">
-                <span class="kpi_titulo">Total de Máquinas:</span>
-                <span class="kpi_valor" id="kpi-maqtotal">0%</span>
-            </article>
-            <article class="kpi_card">
-                <span class="kpi_titulo">Total de Falhas:</span>
-                <span class="kpi_valor" id="kpi-totalfalha">0%</span>
-            </article>
-        </section>
+            <!-- Cards de Indicadores -->
+            <section class="kpi_grid">
+                <article class="kpi_card">
+                    <span class="kpi_titulo">Total de Ordens de Serviço:</span>
+                    <span class="kpi_valor" id="kpi-total">R$ 0,00</span>
+                </article>
+                <article class="kpi_card">
+                    <span class="kpi_titulo">Ordens em Aberto:</span>
+                    <span class="kpi_valor" id="kpi-resto">0</span>
+                </article>
+                <article class="kpi_card">
+                    <span class="kpi_titulo">Total de Máquinas:</span>
+                    <span class="kpi_valor" id="kpi-maqtotal">0%</span>
+                </article>
+                <article class="kpi_card">
+                    <span class="kpi_titulo">Total de Falhas:</span>
+                    <span class="kpi_valor" id="kpi-totalfalha">0%</span>
+                </article>
+            </section>
 
-        <!-- Área do Gráfico -->
-        <section class="chart_card">
-            <canvas id="meuGrafico"></canvas>
-        </section>
-    </main>
+            <!-- Área do Gráfico -->
+            <section class="chart_card">
+                <canvas id="meuGrafico"></canvas>
+            </section>
+        </main>
+    {% endblock %}
 
-</body>
-</html>
+    {% block script %}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src=""></script>
+    {% endblock %}
