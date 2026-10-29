@@ -22,7 +22,7 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'PRISMA_maintence')
 app.config['PREFERRED_URL_SCHEME'] = 'https'
 # Configurações do Gmail usando SSL na porta 465 (Compatível com Render)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
+app.config['MAIL_PORT'] = 8561
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'gustavocaua934@gmail.com')
