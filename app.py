@@ -11,29 +11,29 @@ from werkzeug.security import generate_password_hash
 import flask_mail
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'PRISMA_maintence'
-
-# Configurações do Gmail da empresa
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'PRISMA_maintence') 
+app.config['PREFERRED_URL_SCHEME'] = 'https'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'gustavocaua934@gmail.com'
-app.config['MAIL_PASSWORD'] = 'srqt tyry lwjd qcxh'
-app.config['MAIL_DEFAULT_SENDER'] = ('PRISMA', 'gustavocaua934@gmail.com')
+app.config['MAIL_USERNAME'] = os.getenv( 'MAIL_USERNAME' ,'gustavocaua934@gmail.com')
+app.config['MAIL_PASSWORD'] = os.getenv ('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = ('PRISMA', app.config['MAIL_USERNAME'])
 
 mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 
 @app.route('/esqueci-senha', methods=['GET', 'POST'])
-@app.route('/recuperacaoSenha', methods=['GET', 'POST']) # <--- Aceita as duas URLs para a mesma função
+@app.route('/recuperacaoSenha', methods=['GET', 'POST'])
 def esqueci_senha():
     if request.method == 'POST':
         email = request.form.get('email')
-
-        # Chama a função do model para buscar no banco
         usuario = buscar_usuario_por_email(email)
 
         if usuario:
@@ -45,11 +45,12 @@ def esqueci_senha():
             
             try:
                 mail.send(msg)
-            except Exception:
+            except Exception as e:
+                print(f"Erro ao enviar e-mail: {e}")
                 flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
                 return redirect(url_for('esqueci_senha'))
 
-        flash('Se o e-mail estiver cadastrado, você receberá um link de redefinção.', 'info')
+        flash('Se o e-mail estiver cadastrado, você receberá um link de redefinição.', 'info')
         return redirect(url_for('esqueci_senha'))
 
     return render_template('recuperacaoSenha.html')
