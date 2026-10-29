@@ -155,6 +155,34 @@ main {
     margin-right: 10px;
 }
 
+/* Estilização base do botão de tema */
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: var(--border-radius-sm); /* Usa a variável do seu variables.css */
+    transition: background-color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Ajuste sutil no hover para o modo escuro */
+[data-theme="dark"] .theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.theme-toggle__icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
 @media (max-width: 768px) {
 
     body{
@@ -216,3 +244,4 @@ main {
         flex: 1;
     }
 }
+
