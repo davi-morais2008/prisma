@@ -352,7 +352,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 1.25rem;
+    padding: 0.65rem 1.25rem;
 }
 
 .machine-modal__brand {
@@ -411,7 +411,7 @@ body {
 
 .machine-form__avatar-wrapper {
     position: relative;
-    width: 110px;
+    width: 200px;
     height: 90px;
     flex-shrink: 0;
 }
