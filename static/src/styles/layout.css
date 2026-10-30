@@ -9,25 +9,25 @@
 
 /* Largura da barra vertical */
 ::-webkit-scrollbar {
-  width: 5px;
+    width: 5px;
 }
 
 /* A trilha (fundo onde a barra desliza) */
 ::-webkit-scrollbar-track {
-  background: #ffffff;
+    background: #ffffff;
 }
 
 /* O "puxador" da barra (a parte que você arrasta) */
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
+    background: var(--color-primary);
 }
 
 /* Cor do puxador ao passar o mouse */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+    background: #555;
 }
 
-body{
+body {
     margin-left: 200px;
     background-color: var(--color-bg-main);
 }
@@ -36,7 +36,7 @@ main {
     min-height: 100vh;
 }
 
-.header{
+.header {
     display: none;
 }
 
@@ -64,7 +64,7 @@ main {
     border-bottom: 1px solid var(--color-bg-hover);
 }
 
-.sidebar__logo img{
+.sidebar__logo img {
     max-width: 140px;
     height: auto;
     object-fit: contain;
@@ -129,7 +129,7 @@ main {
     color: var(--color-accent);
 }
 
-.footer{
+.footer {
     width: 100%;
     height: 8vh;
     background-color: var(--color-footer);
@@ -148,7 +148,7 @@ main {
     color: var(--color-text-secondary);
     font-size: clamp(0.65rem, 2.5vw, 1rem);
     gap: 15px;
-    
+
 }
 
 .helogo {
@@ -170,25 +170,25 @@ main {
 }
 
 .theme-toggle {
-  width: 38px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-secondary);
-  border: none;
-  border-radius: var(--border-radius-pill);
-  padding: 0.5rem;
-  cursor: pointer;
-  z-index: 10;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-secondary);
+    border: none;
+    border-radius: var(--border-radius-pill);
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .theme-toggle:hover {
-  transform: scale(1.08);
-  box-shadow: var(--shadow-md);
-  background-color: var(--color-secondary-hover);
+    transform: scale(1.08);
+    box-shadow: var(--shadow-md);
+    background-color: var(--color-secondary-hover);
 }
 
 
@@ -208,19 +208,25 @@ main {
 }
 
 .dark-mode .theme-toggle__icon {
-    filter: invert(1); 
+    filter: invert(1);
 }
+.profile__photo-nav {
+    text-decoration: none;
+    color: var(--color-text-light);
+    font-size: 45px !important;
+}
+
 
 @media (max-width: 768px) {
 
-    body{
+    body {
         margin-left: 0px !important;
     }
 
     .sidebar {
         display: none;
     }
-    
+
 
     .header {
         background-color: var(--color-primary);
@@ -253,7 +259,8 @@ main {
     }
 
     .dropdown-menu.active {
-        display: flex; /* Exibe quando ativo via JS */
+        display: flex;
+        /* Exibe quando ativo via JS */
     }
 
     .dropdown-menu ul {
@@ -275,11 +282,11 @@ main {
 
     .header .sidebar_light_dark {
         position: absolute;
-        top: 18px; 
-        right: 60px; 
+        top: 18px;
+        right: 60px;
         width: auto;
         padding: 0;
         z-index: 20;
-        transform: none; 
+        transform: none;
     }
 }
