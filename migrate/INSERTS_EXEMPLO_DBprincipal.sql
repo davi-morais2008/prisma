@@ -1,14 +1,8 @@
 USE db_manutencaoDS_EM;
 
--- =============================================
--- 1. ESPECIALIDADES
--- =============================================
-INSERT INTO especialidades (especialidade) VALUES
-('Técnico em Eletromecânica'),
-('Mecânica Industrial'),
-('Automação Industrial'),
-('Usinagem CNC'),
-('Caldeiraria');
+INSERT INTO usuarios(cpf, nome, email, senha, status_usuario)
+VALUES('47126589832', 'Guxta Pereira', 'gustavo.h.pereira13@aluno.senai.br', 'gu1234', 'Ativo'), 
+('00000000000', 'admin root', 'admin.root@aluno.senai.br', 'senai603Prisma', 'Ativo');
 
 -- =============================================
 -- 2. USUÁRIOS (Alunos, Técnicos e Administradores)

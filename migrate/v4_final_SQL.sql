@@ -47,8 +47,7 @@ CREATE TABLE IF NOT EXISTS maquinas (
  localizacao VARCHAR(255),
  manual_operacao VARCHAR(500),
  status_maquina VARCHAR(100),
- is_inativa BOOL DEFAULT false
- 
+ is_inativa bool default false
 );
 
 CREATE TABLE IF NOT EXISTS ordens_servicos (
