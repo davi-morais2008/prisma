@@ -183,7 +183,7 @@ def maquinas_post_register():
     manual_file = request.files.get("manual-upload")
     status_machine = request.form.get("status-machine")
     scheduled_date = request.form.get("scheduled-date")
-    cadastrar_maquina(type_machine, int(number_machine), model_machine, location_machine, "TESTE", status_machine)
+    cadastrar_maquina(type_machine, number_machine, model_machine, location_machine, "TESTE", status_machine)
     return redirect('/maquinas')
 
 @app.route('/maquinas/api_delete_machines', methods = ['POST'])
@@ -193,10 +193,13 @@ def maquinas_delete_machines():
     return jsonify({"status": "sucesso", "mensagem": "Máquina Deletada!"}), 200
 
 @app.route('/maquinas/update_machines', methods = ['POST'])
-def maquinas_update_machines(id):
+def maquinas_update_machines():
+    
     avatar_file = request.files.get("edit-machine-img")
     type_machine = request.form.get("edit-type")
     number_machine = request.form.get("edit-patrimony")
+    model_machine = request.form.get("edit-model")
+    location_machine = request.form.get('edit-location')
     production_time = request.form.get("edit-prod-time")
     total_hours = request.form.get("edit-work-hours")
     accumulated_cost = request.form.get("edit-cost")
@@ -205,19 +208,9 @@ def maquinas_update_machines(id):
     manual_file = request.files.get("manual-upload")
     status_machine = request.form.get("edit-maintance-status")
     scheduled_date = request.form.get("edit-maintance-date")
-
-    atualizar_editar_maquina(
-        id,
-        type_machine,
-        number_machine,
-        production_time,
-        total_hours,
-        accumulated_cost,
-        parts_changed,
-        downtime,
-        status_machine,
-        scheduled_date
-    )
+    id_machine = request.form.get('id-machine')
+    print(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
+    atualizar_editar_maquina(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
 
     return redirect('/maquinas')
 
