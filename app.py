@@ -3,7 +3,7 @@ from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico
-from model.usuario import buscar_usuario
+from model.usuario import buscar_usuario, atualizar_usuario
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas
@@ -136,8 +136,6 @@ def register_os():
     data_parada = request.form.get('data_parada')
     desc_problema = request.form.get('desc_problema')
 
-    print(nmr_patrimonio, tipo_manutencao, tec_responsavel, prev_data_inicio, prev_data_termino, data_parada, desc_problema)
-
     id_maquina = None
 
     for maquina in maquinas:
@@ -193,7 +191,8 @@ def post_login():
     
     for user in usuarios:
         if user['cpf'] == usuario and user['senha'] == senha:
-            session['user'] = (usuario, senha)
+            session['user'] = usuario
+            print(session['user'])
             return redirect('/telaInicial')
     flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
     return redirect('/login')
@@ -284,9 +283,26 @@ def maquinas_update_machines():
     id_machine = request.form.get('id-machine')
     print(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
     atualizar_editar_maquina(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
-
     return redirect('/maquinas')
 
+
+@app.route('/profile')
+def pagina_perfil():
+    if session['user']:
+        users = buscar_usuario()
+        for user in users: 
+            if user['cpf'] == session['user']:
+                return render_template('perfil.html', usuario = user)
+
+
+@app.route('/profile/uptade_information', methods=['POST'])
+def pagina_perfil_update():
+    nome = request.form.get('user-edit-name')
+    email = request.form.get('user-edit-email')
+    atualizar_usuario(session['user'], nome, email)
+    return redirect('/profile')
+
+    
 
 
 @app.route('/usuarios', methods = ['GET'])
@@ -298,8 +314,5 @@ def pagina_usuarios():
 def pagina_calendario():
     return render_template('calendario.html')
 
-@app.route('/perfil')
-def pagina_perfil():
-    return render_template('perfil.html')
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
