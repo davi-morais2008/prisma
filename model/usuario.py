@@ -68,7 +68,7 @@ def inativar_usuario(cpf,status_usuario):
 
     Parâmetros:
         cpf (str): CPF do usuário que será inativado .
-        status_usuario (str): Novo status "Ativo" ou "Inativo".
+        status_usuario (bool): Status do usuário, se é  "true" ou "false
 
 
     Retorna:
@@ -80,7 +80,7 @@ def inativar_usuario(cpf,status_usuario):
             UPDATE usuarios 
             SET status_usuario = %s
             WHERE cpf = %s
-        """, (cpf,))
+        """, (status_usuario,cpf,))
         
         conexao.commit()
         return True
