@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+    {% block titulo %}
+        Dashboard
+    {% endblock %}
+
+    {% block estilo %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='src/styles/painelGeral.css') }}">
+    {% endblock %}
+
+    {% block conteudo %}
+        <main class="dashboard">
+            <div class="dashboard_container">
+                <div class="dashboard_header">
+                    <h1 class="titulo_dashboard">Painel de Desempenho</h1>
+                    <button class="btn_refresh" onclick="carregarDadosDashboard()">Atualizar Dados</button>
+                </div>
+
+                <!-- Cards de Indicadores -->
+                <section class="kpi_grid">
+                    <article class="kpi_card">
+                        <span class="kpi_titulo">Total de Ordens de Serviço:</span>
+                        <span class="kpi_valor" id="kpi-total">0</span>
+                    </article>
+                    <article class="kpi_card">
+                        <span class="kpi_titulo">Ordens em Aberto:</span>
+                        <span class="kpi_valor" id="kpi-resto">0</span>
+                    </article>
+                    <article class="kpi_card">
+                        <span class="kpi_titulo">Ordens Concluídas:</span>
+                        <span class="kpi_valor" id="kpi-concluidas">0</span>
+                    </article>
+                    <article class="kpi_card">
+                        <span class="kpi_titulo">Total de Máquinas:</span>
+                        <span class="kpi_valor" id="kpi-maqtotal">0</span>
+                    </article>
+                    <article class="kpi_card kpi-totalativa">
+                        <span class="kpi_titulo">Total de Máquinas Ativas:</span>
+                        <span class="kpi_valor" id="kpi-totalativa">0</span>
+                    </article>
+                    <article class="kpi_card kpi-totalparada">
+                        <span class="kpi_titulo">Total de Máquinas Paradas:</span>
+                        <span class="kpi_valor" id="kpi-totalparada">0</span>
+                    </article>
+                    <article class="kpi_card kpi-totalfalha">
+                        <span class="kpi_titulo">Total de Falhas Computadas:</span>
+                        <span class="kpi_valor" id="kpi-totalfalha">0</span>
+                    </article>
+                    
+                </section>
+
+                <!-- Área do Gráfico -->
+                <section class="chart_card">
+                    <canvas id="meuGrafico"></canvas>
+                </section>
+                <section class="chart_card">
+                    <canvas id="falhasGrafico"></canvas>
+                </section>
+            </div>
+        </main>
+    {% endblock %}
+
+    {% block script %}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="{{ url_for('static', filename='src/js/painelGeral.js') }}"></script>
+    {% endblock %}

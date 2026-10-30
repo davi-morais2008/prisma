@@ -5,6 +5,7 @@ from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico
 from model.usuario import buscar_usuario
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
+from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas
 from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
@@ -12,6 +13,7 @@ from werkzeug.security import generate_password_hash
 from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'PRISMA_maintence'
@@ -80,6 +82,33 @@ def redefinir_senha(token):
     return render_template('redefinir_senha.html', token=token)
 
 
+@app.route('/painelGeral')
+def painel_geral():
+    return render_template('painelGeral.html')
+
+@app.route('/api/dados')
+def get_dados():
+    try:
+        informacoes = buscar_dados_dashboard()
+        return jsonify({
+            "kpis": {
+                "total_os": informacoes["total_os"],
+                "os_pendentes": informacoes["os_pendentes"],
+                "maquinas_ativas": informacoes["maquinas_total"],
+                "maquinas_paradas": informacoes["maquinas_paradas"],
+                "falhas_computadas": informacoes["falhas_computadas"]
+            },
+            "os_por_mes": {
+                "labels": informacoes["labels_mes"],
+                "valores": informacoes["valores_mes"]
+            },
+            "falhas_quantidade":{
+                "labels": informacoes["labels_falha"],
+                "valores": informacoes["valores_falha"]
+            }
+        })
+    except Exception as e:
+        return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route("/telaInicial")
 def pagina_inicial():
