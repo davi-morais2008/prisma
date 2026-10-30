@@ -43,7 +43,7 @@ function atualizarKPIs(kpis) {
     if (elTotalFalha) elTotalFalha.textContent = kpis.falhas_computadas;
 }
 
-function renderizarGrafico(nomeGrafico, dadosGrafico, mensagem, cor) {
+export function renderizarGrafico(nomeGrafico, dadosGrafico, mensagem, cor) {
     if (!dadosGrafico) {
         console.error("Dados do gráfico inválidos ou indefinidos.");
         return;

@@ -1,3 +1,5 @@
+import { renderizarGrafico } from "../js/painelGeral";
+
 const menuToggle = document.getElementById('menu-toggle');
 const mobileDropdown = document.getElementById('mobile-dropdown');
 
@@ -39,6 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         htmlElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
+
+        renderizarGrafico();
         
         updateIcons(newTheme);
     }
