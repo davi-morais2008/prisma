@@ -30,12 +30,12 @@ def buscar_dados_dashboard():
         # 5. Gráfico: OS por Mês (agrupadas pela data de início)
         cursor.execute("""
                     SELECT 
-                        DATE_FORMAT(data_inicio_manutencao, '%b/%y') AS mes,
+                        DATE_FORMAT(data_parada, '%b/%y') AS mes,
                         COUNT(*) AS total
                     FROM ordens_servicos
-                    WHERE data_inicio_manutencao IS NOT NULL
-                    GROUP BY YEAR(data_inicio_manutencao), MONTH(data_inicio_manutencao), mes
-                    ORDER BY YEAR(data_inicio_manutencao) ASC, MONTH(data_inicio_manutencao) ASC
+                    WHERE data_parada IS NOT NULL
+                    GROUP BY YEAR(data_parada), MONTH(data_parada), mes
+                    ORDER BY YEAR(data_parada) ASC, MONTH(data_parada) ASC
                     LIMIT 6
                 """)
         res_os_mes = cursor.fetchall()

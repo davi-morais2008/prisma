@@ -1,8 +1,14 @@
 USE db_manutencaoDS_EM;
 
-INSERT INTO usuarios(cpf, nome, email, senha, status_usuario)
-VALUES('47126589832', 'Guxta Pereira', 'gustavo.h.pereira13@aluno.senai.br', 'gu1234', 'Ativo'), 
-('00000000000', 'admin root', 'admin.root@aluno.senai.br', 'senai603Prisma', 'Ativo');
+-- =============================================
+-- 1. ESPECIALIDADES
+-- =============================================
+INSERT INTO especialidades (especialidade) VALUES
+('Técnico em Eletromecânica'),
+('Mecânica Industrial'),
+('Automação Industrial'),
+('Usinagem CNC'),
+('Caldeiraria');
 
 -- =============================================
 -- 2. USUÁRIOS (Alunos, Técnicos e Administradores)
@@ -74,7 +80,7 @@ INSERT INTO ordens_servicos (id_maquina, id_falha, cpf, status_ordem, tipo_manut
 (2, 1, '12345678901', 'Ativa', 'Corretiva', 'Freio travando durante aula prática de usinagem', '2024-10-28', NULL, '2024-10-27', '2024-10-28', '2024-10-31'),
 (3, 3, '12345678901', 'Finalizada', 'Preventiva', 'Troca de óleo do barramento e substituição dos raspadores', '2024-05-15', '2024-05-16', NULL, '2024-05-15', '2024-05-16'),
 (4, 5, '98765432100', 'Ativa', 'Corretiva', 'Eixo Z apresentando alarme de sobrecarga no servomotor', NULL, NULL, '2024-10-29', '2024-11-01', '2024-11-03'),
-(5, 7, '98765432100', 'Cancelada', 'Preventiva', 'Ajuste de mangueiras das bancadas didáticas', NULL, NULL, NULL, '2024-06-01', '2024-06-02');
+(5, 7, '98765432100', 'Cancelada', 'Preventiva', 'Ajuste de mangueiras das bancadas didáticas', NULL, NULL, '2024-05-29', '2024-06-01', '2024-06-02');
 
 -- =============================================
 -- 9. FASES DE MANUTENÇÃO (Acompanhamento das OS)
