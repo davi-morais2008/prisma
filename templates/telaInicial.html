@@ -1,375 +1,493 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+{% extends "layout.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Prisma</title>
+{% block titulo %}
+Página Inicial
+{% endblock %}
 
-    <link rel="stylesheet" href="/static/src/styles/telaInicial.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
-</head>
+{% block estilo %}
+<link rel="stylesheet" href="{{url_for('static', filename = 'src/styles/telaInicial.css')}}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+{% endblock %}
 
-<body>
-    <main class="home">
-        <input class="home__search-bar" type="search" placeholder="Pesquisar">
+{% block conteudo %}
+<main class="home">
+    <div class="home__header">
+        <h1 class="home__title">Ordens de Serviço</h1>
+        <button class="home__button-register" aria-label="Cadastrar Nova OS">+</button>
+    </div>
 
-        <div class="home__orders">
-            {% for os in ordem_servico %}
-            <article class="work-order work-order--baixa" id_order="{{os.id_ordem}}">
-                <h3 class="work-order__title">2008-09-09 00:00:00</h3>
-                <div class="work-order__description">
-                    <p>Responsável: {{os.tecnico_responsavel}}</p>
-                    <p>Falha: {{os.falha}}</p>
-                    <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
-                </div>
-            </article>
-            {% endfor %}
+    <div class="home__order-filters">
+        <input type="text" id="search-bar" name="search-bar" class="home__search-bar" placeholder="Buscar máquina...">
+        <div class="order-filter-buttons">
+            <button class="filter-button">Preventiva</button>
+            <button class="filter-button">Preditiva</button>
+            <button class="filter-button">Corretiva</button>
         </div>
+    </div>
 
-        <!-- Modal de Detalhes da Ordem de Serviço (OS) -->
-        <div class="order-details" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
-            <div class="order-details__overlay" id="modalOverlay"></div>
+    <div class="home__orders">
+        {% for os in ordem_servico %}
+        <article class="work-order work-order--baixa" id_order="{{os.id_ordem}}">
+            <h3 class="work-order__title">Número da Ordem: {{os.id_ordem}}</h3>
+            <div class="work-order__description">
+                <p>Responsável: {{os.tecnico_responsavel}}</p>
+                <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
+                <p>Máquina: {{os.nome_maquina}}</p>
+                <p>Data Parada: {{os.data_parada}}</p>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
 
-            <article class="order-details__card">
-                <!-- CABEÇALHO SUPERIOR -->
-                <header class="order-details__header">
-                    <div class="order-details__brand">
-                        <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
-                            class="order-details__brand-image">
-                        <h1 class="order-details__brand-title" id="orderModalTitle">PRISMA</h1>
+    <!-- Modal de Detalhes da Ordem de Serviço (OS) -->
+    <div class="order-details" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+        <div class="order-details__overlay" id="modalOverlay"></div>
+
+        <article class="order-details__card">
+            <!-- CABEÇALHO SUPERIOR -->
+            <header class="order-details__header">
+                <div class="order-details__brand">
+                    <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="order-details__brand-image">
+                </div>
+                <h1 class="order-details__brand-title" id="orderModalTitle">ORDEM DE SERVIÇO</h1>
+                <button class="order-details__close-btn" id="btnClose" aria-label="Fechar detalhes da ordem de serviço">
+                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                </button>
+            </header>
+
+            <div class="order-details__body">
+                <!-- INFORMAÇÕES PRIMÁRIAS DA OS -->
+                <section class="order-details__primary-info">
+                    <div class="order-details__image-container">
+                        <img src="/static/src/img/torno_mecanico.jpg" alt="Imagem da máquina associada"
+                            class="order-details__image">
                     </div>
-                    <button class="order-details__close-btn" id="btnClose"
-                        aria-label="Fechar detalhes da ordem de serviço">
-                        <span class="material-symbols-outlined" aria-hidden="true">close</span>
-                    </button>
-                </header>
-
-                <div class="order-details__body">
-                    <!-- INFORMAÇÕES PRIMÁRIAS DA OS -->
-                    <section class="order-details__primary-info">
-                        <div class="order-details__image-container">
-                            <img src="/static/src/img/torno_mecanico.jpg" alt="Imagem da máquina associada"
-                                class="order-details__image">
+                    <div class="order-details__primary-content">
+                        <div class="order-details__info-group">
+                            <span class="order-details__label">Status da Ordem:</span>
+                            <strong class="order-details__badge order-details__badge--success" id="status_ordem">Em
+                                Andamento</strong>
                         </div>
-                        <div class="order-details__primary-content">
-                            <div class="order-details__info-group">
-                                <span class="order-details__label">Status da Ordem:</span>
-                                <strong class="order-details__badge order-details__badge--success" id="status_ordem">Em
-                                    Andamento</strong>
-                            </div>
-                            <div class="order-details__info-group">
-                                <span class="order-details__label">Fase da Manutenção:</span>
-                                <strong class="order-details__value" id="fase_manutencao">Execução</strong>
-                            </div>
-                            <div class="order-details__info-group">
-                                <span class="order-details__label">Tipo de Manutenção:</span>
-                                <strong class="order-details__value" id="tipo_manutencao">Corretiva</strong>
-                            </div>
-                            <div class="order-details__info-group">
-                                <span class="order-details__label">Técnico Responsável:</span>
-                                <strong class="order-details__value" id="tecnico_responsavel">João Silva</strong>
-                            </div>
+                        <div class="order-details__info-group">
+                            <span class="order-details__label">Fase da Manutenção:</span>
+                            <strong class="order-details__value" id="fase_manutencao">Execução</strong>
                         </div>
-                    </section>
-
-                    <!-- CRONOGRAMA E DATAS DA MANUTENÇÃO -->
-                    <section class="order-details__section">
-                        <div class="order-details__section-header">
-                            <h2 class="order-details__section-title">CRONOGRAMA E DATAS</h2>
-                            <div class="order-details__actions">
-                                <button class="order-details__action-btn order-details__action-btn--edit" id="btnEdit"
-                                    aria-label="Editar Ordem de Serviço">
-                                    <span class="material-symbols-outlined" aria-hidden="true">edit_square</span>
-                                </button>
-                                <button class="order-details__action-btn order-details__action-btn--delete"
-                                    id="btnDelete" aria-label="Excluir Ordem de Serviço">
-                                    <span class="material-symbols-outlined" aria-hidden="true">delete</span>
-                                </button>
-                            </div>
+                        <div class="order-details__info-group">
+                            <span class="order-details__label">Tipo de Manutenção:</span>
+                            <strong class="order-details__value" id="tipo_manutencao">Corretiva</strong>
                         </div>
-
-                        <div class="order-details__grid">
-                            <!-- Lado Esquerdo: Previsões -->
-                            <div class="order-details__card-group">
-                                <div class="order-details__stat-item">
-                                    <span class="material-symbols-outlined order-details__stat-icon"
-                                        aria-hidden="true">event_upcoming</span>
-                                    <div class="order-details__stat-text">
-                                        <span class="order-details__stat-label">Previsão Início:</span>
-                                        <strong class="order-details__stat-value"
-                                            id="data_prev_inicio_manutencao">12/11/2024 - 08:00</strong>
-                                    </div>
-                                </div>
-
-                                <div class="order-details__stat-item">
-                                    <span class="material-symbols-outlined order-details__stat-icon"
-                                        aria-hidden="true">event_available</span>
-                                    <div class="order-details__stat-text">
-                                        <span class="order-details__stat-label">Previsão Término:</span>
-                                        <strong class="order-details__stat-value"
-                                            id="data_prev_termino_manutencao">14/11/2024 - 17:00</strong>
-                                    </div>
-                                </div>
-
-                                <div class="order-details__stat-item">
-                                    <span class="material-symbols-outlined order-details__stat-icon"
-                                        aria-hidden="true">pause_circle</span>
-                                    <div class="order-details__stat-text">
-                                        <span class="order-details__stat-label">Data da Parada:</span>
-                                        <strong class="order-details__stat-value" id="data_parada">10/11/2024 -
-                                            14:30</strong>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Lado Direito: Execução Real -->
-                            <div class="order-details__card-group">
-                                <div class="order-details__stat-item">
-                                    <span class="material-symbols-outlined order-details__stat-icon"
-                                        aria-hidden="true">play_circle</span>
-                                    <div class="order-details__stat-text">
-                                        <span class="order-details__stat-label">Data de Início Real:</span>
-                                        <strong class="order-details__stat-value" id="data_inicio">12/11/2024 -
-                                            08:30</strong>
-                                    </div>
-                                </div>
-
-                                <div class="order-details__stat-item">
-                                    <span class="material-symbols-outlined order-details__stat-icon"
-                                        aria-hidden="true">check_circle</span>
-                                    <div class="order-details__stat-text">
-                                        <span class="order-details__stat-label">Data de Término Real:</span>
-                                        <strong class="order-details__stat-value" id="data_termino">Em Aberto</strong>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="order-details__info-group">
+                            <span class="order-details__label">Técnico Responsável:</span>
+                            <strong class="order-details__value" id="tecnico_responsavel">João Silva</strong>
                         </div>
-                    </section>
+                    </div>
+                </section>
 
-                    <!-- DIAGNÓSTICO E DESCRIÇÃO DO PROBLEMA -->
-                    <section class="order-details__section">
-                        <h2 class="order-details__section-title">DIAGNÓSTICO E FALHA</h2>
+                <!-- CRONOGRAMA E DATAS DA MANUTENÇÃO -->
+                <section class="order-details__section">
+                    <div class="order-details__section-header">
+                        <h2 class="order-details__section-title">CRONOGRAMA E DATAS</h2>
+                        <div class="order-details__actions">
+                            <button class="order-details__action-btn order-details__action-btn--edit" id="btnEdit"
+                                aria-label="Editar Ordem de Serviço">
+                                <span class="material-symbols-outlined" aria-hidden="true">edit_square</span>
+                            </button>
+                            <button class="order-details__action-btn order-details__action-btn--delete" id="btnDelete"
+                                aria-label="Excluir Ordem de Serviço">
+                                <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                            </button>
+                        </div>
+                    </div>
 
+                    <div class="order-details__grid">
+                        <!-- Lado Esquerdo: Previsões -->
                         <div class="order-details__card-group">
                             <div class="order-details__stat-item">
                                 <span class="material-symbols-outlined order-details__stat-icon"
-                                    aria-hidden="true">warning</span>
+                                    aria-hidden="true">event_upcoming</span>
                                 <div class="order-details__stat-text">
-                                    <span class="order-details__stat-label">Falha Identificada:</span>
-                                    <strong class="order-details__stat-value" id="falha">Sobreaquecimento no motor
-                                        principal</strong>
+                                    <span class="order-details__stat-label">Previsão Início:</span>
+                                    <strong class="order-details__stat-value"
+                                        id="data_prev_inicio_manutencao">12/11/2024 - 08:00</strong>
                                 </div>
                             </div>
 
-                            <div class="order-details__description-block">
-                                <span class="order-details__stat-label">Descrição do Problema:</span>
-                                <p class="order-details__description-text" id="desc_problema">
-                                    A máquina apresentou ruídos excessivos e desligamento automático por proteção
-                                    térmica após 3 horas contínuas de operação no turno matutino.
-                                </p>
+                            <div class="order-details__stat-item">
+                                <span class="material-symbols-outlined order-details__stat-icon"
+                                    aria-hidden="true">event_available</span>
+                                <div class="order-details__stat-text">
+                                    <span class="order-details__stat-label">Previsão Término:</span>
+                                    <strong class="order-details__stat-value"
+                                        id="data_prev_termino_manutencao">14/11/2024 - 17:00</strong>
+                                </div>
+                            </div>
+
+                            <div class="order-details__stat-item">
+                                <span class="material-symbols-outlined order-details__stat-icon"
+                                    aria-hidden="true">pause_circle</span>
+                                <div class="order-details__stat-text">
+                                    <span class="order-details__stat-label">Data da Parada:</span>
+                                    <strong class="order-details__stat-value" id="data_parada">10/11/2024 -
+                                        14:30</strong>
+                                </div>
                             </div>
                         </div>
-                    </section>
+
+                        <!-- Lado Direito: Execução Real -->
+                        <div class="order-details__card-group">
+                            <div class="order-details__stat-item">
+                                <span class="material-symbols-outlined order-details__stat-icon"
+                                    aria-hidden="true">play_circle</span>
+                                <div class="order-details__stat-text">
+                                    <span class="order-details__stat-label">Data de Início Real:</span>
+                                    <strong class="order-details__stat-value" id="data_inicio">12/11/2024 -
+                                        08:30</strong>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DIAGNÓSTICO E DESCRIÇÃO DO PROBLEMA -->
+                <section class="order-details__section">
+                    <h2 class="order-details__section-title">DIAGNÓSTICO E FALHA</h2>
+
+                    <div class="order-details__card-group">
+                        <div class="order-details__stat-item">
+                            <span class="material-symbols-outlined order-details__stat-icon"
+                                aria-hidden="true">warning</span>
+                            <div class="order-details__stat-text">
+                                <span class="order-details__stat-label">Falha Identificada:</span>
+                                <strong class="order-details__stat-value" id="falha">Sobreaquecimento no motor
+                                    principal</strong>
+                            </div>
+                        </div>
+
+                        <div class="order-details__description-block">
+                            <span class="order-details__stat-label">Descrição do Problema:</span>
+                            <p class="order-details__description-text" id="desc_problema">
+                                A máquina apresentou ruídos excessivos e desligamento automático por proteção
+                                térmica após 3 horas contínuas de operação no turno matutino.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </div>
+
+
+
+    <!-- Modal de Edição da Ordem de Serviço (OS) -->
+    <div class="order-edit" id="updateModal" role="dialog" aria-modal="true" aria-labelledby="orderEditTitle">
+        <div class="order-edit__overlay" id="updateModalOverlay"></div>
+
+        <article class="order-edit__card">
+            <!-- CABEÇALHO SUPERIOR -->
+            <header class="order-edit__header">
+                <div class="order-edit__brand">
+                    <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="order-edit__brand-image">
+                    <h1 class="order-edit__brand-title" id="orderEditTitle">EDITAR ORDEM DE SERVIÇO</h1>
                 </div>
-            </article>
-        </div>
+                <button class="order-edit__close-btn" id="btnCancelUpdate" aria-label="Fechar formulário de edição">
+                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                </button>
+            </header>
 
+            <!-- FORMULÁRIO DE EDIÇÃO -->
+            <form class="order-edit__form" id="formUpdateOrder">
+                <div class="order-edit__body">
 
+                    <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
+                    <fieldset class="order-edit__section">
+                        <legend class="order-edit__section-title">INFORMAÇÕES GERAIS</legend>
 
-        <!-- Modal de Edição da Ordem de Serviço (OS) -->
-        <div class="order-edit" id="updateModal" role="dialog" aria-modal="true" aria-labelledby="orderEditTitle">
-            <div class="order-edit__overlay" id="updateModalOverlay"></div>
-
-            <article class="order-edit__card">
-                <!-- CABEÇALHO SUPERIOR -->
-                <header class="order-edit__header">
-                    <div class="order-edit__brand">
-                        <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="order-edit__brand-image">
-                        <h1 class="order-edit__brand-title" id="orderEditTitle">EDITAR ORDEM DE SERVIÇO</h1>
-                    </div>
-                    <button class="order-edit__close-btn" id="btnCancelUpdate" aria-label="Fechar formulário de edição">
-                        <span class="material-symbols-outlined" aria-hidden="true">close</span>
-                    </button>
-                </header>
-
-                <!-- FORMULÁRIO DE EDIÇÃO -->
-                <form class="order-edit__form" id="formUpdateOrder">
-                    <div class="order-edit__body">
-
-                        <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
-                        <fieldset class="order-edit__section">
-                            <legend class="order-edit__section-title">INFORMAÇÕES GERAIS</legend>
-
-                            <div class="order-edit__grid order-edit__grid--2-col">
-                                <div class="order-edit__field">
-                                    <label class="order-edit__label" for="edit_status_ordem">Status da Ordem</label>
-                                    <select class="order-edit__select" id="edit_status_ordem" name="status_ordem"
-                                        required>
-                                        <option value="Pendente">Pendente</option>
-                                        <option value="Em Andamento" selected>Em Andamento</option>
-                                        <option value="Concluído">Concluído</option>
-                                        <option value="Cancelado">Cancelado</option>
-                                    </select>
-                                </div>
-
-                                <div class="order-edit__field">
-                                    <label class="order-edit__label" for="edit_fase_manutencao">Fase da
-                                        Manutenção</label>
-                                    <select class="order-edit__select" id="edit_fase_manutencao" name="fase_manutencao"
-                                        required>
-                                        <option value="Triagem">Triagem</option>
-                                        <option value="Diagnóstico">Diagnóstico</option>
-                                        <option value="Execução" selected>Execução</option>
-                                        <option value="Testes">Testes</option>
-                                        <option value="Finalizado">Finalizado</option>
-                                    </select>
-                                </div>
-
-                                <div class="order-edit__field">
-                                    <label class="order-edit__label" for="edit_tipo_manutencao">Tipo de
-                                        Manutenção</label>
-                                    <select class="order-edit__select" id="edit_tipo_manutencao" name="tipo_manutencao"
-                                        required>
-                                        <option value="Corretiva" selected>Corretiva</option>
-                                        <option value="Preventiva">Preventiva</option>
-                                        <option value="Preditiva">Preditiva</option>
-                                    </select>
-                                </div>
-
-                                <div class="order-edit__field">
-                                    <label class="order-edit__label" for="edit_tecnico_responsavel">Técnico
-                                        Responsável</label>
-                                    <input class="order-edit__input" type="text" id="edit_tecnico_responsavel"
-                                        name="tecnico_responsavel" value="João Silva" placeholder="Nome do técnico"
-                                        required>
-                                </div>
+                        <div class="order-edit__grid order-edit__grid--2-col">
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_status_ordem">Status da Ordem</label>
+                                <select class="order-edit__select" id="edit_status_ordem" name="status_ordem" required>
+                                    <option value="Pendente">Pendente</option>
+                                    <option value="Em Andamento" selected>Em Andamento</option>
+                                    <option value="Concluído">Concluído</option>
+                                    <option value="Cancelado">Cancelado</option>
+                                </select>
                             </div>
-                        </fieldset>
 
-                        <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->
-                        <fieldset class="order-edit__section">
-                            <legend class="order-edit__section-title">CRONOGRAMA E DATAS</legend>
-
-                            <div class="order-edit__grid order-edit__grid--2-col">
-                                <div class="order-edit__field">
-                                    <label class="order-edit__label" for="edit_data_prev_inicio">Prev. Início
-                                        Manutenção</label>
-                                    <input class="order-edit__input" type="datetime-local" id="edit_data_prev_inicio"
-                                        name="data_prev_inicio_manutencao" required>
-                                </div>
-
-                                <div class="order-edit__field">
-                                    <label class="order-edit__label" for="edit_data_prev_termino">Prev. Término
-                                        Manutenção</label>
-                                    <input class="order-edit__input" type="datetime-local" id="edit_data_prev_termino"
-                                        name="data_prev_termino_manutencao" required>
-                                </div>
-
-                                <div class="order-edit__field">
-                                    <label class="order-edit__label" for="edit_data_parada">Data da Parada</label>
-                                    <input class="order-edit__input" type="datetime-local" id="edit_data_parada"
-                                        name="data_parada">
-                                </div>
-
-                                <div class="order-edit__field">
-                                    <label class="order-edit__label" for="edit_data_inicio">Data Início Real</label>
-                                    <input class="order-edit__input" type="datetime-local" id="edit_data_inicio"
-                                        name="data_inicio">
-                                </div>
-
-                                <div class="order-edit__field order-edit__field--full">
-                                    <label class="order-edit__label" for="edit_data_termino">Data Término Real</label>
-                                    <input class="order-edit__input" type="datetime-local" id="edit_data_termino"
-                                        name="data_termino">
-                                </div>
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_fase_manutencao">Fase da
+                                    Manutenção</label>
+                                <select class="order-edit__select" id="edit_fase_manutencao" name="fase_manutencao"
+                                    required>
+                                    <option value="Triagem">Triagem</option>
+                                    <option value="Diagnóstico">Diagnóstico</option>
+                                    <option value="Execução" selected>Execução</option>
+                                    <option value="Testes">Testes</option>
+                                    <option value="Finalizado">Finalizado</option>
+                                </select>
                             </div>
-                        </fieldset>
 
-                        <!-- SEÇÃO 3: DIAGNÓSTICO E FALHA -->
-                        <fieldset class="order-edit__section">
-                            <legend class="order-edit__section-title">DIAGNÓSTICO E FALHA</legend>
-
-                            <div class="order-edit__grid">
-                                <div class="order-edit__field order-edit__field--full">
-                                    <label class="order-edit__label" for="edit_falha">Falha Identificada</label>
-                                    <input class="order-edit__input" type="text" id="edit_falha" name="falha"
-                                        value="Sobreaquecimento no motor principal"
-                                        placeholder="Sintoma ou falha identificada" required>
-                                </div>
-
-                                <div class="order-edit__field order-edit__field--full">
-                                    <label class="order-edit__label" for="edit_desc_problema">Descrição do
-                                        Problema</label>
-                                    <textarea class="order-edit__textarea" id="edit_desc_problema" name="desc_problema"
-                                        rows="3" placeholder="Detalhamento do problema ocorrido..."
-                                        required>A máquina apresentou ruídos excessivos e desligamento automático por proteção térmica após 3 horas contínuas de operação no turno matutino.</textarea>
-                                </div>
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_tipo_manutencao">Tipo de
+                                    Manutenção</label>
+                                <select class="order-edit__select" id="edit_tipo_manutencao" name="tipo_manutencao"
+                                    required>
+                                    <option value="Corretiva" selected>Corretiva</option>
+                                    <option value="Preventiva">Preventiva</option>
+                                    <option value="Preditiva">Preditiva</option>
+                                </select>
                             </div>
-                        </fieldset>
 
-                    </div>
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_tecnico_responsavel">Técnico
+                                    Responsável</label>
+                                <input class="order-edit__input" type="text" id="edit_tecnico_responsavel"
+                                    name="tecnico_responsavel" value="João Silva" placeholder="Nome do técnico"
+                                    required>
+                            </div>
+                        </div>
+                    </fieldset>
 
-                    <!-- RODAPÉ COM AÇÕES -->
-                    <footer class="order-edit__footer">
-                        <button type="button" class="order-edit__btn order-edit__btn--cancel"
-                            id="btnCancelEditForm">Cancelar</button>
-                        <button class="order-edit__btn order-edit__btn--submit">Salvar Alterações</button>
-                    </footer>
-                </form>
-            </article>
-        </div>
+                    <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->
+                    <fieldset class="order-edit__section">
+                        <legend class="order-edit__section-title">CRONOGRAMA E DATAS</legend>
 
-        <!-- Modal de Confirmação de Exclusão -->
-        <div class="order-delete" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle"
-            aria-describedby="deleteModalDescription">
-            <div class="order-delete__overlay" id="deleteModalOverlay"></div>
+                        <div class="order-edit__grid order-edit__grid--2-col">
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_data_prev_inicio">Prev. Início
+                                    Manutenção</label>
+                                <input class="order-edit__input" type="datetime-local" id="edit_data_prev_inicio"
+                                    name="data_prev_inicio_manutencao" required>
+                            </div>
 
-            <article class="order-delete__card">
-                <!-- CABEÇALHO SUPERIOR -->
-                <header class="order-delete__header">
-                    <div class="order-delete__brand">
-                        <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
-                            class="order-delete__brand-image">
-                        <h1 class="order-delete__brand-title" id="deleteModalTitle">EXCLUIR ORDEM DE SERVIÇO</h1>
-                    </div>
-                    <button class="order-delete__close-btn" id="btnCancelDeleteHeader"
-                        aria-label="Fechar confirmação de exclusão">
-                        <span class="material-symbols-outlined" aria-hidden="true">close</span>
-                    </button>
-                </header>
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_data_prev_termino">Prev. Término
+                                    Manutenção</label>
+                                <input class="order-edit__input" type="datetime-local" id="edit_data_prev_termino"
+                                    name="data_prev_termino_manutencao" required>
+                            </div>
 
-                <!-- CORPO DO MODAL DE ALERTA -->
-                <div class="order-delete__body">
-                    <div class="order-delete__icon-wrapper">
-                        <span class="material-symbols-outlined order-delete__icon" aria-hidden="true">warning</span>
-                    </div>
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_data_parada">Data da Parada</label>
+                                <input class="order-edit__input" type="datetime-local" id="edit_data_parada"
+                                    name="data_parada">
+                            </div>
 
-                    <div class="order-delete__content">
-                        <h2 class="order-delete__heading">Tem certeza que deseja excluir?</h2>
-                        <p class="order-delete__description" id="deleteModalDescription">
-                            Esta ação excluirá permanentemente a Ordem de Serviço selecionada do sistema PRISMA e não
-                            poderá ser desfeita.
-                        </p>
-                    </div>
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_data_inicio">Data Início Real</label>
+                                <input class="order-edit__input" type="datetime-local" id="edit_data_inicio"
+                                    name="data_inicio">
+                            </div>
+
+                        </div>
+                    </fieldset>
+
+                    <!-- SEÇÃO 3: DIAGNÓSTICO E FALHA -->
+                    <fieldset class="order-edit__section">
+                        <legend class="order-edit__section-title">DIAGNÓSTICO E FALHA</legend>
+
+                        <div class="order-edit__grid">
+                            <div class="order-edit__field order-edit__field--full">
+                                <label class="order-edit__label" for="edit_falha">Falha Identificada</label>
+                                <input class="order-edit__input" type="text" id="edit_falha" name="falha"
+                                    value="Sobreaquecimento no motor principal"
+                                    placeholder="Sintoma ou falha identificada" required>
+                            </div>
+
+                            <div class="order-edit__field order-edit__field--full">
+                                <label class="order-edit__label" for="edit_desc_problema">Descrição do
+                                    Problema</label>
+                                <textarea class="order-edit__textarea" id="edit_desc_problema" name="desc_problema"
+                                    rows="3" placeholder="Detalhamento do problema ocorrido..."
+                                    required>A máquina apresentou ruídos excessivos e desligamento automático por proteção térmica após 3 horas contínuas de operação no turno matutino.</textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+
                 </div>
 
-                <!-- RODAPÉ DE AÇÕES -->
-                <footer class="order-delete__footer">
-                    <button type="button" class="order-delete__btn order-delete__btn--cancel" id="btnCancelDelete">
-                        Cancelar
-                    </button>
-                    <button type="button" class="order-delete__btn order-delete__btn--confirm" id="btnConfirmDelete">
-                        <span class="material-symbols-outlined" aria-hidden="true">delete</span>
-                        Sim, Excluir
-                    </button>
+                <!-- RODAPÉ COM AÇÕES -->
+                <footer class="order-edit__footer">
+                    <button type="button" class="order-edit__btn order-edit__btn--cancel"
+                        id="btnCancelEditForm">Cancelar</button>
+                    <button class="order-edit__btn order-edit__btn--submit">Salvar Alterações</button>
                 </footer>
-            </article>
-        </div>
+            </form>
+        </article>
+    </div>
 
-    </main>
 
-    <script src="/static/src/js/telaInicial.js"></script>
-</body>
+    <!-- Modal de Cadastro da Ordem de Serviço (OS) -->
+    <div class="order-create" id="createModal" role="dialog" aria-modal="true" aria-labelledby="orderCreateTitle">
+        <div class="order-create__overlay" id="createModalOverlay"></div>
 
-</html>
+        <article class="order-create__card">
+            <!-- CABEÇALHO SUPERIOR -->
+            <header class="order-create__header">
+                <div class="order-create__brand">
+                    <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="order-create__brand-image">
+                    <h1 class="order-create__brand-title" id="orderCreateTitle">CADASTRAR ORDEM DE SERVIÇO</h1>
+                </div>
+                <button class="order-create__close-btn" id="btnCancelCreate" aria-label="Fechar formulário de cadastro">
+                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                </button>
+            </header>
+
+            <!-- FORMULÁRIO DE CADASTRO -->
+            <form class="order-create__form" id="formCreateOrder" method="post" action="/telaInicial/post-register-order">
+                <div class="order-create__body">
+
+                    <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
+                    <fieldset class="order-create__section">
+                        <legend class="order-create__section-title">INFORMAÇÕES GERAIS</legend>
+
+                        <div class="order-create__grid order-create__grid--2-col">
+                        
+                            <div class="order-create__field">
+                                <label class="order-create__label" for="create_numero_patrimonio">Número de Patrimônio</label>
+                                <input class="order-create__input" type="text" id="create_numero_patrimonio" name="numero_patrimonio"
+                                    name="numero_patrimonio" placeholder="Número de Patrimônio" required>
+                            </div>
+
+                            <div class="order-create__field">
+                                <label class="order-create__label" for="create_tipo_manutencao">Tipo de
+                                    Manutenção</label>
+                                <select class="order-create__select" id="create_tipo_manutencao" name="tipo_manutencao"
+                                    required>
+                                    <option value="Corretiva" selected>Corretiva</option>
+                                    <option value="Preventiva">Preventiva</option>
+                                    <option value="Preditiva">Preditiva</option>
+                                </select>
+                            </div>
+
+
+                            <div class="order-create__field">
+                                <label class="order-create__label" for="create_tecnico_responsavel">Técnico
+                                    Responsável</label>
+                                <select class="order-create__input" type="text" id="create_tecnico_responsavel"
+                                    name="tecnico_responsavel" placeholder="Nome do técnico" required>
+                                    <option value="" disabled selected>Selecione...</option>
+                                    {% for tecnico in tecnicos %}
+                                    {% if tecnico.status_usuario == 'Ativo' %}
+                                    <option value="{{tecnico.cpf}}" >{{tecnico.nome}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->
+                    <fieldset class="order-create__section">
+                        <legend class="order-create__section-title">CRONOGRAMA E DATAS</legend>
+
+                        <div class="order-create__grid order-create__grid--2-col">
+                            <div class="order-create__field">
+                                <label class="order-create__label" for="create_data_prev_inicio">Prev. Início
+                                    Manutenção</label>
+                                <input class="order-create__input" type="date" id="create_data_prev_inicio"
+                                    name="data_prev_inicio" min="1000-01-01" max="9999-12-31" required>
+                            </div>
+
+                            <div class="order-create__field">
+                                <label class="order-create__label" for="create_data_prev_termino">Prev. Término
+                                    Manutenção</label>
+                                <input class="order-create__input" type="date" id="create_data_prev_termino"
+                                    name="data_prev_termino" min="1000-01-01" max="9999-12-31" required>
+                            </div>
+
+                            <div class="order-create__field">
+                                <label class="order-create__label" for="create_data_parada">Data da Parada</label>
+                                <input class="order-create__input" type="date" id="data_parada"
+                                    name="data_parada" min="1000-01-01" max="9999-12-31">
+                            </div>
+
+                        
+                        </div>
+                    </fieldset>
+
+                    <!-- SEÇÃO 3: DIAGNÓSTICO E FALHA -->
+                    <fieldset class="order-create__section">
+                        <legend class="order-create__section-title">DIAGNÓSTICO E FALHA</legend>
+
+                        <div class="order-create__grid">
+                            <div class="order-create__field order-create__field--full">
+                                <label class="order-create__label" for="create_falha">Falha Identificada</label>
+                                <input class="order-create__input" type="text" id="create_falha" name="falha"
+                                    placeholder="Sintoma ou falha identificada" required>
+                            </div>
+
+                            <div class="order-create__field order-create__field--full">
+                                <label class="order-create__label" for="create_desc_problema">Descrição do
+                                    Problema</label>
+                                <textarea class="order-create__textarea" id="create_desc_problema" name="desc_problema"
+                                    rows="3" placeholder="Detalhamento do problema ocorrido..." required></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+
+                <!-- RODAPÉ COM AÇÕES -->
+                <footer class="order-create__footer">
+                    <button type="button" class="order-create__btn order-create__btn--cancel"
+                        id="btnCancelCreateForm">Cancelar</button>
+                    <button type="submit" class="order-create__btn order-create__btn--submit">Cadastrar Ordem</button>
+                </footer>
+            </form>
+        </article>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="order-delete" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle"
+        aria-describedby="deleteModalDescription">
+        <div class="order-delete__overlay" id="deleteModalOverlay"></div>
+
+        <article class="order-delete__card">
+            <!-- CABEÇALHO SUPERIOR -->
+            <header class="order-delete__header">
+                <div class="order-delete__brand">
+                    <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="order-delete__brand-image">
+                    <h1 class="order-delete__brand-title" id="deleteModalTitle">EXCLUIR ORDEM DE SERVIÇO</h1>
+                </div>
+                <button class="order-delete__close-btn" id="btnCancelDeleteHeader"
+                    aria-label="Fechar confirmação de exclusão">
+                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                </button>
+            </header>
+
+            <!-- CORPO DO MODAL DE ALERTA -->
+            <div class="order-delete__body">
+                <div class="order-delete__icon-wrapper">
+                    <span class="material-symbols-outlined order-delete__icon" aria-hidden="true">warning</span>
+                </div>
+
+                <div class="order-delete__content">
+                    <h2 class="order-delete__heading">Tem certeza que deseja excluir?</h2>
+                    <p class="order-delete__description" id="deleteModalDescription">
+                        Esta ação excluirá permanentemente a Ordem de Serviço selecionada do sistema PRISMA e não
+                        poderá ser desfeita.
+                    </p>
+                </div>
+            </div>
+
+            <!-- RODAPÉ DE AÇÕES -->
+            <footer class="order-delete__footer">
+                <button type="button" class="order-delete__btn order-delete__btn--cancel" id="btnCancelDelete">
+                    Cancelar
+                </button>
+                <button type="button" class="order-delete__btn order-delete__btn--confirm" id="btnConfirmDelete">
+                    <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                    Sim, Excluir
+                </button>
+            </footer>
+        </article>
+    </div>
+
+</main>
+{% endblock %}
+
+
+{% block script %}
+<script src="/static/src/js/telaInicial.js"></script>
+{% endblock %}

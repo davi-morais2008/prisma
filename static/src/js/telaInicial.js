@@ -25,7 +25,6 @@ const dataPrevInicio = document.querySelector('#data_prev_inicio_manutencao')
 const dataPrevTermino = document.querySelector('#data_prev_termino_manutencao')
 const dataParada = document.querySelector('#data_parada')
 const dataInicioReal = document.querySelector('#data_inicio')
-const dataTerminoReal = document.querySelector('#data_termino')
 
 // Diagnóstico e Falha
 const falhaIdentificada = document.querySelector('#falha')
@@ -42,6 +41,32 @@ const deleteModal = document.querySelector('.order-delete')
 const btnCloseDelete = document.querySelector('#btnCancelDeleteHeader')
 const btnCancelDelete = document.querySelector('#btnCancelDelete')
 const btnConfirmDelete = document.querySelector('#btnConfirmDelete')
+
+
+// MODAL DE CADASTRO
+const bntCreate = document.querySelector('.home__button-register')
+// Controle do Modal
+const createModal = document.querySelector('#createModal');
+const modalOverlay = document.querySelector('#createModalOverlay');
+const btnCloseModal = document.querySelector('#btnCancelCreate');
+const btnCancelForm = document.querySelector('#btnCancelCreateForm');
+
+// Formulário
+const formCreateOrder = document.querySelector('#formCreateOrder');
+
+// Seção 1: Informações Gerais
+const inputNumeroPatrimonio = document.querySelector('#create_numero_patrimonio')
+const selectTipoManutencao = document.querySelector('#create_tipo_manutencao');
+const inputTecnicoResponsavel = document.querySelector('#create_tecnico_responsavel');
+
+// Seção 2: Cronograma e Datas
+const inputDataPrevInicio = document.querySelector('#create_data_prev_inicio');
+const inputDataPrevTermino = document.querySelector('#create_data_prev_termino');
+const inputDataParada = document.querySelector('#create_data_parada');
+
+// Seção 3: Diagnóstico e Falha
+const inputFalha = document.querySelector('#create_falha');
+const textareaDescProblema = document.querySelector('#create_desc_problema');
 
 function openOrderModal() {
     orderModal.classList.add('active')
@@ -65,6 +90,14 @@ function openDeleteModal() {
 
 function closeDeleteModal() {
     deleteModal.classList.remove('active')
+}
+
+function openCreateModal(){
+    createModal.classList.add('active')
+}
+
+function closeCreateModal(){
+    createModal.classList.remove('active')
 }
 
 // Função auxiliar para converter e formatar data para PT-BR
@@ -94,7 +127,7 @@ workOrders.forEach(order => {
 
         const idOrder = event.currentTarget.getAttribute('id_order');
 
-        const resposta = await fetch(`http://127.0.0.1:8080/api/get/ordens_servico/`, {
+        const resposta = await fetch(`https://prisma-maintenance.onrender.com/api/get/ordens_servico/`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json; charset=utf-8',
@@ -120,14 +153,11 @@ workOrders.forEach(order => {
                     dataPrevTermino.textContent = formatarDataPT(os.data_prev_termino_manutencao);
                     dataParada.textContent = formatarDataPT(os.data_parada);
                     dataInicioReal.textContent = formatarDataPT(os.data_inicio_manutencao);
-                    dataTerminoReal.textContent = formatarDataPT(os.data_termino_manutencao);
 
                     falhaIdentificada.textContent = os.falha;
                     descricaoProblema.textContent = os.descricao_problema;
                     openOrderModal();
                 }
-
-
             });
         }
 
@@ -145,6 +175,14 @@ btnEdit.addEventListener('click', openEditModal)
 btnCloseUpdate.addEventListener('click', closeEditModal)
 overlayUpdate.addEventListener('click', closeEditModal)
 btnCancelUpdate.addEventListener('click', closeEditModal)
+
+//abrir modal de cadastro OS
+bntCreate.addEventListener('click', openCreateModal)
+
+// Fechar modal de cadastro OS
+modalOverlay.addEventListener('click', closeCreateModal)
+btnCloseModal.addEventListener('click', closeCreateModal)
+btnCancelForm.addEventListener('click', closeCreateModal)
 
 btnCancelDelete.addEventListener('click', closeDeleteModal)
 btnConfirmDelete.addEventListener('click', () => {

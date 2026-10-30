@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.OS import consultar_ordem_servico
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico
 from model.usuario import buscar_usuario
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
 from model.consultaMaquinas import consultar_maquinas
@@ -84,7 +84,8 @@ def redefinir_senha(token):
 @app.route("/telaInicial")
 def pagina_inicial():
     ordem_servico = consultar_ordem_servico()
-    return render_template("telaInicial.html", ordem_servico = ordem_servico)
+    tecnicos = buscar_usuario()
+    return render_template("telaInicial.html", ordem_servico = ordem_servico, tecnicos = tecnicos)
 
 @app.route("/api/get/ordens_servico/", methods=["GET"])
 def api_get_ordem():
@@ -93,6 +94,50 @@ def api_get_ordem():
         return jsonify(ordens), 200
     except Exception as e:
             return jsonify({"status": "erro", "mensagem": str(e)}), 500
+
+@app.route("/telaInicial/post-register-order", methods=["POST"])
+def register_os():
+    maquinas = consultar_maquinas()
+    nmr_patrimonio = request.form.get('numero_patrimonio')
+    tipo_manutencao = request.form.get('tipo_manutencao')
+    tec_responsavel = request.form.get('tecnico_responsavel')
+    prev_data_inicio = request.form.get('data_prev_inicio')
+    prev_data_termino = request.form.get('data_prev_termino')
+    data_parada = request.form.get('data_parada')
+    desc_problema = request.form.get('desc_problema')
+
+    print(nmr_patrimonio, tipo_manutencao, tec_responsavel, prev_data_inicio, prev_data_termino, data_parada, desc_problema)
+
+    id_maquina = None
+
+    for maquina in maquinas:
+        if str(maquina['numero_patrimonio']) == str(nmr_patrimonio):
+            id_maquina = maquina['id_maquina']
+            print(id_maquina)
+
+    if id_maquina is None:
+        return "Máquina não encontrada com o patrimônio informado", 400
+
+    cadastrar_ordem_servico(id_maquina, 
+                            1, 
+                            tec_responsavel,
+                            'Ativa', 
+                            tipo_manutencao, 
+                            desc_problema,
+                            '2008-08-28',
+                            '2008-08-29', 
+                            data_parada, 
+                            prev_data_inicio, 
+                            prev_data_termino)
+    return redirect('/telaInicial')
+
+
+    
+
+
+
+
+
 
 @app.route("/historico")
 def pagina_historico():
@@ -228,5 +273,5 @@ def pagina_calendario():
 @app.route('/perfil')
 def pagina_perfil():
     return render_template('perfil.html')
-
-app.run(host="0.0.0.0", port=8080, debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080, debug=True)
