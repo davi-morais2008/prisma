@@ -47,7 +47,7 @@ body {
     text-align: center;
     font-size: var(--font-size-xl);
     font-weight: var(--font-weight-bold);
-    color: var(--color-primary);
+    color: var(--color-text-primary);
     margin: auto 0;
     grid-column: 2;
 }
