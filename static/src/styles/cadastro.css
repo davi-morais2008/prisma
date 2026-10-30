@@ -30,6 +30,7 @@
     overflow: hidden;
     box-shadow: var(--shadow-md);
     min-height: min(720px, 100vh);
+    transition: all 0.4s ease;
 }
 
 /* --- COLUNA ESQUERDA --- */
@@ -63,6 +64,7 @@
     font-size: clamp(1.4rem, 2.5vw, 1.75rem);
     font-weight: var(--font-weight-bold);
     text-align: center;
+    transition: all 0.2s ease;
 }
 
 .subtitulo_cadastro {
@@ -70,6 +72,7 @@
     font-size: var(--font-size-sm);
     text-align: center;
     margin-top: 4px;
+    transition: all 0.2s ease;
 }
 
 /* --- SLIDING INDICATOR --- */
@@ -98,7 +101,7 @@
     left: 4px;
     width: calc(50% - 4px);
     height: calc(100% - 8px);
-    background-color: #ffffff;
+    background-color: var(--color-bg-card);
     border-radius: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -112,7 +115,7 @@
     justify-content: center;
     font-size: 0.95rem;
     font-weight: 600;
-    color: #6c757d;
+    color: var(--color-text-secondary);
     cursor: pointer;
     z-index: 2;
     transition: color 0.3s ease;
@@ -174,6 +177,7 @@
 .form_input:focus {
     border-color: var(--color-secondary);
     box-shadow: 0 0 0 3px rgba(124, 114, 255, 0.2);
+    transition: all 0.2s ease;
 }
 
 /* Botão de Envio */
@@ -195,7 +199,7 @@
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
     margin-bottom: 2%;
 }
 
@@ -235,6 +239,7 @@
     padding: clamp(20px, 4vw, 40px);
     position: relative;
     min-height: 200px;
+    transition: all 0.2s ease;
 }
 
 .imagem_lateral {
@@ -271,7 +276,7 @@
   cursor: pointer;
   z-index: 10;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 /* Elemento: Ícone interno responsivo */
@@ -289,11 +294,12 @@
   transform: scale(1.08);
   box-shadow: var(--shadow-md);
   background-color: var(--color-secondary-hover);
+  transition: all 0.2s ease;
 }
 
 
 [data-theme="dark"] .toggle_container {
-    background-color: var(--color-bg-light); /* Usa o fundo invertido */
+    background-color: var(--color-bg-light); /
 }
 
 [data-theme="dark"] .toggle_indicator {
