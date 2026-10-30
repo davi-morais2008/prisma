@@ -12,7 +12,7 @@ def buscar_dados_dashboard():
         cursor.execute("""
             SELECT COUNT(*) AS total 
             FROM ordens_servicos 
-            WHERE status_ordem <> %s OR status_ordem <> %s
+            WHERE status_ordem <> %s AND status_ordem <> %s
         """, ('Finalizada', 'Cancelada'))
         os_pendentes = cursor.fetchone()['total']
 
