@@ -109,8 +109,8 @@ Máquinas
                         <div class="machine-form__basic-info">
                             <div class="machine-form__field">
                                 <label for="type-machine" class="machine-form__label">Tipo da Máquina</label>
-                                <select id="type-machine" name="type-machine" class="machine-form__select">
-                                    <option value="TESTE" disabled selected>Selecione o tipo...</option>
+                                <select required id="type-machine" name="type-machine" class="machine-form__select">
+                                    <option value="" disabled selected>Selecione o tipo...</option>
                                     {% for tipo_maquina in tipos_maquinas %}
                                     <option value="{{tipo_maquina.id_tipo_maquina}}">{{tipo_maquina.tipo_maquina}}
                                     </option>
@@ -120,7 +120,7 @@ Máquinas
 
                             <div class="machine-form__field">
                                 <label for="number-machine" class="machine-form__label">Patrimônio</label>
-                                <input type="text" id="number-machine" name="number-machine" class="machine-form__input"
+                                <input required type="text" id="number-machine" name="number-machine" class="machine-form__input"
                                     placeholder="Ex: MAQ-SP-0014">
                             </div>
 
@@ -132,7 +132,7 @@ Máquinas
 
                             <div class="machine-form__field">
                                 <label for="model-machine" class="machine-form__label">Modelo Máquina</label>
-                                <input type="text" id="model-machine" name="model-machine" class="machine-form__input"
+                                <input required type="text" id="model-machine" name="model-machine" class="machine-form__input"
                                     placeholder="Ex: Modelo A">
                             </div>
                         </div>
@@ -326,6 +326,10 @@ Máquinas
                         <div class="machine-details__number">
                             <h2 class="machine-details__number-title">PATRIMÔNIO:</h2>
                             <p class="machine-details__number-text">MAQ-SP-0014</p>
+                        </div>
+                        <div class="machine-details__number">
+                            <h2 class="machine-details__location-title">LOCALIZAÇÃO:</h2>
+                            <p class="machine-details__location-text">SETOR A</p>
                         </div>
                     </div>
                 </div>
@@ -538,7 +542,11 @@ Máquinas
                     </button>
                 </div>
 
-                <form class="machine-edit__form" action="/maquinas/editar" method="POST" enctype="multipart/form-data">
+                <form class="machine-edit__form" action="/maquinas/update_machines" method="POST"
+                    enctype="multipart/form-data">
+                    <!-- Campo oculto para receber o ID do JS -->
+                    <input type="hidden" id="edit-id-machine" name="id-machine" value="">
+
                     <!-- INFORMAÇÕES PRIMÁRIAS -->
                     <div class="machine-edit__primary-info">
                         <div class="machine-edit__img-container">
@@ -556,9 +564,19 @@ Máquinas
 
                         <div class="machine-edit__info-content">
                             <div class="machine-edit__field">
-                                <label for="edit-type" class="machine-edit__label">Tipo / Modelo</label>
-                                <input type="text" id="edit-type" name="edit-type" class="machine-edit__input"
-                                    value="Injetora de Plástico - Modelo H500">
+                                <label for="edit-type" class="machine-edit__label">Tipo</label>
+                                <select id="edit-type" name="edit-type" class="machine-edit__input">
+                                    <option value="" id="default" selected>Selecionar</option>
+                                    {% for tipo_maquina in tipos_maquinas %}
+                                    <option value="{{tipo_maquina.id_tipo_maquina}}">{{tipo_maquina.tipo_maquina}}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="machine-edit__field">
+                                <label for="edit-model" class="machine-edit__label">Modelo</label>
+                                <input type="text" id="edit-model" name="edit-model" class="machine-edit__input"
+                                    value="Modelo H500">
                             </div>
                             <div class="machine-edit__field">
                                 <label for="edit-patrimony" class="machine-edit__label">Patrimônio</label>
@@ -635,7 +653,8 @@ Máquinas
                                 <label for="edit-maintance-status" class="machine-edit__label">Status</label>
                                 <select id="edit-maintance-status" name="edit-maintance-status"
                                     class="machine-edit__select">
-                                    <option value="Agendada" selected>Agendada</option>
+                                    <option value="" selected disabled>Selecionar</option>
+                                    <option value="Agendada">Agendada</option>
                                     <option value="Em Andamento">Em Andamento</option>
                                     <option value="Concluída">Concluída</option>
                                     <option value="Cancelada">Cancelada</option>
