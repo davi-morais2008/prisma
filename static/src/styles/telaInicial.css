@@ -1,7 +1,7 @@
 @import url(variables.css);
 
 /* 1. Correção do seletor universal */
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -24,23 +24,23 @@
     gap: 24px;
 }
 
-.home__header{
+.home__header {
     display: grid;
     width: 100%;
     padding: 0 0.5rem;
     grid-template-columns: repeat(3, 1fr);
 }
 
-.home__title{
+.home__title {
     text-align: center;
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-lg);
     font-weight: var(--font-weight-bold);
     color: var(--color-primary);
     margin: auto 0;
     grid-column: 2;
 }
 
-.home__button-register{
+.home__button-register {
     background-color: var(--color-accent-orange);
     width: 60px;
     height: 60px;
@@ -55,13 +55,13 @@
     margin-left: auto;
 }
 
-.home__button-register:hover{
+.home__button-register:hover {
     background-color: var(--color-accent-peach);
     transform: scale(1.05);
 }
 
 
-.home__order-filters{
+.home__order-filters {
     width: 100%;
     max-width: 600px;
     display: flex;
@@ -94,14 +94,14 @@
     box-shadow: var(--shadow-lg);
 }
 
-.order-filter-buttons{
+.order-filter-buttons {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.75rem;
 }
 
-.filter-button{
+.filter-button {
     cursor: pointer;
     width: 100%;
     height: 40px;
@@ -188,13 +188,13 @@
     position: fixed;
     inset: 0;
     z-index: 900;
-    display: none; 
+    display: none;
     align-items: center;
     justify-content: center;
     padding: var(--border-radius-sm);
 }
 
-.order-details.active{
+.order-details.active {
     display: flex;
 }
 
@@ -474,6 +474,29 @@
     margin: 0;
 }
 
+.order__btn-finish {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    background-color: var(--color-primary);
+    height: 42px;
+    padding: 0 20px;
+    border-radius: var(--border-radius-pill);
+    cursor: pointer;
+    color: var(--color-text-light);
+    border: none;
+    box-shadow: var(--shadow-sm);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.order__btn-finish:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
 /* ==========================================================================
    MODAL DE EDIÇÃO DE ORDEM DE SERVIÇO (BEM & PRISMA DESIGN SYSTEM)
    ========================================================================== */
@@ -483,13 +506,14 @@
     position: fixed;
     inset: 0;
     z-index: 950;
-    display: none; /* Alterar para 'flex' via JS */
+    display: none;
+    /* Alterar para 'flex' via JS */
     align-items: center;
     justify-content: center;
     padding: var(--border-radius-sm);
 }
 
-.order-edit.active{
+.order-edit.active {
     display: flex;
 }
 
@@ -731,7 +755,8 @@
     position: fixed;
     inset: 0;
     z-index: 950;
-    display: none; /* Alterar para 'flex' via JS */
+    display: none;
+    /* Alterar para 'flex' via JS */
     align-items: center;
     justify-content: center;
     padding: var(--border-radius-sm);
@@ -984,13 +1009,13 @@
     position: fixed;
     inset: 0;
     z-index: 1000;
-    display: none; 
+    display: none;
     align-items: center;
     justify-content: center;
     padding: var(--border-radius-sm);
 }
 
-.order-delete.active{
+.order-delete.active {
     display: flex;
 }
 
@@ -1228,5 +1253,29 @@
     .work-order {
         padding: 24px 30px;
     }
+
+    
 }
+
+@media (max-width: 768px){
+    .home__button-register{
+        background-color: var(--color-accent-orange);
+        width: 40px;
+        height: 40px;
+        border-radius: 35px;
+        border: 0;
+        font-family: var(--font-family-base);
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-text-light);
+        cursor: pointer;
+    }
+
+    .home__title{
+        font-size: var(--font-size-md);
+    }
+
+}
+    
+
 
