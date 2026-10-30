@@ -136,8 +136,6 @@ def register_os():
     data_parada = request.form.get('data_parada')
     desc_problema = request.form.get('desc_problema')
 
-    print(nmr_patrimonio, tipo_manutencao, tec_responsavel, prev_data_inicio, prev_data_termino, data_parada, desc_problema)
-
     id_maquina = None
 
     for maquina in maquinas:
@@ -193,7 +191,8 @@ def post_login():
     
     for user in usuarios:
         if user['cpf'] == usuario and user['senha'] == senha:
-            session['user'] = (usuario, senha)
+            session['user'] = usuario
+            print(session['user'])
             return redirect('/telaInicial')
     flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
     return redirect('/login')
@@ -288,6 +287,15 @@ def maquinas_update_machines():
     return redirect('/maquinas')
 
 
+@app.route('/profile')
+def pagina_perfil():
+    if session['user']:
+        print(session['user'])
+        users = buscar_usuario()
+        for user in users: 
+            if user['cpf'] == session['user']:
+                return render_template('perfil.html', usuario = user)
+
 
 @app.route('/usuarios', methods = ['GET'])
 def pagina_usuarios():
@@ -298,8 +306,5 @@ def pagina_usuarios():
 def pagina_calendario():
     return render_template('calendario.html')
 
-@app.route('/perfil')
-def pagina_perfil():
-    return render_template('perfil.html')
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)

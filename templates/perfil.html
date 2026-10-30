@@ -16,19 +16,19 @@
                      src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80" 
                      alt="Foto de perfil de João da Silva">
             </div>
-
-            <h1 class="profile-card__name">João da Silva</h1>
-            <h2 class="profile-card__role">Manutenção de Redes</h2>
+            
+            <h1 class="profile-card__name">{{usuario.nome}}</h1>
+            <h2 class="profile-card__role">{{usuario.especialidade}}</h2>
 
             <div class="profile-card__details">
                 <address class="profile-card__contact">
                     <div class="profile-card__tag">
                         <span class="material-symbols-outlined" aria-hidden="true">badge</span>
-                        <span>123.456.789-00</span>
+                        <span>{{usuario.cpf}}</span>
                     </div>
                     <a href="mailto:joao.silva@exemplo.com" class="profile-card__tag profile-card__tag--link">
                         <span class="material-symbols-outlined" aria-hidden="true">mail</span>
-                        <span>joao.silva@exemplo.com</span>
+                        <span>{{usuario.email}}</span>
                     </a>
                 </address>
 
