@@ -22,6 +22,7 @@
   --color-bg-card: #FFFFFF;        /* Fundo dos cards e campos */
   --color-bg-input: #FFFFFF;       /* Fundo dos inputs de formulário */
   --color-bg-light: #EBEFFE;       /* Destaques leves/container interno */
+  --color-bg-card-inactive: #DADCED; /* Um tom um pouco mais escuro/acinzentado que o bg-main */
 
   /* Glassmorphism / Modal Translucido (Telas de Login/Cadastro) */
   --color-glass-bg: rgba(255, 255, 255, 0.45);
@@ -90,6 +91,7 @@
   --color-bg-card: #151726;
   --color-bg-input: #1D2036;
   --color-bg-light: #252844;
+  --color-bg-card-inactive: #0E0F19; 
 
   --color-glass-bg: rgba(21, 23, 38, 0.75);
   --color-glass-border: rgba(255, 255, 255, 0.12);
