@@ -51,6 +51,8 @@ const detailsModalContainer = document.querySelector('.machine-details__overlay'
 const detailsImage = document.querySelector('.machine-details__info-image');
 const detailsTypeText = document.querySelector('.machine-details__type-text');
 const detailsPatrimonyText = document.querySelector('.machine-details__number-text');
+const detailsLocationTitle = document.querySelector('.machine-details__location-title');
+const detailsLocationText = document.querySelector('.machine-details__location-text');
 
 const detailsStatValues = document.querySelectorAll('.machine-details__stat-value');
 const detailsManualLinks = document.querySelectorAll('.machine-details__manual-link');
@@ -70,6 +72,8 @@ const editMachineForm = document.querySelector('.machine-edit__form');
 const editPhotoInput = document.getElementById('edit-machine-photo');
 const editPhotoPreview = document.getElementById('preview-edit-img');
 const editTypeInput = document.getElementById('edit-type');
+const editOptionDefaultInput = document.getElementById('default');
+const editModelInput = document.getElementById('edit-model');
 const editPatrimonyInput = document.getElementById('edit-patrimony');
 const editLocationInput = document.getElementById('edit-location');
 const editProdTimeInput = document.getElementById('edit-prod-time');
@@ -81,8 +85,10 @@ const editManualFileInput = document.getElementById('edit-manual-file');
 const editManualFileName = document.getElementById('edit-file-name');
 const editMaintanceStatusSelect = document.getElementById('edit-maintance-status');
 const editMaintanceDateInput = document.getElementById('edit-maintance-date');
+const editIdMachine = document.getElementById('edit-id-machine');
 
 const btnCancelEdit = document.querySelector('.machine-edit__button--cancel');
+const btnConfirmEdit = document.querySelector('.machine-edit__button--save');
 
 const deleteConfirmationModal = document.querySelector('.order-delete');
 const btnCloseDeleteModal = document.querySelector('.order-delete__close-btn');
@@ -148,7 +154,9 @@ async function fillEditModal(machineId) {
     const machine = machines.find((item) => item.id_maquina == machineId);
 
     if (machine) {
-        if (editTypeInput) editTypeInput.value = machine.id_tipo_maquina || machine.tipo_maquina || '';
+        console.log(machine.id_tipo_maquina)
+        if (editOptionDefaultInput) editOptionDefaultInput.value = machine.id_tipo_maquina || '';
+        if (editOptionDefaultInput) editOptionDefaultInput.textContent = machine.tipo_maquina || '';
         if (editPatrimonyInput) editPatrimonyInput.value = machine.numero_patrimonio || '';
         if (editLocationInput) editLocationInput.value = machine.localizacao || '';
         if (editProdTimeInput) editProdTimeInput.value = machine.tempo_producao || '';
@@ -158,6 +166,7 @@ async function fillEditModal(machineId) {
         if (editStopTimeInput) editStopTimeInput.value = machine.tempo_parada || '';
         if (editMaintanceStatusSelect) editMaintanceStatusSelect.value = machine.status_preventiva || '';
         if (editMaintanceDateInput) editMaintanceDateInput.value = machine.data_preventiva || '';
+        if (editIdMachine) editIdMachine.value = selectedMachineId
         if (editPhotoPreview && machine.url_imagem) {
             editPhotoPreview.src = machine.url_imagem;
         }
@@ -178,6 +187,7 @@ machineButtons.forEach((machineButton) => {
             if (detailsImage) detailsImage.src = machine.url_imagem || '/static/src/img/torno_mecanico.jpg';
             if (detailsTypeText) detailsTypeText.textContent = machine.tipo_maquina || 'N/A';
             if (detailsPatrimonyText) detailsPatrimonyText.textContent = machine.numero_patrimonio || 'N/A';
+            if (detailsLocationText) detailsLocationText.textContent = machine.localizacao || 'N/A';
 
             if (detailsStatValues && detailsStatValues.length >= 5) {
                 detailsStatValues[0].textContent = `${machine.tempo_producao || 0}h`;
@@ -265,6 +275,7 @@ btnCloseDetailsModal.addEventListener('click', () => { detailsModalContainer.cla
 
 btnCloseEditModal.addEventListener('click', () => { editModalOverlay.classList.remove('active'); });
 btnCancelEdit.addEventListener('click', () => { editModalOverlay.classList.remove('active'); });
+
 
 if (btnCloseDeleteModal) btnCloseDeleteModal.addEventListener('click', () => { deleteConfirmationModal.classList.remove('active'); });
 if (btnCancelDeleteHeader) btnCancelDeleteHeader.addEventListener('click', () => { deleteConfirmationModal.classList.remove('active'); });
