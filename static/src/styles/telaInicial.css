@@ -35,7 +35,7 @@
     text-align: center;
     font-size: var(--font-size-xl);
     font-weight: var(--font-weight-bold);
-    color: var(--color-primary);
+    color: var(--color-text-primary);
     margin: auto 0;
     grid-column: 2;
 }
@@ -153,7 +153,8 @@
 .work-order__title {
     font-size: var(--font-size-md);
     font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
+    color: var(--color-primary);
+    
 }
 
 .work-order__description {
@@ -161,6 +162,7 @@
     justify-content: start;
     align-items: start;
     flex-direction: column;
+    color: var(--color-text-secondary);
 }
 
 /* Modificadores de urgência para as Ordens de Serviço */
