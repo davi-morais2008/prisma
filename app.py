@@ -3,7 +3,7 @@ from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico
-from model.usuario import buscar_usuario, atualizar_usuario
+from model.usuario import buscar_usuario, atualizar_usuario, inativar_usuario
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas
@@ -302,13 +302,38 @@ def pagina_perfil_update():
     atualizar_usuario(session['user'], nome, email)
     return redirect('/profile')
 
-    
 
-
-@app.route('/usuarios', methods = ['GET'])
+@app.route('/usuarios', methods=['GET'])
 def pagina_usuarios():
-    return render_template('usuarios.html')
+    lista_usuarios = buscar_usuario() 
+    return render_template('usuarios_4.html', usuarios=lista_usuarios)
 
+
+@app.route('/usuarios/alterar_status', methods=['POST'])
+def alternar_status():
+    dados = request.get_json()
+    cpf = dados.get('cpf')
+    
+    if not cpf:
+        return jsonify({"erro": "CPF não fornecido"}), 400
+
+    usuarios = buscar_usuario()
+    usuario_encontrado = next((u for u in usuarios if u[0] == cpf), None)
+    
+    if not usuario_encontrado:
+        return jsonify({"erro": "Usuário não encontrado"}), 404
+        
+    status_atual = usuario_encontrado[1]
+    status_usuario = 0 if status_atual else 1 
+    
+    # Executa o UPDATE no banco
+    sucesso = inativar_usuario(cpf, status_usuario)
+    
+    # Retorna a resposta para o JavaScript
+    if sucesso:
+        return jsonify({"mensagem": "Status alterado com sucesso!", "novo_status": status_usuario}), 200
+    else:
+        return jsonify({"erro": "Falha ao alterar o status no banco."}), 500
     
 @app.route('/calendario')
 def pagina_calendario():
