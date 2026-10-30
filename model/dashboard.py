@@ -29,32 +29,17 @@ def buscar_dados_dashboard():
 
         # 5. Gráfico: OS por Mês (agrupadas pela data de início)
         cursor.execute("""
-            SELECT 
-                DATE_FORMAT(data_inicio_manutencao, '%b') AS mes,
-                COUNT(*) AS total
-            FROM ordens_servicos
-            WHERE data_inicio_manutencao IS NOT NULL
-            GROUP BY MONTH(data_inicio_manutencao), mes
-            ORDER BY MONTH(data_inicio_manutencao)
-            LIMIT 6
-        """)
+                    SELECT 
+                        DATE_FORMAT(data_inicio_manutencao, '%b/%y') AS mes,
+                        COUNT(*) AS total
+                    FROM ordens_servicos
+                    WHERE data_inicio_manutencao IS NOT NULL
+                    GROUP BY YEAR(data_inicio_manutencao), MONTH(data_inicio_manutencao), mes
+                    ORDER BY YEAR(data_inicio_manutencao) ASC, MONTH(data_inicio_manutencao) ASC
+                    LIMIT 6
+                """)
         res_os_mes = cursor.fetchall()
-
-        labels_mes = [row['mes'] for row in res_os_mes] if res_os_mes else ["Jan", "Fev", "Mar"]
-        valores_mes = [row['total'] for row in res_os_mes] if res_os_mes else [0, 0, 0]
         
-        cursor.execute("""
-            SELECT 
-                DATE_FORMAT(data_inicio_manutencao, '%b') AS mes,
-                COUNT(*) AS total
-            FROM ordens_servicos
-            WHERE data_inicio_manutencao IS NOT NULL
-            GROUP BY MONTH(data_inicio_manutencao), mes
-            ORDER BY MONTH(data_inicio_manutencao)
-            LIMIT 6
-        """)
-        res_os_mes = cursor.fetchall()
-
         labels_mes = [row['mes'] for row in res_os_mes] if res_os_mes else ["Jan", "Fev", "Mar"]
         valores_mes = [row['total'] for row in res_os_mes] if res_os_mes else [0, 0, 0]
 
@@ -87,7 +72,6 @@ def buscar_dados_dashboard():
             "valores_mes": valores_mes,
             "labels_falha": labels_falha,
             "valores_falha": valores_falha
-
         }
 
     except Exception as e:

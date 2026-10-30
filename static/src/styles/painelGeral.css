@@ -62,7 +62,7 @@ body {
 /* Grid de Cards KPI */
 .kpi_grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
 }
 
@@ -73,7 +73,19 @@ body {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 8px
+}
+
+.kpi-totalativa{
+    grid-column: 1;
+}
+
+.kpi-totalparada{
+    grid-column: 2 span;
+}
+
+.kpi-totalfalha{
+    grid-column: 4;
 }
 
 .kpi_titulo {
@@ -98,6 +110,21 @@ body {
     position: relative;
     width: 100%;
     margin: auto 0;
+}
+
+@media (max-width: 968px) {
+    .kpi_grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .kpi-totalativa,
+    .kpi-totalparada {
+        grid-column: auto;
+    }
+
+    .kpi-totalfalha {
+        grid-column: span 2;
+    }
 }
 
 @media (max-width: 440px) {

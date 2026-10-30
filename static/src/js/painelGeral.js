@@ -28,6 +28,7 @@ function atualizarKPIs(kpis) {
     
     const elTotalOs = document.getElementById('kpi-total');
     const elOsRest = document.getElementById('kpi-resto');
+    const elOsConcluidas = document.getElementById('kpi-concluidas')
     const elMaqTotal = document.getElementById('kpi-maqtotal');
     const elTotalParada = document.getElementById('kpi-totalparada');
     const elTotalAtiva = document.getElementById('kpi-totalativa');
@@ -35,6 +36,7 @@ function atualizarKPIs(kpis) {
 
     if (elTotalOs) elTotalOs.textContent = kpis.total_os;
     if (elOsRest) elOsRest.textContent = kpis.os_pendentes;
+    if (elOsConcluidas) elOsConcluidas.textContent = (kpis.total_os - kpis.os_pendentes)
     if (elMaqTotal) elMaqTotal.textContent = kpis.maquinas_ativas;
     if (elTotalParada) elTotalParada.textContent = kpis.maquinas_paradas;
     if (elTotalAtiva) elTotalAtiva.textContent = (kpis.maquinas_ativas - kpis.maquinas_paradas);
