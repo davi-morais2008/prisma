@@ -283,6 +283,9 @@
 .btn-secondary:hover {
   background-color: #dce3fe;
 }
+.fc-daygrid-day-number{
+  color: var(--color-text-primary);
+}
 
 @media (max-width: 960px) {
   .fc-button-group button{

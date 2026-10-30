@@ -21,6 +21,7 @@
 .history__title{
     margin-top: 25px;
     font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+    color: var(--color-text-primary);
 }
 
 .history__cards {
@@ -33,12 +34,13 @@
 
 .maintence__title {
     font-size: clamp(0.65rem, 2.5vw, 1rem);
+    color: var(--color-primary);
 }
 
 .maintence__card{
     width: 100%;
     padding: 10px;
-    background-color: #ffffff;
+    background-color: var(--color-bg-light);
     border-radius: 18px;
     margin-top: 10px;
     box-shadow: -4px 0px 0px 0px #000000, var(--shadow-md);
@@ -67,6 +69,7 @@
 
 .maintence__text {
     font-size: clamp(0.65rem, 2.5vw, 1rem);
+    color: var(--color-text-secondary);
 }
 
 .maintence__text p{

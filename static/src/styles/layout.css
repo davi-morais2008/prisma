@@ -145,7 +145,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
     font-size: clamp(0.65rem, 2.5vw, 1rem);
     gap: 15px;
     
@@ -153,6 +153,62 @@ main {
 
 .helogo {
     margin-right: 10px;
+}
+
+/* Estilização base do botão de tema */
+.theme-toggle {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: var(--border-radius-sm);
+    transition: background 0.3s ease;
+}
+
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-secondary);
+  border: none;
+  border-radius: var(--border-radius-pill);
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.08);
+  box-shadow: var(--shadow-md);
+  background-color: var(--color-secondary-hover);
+}
+
+
+.sidebar_light_dark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0;
+}
+
+
+.theme-toggle__icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.dark-mode .theme-toggle__icon {
+    filter: invert(1); 
 }
 
 @media (max-width: 768px) {
@@ -164,6 +220,7 @@ main {
     .sidebar {
         display: none;
     }
+    
 
     .header {
         background-color: var(--color-primary);
@@ -214,5 +271,15 @@ main {
     .content {
         padding: 1.5rem;
         flex: 1;
+    }
+
+    .header .sidebar_light_dark {
+        position: absolute;
+        top: 18px; 
+        right: 60px; 
+        width: auto;
+        padding: 0;
+        z-index: 20;
+        transform: none; 
     }
 }
