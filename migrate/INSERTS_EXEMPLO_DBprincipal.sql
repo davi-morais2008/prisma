@@ -1,8 +1,15 @@
 USE db_manutencaoDS_EM;
 
-INSERT INTO usuarios(cpf, nome, email, senha, status_usuario)
-VALUES('47126589832', 'Guxta Pereira', 'gustavo.h.pereira13@aluno.senai.br', 'gu1234', 'Ativo'), 
-('00000000000', 'admin root', 'admin.root@aluno.senai.br', 'senai603Prisma', 'Ativo');
+-- =============================================
+-- 1. ESPECIALIDADES
+-- =============================================
+INSERT INTO especialidades (especialidade) VALUES
+('Técnico em Eletromecânica'),
+('Mecânica Industrial'),
+('Automação Industrial'),
+('Usinagem CNC'),
+('Caldeiraria');
+
 
 -- =============================================
 -- 2. USUÁRIOS (Alunos, Técnicos e Administradores)
@@ -15,6 +22,7 @@ INSERT INTO usuarios (cpf, nome, email, senha, status_usuario, cargo, descricao_
 ('98765432100', 'Mariana Souza', 'mariana.souza@aluno.senai.br', 'mari2024', 1, 'Técnico', 'Aluna de Automação Industrial'),
 ('55544433322', 'Roberto Almeida', 'roberto.almeida@sp.senai.br', 'maint2024', 1, 'Coordenador', 'Coordenador de Manutenção dos Laboratórios');
 
+
 -- =============================================
 -- 3. TÉCNICOS E SUAS ESPECIALIDADES
 -- =============================================
@@ -23,6 +31,7 @@ INSERT INTO tecnicos_especialidades (cpf, id_especialidade) VALUES
 ('12345678901', 2), -- Carlos -> Mecânica Industrial
 ('98765432100', 3), -- Mariana -> Automação Industrial
 ('47126589832', 4); -- Guxta -> Usinagem CNC
+
 
 -- =============================================
 -- 4. TIPOS DE MÁQUINAS
@@ -33,6 +42,7 @@ INSERT INTO tipos_maquinas (tipo_maquina) VALUES
 ('Centro de Usinagem CNC'),
 ('Prensa Hidráulica'),
 ('Bancada Didática de Pneumática');
+
 
 -- =============================================
 -- 5. FALHAS COMUNS
@@ -46,6 +56,7 @@ INSERT INTO falhas (id_tipo_maquina, falha) VALUES
 (4, 'Pressão insuficiente no pistão hidráulico'),
 (5, 'Vazamento de ar comprimido nas conexões rápidas');
 
+
 -- =============================================
 -- 6. MÁQUINAS (Patrimônio SENAI)
 -- =============================================
@@ -56,6 +67,7 @@ INSERT INTO maquinas (id_tipo_maquina, modelo_maquina, numero_patrimonio, locali
 (3, 'Romi D 800', 'SENAI-99182371233', 'Laboratório CNC - Setor C', 'https://www.manuals.senai.br/romi-d800.pdf', 'Parada', 0),
 (5, 'Festo Didactic TP 101', 'SENAI-11223344556', 'Lab. Automação - Sala 102', 'https://www.manuals.senai.br/festo-tp101.pdf', 'Operacional', 0);
 
+
 -- =============================================
 -- 7. IMAGENS DAS MÁQUINAS
 -- =============================================
@@ -63,6 +75,7 @@ INSERT INTO imagens_maquinas (id_maquina, url_imagem) VALUES
 (1, 'https://galpaodasmaquinas.com.br/storage/files/produtos/fresa-ferramenteira-veker-10326_1_desktop.webp'),
 (3, 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Metal_lathe.jpg/800px-Metal_lathe.jpg'),
 (4, 'https://www.romi.com/wp-content/uploads/2021/04/romi_d_800.jpg');
+
 
 -- =============================================
 -- 8. ORDENS DE SERVIÇO
@@ -76,6 +89,7 @@ INSERT INTO ordens_servicos (id_maquina, id_falha, cpf, status_ordem, tipo_manut
 (4, 5, '98765432100', 'Ativa', 'Corretiva', 'Eixo Z apresentando alarme de sobrecarga no servomotor', NULL, NULL, '2024-10-29', '2024-11-01', '2024-11-03'),
 (5, 7, '98765432100', 'Cancelada', 'Preventiva', 'Ajuste de mangueiras das bancadas didáticas', NULL, NULL, NULL, '2024-06-01', '2024-06-02');
 
+
 -- =============================================
 -- 9. FASES DE MANUTENÇÃO (Acompanhamento das OS)
 -- =============================================
@@ -83,6 +97,7 @@ INSERT INTO fases_manutencao (id_ordem, status, fase, data, observacao) VALUES
 (3, 'Ativa', 'Diagnóstico Técnico', '2024-10-28', 'Verificada necessidade de substituição das sapatas de freio'),
 (3, 'Ativa', 'Aguardando Peça', '2024-10-29', 'Solicitada compra de componentes junto ao almoxarifado central'),
 (5, 'Ativa', 'Análise de Falha', '2024-10-29', 'Identificado acúmulo de cavacos na fuso de esferas do eixo Z');
+
 
 -- =============================================
 -- 10. LOGS DE AUDITORIA
