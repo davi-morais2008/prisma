@@ -28,7 +28,7 @@ app.config['MAIL_TIMEOUT'] = 10  # Se o Gmail não responder em 10s, cancela em 
 mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
-
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/esqueci-senha', methods=['GET', 'POST'])
 @app.route('/recuperacaoSenha', methods=['GET', 'POST'])
 def esqueci_senha():
@@ -80,4 +80,8 @@ def redefinir_senha(token):
 
     return render_template('redefinir_senha.html', token=token)
 
+
+if __name__ == '__main__':
+    # Roda localmente na porta 8080
+    app.run(host="0.0.0.0", port=8080, debug=True)  
 
