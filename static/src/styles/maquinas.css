@@ -966,7 +966,8 @@ body {
 }
 
 .machine-details__type-title,
-.machine-details__number-title {
+.machine-details__number-title,
+.machine-details__location-title {
     font-family: var(--font-family-base);
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-regular);
@@ -976,7 +977,8 @@ body {
 }
 
 .machine-details__type-text,
-.machine-details__number-text {
+.machine-details__number-text,
+.machine-details__location-text {
     font-family: var(--font-family-base);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-bold);
