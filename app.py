@@ -3,7 +3,7 @@ from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico
-from model.usuario import buscar_usuario
+from model.usuario import buscar_usuario, atualizar_usuario
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas
@@ -283,18 +283,26 @@ def maquinas_update_machines():
     id_machine = request.form.get('id-machine')
     print(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
     atualizar_editar_maquina(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
-
     return redirect('/maquinas')
 
 
 @app.route('/profile')
 def pagina_perfil():
     if session['user']:
-        print(session['user'])
         users = buscar_usuario()
         for user in users: 
             if user['cpf'] == session['user']:
                 return render_template('perfil.html', usuario = user)
+
+
+@app.route('/profile/uptade_information', methods=['POST'])
+def pagina_perfil_update():
+    nome = request.form.get('user-edit-name')
+    email = request.form.get('user-edit-email')
+    atualizar_usuario(session['user'], nome, email)
+    return redirect('/profile')
+
+    
 
 
 @app.route('/usuarios', methods = ['GET'])
