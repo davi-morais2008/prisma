@@ -10,7 +10,8 @@ def consultar_maquinas():
     conexao, cursor = conectar()
 
     cursor.execute("""SELECT 
-    maquinas.id_maquina, 
+    maquinas.id_maquina,
+    maquinas.id_tipo_maquina, 
     tipos_maquinas.tipo_maquina, 
     MAX(imagens_maquinas.url_imagem) AS url_imagem, 
     maquinas.modelo_maquina, 

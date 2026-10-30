@@ -43,7 +43,7 @@ def atualizar_maquina(id):
     except:
         return False
 
-def atualizar_editar_maquina(id, tipo_maquina, numero_patrimonio, tempo_producao, total_horas, custo_acumulado, pecas_alteradas, tempo_parada, status_preventiva, data_preventiva):
+def atualizar_editar_maquina(id, tipo_maquina,  modelo_maquina, numero_patrimonio, localizacao, status_maquina):
     """
     Atualiza todos os dados de uma máquina no banco de dados com base no seu ID.
 
@@ -66,32 +66,26 @@ def atualizar_editar_maquina(id, tipo_maquina, numero_patrimonio, tempo_producao
     try:
         cursor.execute( """
             UPDATE maquinas 
-            SET tipo_maquina = %s,
+            SET id_tipo_maquina = %s,
+                modelo_maquina = %s,
                 numero_patrimonio = %s,
-                tempo_producao = %s,
-                total_horas = %s,
-                custo_acumulado = %s,
-                pecas_alteradas = %s,
-                tempo_parada = %s,
-                status_preventiva = %s,
-                data_preventiva = %s
+                localizacao = %s,
+                status_maquina = %s
             WHERE id_maquina = %s
         """, (
             tipo_maquina,
+            modelo_maquina,
             numero_patrimonio,
-            tempo_producao,
-            total_horas,
-            custo_acumulado,
-            pecas_alteradas,
-            tempo_parada,
-            status_preventiva,
-            data_preventiva,
+            localizacao,
+            status_maquina,
             id
         ))
         conexao.commit()
         conexao.close()
+        print('CERTOOO')
         return True
     except:
+        print("ERRADOOOO")
         return False
 
 def deletar_maquina(id):
