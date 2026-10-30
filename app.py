@@ -73,7 +73,7 @@ def redefinir_senha(token):
         nova_senha = request.form.get('senha')
         senha_hash = generate_password_hash(nova_senha)
 
-        # Chama a função do model para atualizar a senha no banco
+        # Chama a função do model para atualizar a senha
         atualizar_senha_usuario(email, senha_hash)
 
         flash('Sua senha foi alterada com sucesso!', 'success')
