@@ -84,6 +84,10 @@ def redefinir_senha(token):
 
 @app.route('/painelGeral')
 def painel_geral():
+    if session['user']:
+        pass
+    else:
+        return redirect('/login')
     return render_template('painelGeral.html')
 
 @app.route('/api/dados')
@@ -112,6 +116,10 @@ def get_dados():
 
 @app.route("/telaInicial")
 def pagina_inicial():
+    if session['user']:
+            pass
+    else:
+        return redirect('/login')
     ordem_servico = consultar_ordem_servico()
     print(ordem_servico)
     tecnicos = buscar_usuario()
@@ -167,6 +175,10 @@ def finish_os(id):
 
 @app.route("/historico")
 def pagina_historico():
+    if session['user']:
+        pass
+    else:
+        return redirect('/login')
     OSfinalizado = buscar_os_finalizado()
     return render_template("historico.html", OSfinalizado = OSfinalizado)
 
@@ -181,6 +193,7 @@ def api_get_info_manutencao(id_ordem):
 @app.route('/')
 @app.route('/login')
 def pagina_login():
+    session['user'] = False
     return render_template('cadastroLogin.html')
 
 @app.route('/login/post', methods=['POST'])
@@ -230,6 +243,10 @@ def post_cadastro():
 
 @app.route('/maquinas', methods = ['GET'])
 def pagina_maquinas():
+    if session['user']:
+                pass
+    else:
+        return redirect('/login')
     maquinas = consultar_maquinas()
     tipos_maquinas = consulta_tipo_maquinas()
     return render_template('maquinas.html', maquinas = maquinas, tipos_maquinas = tipos_maquinas)
@@ -289,6 +306,10 @@ def maquinas_update_machines():
 @app.route('/profile')
 def pagina_perfil():
     if session['user']:
+        pass
+    else:
+        return redirect('/login')
+    if session['user']:
         users = buscar_usuario()
         for user in users: 
             if user['cpf'] == session['user']:
@@ -297,6 +318,7 @@ def pagina_perfil():
 
 @app.route('/profile/uptade_information', methods=['POST'])
 def pagina_perfil_update():
+    
     nome = request.form.get('user-edit-name')
     email = request.form.get('user-edit-email')
     atualizar_usuario(session['user'], nome, email)
@@ -307,6 +329,10 @@ def pagina_perfil_update():
 
 @app.route('/usuarios', methods = ['GET'])
 def pagina_usuarios():
+    if session['user']:
+        pass
+    else:
+        return redirect('/login')
     return render_template('usuarios.html')
 
     
