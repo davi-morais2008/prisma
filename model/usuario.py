@@ -64,10 +64,10 @@ def atualizar_usuario(cpf, nome,  email):
 
 def inativar_usuario(cpf,status_usuario):
     """
-    Altera as informações de um usuário no banco de dados.
+    Inativa um usuário no banco de dados.
 
     Parâmetros:
-        cpf (str): CPF do usuário que será atualizado.
+        cpf (str): CPF do usuário que será inativado .
         status_usuario (str): Novo status "Ativo" ou "Inativo".
 
 
