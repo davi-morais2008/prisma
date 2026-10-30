@@ -9,7 +9,7 @@ from model.consultaMaquinas import consultar_maquinas
 from model.cadastro import cadastrar_usuario
 
 
-
+app = Flask(__name__)
 
 
 @app.route("/telaInicial")
