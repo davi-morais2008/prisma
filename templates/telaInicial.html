@@ -172,6 +172,13 @@ Página Inicial
                             </p>
                         </div>
                     </div>
+
+                    {% if ordem_servico %}
+                    <a role="button" class="order__btn-finish" id="btnFinish" href="/telaInicial/finalizar/{{ordem_servico[0].id_ordem}}">
+                        Finalizar Ordem de Serviço
+                    </a>
+                    {% endif %}
+
                 </section>
             </div>
         </article>
