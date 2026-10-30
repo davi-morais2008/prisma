@@ -30,84 +30,49 @@
         </section>
 
         <section class="user-list">
-            <!-- Card 1 -->
-            <article class="user-card">
+            {% for usuario in usuarios %}
+            <!-- Verifica se o status_usuario (índice 1) é falso/0 para aplicar a classe inativa -->
+            <article class="user-card {% if not usuario[1] %}user-card--inactive{% endif %}">
                 <img class="user-card__avatar"
                     src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
-                    alt="Foto de perfil do técnico João">
+                    alt="Foto de perfil de {{ usuario[2] }}">
 
                 <div class="user-card__info">
-                    <h3 class="user-card__name">João da Silva</h3>
-                    <p class="user-card__specialty">Manutenção de Redes</p>
+                    <h3 class="user-card__name">{{ usuario[2] }}</h3> <!-- Nome -->
+                    <p class="user-card__specialty">{{ usuario[5] or 'Técnico Geral' }}</p> <!-- Especialidade -->
 
                     <div class="user-card__details">
                         <div class="user-card__tag">
                             <span class="material-symbols-outlined" aria-hidden="true">badge</span>
-                            <span>123.456.789-00</span>
+                            <span>{{ usuario[0] }}</span> <!-- CPF -->
                         </div>
-                        <a href="mailto:joao.silva@exemplo.com" class="user-card__tag user-card__link">
+                        <a href="mailto:{{ usuario[3] }}" class="user-card__tag user-card__link">
                             <span class="material-symbols-outlined" aria-hidden="true">mail</span>
-                            <span>joao.silva@exemplo.com</span>
+                            <span>{{ usuario[3] }}</span> <!-- Email -->
                         </a>
                     </div>
 
-                    <p class="user-card__text">Especialista sênior em infraestrutura de redes e cabeamento estruturado
-                        com mais de 10 anos de experiência na área.</p>
-
-                    <!-- Ações do Card -->
                     <div class="user-card__actions">
-                        <button class="button button--secondary button--small" type="button"
-                            aria-label="Editar João da Silva">
+                        <button class="button button--secondary button--small" type="button" aria-label="Editar">
                             <span class="material-symbols-outlined" aria-hidden="true">edit</span>
                             Editar
                         </button>
-                        <button class="button button--danger button--small" type="button"
-                            aria-label="Inativar João da Silva">
-                            <span class="material-symbols-outlined" aria-hidden="true">delete</span>
-                            Inativar
-                        </button>
+
+                        {% if usuario[1] %}
+                            <button class="button button--danger button--small btn-inativar" type="button" data-cpf="{{ usuario[0] }}" data-nome="{{ usuario[2] }}">
+                                <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                                Inativar
+                            </button>
+                        {% else %}
+                            <button class="button button--success button--small btn-ativar" type="button" data-cpf="{{ usuario[0] }}" data-nome="{{ usuario[2] }}">
+                                <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                                Ativar
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
             </article>
-
-            <!-- Card 2 -->
-            <article class="user-card">
-                <img class="user-card__avatar"
-                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80"
-                    alt="Foto de perfil da técnica Maria">
-
-                <div class="user-card__info">
-                    <h3 class="user-card__name">Maria Oliveira</h3>
-                    <p class="user-card__specialty">Suporte Nível 2</p>
-
-                    <div class="user-card__details">
-                        <div class="user-card__tag">
-                            <span class="material-symbols-outlined" aria-hidden="true">badge</span>
-                            <span>987.654.321-00</span>
-                        </div>
-                        <a href="mailto:maria.oliveira@exemplo.com" class="user-card__tag user-card__link">
-                            <span class="material-symbols-outlined" aria-hidden="true">mail</span>
-                            <span>maria.oliveira@exemplo.com</span>
-                        </a>
-                    </div>
-
-                    <p class="user-card__text">Profissional certificada, responsável por escalonamento de incidentes
-                        complexos e gestão de acesso.</p>
-
-                    <div class="user-card__actions">
-                        <button class="button button--secondary button--small" type="button"
-                            aria-label="Editar Maria Oliveira">
-                            <span class="material-symbols-outlined" aria-hidden="true">edit</span>
-                            Editar
-                        </button>
-                        <button class="button button--danger button--small" type="button"
-                            aria-label="Inativar Maria Oliveira">
-                            <span class="material-symbols-outlined" aria-hidden="true">delete</span>
-                            Inativar
-                        </button>
-                    </div>
-                </div>
-            </article>
+            {% endfor %}
         </section>
     </main>
 <!-- MODAL EDIÇÃO DE USUÁRIO -->
