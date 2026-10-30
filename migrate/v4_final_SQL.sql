@@ -25,9 +25,10 @@ CREATE TABLE IF NOT EXISTS usuarios (
  nome VARCHAR(100),
  email VARCHAR(255),
  senha VARCHAR(500),
- status_usuario VARCHAR(100),
- imagem_perfil VARCHAR(255)
-
+ status_usuario BOOL DEFAULT true,
+ descricao_usuario VARCHAR(255),
+ imagem_perfil VARCHAR(255),
+ cargo VARCHAR(100) DEFAULT "Técnico"
 );
 
 CREATE UNIQUE INDEX UQ_EMAIL ON USUARIOS (email);
@@ -45,7 +46,9 @@ CREATE TABLE IF NOT EXISTS maquinas (
  numero_patrimonio VARCHAR(255) NOT NULL,
  localizacao VARCHAR(255),
  manual_operacao VARCHAR(500),
- status_maquina VARCHAR(100)
+ status_maquina VARCHAR(100),
+ is_inativa BOOL DEFAULT false
+ 
 );
 
 CREATE TABLE IF NOT EXISTS ordens_servicos (
@@ -56,8 +59,8 @@ CREATE TABLE IF NOT EXISTS ordens_servicos (
  status_ordem VARCHAR(100),
  tipo_manutencao VARCHAR(100),
  descricao_problema VARCHAR(255),
- data_inicio_manutencao DATE,
- data_termino_manutencao DATETIME,
+ data_inicio_manutencao DATE DEFAULT NULL,
+ data_termino_manutencao DATETIME DEFAULT NULL,
  data_parada DATE,
  data_prev_inicio_manutencao DATE,
  data_prev_termino_manutencao DATE
