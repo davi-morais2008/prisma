@@ -10,6 +10,7 @@ const homeOrders = document.querySelector('.home__orders')
 const btnClose = document.querySelector('#btnClose')
 const btnEdit = document.querySelector('#btnEdit')
 const btnDelete = document.querySelector('#btnDelete')
+// const btnFinish = document.querySelector('#btnFinish')
 
 // Imagem
 const imagemMaquina = document.querySelector('.order-details__image')
@@ -68,34 +69,34 @@ const inputDataParada = document.querySelector('#create_data_parada');
 const inputFalha = document.querySelector('#create_falha');
 const textareaDescProblema = document.querySelector('#create_desc_problema');
 
+// FUNÇÕES RESPONSÁVEIS POR ABRIR E FECHAR O MODAL DE INFORMAÇÃO DAS OS
 function openOrderModal() {
     orderModal.classList.add('active')
 }
-
 function closeOrderModal() {
     orderModal.classList.remove('active')
 }
 
+// FUNÇÕES RESPONSÁVEIS POR ABRIR E FECHAR O MODAL DE EDIÇÃO DAS OS
 function openEditModal() {
     editModal.classList.add('active')
 }
-
 function closeEditModal() {
     editModal.classList.remove('active')
 }
 
+// // FUNÇÕES RESPONSÁVEIS POR ABRIR E FECHAR O MODAL DE CONFIRMAÇÃO DE EXCLUSÃO DAS OS
 function openDeleteModal() {
     deleteModal.classList.add('active')
 }
-
 function closeDeleteModal() {
     deleteModal.classList.remove('active')
 }
 
+// FUNÇÕES RESPONSÁVEIS POR ABRIR E FECHAR O MODAL DE CADASTRO DAS OS
 function openCreateModal(){
     createModal.classList.add('active')
 }
-
 function closeCreateModal(){
     createModal.classList.remove('active')
 }
@@ -185,6 +186,7 @@ btnCloseModal.addEventListener('click', closeCreateModal)
 btnCancelForm.addEventListener('click', closeCreateModal)
 
 btnCancelDelete.addEventListener('click', closeDeleteModal)
+btnCloseDelete. addEventListener('click', closeDeleteModal)
 btnConfirmDelete.addEventListener('click', () => {
     closeDeleteModal();
     closeOrderModal();

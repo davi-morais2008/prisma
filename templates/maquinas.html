@@ -28,414 +28,503 @@ Máquinas
         </div>
 
         <div class="machines__machines-grid">
+            {% for maquina in maquinas %}
+            {% if maquina.is_inativa == 0 %}
             <article class="machine">
-                <h3 class="machine__machine-title">Máquina 01</h3>
-                <p class="machine__machine-number">Patrimônio 01</p>
+                <figure class="machine__media">
+                    <img src="{{maquina.url_imagem}}" alt="Prévia visual da Máquina 01 - Torno CNC X200"
+                        class="machine__image" loading="lazy" />
+                    <span class="machine__status machine__status--active" aria-label="Status: Operacional">
+                        Operacional
+                    </span>
+                </figure>
+
+                <div class="machine__content">
+                    <header class="machine__header">
+                        <h3 class="machine__title">{{maquina.tipo_maquina}}</h3>
+                        <p class="machine__number">Patrimônio: {{maquina.numero_patrimonio}}</p>
+                    </header>
+
+                    <dl class="machine__details">
+                        <div class="machine__detail-item">
+                            <dt class="machine__detail-label">Modelo:</dt>
+                            <dd class="machine__detail-value">{{maquina.modelo_maquina}}</dd>
+                        </div>
+                        <div class="machine__detail-item">
+                            <dt class="machine__detail-label">Setor:</dt>
+                            <dd class="machine__detail-value">{{maquina.localizacao}}</dd>
+                        </div>
+                    </dl>
+
+                    <footer class="machine__footer">
+                        <button type="button" id="{{maquina.id_maquina}}" class="machine__button"
+                            aria-label="Ver detalhes da Máquina 01">
+                            Ver Detalhes
+                        </button>
+                    </footer>
+                </div>
             </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 02</h3>
-                <p class="machine__machine-number">Patrimônio 02</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 03</h3>
-                <p class="machine__machine-number">Patrimônio 03</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 04</h3>
-                <p class="machine__machine-number">Patrimônio 04</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 05</h3>
-                <p class="machine__machine-number">Patrimônio 05</p>
-            </article>
-            <article class="machine">
-                <h3 class="machine__machine-title">Máquina 06</h3>
-                <p class="machine__machine-number">Patrimônio 06</p>
-            </article>
+
+            {% endif %}
+            {% endfor %}
         </div>
 
         <!-- FORMULÁRIO DE CADASTRO DE MÁQUINAS -->
-        <!-- FORMULÁRIO DE CADASTRO DE MÁQUINAS -->
-        <div class="machine-modal" aria-labelledby="modal-title">
-            <!-- Cabeçalho do Modal -->
-            <header class="machine-modal__header">
-                <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="machine-edit__logo-image">
-                <h2 id="modal-title" class="machine-modal__title">EDITAR MÁQUINA</h2>
-                <button type="button" class="machine-modal__close-button" aria-label="Fechar janela">
-                    <span class="material-symbols-outlined">
-                        close
-                    </span>
-                </button>
-            </header>
+        <div class="machine-modal__overlay">
+            <div class="machine-modal" aria-labelledby="modal-title">
+                <!-- Cabeçalho do Modal -->
+                <header class="machine-modal__header">
+                    <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="machine-edit__logo-image">
+                    <h2 id="modal-title" class="machine-modal__title">REGISTRAR MÁQUINA</h2>
+                    <button type="button" class="machine-modal__close-button" aria-label="Fechar janela">
+                        <span class="material-symbols-outlined">
+                            close
+                        </span>
+                    </button>
+                </header>
 
-            <!-- Formulário Principal -->
-            <form action="#" class="machine-form">
+                <!-- Formulário Principal -->
+                <form action="/maquinas/post_register_machine" enctype="multipart/form-data" method="post"
+                    enctype="multipart/form-data" class="machine-form">
 
-                <!-- Topo: Foto e Dados Básicos -->
-                <div class="machine-form__top-section">
-                    <div class="machine-form__avatar-wrapper">
-                        <img src="assets/machine-preview.png" alt="Foto de pré-visualização da máquina"
-                            class="machine-form__avatar-img">
-                        <button type="button" class="machine-form__avatar-upload"
-                            aria-label="Alterar imagem da máquina">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path
-                                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
-                                </path>
-                                <circle cx="12" cy="13" r="4"></circle>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="machine-form__basic-info">
-                        <div class="machine-form__field">
-                            <label for="type-machine" class="machine-form__label">Tipo / Modelo</label>
-                            <input type="text" id="type-machine" class="machine-form__input"
-                                placeholder="Ex: Injetora de Plástico - H500">
+                    <!-- Topo: Foto e Dados Básicos -->
+                    <div class="machine-form__top-section">
+                        <div class="machine-form__avatar-wrapper">
+                            <img src="https://placehold.co/200x200/0A084B/FFFFFF?text=Imagem+M%C3%A1quina"
+                                id="image-preview-edit" alt="Foto de pré-visualização da máquina"
+                                class="machine-form__avatar-img">
+                            <label class="machine-form__avatar-upload" aria-label="Alterar imagem da máquina">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+                                    </path>
+                                    <circle cx="12" cy="13" r="4"></circle>
+                                </svg>
+                                <input name="file" id="image-preview-input-edit" type="file" name="avatar-upload"
+                                    accept="image/*" style="display: none;">
+                            </label>
                         </div>
 
-                        <div class="machine-form__field">
-                            <label for="number-machine" class="machine-form__label">Patrimônio</label>
-                            <input type="text" id="number-machine" class="machine-form__input"
-                                placeholder="Ex: MAQ-SP-0014">
+                        <div class="machine-form__basic-info">
+                            <div class="machine-form__field">
+                                <label for="type-machine" class="machine-form__label">Tipo da Máquina</label>
+                                <select required id="type-machine" name="type-machine" class="machine-form__select">
+                                    <option value="" disabled selected>Selecione o tipo...</option>
+                                    {% for tipo_maquina in tipos_maquinas %}
+                                    <option value="{{tipo_maquina.id_tipo_maquina}}">{{tipo_maquina.tipo_maquina}}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="machine-form__field">
+                                <label for="number-machine" class="machine-form__label">Patrimônio</label>
+                                <input required type="text" id="number-machine" name="number-machine" class="machine-form__input"
+                                    placeholder="Ex: MAQ-SP-0014">
+                            </div>
+
+                            <div class="machine-form__field">
+                                <label for="location-machine" class="machine-form__label">Localização / Setor</label>
+                                <input type="text" id="location-machine" name="location-machine"
+                                    class="machine-form__input" placeholder="Ex: Setor A - Linha 2">
+                            </div>
+
+                            <div class="machine-form__field">
+                                <label for="model-machine" class="machine-form__label">Modelo Máquina</label>
+                                <input required type="text" id="model-machine" name="model-machine" class="machine-form__input"
+                                    placeholder="Ex: Modelo A">
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Seção 1: Estatísticas e Parâmetros -->
+                    <fieldset class="machine-form__section">
+                        <legend class="machine-form__section-title">ESTATÍSTICAS & PARÂMETROS</legend>
+
+                        <div class="machine-form__grid machine-form__grid--2-cols">
+                            <!-- Coluna Esquerda -->
+                            <div class="machine-form__column">
+                                <div class="machine-form__field">
+                                    <label for="production-time" class="machine-form__label">Tempo de Produção
+                                        (h)</label>
+                                    <input type="number" id="production-time" name="production-time"
+                                        class="machine-form__input" placeholder="Ex: 145">
+                                </div>
+
+                                <div class="machine-form__field">
+                                    <label for="total-hours" class="machine-form__label">Total Horas Funcionando</label>
+                                    <input type="number" id="total-hours" name="total-hours" class="machine-form__input"
+                                        placeholder="Ex: 1240">
+                                </div>
+
+                                <div class="machine-form__field">
+                                    <label for="accumulated-cost" class="machine-form__label">Custo Acumulado
+                                        (R$)</label>
+                                    <input type="text" id="accumulated-cost" name="accumulated-cost"
+                                        class="machine-form__input" placeholder="Ex: 15500,00">
+                                </div>
+
+                                <div class="machine-form__field">
+                                    <label for="parts-changed" class="machine-form__label">Peças Alteradas
+                                        (Total)</label>
+                                    <input type="number" id="parts-changed" name="parts-changed"
+                                        class="machine-form__input" placeholder="Ex: 8">
+                                </div>
+                            </div>
+
+                            <!-- Coluna Direita -->
+                            <div class="machine-form__column">
+                                <div class="machine-form__field">
+                                    <label for="downtime" class="machine-form__label">Tempo de Parada (h)</label>
+                                    <input type="number" id="downtime" name="downtime" class="machine-form__input"
+                                        placeholder="Ex: 12">
+                                </div>
+
+                                <div class="file-upload-container">
+                                    <label for="manual-upload" class="custom-file-button">
+                                        Procurar Arquivo
+                                    </label>
+                                    <span id="file-name-edit" class="file-name">Nenhum ficheiro escolhido</span>
+                                    <input type="file" id="manual-upload-edit" accept=".pdf" hidden />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Seção 2: Agendar Manutenção Preventiva -->
+                    <fieldset class="machine-form__section">
+                        <legend class="machine-form__section-title">AGENDAR MANUTENÇÃO PREVENTIVA</legend>
+                        <div class="machine-form__grid machine-form__grid--2-cols">
+                            <div class="machine-form__field">
+                                <label for="status-machine" class="machine-form__label">Status</label>
+                                <select id="status-machine" name="status-machine" class="machine-form__select">
+                                    <option value="" disabled selected>Selecione o status...</option>
+                                    <option value="Agendada">Agendada</option>
+                                    <option value="Em dia">Em dia</option>
+                                    <option value="Pendente">Pendente</option>
+                                </select>
+                            </div>
+
+                            <div class="machine-form__field">
+                                <label for="scheduled-date" class="machine-form__label">Data Agendada</label>
+                                <input type="date" id="scheduled-date" name="scheduled-date"
+                                    class="machine-form__input">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Seção 3: Histórico de Manutenções -->
+                    <!-- <fieldset class="machine-form__section">
+                <legend class="machine-form__section-title">HISTÓRICO DE MANUTENÇÕES</legend>
+                <div class="machine-history">
+                    <div class="machine-history__header">
+                        <span class="machine-history__column-title">Data</span>
+                        <span class="machine-history__column-title">Tipo</span>
+                        <span class="machine-history__column-title">Técnico</span>
+                        <span class="machine-history__column-title">Observações</span>
+                    </div>
+
+                    <ul class="machine-history__list">
+                        <li class="machine-history__item">
+                            <div class="machine-history__field">
+                                <label for="history-date-1" class="machine-history__label">Data</label>
+                                <input type="date" id="history-date-1" name="history-date-1" class="machine-history__input">
+                            </div>
+
+                            <div class="machine-history__field">
+                                <label for="history-type-1" class="machine-history__label">Tipo</label>
+                                <select id="history-type-1" name="history-type-1" class="machine-history__select">
+                                    <option value="" disabled selected>Selecione...</option>
+                                    <option value="preventiva">Preventiva</option>
+                                    <option value="corretiva">Corretiva</option>
+                                </select>
+                            </div>
+
+                            <div class="machine-history__field">
+                                <label for="history-tech-1" class="machine-history__label">Técnico</label>
+                                <input type="text" id="history-tech-1" name="history-tech-1" class="machine-history__input"
+                                    placeholder="Ex: João Silva">
+                            </div>
+
+                            <div class="machine-history__field">
+                                <label for="history-obs-1" class="machine-history__label">Observações</label>
+                                <input type="text" id="history-obs-1" name="history-obs-1" class="machine-history__input"
+                                    placeholder="Ex: Verificação de óleo">
+                            </div>
+                        </li>
+
+                        <li class="machine-history__item">
+                            <div class="machine-history__field">
+                                <label for="history-date-2" class="machine-history__label">Data</label>
+                                <input type="date" id="history-date-2" name="history-date-2" class="machine-history__input">
+                            </div>
+
+                            <div class="machine-history__field">
+                                <label for="history-type-2" class="machine-history__label">Tipo</label>
+                                <select id="history-type-2" name="history-type-2" class="machine-history__select">
+                                    <option value="" disabled selected>Selecione...</option>
+                                    <option value="preventiva">Preventiva</option>
+                                    <option value="corretiva">Corretiva</option>
+                                </select>
+                            </div>
+
+                            <div class="machine-history__field">
+                                <label for="history-tech-2" class="machine-history__label">Técnico</label>
+                                <input type="text" id="history-tech-2" name="history-tech-2" class="machine-history__input"
+                                    placeholder="Ex: Ana Costa">
+                            </div>
+
+                            <div class="machine-history__field">
+                                <label for="history-obs-2" class="machine-history__label">Observações</label>
+                                <input type="text" id="history-obs-2" name="history-obs-2" class="machine-history__input"
+                                    placeholder="Ex: Troca de rolamento">
+                            </div>
+                        </li>
+                    </ul>
                 </div>
+            </fieldset> -->
 
-                <!-- Seção 1: Estatísticas e Parâmetros -->
-                <fieldset class="machine-form__section">
-                    <legend class="machine-form__section-title">EDITAR ESTATÍSTICAS & PARÂMETROS</legend>
-
-                    <div class="machine-form__grid machine-form__grid--2-cols">
-                        <!-- Coluna Esquerda -->
-                        <div class="machine-form__column">
-                            <div class="machine-form__field">
-                                <label for="production-time" class="machine-form__label">Tempo de Produção
-                                    (h)</label>
-                                <input type="number" id="production-time" class="machine-form__input"
-                                    placeholder="Ex: 145">
-                            </div>
-
-                            <div class="machine-form__field">
-                                <label for="total-hours" class="machine-form__label">Total Horas Funcionando</label>
-                                <input type="number" id="total-hours" class="machine-form__input"
-                                    placeholder="Ex: 1240">
-                            </div>
-
-                            <div class="machine-form__field">
-                                <label for="accumulated-cost" class="machine-form__label">Custo Acumulado
-                                    (R$)</label>
-                                <input type="text" id="accumulated-cost" class="machine-form__input"
-                                    placeholder="Ex: 15500,00">
-                            </div>
-
-                            <div class="machine-form__field">
-                                <label for="parts-changed" class="machine-form__label">Peças Alteradas
-                                    (Total)</label>
-                                <input type="number" id="parts-changed" class="machine-form__input" placeholder="Ex: 8">
-                            </div>
-                        </div>
-
-                        <!-- Coluna Direita -->
-                        <div class="machine-form__column">
-                            <div class="machine-form__field">
-                                <label for="downtime" class="machine-form__label">Tempo de Parada (h)</label>
-                                <input type="number" id="downtime" class="machine-form__input" placeholder="Ex: 12">
-                            </div>
-
-                            <div class="machine-form__field">
-                                <span class="machine-form__label">Manual da Máquina (PDF)</span>
-                                <label for="manual-upload" class="machine-form__file-button">
-                                    <span class="machine-form__file-name">Selecione o arquivo...</span>
-                                    <span class="machine-form__file-action">Upload PDF</span>
-                                    <input type="file" id="manual-upload" class="machine-form__file-input"
-                                        accept=".pdf">
-                                </label>
-                            </div>
-                        </div>
+                    <!-- Ações do Form -->
+                    <div class="machine-form__actions">
+                        <button type="submit" class="machine-form__submit-button">Salvar Alterações</button>
                     </div>
-                </fieldset>
 
-                <!-- Seção 2: Agendar Manutenção Preventiva -->
-                <fieldset class="machine-form__section">
-                    <legend class="machine-form__section-title">AGENDAR MANUTENÇÃO PREVENTIVA</legend>
-                    <div class="machine-form__grid machine-form__grid--2-cols">
-                        <div class="machine-form__field">
-                            <label for="status-machine" class="machine-form__label">Status</label>
-                            <select id="status-machine" class="machine-form__select">
-                                <option value="" disabled selected>Selecione o status...</option>
-                                <option value="agendada">Agendada</option>
-                                <option value="em-dia">Em dia</option>
-                                <option value="pendente">Pendente</option>
-                            </select>
-                        </div>
-
-                        <div class="machine-form__field">
-                            <label for="scheduled-date" class="machine-form__label">Data Agendada</label>
-                            <input type="date" id="scheduled-date" class="machine-form__input">
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- Seção 3: Histórico de Manutenções -->
-                <fieldset class="machine-form__section">
-                    <legend class="machine-form__section-title">HISTÓRICO DE MANUTENÇÕES</legend>
-                    <div class="machine-history">
-                        <div class="machine-history__header">
-                            <span class="machine-history__column-title">Data</span>
-                            <span class="machine-history__column-title">Tipo</span>
-                            <span class="machine-history__column-title">Técnico</span>
-                            <span class="machine-history__column-title">Observações</span>
-                        </div>
-
-                        <ul class="machine-history__list">
-                            <li class="machine-history__item">
-                                <div class="machine-history__field">
-                                    <label for="history-date-1" class="machine-history__label">Data</label>
-                                    <input type="date" id="history-date-1" class="machine-history__input">
-                                </div>
-
-                                <div class="machine-history__field">
-                                    <label for="history-type-1" class="machine-history__label">Tipo</label>
-                                    <select id="history-type-1" class="machine-history__select">
-                                        <option value="" disabled selected>Selecione...</option>
-                                        <option value="preventiva">Preventiva</option>
-                                        <option value="corretiva">Corretiva</option>
-                                    </select>
-                                </div>
-
-                                <div class="machine-history__field">
-                                    <label for="history-tech-1" class="machine-history__label">Técnico</label>
-                                    <input type="text" id="history-tech-1" class="machine-history__input"
-                                        placeholder="Ex: João Silva">
-                                </div>
-
-                                <div class="machine-history__field">
-                                    <label for="history-obs-1" class="machine-history__label">Observações</label>
-                                    <input type="text" id="history-obs-1" class="machine-history__input"
-                                        placeholder="Ex: Verificação de óleo">
-                                </div>
-                            </li>
-
-                            <li class="machine-history__item">
-                                <div class="machine-history__field">
-                                    <label for="history-date-2" class="machine-history__label">Data</label>
-                                    <input type="date" id="history-date-2" class="machine-history__input">
-                                </div>
-
-                                <div class="machine-history__field">
-                                    <label for="history-type-2" class="machine-history__label">Tipo</label>
-                                    <select id="history-type-2" class="machine-history__select">
-                                        <option value="" disabled selected>Selecione...</option>
-                                        <option value="preventiva">Preventiva</option>
-                                        <option value="corretiva">Corretiva</option>
-                                    </select>
-                                </div>
-
-                                <div class="machine-history__field">
-                                    <label for="history-tech-2" class="machine-history__label">Técnico</label>
-                                    <input type="text" id="history-tech-2" class="machine-history__input"
-                                        placeholder="Ex: Ana Costa">
-                                </div>
-
-                                <div class="machine-history__field">
-                                    <label for="history-obs-2" class="machine-history__label">Observações</label>
-                                    <input type="text" id="history-obs-2" class="machine-history__input"
-                                        placeholder="Ex: Troca de rolamento">
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </fieldset>
-
-                <!-- Ações do Form -->
-                <div class="machine-form__actions">
-                    <button type="submit" class="machine-form__submit-button">Salvar Alterações</button>
-                </div>
-
-            </form>
+                </form>
+            </div>
         </div>
+
+
+
 
         <!-- DETALHES DA MÁQUINA (MODAL) -->
 
-        <!-- DETALHES DA MÁQUINA (MODAL) -->
-        <div class="machine-details">
-            <!-- CABEÇALHO -->
-            <div class="machine-details__logo">
-                <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="machine-details__logo-image">
-                <h1 class="machine-details__logo-title">DESCRIÇÃO MÁQUINA</h1>
-                <button class="machine-details__close-button" aria-label="Fechar detalhes">
-                    <span class="material-symbols-outlined">
-                        close
-                    </span>
-                </button>
-            </div>
-
-            <!-- INFORMAÇÕES PRIMÁRIAS -->
-            <div class="machine-details__primary-info">
-                <div class="machine-details__img-machine">
-                    <img src="/static/src/img/torno_mecanico.jpg" alt="Injetora de Plástico - Modelo H500"
-                        class="machine-details__info-image">
+        <div class="machine-details__overlay">
+            <div class="machine-details">
+                <!-- CABEÇALHO -->
+                <div class="machine-details__logo">
+                    <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="machine-details__logo-image">
+                    <h1 class="machine-details__logo-title">DESCRIÇÃO MÁQUINA</h1>
+                    <button class="machine-details__close-button" aria-label="Fechar detalhes">
+                        <span class="material-symbols-outlined">
+                            close
+                        </span>
+                    </button>
                 </div>
-                <div class="machine-details__info-content">
-                    <div class="machine-details__type">
-                        <h2 class="machine-details__type-title">TIPO:</h2>
-                        <p class="machine-details__type-text">Injetora de Plástico - Modelo H500</p>
+
+                <!-- INFORMAÇÕES PRIMÁRIAS -->
+                <div class="machine-details__primary-info">
+                    <div class="machine-details__img-machine">
+                        <img src="/static/src/img/torno_mecanico.jpg" alt="Injetora de Plástico - Modelo H500"
+                            class="machine-details__info-image">
                     </div>
-                    <div class="machine-details__number">
-                        <h2 class="machine-details__number-title">PATRIMÔNIO:</h2>
-                        <p class="machine-details__number-text">MAQ-SP-0014</p>
+                    <div class="machine-details__info-content">
+                        <div class="machine-details__type">
+                            <h2 class="machine-details__type-title">TIPO:</h2>
+                            <p class="machine-details__type-text">Injetora de Plástico - Modelo H500</p>
+                        </div>
+                        <div class="machine-details__number">
+                            <h2 class="machine-details__number-title">PATRIMÔNIO:</h2>
+                            <p class="machine-details__number-text">MAQ-SP-0014</p>
+                        </div>
+                        <div class="machine-details__number">
+                            <h2 class="machine-details__location-title">LOCALIZAÇÃO:</h2>
+                            <p class="machine-details__location-text">SETOR A</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- ESTATÍSTICAS E MANUAL (COM BOTÕES DE AÇÃO) -->
-            <div class="machine-details__statistics">
-                <div class="machine-details__statistics-header">
-                    <h3 class="machine-details__statistics-title">ESTATÍSTICAS DA MÁQUINA</h3>
-                    <div class="machine-details__statistics-actions">
-                        <!-- BOTÃO EDITAR (LÁPIS) -->
-                        <button class="machine-details__action-button machine-details__action-button--edit"
-                            aria-label="Editar estatísticas da máquina">
-                            <span class="material-symbols-outlined">
-                                edit_square
-                            </span>
+                <!-- ESTATÍSTICAS E MANUAL (COM BOTÕES DE AÇÃO) -->
+                <div class="machine-details__statistics">
+                    <div class="machine-details__statistics-header">
+                        <h3 class="machine-details__statistics-title">ESTATÍSTICAS DA MÁQUINA</h3>
+                        <div class="machine-details__statistics-actions">
+                            <!-- BOTÃO EDITAR (LÁPIS) -->
+                            <button class="machine-details__action-button machine-details__action-button--edit"
+                                aria-label="Editar estatísticas da máquina">
+                                <span class="material-symbols-outlined">
+                                    edit_square
+                                </span>
+                            </button>
+                            <!-- BOTÃO DELETAR (LIXEIRA) -->
+                            <button class="machine-details__action-button machine-details__action-button--delete"
+                                aria-label="Excluir máquina">
+                                <span class="material-symbols-outlined">
+                                    delete
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="machine-details__stat-container">
+                        <!-- Lado Esquerdo: Indicadores de Funcionamento -->
+                        <div class="machine-details__stat-group">
+                            <div class="machine-details__stat-item">
+                                <span class="machine-details__stat-icon">🕒</span>
+                                <div class="machine-details__stat-text-group">
+                                    <span class="machine-details__stat-label">Tempo de Produção:</span>
+                                    <strong class="machine-details__stat-value">145h</strong>
+                                </div>
+                            </div>
+
+                            <div class="machine-details__stat-item">
+                                <span class="machine-details__stat-icon">🕒</span>
+                                <div class="machine-details__stat-text-group">
+                                    <span class="machine-details__stat-label">Total Horas Funcionando:</span>
+                                    <strong class="machine-details__stat-value">1240h</strong>
+                                </div>
+                            </div>
+
+                            <div class="machine-details__stat-item">
+                                <span class="machine-details__stat-icon">⚙️</span>
+                                <div class="machine-details__stat-text-group">
+                                    <span class="machine-details__stat-label">Peças Alteradas (Total):</span>
+                                    <strong class="machine-details__stat-value">8</strong>
+                                </div>
+                            </div>
+
+                            <div class="machine-details__stat-item">
+                                <span class="machine-details__stat-icon">🚫</span>
+                                <div class="machine-details__stat-text-group">
+                                    <span class="machine-details__stat-label">Tempo de Parada:</span>
+                                    <strong class="machine-details__stat-value">12h</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lado Direito: Parada e Manuais -->
+                        <div class="machine-details__stat-group">
+                            <div class="machine-details__stat-item">
+                                <span class="machine-details__stat-icon">💵</span>
+                                <div class="machine-details__stat-text-group">
+                                    <span class="machine-details__stat-label">Custo Acumulado:</span>
+                                    <strong class="machine-details__stat-value">R$ 15.500,00</strong>
+                                </div>
+                            </div>
+
+                            <div class="machine-details__stat-item machine-details__stat-item--manual-machines">
+                                <h4 class="machine-details__manual-title">MANUAL DA MÁQUINA</h4>
+                                <a href="#" class="machine-details__manual-link">
+                                    <span>MANUAL_DE_OPERACAO.PDF</span>
+                                    <span class="machine-details__manual-icon">📥</span>
+                                </a>
+                                <a href="#" class="machine-details__manual-link">
+                                    <span>MANUAL_DE_OPERACAO.PDF</span>
+                                    <span class="machine-details__manual-icon">📄</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MANUTENÇÃO PREVENTIVA -->
+                <div class="machine-details__prev-maintance">
+                    <h3 class="machine-details__prev-maintance-title">MANUTENÇÃO PREVENTIVA AGENDADA</h3>
+                    <p class="machine-details__prev-maintance-text">Status: Agendada - 15/12/2024</p>
+                </div>
+
+                <!-- HISTÓRICO DE MANUTENÇÕES -->
+                <div class="machine-details__maintance-history">
+                    <h3 class="machine-details__maintance-history-title">HISTÓRICO DE MANUTENÇÕES (Últimas 5)</h3>
+                    <table class="machine-details__maintances-list">
+                        <thead>
+                            <tr>
+                                <th scope="col">Data</th>
+                                <th scope="col">Tipo de Manutenção</th>
+                                <th scope="col">Técnico</th>
+                                <th scope="col">Observações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>10/11/2024</td>
+                                <td>Preventiva</td>
+                                <td>João Silva</td>
+                                <td>Verificação de óleo</td>
+                            </tr>
+                            <tr>
+                                <td>05/10/2024</td>
+                                <td>Corretiva</td>
+                                <td>Ana Costa</td>
+                                <td>Troca de rolamento</td>
+                            </tr>
+                            <tr>
+                                <td>05/10/2024</td>
+                                <td>Corretiva</td>
+                                <td>Ana Costa</td>
+                                <td>Troca de rolamento</td>
+                            </tr>
+                            <tr>
+                                <td>03/10/2024</td>
+                                <td>Preventiva</td>
+                                <td>João Silva</td>
+                                <td>Verificação de óleo</td>
+                            </tr>
+                            <tr>
+                                <td>05/10/2024</td>
+                                <td>Corretiva</td>
+                                <td>Ana Costa</td>
+                                <td>Troca de rolamento</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Modal de Confirmação de Exclusão -->
+            <div class="order-delete" id="deleteModal" role="dialog" aria-modal="true"
+                aria-labelledby="deleteModalTitle" aria-describedby="deleteModalDescription">
+                <div class="order-delete__overlay" id="deleteModalOverlay"></div>
+
+
+                <article class="order-delete__card">
+                    <!-- CABEÇALHO SUPERIOR -->
+                    <header class="order-delete__header">
+                        <div class="order-delete__brand">
+                            <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
+                                class="order-delete__brand-image">
+                            <h1 class="order-delete__brand-title" id="deleteModalTitle">EXCLUIR ORDEM DE SERVIÇO</h1>
+                        </div>
+                        <button class="order-delete__close-btn" id="btnCancelDeleteHeader"
+                            aria-label="Fechar confirmação de exclusão">
+                            <span class="material-symbols-outlined" aria-hidden="true">close</span>
                         </button>
-                        <!-- BOTÃO DELETAR (LIXEIRA) -->
-                        <button class="machine-details__action-button machine-details__action-button--delete"
-                            aria-label="Excluir máquina">
-                            <span class="material-symbols-outlined">
-                                delete
-                            </span>
+                    </header>
+
+
+                    <!-- CORPO DO MODAL DE ALERTA -->
+                    <div class="order-delete__body">
+                        <div class="order-delete__icon-wrapper">
+                            <span class="material-symbols-outlined order-delete__icon" aria-hidden="true">warning</span>
+                        </div>
+
+
+                        <div class="order-delete__content">
+                            <h2 class="order-delete__heading">Tem certeza que deseja excluir?</h2>
+                            <p class="order-delete__description" id="deleteModalDescription">
+                                Esta ação excluirá permanentemente a Ordem de Serviço selecionada do sistema PRISMA e
+                                não
+                                poderá ser desfeita.
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <!-- RODAPÉ DE AÇÕES -->
+                    <footer class="order-delete__footer">
+                        <button type="button" class="order-delete__btn order-delete__btn--cancel" id="btnCancelDelete">
+                            Cancelar
                         </button>
-                    </div>
-                </div>
+                        <button type="button" class="order-delete__btn order-delete__btn--confirm"
+                            id="btnConfirmDelete">
 
-                <div class="machine-details__stat-container">
-                    <!-- Lado Esquerdo: Indicadores de Funcionamento -->
-                    <div class="machine-details__stat-group">
-                        <div class="machine-details__stat-item">
-                            <span class="machine-details__stat-icon">🕒</span>
-                            <div class="machine-details__stat-text-group">
-                                <span class="machine-details__stat-label">Tempo de Produção:</span>
-                                <strong class="machine-details__stat-value">145h</strong>
-                            </div>
-                        </div>
-
-                        <div class="machine-details__stat-item">
-                            <span class="machine-details__stat-icon">🕒</span>
-                            <div class="machine-details__stat-text-group">
-                                <span class="machine-details__stat-label">Total Horas Funcionando:</span>
-                                <strong class="machine-details__stat-value">1240h</strong>
-                            </div>
-                        </div>
-
-                        <div class="machine-details__stat-item">
-                            <span class="machine-details__stat-icon">⚙️</span>
-                            <div class="machine-details__stat-text-group">
-                                <span class="machine-details__stat-label">Peças Alteradas (Total):</span>
-                                <strong class="machine-details__stat-value">8</strong>
-                            </div>
-                        </div>
-
-                        <div class="machine-details__stat-item">
-                            <span class="machine-details__stat-icon">🚫</span>
-                            <div class="machine-details__stat-text-group">
-                                <span class="machine-details__stat-label">Tempo de Parada:</span>
-                                <strong class="machine-details__stat-value">12h</strong>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Lado Direito: Parada e Manuais -->
-                    <div class="machine-details__stat-group">
-                        <div class="machine-details__stat-item">
-                            <span class="machine-details__stat-icon">💵</span>
-                            <div class="machine-details__stat-text-group">
-                                <span class="machine-details__stat-label">Custo Acumulado:</span>
-                                <strong class="machine-details__stat-value">R$ 15.500,00</strong>
-                            </div>
-                        </div>
-
-                        <div class="machine-details__stat-item machine-details__stat-item--manual-machines">
-                            <h4 class="machine-details__manual-title">MANUAL DA MÁQUINA</h4>
-                            <a href="#" class="machine-details__manual-link">
-                                <span>MANUAL_DE_OPERACAO.PDF</span>
-                                <span class="machine-details__manual-icon">📥</span>
-                            </a>
-                            <a href="#" class="machine-details__manual-link">
-                                <span>MANUAL_DE_OPERACAO.PDF</span>
-                                <span class="machine-details__manual-icon">📄</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MANUTENÇÃO PREVENTIVA -->
-            <div class="machine-details__prev-maintance">
-                <h3 class="machine-details__prev-maintance-title">MANUTENÇÃO PREVENTIVA AGENDADA</h3>
-                <p class="machine-details__prev-maintance-text">Status: Agendada - 15/12/2024</p>
-            </div>
-
-            <!-- HISTÓRICO DE MANUTENÇÕES -->
-            <div class="machine-details__maintance-history">
-                <h3 class="machine-details__maintance-history-title">HISTÓRICO DE MANUTENÇÕES (Últimas 5)</h3>
-                <table class="machine-details__maintances-list">
-                    <thead>
-                        <tr>
-                            <th scope="col">Data</th>
-                            <th scope="col">Tipo de Manutenção</th>
-                            <th scope="col">Técnico</th>
-                            <th scope="col">Observações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>10/11/2024</td>
-                            <td>Preventiva</td>
-                            <td>João Silva</td>
-                            <td>Verificação de óleo</td>
-                        </tr>
-                        <tr>
-                            <td>05/10/2024</td>
-                            <td>Corretiva</td>
-                            <td>Ana Costa</td>
-                            <td>Troca de rolamento</td>
-                        </tr>
-                        <tr>
-                            <td>05/10/2024</td>
-                            <td>Corretiva</td>
-                            <td>Ana Costa</td>
-                            <td>Troca de rolamento</td>
-                        </tr>
-                        <tr>
-                            <td>03/10/2024</td>
-                            <td>Preventiva</td>
-                            <td>João Silva</td>
-                            <td>Verificação de óleo</td>
-                        </tr>
-                        <tr>
-                            <td>05/10/2024</td>
-                            <td>Corretiva</td>
-                            <td>Ana Costa</td>
-                            <td>Troca de rolamento</td>
-                        </tr>
-                    </tbody>
-                </table>
+                            <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                            Sim, Excluir
+                        </button>
+                    </footer>
+                </article>
             </div>
         </div>
-        <div class="delete-confirmation">
-            <button class="delete-confirmation__close-button"><span
-                    class="material-symbols-outlined">close</span></button>
-            <h3 class="delete-confirmation__title">Deseja <span class="danger-title">EXCLUIR</span> esta Máquina do
-                Sistema?</h3>
-            <div class="delete-confirmation__buttons">
-                <button class="button-confirmation button-confirmation--cancel">Cancelar</button>
-                <button class="button-confirmation button-confirmation--delete">Excluír</button>
-            </div>
-        </div>
+
         <!-- EDIÇÃO DE MÁQUINA MODAL -->
 
         <div class="machine-edit__overlay">
@@ -453,31 +542,51 @@ Máquinas
                     </button>
                 </div>
 
-                <form class="machine-edit__form">
+                <form class="machine-edit__form" action="/maquinas/update_machines" method="POST"
+                    enctype="multipart/form-data">
+                    <!-- Campo oculto para receber o ID do JS -->
+                    <input type="hidden" id="edit-id-machine" name="id-machine" value="">
+
                     <!-- INFORMAÇÕES PRIMÁRIAS -->
                     <div class="machine-edit__primary-info">
                         <div class="machine-edit__img-container">
-                            <img src="/static/src/img/torno_mecanico.jpg" alt="Foto da máquina"
+                            <img src="/static/src/img/torno_mecanico.jpg" id="preview-edit-img" alt="Foto da máquina"
                                 class="machine-edit__info-image">
-                            <label for="edit-machine-photo" class="machine-edit__img-upload-btn"
+                            <label for="preview-edit-img-button" class="machine-edit__img-upload-btn"
                                 aria-label="Alterar foto da máquina">
                                 <span class="material-symbols-outlined">
                                     photo_camera
                                 </span>
-                                <input type="file" id="edit-machine-photo" class="machine-edit__file-input"
-                                    accept="image/*">
+                                <input type="file" id="preview-edit-img-button" name="edit-machine-img"
+                                    class="machine-edit__file-input" accept="image/*">
                             </label>
                         </div>
 
                         <div class="machine-edit__info-content">
                             <div class="machine-edit__field">
-                                <label for="edit-type" class="machine-edit__label">Tipo / Modelo</label>
-                                <input type="text" id="edit-type" class="machine-edit__input"
-                                    value="Injetora de Plástico - Modelo H500">
+                                <label for="edit-type" class="machine-edit__label">Tipo</label>
+                                <select id="edit-type" name="edit-type" class="machine-edit__input">
+                                    <option value="" id="default" selected>Selecionar</option>
+                                    {% for tipo_maquina in tipos_maquinas %}
+                                    <option value="{{tipo_maquina.id_tipo_maquina}}">{{tipo_maquina.tipo_maquina}}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="machine-edit__field">
+                                <label for="edit-model" class="machine-edit__label">Modelo</label>
+                                <input type="text" id="edit-model" name="edit-model" class="machine-edit__input"
+                                    value="Modelo H500">
                             </div>
                             <div class="machine-edit__field">
                                 <label for="edit-patrimony" class="machine-edit__label">Patrimônio</label>
-                                <input type="text" id="edit-patrimony" class="machine-edit__input" value="MAQ-SP-0014">
+                                <input type="text" id="edit-patrimony" name="edit-patrimony" class="machine-edit__input"
+                                    value="MAQ-SP-0014">
+                            </div>
+                            <div class="machine-edit__field">
+                                <label for="edit-location" class="machine-edit__label">Localização</label>
+                                <input type="text" id="edit-location" name="edit-location" class="machine-edit__input"
+                                    value="Setor A">
                             </div>
                         </div>
                     </div>
@@ -492,137 +601,139 @@ Máquinas
                                 <div class="machine-edit__field">
                                     <label for="edit-prod-time" class="machine-edit__label">Tempo de Produção
                                         (h)</label>
-                                    <input type="number" id="edit-prod-time" class="machine-edit__input" value="145">
+                                    <input type="number" id="edit-prod-time" name="edit-prod-time"
+                                        class="machine-edit__input" value="145">
                                 </div>
 
                                 <div class="machine-edit__field">
                                     <label for="edit-work-hours" class="machine-edit__label">Total Horas
                                         Funcionando</label>
-                                    <input type="number" id="edit-work-hours" class="machine-edit__input" value="1240">
+                                    <input type="number" id="edit-work-hours" name="edit-work-hours"
+                                        class="machine-edit__input" value="1240">
                                 </div>
 
                                 <div class="machine-edit__field">
                                     <label for="edit-cost" class="machine-edit__label">Custo Acumulado (R$)</label>
-                                    <input type="text" id="edit-cost" class="machine-edit__input" value="15500.00">
-                                    </dr=iv>
-
-                                    <div class="machine-edit__field">
-                                        <label for="edit-parts" class="machine-edit__label">Peças Alteradas
-                                            (Total)</label>
-                                        <input type="number" id="edit-parts" class="machine-edit__input" value="8">
-                                    </div>
-                                </div>
-
-                                <!-- Lado Direito: Parada e Upload do Manual -->
-                                <div class="machine-edit__stat-group">
-                                    <div class="machine-edit__field">
-                                        <label for="edit-stop-time" class="machine-edit__label">Tempo de Parada
-                                            (h)</label>
-                                        <input type="number" id="edit-stop-time" class="machine-edit__input" value="12">
-                                    </div>
-
-                                    <div class="machine-edit__field machine-edit__field--manual">
-                                        <label class="machine-edit__label">Manual da Máquina (PDF)</label>
-                                        <div class="machine-edit__file-upload-wrapper">
-                                            <span class="machine-edit__file-name">MANUAL_DE_OPERACAO.PDF</span>
-                                            <label for="edit-manual-file" class="machine-edit__upload-button">
-                                                Upload PDF
-                                                <input type="file" id="edit-manual-file"
-                                                    class="machine-edit__file-input" accept=".pdf">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- MANUTENÇÃO PREVENTIVA -->
-                        <div class="machine-edit__prev-maintance">
-                            <h3 class="machine-edit__section-title">Agendar Manutenção Preventiva</h3>
-                            <div class="machine-edit__maintance-row">
-                                <div class="machine-edit__field">
-                                    <label for="edit-maintance-status" class="machine-edit__label">Status</label>
-                                    <select id="edit-maintance-status" class="machine-edit__select">
-                                        <option value="Agendada" selected>Agendada</option>
-                                        <option value="Em Andamento">Em Andamento</option>
-                                        <option value="Concluída">Concluída</option>
-                                        <option value="Cancelada">Cancelada</option>
-                                    </select>
+                                    <input type="text" id="edit-cost" name="edit-cost" class="machine-edit__input"
+                                        value="15500.00">
                                 </div>
 
                                 <div class="machine-edit__field">
-                                    <label for="edit-maintance-date" class="machine-edit__label">Data Agendada</label>
-                                    <input type="date" id="edit-maintance-date" class="machine-edit__input"
-                                        value="2024-12-15">
+                                    <label for="edit-parts" class="machine-edit__label">Peças Alteradas (Total)</label>
+                                    <input type="number" id="edit-parts" name="edit-parts" class="machine-edit__input"
+                                        value="8">
+                                </div>
+                            </div>
+
+                            <!-- Lado Direito: Parada e Upload do Manual -->
+                            <div class="machine-edit__stat-group">
+                                <div class="machine-edit__field">
+                                    <label for="edit-stop-time" class="machine-edit__label">Tempo de Parada (h)</label>
+                                    <input type="number" id="edit-stop-time" name="edit-stop-time"
+                                        class="machine-edit__input" value="12">
+                                </div>
+
+                                <div class="file-upload-container">
+                                    <label for="manual-upload" class="machine-edit__label">Manual PDF</label>
+                                    <label for="manual-upload" class="custom-file-button">
+                                        Procurar Arquivo
+                                    </label>
+                                    <span id="file-name" class="file-name">Nenhum ficheiro escolhido</span>
+                                    <input type="file" id="manual-upload" name="manual-upload" accept=".pdf" hidden />
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- HISTÓRICO DE MANUTENÇÕES EDITÁVEL -->
-                        <div class="machine-edit__maintance-history">
-                            <h3 class="machine-edit__section-title">Histórico de Manutenções</h3>
-                            <div class="machine-edit__table-wrapper">
-                                <table class="machine-edit__maintances-list">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Data</th>
-                                            <th scope="col">Tipo</th>
-                                            <th scope="col">Técnico</th>
-                                            <th scope="col">Observações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><input type="date" class="machine-edit__input-table" value="2024-11-10">
-                                            </td>
-                                            <td>
-                                                <select class="machine-edit__select-table">
-                                                    <option value="Preventiva" selected>Preventiva</option>
-                                                    <option value="Corretiva">Corretiva</option>
-                                                </select>
-                                            </td>
-                                            <td><input type="text" class="machine-edit__input-table" value="João Silva">
-                                            </td>
-                                            <td><input type="text" class="machine-edit__input-table"
-                                                    value="Verificação de óleo"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="date" class="machine-edit__input-table" value="2024-10-05">
-                                            </td>
-                                            <td>
-                                                <select class="machine-edit__select-table">
-                                                    <option value="Preventiva">Preventiva</option>
-                                                    <option value="Corretiva" selected>Corretiva</option>
-                                                </select>
-                                            </td>
-                                            <td><input type="text" class="machine-edit__input-table" value="Ana Costa">
-                                            </td>
-                                            <td><input type="text" class="machine-edit__input-table"
-                                                    value="Troca de rolamento"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                    <!-- MANUTENÇÃO PREVENTIVA -->
+                    <div class="machine-edit__prev-maintance">
+                        <h3 class="machine-edit__section-title">Agendar Manutenção Preventiva</h3>
+                        <div class="machine-edit__maintance-row">
+                            <div class="machine-edit__field">
+                                <label for="edit-maintance-status" class="machine-edit__label">Status</label>
+                                <select id="edit-maintance-status" name="edit-maintance-status"
+                                    class="machine-edit__select">
+                                    <option value="" selected disabled>Selecionar</option>
+                                    <option value="Agendada">Agendada</option>
+                                    <option value="Em Andamento">Em Andamento</option>
+                                    <option value="Concluída">Concluída</option>
+                                    <option value="Cancelada">Cancelada</option>
+                                </select>
+                            </div>
+
+                            <div class="machine-edit__field">
+                                <label for="edit-maintance-date" class="machine-edit__label">Data Agendada</label>
+                                <input type="date" id="edit-maintance-date" name="edit-maintance-date"
+                                    class="machine-edit__input" value="2024-12-15">
                             </div>
                         </div>
+                    </div>
 
-                        <!-- BOTÕES DE AÇÃO DO FORMULÁRIO -->
-                        <div class="machine-edit__actions">
-                            <button type="button"
-                                class="machine-edit__button machine-edit__button--cancel">Cancelar</button>
-                            <button type="submit" class="machine-edit__button machine-edit__button--save">Salvar
-                                Alterações</button>
+                    <!-- HISTÓRICO DE MANUTENÇÕES EDITÁVEL -->
+                    <div class="machine-edit__maintance-history">
+                        <h3 class="machine-edit__section-title">Histórico de Manutenções</h3>
+                        <div class="machine-edit__table-wrapper">
+                            <table class="machine-edit__maintances-list">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Data</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Técnico</th>
+                                        <th scope="col">Observações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="date" name="history-date[]" class="machine-edit__input-table"
+                                                value="2024-11-10"></td>
+                                        <td>
+                                            <select name="history-type[]" class="machine-edit__select-table">
+                                                <option value="Preventiva" selected>Preventiva</option>
+                                                <option value="Corretiva">Corretiva</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="history-tech[]" class="machine-edit__input-table"
+                                                value="João Silva"></td>
+                                        <td><input type="text" name="history-notes[]" class="machine-edit__input-table"
+                                                value="Verificação de óleo"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="date" name="history-date[]" class="machine-edit__input-table"
+                                                value="2024-10-05"></td>
+                                        <td>
+                                            <select name="history-type[]" class="machine-edit__select-table">
+                                                <option value="Preventiva">Preventiva</option>
+                                                <option value="Corretiva" selected>Corretiva</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="history-tech[]" class="machine-edit__input-table"
+                                                value="Ana Costa"></td>
+                                        <td><input type="text" name="history-notes[]" class="machine-edit__input-table"
+                                                value="Troca de rolamento"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
+
+                    <!-- BOTÕES DE AÇÃO DO FORMULÁRIO -->
+                    <div class="machine-edit__actions">
+                        <button type="button"
+                            class="machine-edit__button machine-edit__button--cancel">Cancelar</button>
+                        <button type="submit" class="machine-edit__button machine-edit__button--save">Salvar
+                            Alterações</button>
+                    </div>
                 </form>
             </div>
         </div>
-        
-        
+
+
 
     </section>
-    <script src="/static/src/js/maquinas.js"></script>
+    
 </main>
 {% endblock %}
 
 {% block script %}
-
+    <script src="/static/src/js/maquinas.js"></script>
 {% endblock %}

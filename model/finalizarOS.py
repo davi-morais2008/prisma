@@ -14,8 +14,8 @@ def finalizar_OS(id):
 
     try:
         cursor.execute("""UPDATE ordens_servicos 
-        SET status_ordem = %s
-        WHERE id_ordem = %s""", ("Em Aberto", id))
+        SET status_ordem = 'Finalizada'
+        WHERE id_ordem = %s""", (id,))
         conexao.commit()
         conexao.close()
 
