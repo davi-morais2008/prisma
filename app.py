@@ -6,6 +6,7 @@ from model.OS import consultar_ordem_servico, cadastrar_ordem_servico
 from model.usuario import buscar_usuario
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
 from model.consultaMaquinas import consultar_maquinas
+from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
 import flask_mail
@@ -80,10 +81,10 @@ def redefinir_senha(token):
 
 
 
-
 @app.route("/telaInicial")
 def pagina_inicial():
     ordem_servico = consultar_ordem_servico()
+    print(ordem_servico)
     tecnicos = buscar_usuario()
     return render_template("telaInicial.html", ordem_servico = ordem_servico, tecnicos = tecnicos)
 
@@ -132,12 +133,10 @@ def register_os():
     return redirect('/telaInicial')
 
 
-    
-
-
-
-
-
+@app.route("/telaInicial/finalizar/<int:id>") 
+def finish_os(id):
+    finalizar_OS(id)
+    return redirect ("/telaInicial")
 
 @app.route("/historico")
 def pagina_historico():
