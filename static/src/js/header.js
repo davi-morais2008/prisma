@@ -6,29 +6,43 @@ menuToggle.addEventListener('click', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Seleciona todos os botões de tema (header e aside)
     const themeToggles = document.querySelectorAll('.theme-toggle');
-    const htmlElement = document.documentElement; // Seleciona a tag <html>
+    const htmlElement = document.documentElement; 
     
-    // Verifica se há um tema salvo no localStorage
+
+    const darkIconPath = '../static/src/img/dark_mode_imagem.png'; 
+    const lightIconPath = '../static/src/img/light_mode_imagem.png'; 
+
+
+    function updateIcons(theme) {
+        const themeIcons = document.querySelectorAll('.theme-toggle__icon');
+        themeIcons.forEach(icon => {
+            if (theme === 'dark') {
+                icon.src = lightIconPath; 
+            } else {
+                icon.src = darkIconPath; 
+            }
+        });
+    }
+
+
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
         htmlElement.setAttribute('data-theme', savedTheme);
+        updateIcons(savedTheme);
     }
 
-    // Função para alternar o tema
+
     function toggleTheme() {
         const currentTheme = htmlElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
-        // Aplica o novo tema no HTML, ativando as variáveis do variáveis.css
         htmlElement.setAttribute('data-theme', newTheme);
-        
-        // Salva a preferência no navegador
         localStorage.setItem('theme', newTheme);
+        
+        updateIcons(newTheme);
     }
 
-    // Adiciona o evento de clique a todos os botões encontrados na tela
     themeToggles.forEach(button => {
         button.addEventListener('click', toggleTheme);
     });
