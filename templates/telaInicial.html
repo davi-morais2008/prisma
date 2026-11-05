@@ -28,8 +28,8 @@ Página Inicial
     <div class="home__orders">
         {% for os in ordem_servico %}
         <article class="work-order work-order--baixa" id_order="{{os.id_ordem}}">
-            <h3 class="work-order__title">Número da Ordem: {{os.id_ordem}}</h3>
             <div class="work-order__description">
+                <h3 class="work-order__title">Número da Ordem: {{os.id_ordem}}</h3>
                 <p>Responsável: {{os.tecnico_responsavel}}</p>
                 <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
                 <p>Máquina: {{os.nome_maquina}}</p>

@@ -103,9 +103,9 @@
   --color-text-secondary: #FFFFFF;
   --color-text-light: #FFFFFF;
 
-  --shadow-sm: 0px 2px 8px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0px 4px 16px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0px 8px 24px rgba(0, 0, 0, 0.65);
+  --shadow-sm: 0px 2px 8px rgba(236, 230, 230, 0.05);
+  --shadow-md: 0px 4px 16px rgba(236, 230, 230, 0.1);
+  --shadow-lg: 0px 8px 24px rgba(236, 230, 230, 0.2);
 
   --color-footer: #151726;
 }
