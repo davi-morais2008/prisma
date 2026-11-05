@@ -8,6 +8,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalvar = document.getElementById("btn-salvar");
   const btnCancelar = document.getElementById("btn-cancelar");
 
+  // Elementos do Modal de Exclusão
+  const modalDeleteOverlay = document.getElementById("modal-delete-overlay");
+  const deleteEventTitle = document.getElementById("delete-event-title");
+  const btnConfirmarDelete = document.getElementById("btn-confirmar-delete");
+  const btnCancelarDelete = document.getElementById("btn-cancelar-delete");
+
+  let eventToDelete = null; // Variável para armazenar o evento que será excluído
+
   let selectedDateInfo = null;
 
   const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -47,12 +55,10 @@ document.addEventListener("DOMContentLoaded", function () {
       eventTitleInput.focus();
     },
 
-    // Clique num evento permite remover
     eventClick: function (info) {
-      const remover = confirm(`Deseja remover o evento '${info.event.title}'?`);
-      if (remover) {
-        info.event.remove();
-      }
+      eventToDelete = info.event; // Salva o evento clicado
+      deleteEventTitle.textContent = info.event.title; // Coloca o nome no modal
+      modalDeleteOverlay.classList.remove("hidden"); // Exibe o modal
     }
   });
 
@@ -98,3 +104,27 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+// Funções de Controlo do Modal de Exclusão
+  function fecharModalDelete() {
+    modalDeleteOverlay.classList.add("hidden");
+    eventToDelete = null;
+  }
+
+  function confirmarExclusao() {
+    if (eventToDelete) {
+      eventToDelete.remove(); // Remove o evento do calendário
+      fecharModalDelete();
+    }
+  }
+
+  // Event Listeners do Modal de Exclusão
+  btnConfirmarDelete.addEventListener("click", confirmarExclusao);
+  btnCancelarDelete.addEventListener("click", fecharModalDelete);
+
+  // Fechar ao clicar no fundo fosco
+  modalDeleteOverlay.addEventListener("click", function (e) {
+    if (e.target === modalDeleteOverlay) {
+      fecharModalDelete();
+    }
+  });
