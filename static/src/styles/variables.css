@@ -101,13 +101,13 @@
   --color-status-warning: #FFD93D;
   --color-status-success: #51CF66;
 
-  --color-text-primary: #F0F2FF;
-  --color-text-secondary: #9DA3C4;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #FFFFFF;
   --color-text-light: #FFFFFF;
 
-  --shadow-sm: 0px 2px 8px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0px 4px 16px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0px 8px 24px rgba(0, 0, 0, 0.65);
+  --shadow-sm: 0px 2px 8px rgba(236, 230, 230, 0.05);
+  --shadow-md: 0px 4px 16px rgba(236, 230, 230, 0.1);
+  --shadow-lg: 0px 8px 24px rgba(236, 230, 230, 0.2);
 
   --color-footer: #151726;
 }

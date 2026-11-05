@@ -1,6 +1,4 @@
-let meuGrafico = null;
-
-async function carregarDadosDashboard() {
+export async function carregarDadosDashboard(tema) {
     console.log("Iniciando busca de dados no Flask...");
     try {
         const resposta = await fetch('/api/dados');
@@ -11,12 +9,13 @@ async function carregarDadosDashboard() {
         const dados = await resposta.json();
         console.log("Dados recebidos da API:", dados);
 
+
         // 1. Atualiza os cards de KPI
         atualizarKPIs(dados.kpis);
 
         // 2. Renderiza o gráfico
-        renderizarGrafico('meuGrafico', dados.os_por_mes, 'Total de Ordens nos últimos meses', '#2213ff');
-        renderizarGrafico('falhasGrafico', dados.falhas_quantidade, 'Maiores índices de Falhas', '#ff0000');
+        renderizarGrafico('meuGrafico', dados.os_por_mes, 'Total de Ordens nos últimos meses', '#2213ff', tema);
+        renderizarGrafico('falhasGrafico', dados.falhas_quantidade, 'Maiores índices de Falhas', '#ff0000', tema);
 
     } catch (erro) {
         console.error('Erro ao carregar dados do dashboard:', erro);
@@ -43,7 +42,7 @@ function atualizarKPIs(kpis) {
     if (elTotalFalha) elTotalFalha.textContent = kpis.falhas_computadas;
 }
 
-function renderizarGrafico(nomeGrafico, dadosGrafico, mensagem, cor) {
+function renderizarGrafico(nomeGrafico, dadosGrafico, mensagem, cor, tema) {
     if (!dadosGrafico) {
         console.error("Dados do gráfico inválidos ou indefinidos.");
         return;
@@ -71,7 +70,9 @@ function renderizarGrafico(nomeGrafico, dadosGrafico, mensagem, cor) {
 
     // Obtém variáveis de cor do CSS com fallback para valores padrão
     const estiloComputado = getComputedStyle(document.documentElement);
-    const corTexto = estiloComputado.getPropertyValue('--color-text-primary').trim() || '#333333';
+    const corTexto = (tema == 'dark' ? '#ffffff' : '#000000');
+    console.log(tema)
+    console.log(corTexto)
 
     nomeGrafico = new Chart(ctx, {
         type: 'bar',
@@ -114,8 +115,12 @@ function renderizarGrafico(nomeGrafico, dadosGrafico, mensagem, cor) {
 }
 
 // Garante a execução independente de quando o DOM terminar de carregar
+window.carregarDadosDashboard = carregarDadosDashboard;
+
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', carregarDadosDashboard);
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarDadosDashboard(localStorage.getItem('theme'));
+    });
 } else {
-    carregarDadosDashboard();
+    carregarDadosDashboard(localStorage.getItem('theme'));
 }
