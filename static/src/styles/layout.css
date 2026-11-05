@@ -280,7 +280,7 @@ main {
     }
 
     main{
-        margin-top: 80px;
+        margin-top: 75px !important;
     }
 
     .sidebar {
@@ -353,4 +353,5 @@ main {
         z-index: 20;
         transform: none;
     }
+
 }

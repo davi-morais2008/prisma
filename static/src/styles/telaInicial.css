@@ -225,7 +225,7 @@
 .order-details__overlay {
     position: absolute;
     inset: 0;
-    background-color: var(--color-glass-bg);
+    background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: var(--glass-blur);
 }
 
@@ -233,8 +233,8 @@
 .order-details__card {
     position: relative;
     width: 100%;
-    max-width: 500px;
-    max-height: 90vh;
+    max-width: 720px;
+    max-height: 80vh;
     background-color: var(--color-bg-card);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
@@ -543,7 +543,7 @@
 .order-edit__overlay {
     position: absolute;
     inset: 0;
-    background-color: var(--color-glass-bg);
+    background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: var(--glass-blur);
 }
 
@@ -551,8 +551,8 @@
 .order-edit__card {
     position: relative;
     width: 100%;
-    max-width: 520px;
-    max-height: 90vh;
+    max-width: 720px;
+    max-height: 80vh;
     background-color: var(--color-bg-card);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
@@ -792,7 +792,7 @@
 .order-create__overlay {
     position: absolute;
     inset: 0;
-    background-color: var(--color-glass-bg);
+    background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: var(--glass-blur);
 }
 
@@ -801,7 +801,7 @@
     position: relative;
     width: 100%;
     max-width: 520px;
-    max-height: 90vh;
+    max-height: 80vh;
     background-color: var(--color-bg-card);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
@@ -1045,21 +1045,24 @@
 .order-delete__overlay {
     position: absolute;
     inset: 0;
-    background-color: var(--color-glass-bg);
+    background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: var(--glass-blur);
 }
 
 /* Card Container Compacto */
 .order-delete__card {
     position: relative;
+    z-index: 1;
     width: 100%;
     max-width: 440px;
+    max-height: 80vh;
     background-color: var(--color-bg-card);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    top: 25px;
 }
 
 /* Cabeçalho Fixo Escuro */
@@ -1296,6 +1299,10 @@
     .home__title{
         font-size: var(--font-size-md);
     }
+
+     .order-details, .order-edit, .order-create, .order-delete{
+        margin-top: 75px !important;
+     }
 
 }
     
