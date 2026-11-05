@@ -11,6 +11,7 @@ from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
 from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina
+from model.maquina import adicionar_falha, adicionar_tipo_maquina
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
 from functools import wraps
@@ -266,7 +267,7 @@ def post_cadastro():
         return redirect('/login')
     try:
         if cadastrar_usuario(user_cpf, username, user_email, user_pwd):
-            flash('Efetue o Login para acessar o Sistema', 'sucsses')
+            flash('Efetue o Login para acessar o Sistema', 'success')
             return redirect('/login')
         else:
             flash('Erro ao cadastrar-se. Tente Novamente', 'error')
@@ -339,7 +340,30 @@ def maquinas_update_machines():
     atualizar_editar_maquina(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
     return redirect('/maquinas')
 
+@app.route('/maquina/adicionar_falha', methods = ['POST'])
+@login_required
+@roles_required('admin', 'root')
+def adicionar_falha_post():
+    id_maquina = request.form.get('id_maquina')
+    falha =  request.form.get('descricao_falha')
+    try:
+        adicionar_falha(id_maquina, falha)
+        flash('Falha adicionada com sucesso', 'success')
+    except Exception as e:
+        pass
+    return redirect('/maquinas')
 
+@app.route('/maquina/adicionar_tipo_maquina', methods = ['POST'])
+@login_required
+@roles_required('admin', 'root')
+def adicionar_tipo_maquina_post():
+    tipo_maquina = request.form.get('nome_tipo')
+    try:
+        adicionar_tipo_maquina(tipo_maquina)
+        flash('Tipo de Máquina adicionado com sucesso', 'success')
+    except Exception as e:
+        pass
+    return redirect('/maquinas')
 
 
 
