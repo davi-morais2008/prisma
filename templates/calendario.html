@@ -42,6 +42,22 @@
           </div>
         </div>
       </div>
+            <!-- Modal para Excluir Eventos -->
+      <div id="modal-delete-overlay" class="modal-overlay hidden">
+        <div class="modal-container">
+          <h2 style="color: #d9534f;">Excluir Evento</h2>
+          
+          <div style="margin: 20px 0;">
+            <p>Deseja realmente remover o evento <strong id="delete-event-title"></strong>?</p>
+            <p style="font-size: 0.9em; color: #666; margin-top: 8px;">Esta ação não poderá ser revertida.</p>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" id="btn-cancelar-delete" class="btn btn-secondary">Cancelar</button>
+            <button type="button" id="btn-confirmar-delete" class="btn btn-primary" style="background-color: #d9534f; border-color: #d9534f;">Sim, Excluir</button>
+          </div>
+        </div>
+      </div>
   {% endblock %}
 
   {% block script %}
