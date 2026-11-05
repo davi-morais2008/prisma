@@ -18,11 +18,12 @@
     <header class="header">
         <div class="header-bar">
 
-        <div class="sidebar_light_dark">        
-            <button class="theme-toggle" type="button" aria-label="Alternar para modo escuro">
-                <img class="theme-toggle__icon" src="../static/src/img/dark_mode_imagem.png" alt="Ícone de tema escuro">
-            </button>
-        </div>
+            <div class="sidebar_light_dark">
+                <button class="theme-toggle" type="button" aria-label="Alternar para modo escuro">
+                    <img class="theme-toggle__icon" src="../static/src/img/dark_mode_imagem.png"
+                        alt="Ícone de tema escuro">
+                </button>
+            </div>
             <span class="helogo">PRISMA</span>
             <button id="menu-toggle" class="menu-btn" aria-label="Abrir menu">
                 ☰
@@ -34,10 +35,14 @@
                 <li><a href="/telaInicial">Serviços</a></li>
                 <li><a href="/profile">Perfil</a></li>
                 <li><a href="/calendario">Calendário</a></li>
+                {% if user_rbac in ['admin', 'root'] %}
                 <li><a href="/painelGeral">Painel Geral</a></li>
+                {% endif %}
                 <li><a href="/maquinas">Máquinas</a></li>
                 <li><a href="/historico">Histórico</a></li>
+                {% if user_rbac in ['admin' 'root'] %}
                 <li><a href="/usuarios">Usuários</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
@@ -59,18 +64,22 @@
                 <li class="sidebar__nav-item">
                     <a class="sidebar__nav-link" href="/calendario">Calendário</a>
                 </li>
+                {% if user_rbac in ['admin', 'root'] %}
                 <li class="sidebar__nav-item">
                     <a class="sidebar__nav-link" href="/painelGeral">Painel Geral</a>
                 </li>
+                {% endif %}
                 <li class="sidebar__nav-item">
                     <a class="sidebar__nav-link" href="/maquinas">Máquinas</a>
                 </li>
                 <li class="sidebar__nav-item">
                     <a class="sidebar__nav-link" href="/historico">Histórico</a>
                 </li>
+                {% if user_rbac in ['admin', 'root'] %}
                 <li class="sidebar__nav-item">
                     <a class="sidebar__nav-link" href="/usuarios">Usuários</a>
                 </li>
+                {% endif %}
             </ul>
         </nav>
 
@@ -115,7 +124,7 @@
     </footer>
 
     <script src="/static/src/js/header.js"></script>
-    
+
     {% block script %}
     {% endblock %}
 
