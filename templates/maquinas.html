@@ -32,8 +32,13 @@ Máquinas
             {% if maquina.is_inativa == 0 %}
             <article class="machine">
                 <figure class="machine__media">
+                    {% if maquina.url_imagem %}
                     <img src="{{maquina.url_imagem}}" alt="Prévia visual da Máquina 01 - Torno CNC X200"
                         class="machine__image" loading="lazy" />
+                    {% else %}
+                    <img src="https://placehold.co/600x400" alt="Prévia visual da Máquina 01 - Torno CNC X200"
+                        class="machine__image" loading="lazy" />
+                    {% endif %}
                     <span class="machine__status machine__status--active" aria-label="Status: Operacional">
                         Operacional
                     </span>

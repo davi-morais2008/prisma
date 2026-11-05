@@ -9,22 +9,22 @@
 
 /* Largura da barra vertical */
 ::-webkit-scrollbar {
-  width: 5px;
+    width: 5px;
 }
 
 /* A trilha (fundo onde a barra desliza) */
 ::-webkit-scrollbar-track {
-  background: #ffffff;
+    background: #ffffff;
 }
 
 /* O "puxador" da barra (a parte que você arrasta) */
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
+    background: var(--color-primary);
 }
 
 /* Cor do puxador ao passar o mouse */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+    background: #555;
 }
 
 body{
@@ -36,7 +36,7 @@ main {
     min-height: 100vh;
 }
 
-.header{
+.header {
     display: none;
 }
 
@@ -63,7 +63,7 @@ main {
     border-bottom: 1px solid var(--color-bg-hover);
 }
 
-.sidebar__logo img{
+.sidebar__logo img {
     max-width: 140px;
     height: auto;
     object-fit: contain;
@@ -128,7 +128,7 @@ main {
     color: var(--color-accent);
 }
 
-.footer{
+.footer {
     width: 100%;
     height: 8vh;
     background-color: var(--color-footer);
@@ -147,7 +147,7 @@ main {
     color: var(--color-text-secondary);
     font-size: clamp(0.65rem, 2.5vw, 1rem);
     gap: 15px;
-    
+
 }
 
 .helogo {
@@ -206,12 +206,18 @@ main {
 }
 
 .dark-mode .theme-toggle__icon {
-    filter: invert(1); 
+    filter: invert(1);
 }
+.profile__photo-nav {
+    text-decoration: none;
+    color: var(--color-text-light);
+    font-size: 45px !important;
+}
+
 
 @media (max-width: 768px) {
 
-    body{
+    body {
         margin-left: 0px !important;
     }
 
@@ -222,7 +228,7 @@ main {
     .sidebar {
         display: none;
     }
-    
+
 
     .header {
         background-color: var(--color-primary);
@@ -287,6 +293,6 @@ main {
         width: auto;
         padding: 0;
         z-index: 20;
-        transform: none; 
+        transform: none;
     }
 }
