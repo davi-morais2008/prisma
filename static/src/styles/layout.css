@@ -226,18 +226,6 @@ main {
 }
 
 /* Estilização base do botão de tema */
-.theme-toggle {
-    background: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    border-radius: var(--border-radius-sm);
-    transition: background 0.3s ease;
-}
 
 .theme-toggle {
   width: 38px;
