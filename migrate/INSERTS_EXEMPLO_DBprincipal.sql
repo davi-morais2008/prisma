@@ -15,12 +15,12 @@ INSERT INTO especialidades (especialidade) VALUES
 -- 2. USUÁRIOS (Alunos, Técnicos e Administradores)
 -- Note que o campo status_usuario é BOOL (1 = Ativo, 0 = Inativo)
 -- =============================================
-INSERT INTO usuarios (cpf, nome, email, senha, status_usuario, cargo, descricao_usuario) VALUES
-('47126589832', 'Guxta Pereira', 'gustavo.h.pereira13@aluno.senai.br', 'gu1234', 1, 'Técnico', 'Aluno do Curso Técnico em Eletromecânica'),
-('00000000000', 'admin root', 'admin.root@sp.senai.br', 'senai603Prisma', 1, 'Administrador', 'Usuário administrador do sistema'),
-('12345678901', 'Carlos Eduardo Silva', 'carlos.silva@sp.senai.br', 'senha123', 1, 'Instrutor', 'Docente da Oficina de Mecânica'),
-('98765432100', 'Mariana Souza', 'mariana.souza@aluno.senai.br', 'mari2024', 1, 'Técnico', 'Aluna de Automação Industrial'),
-('55544433322', 'Roberto Almeida', 'roberto.almeida@sp.senai.br', 'maint2024', 1, 'Coordenador', 'Coordenador de Manutenção dos Laboratórios');
+INSERT INTO usuarios (cpf, nome, email, senha, status_usuario, cargo, descricao_usuario, rbac) VALUES
+('47126589832', 'Guxta Pereira', 'gustavo.h.pereira13@aluno.senai.br', 'gu1234', 1, 'Técnico', 'Aluno do Curso Técnico em Eletromecânica', "usuario"),
+('00000000000', 'admin root', 'admin.root@sp.senai.br', 'senai603Prisma', 1, 'Administrador', 'Usuário administrador do sistema', "root"),
+('12345678901', 'Carlos Eduardo Silva', 'carlos.silva@sp.senai.br', 'senha123', 1, 'Instrutor', 'Docente da Oficina de Mecânica', "usuario"),
+('98765432100', 'Mariana Souza', 'mariana.souza@aluno.senai.br', 'mari2024', 1, 'Técnico', 'Aluna de Automação Industrial', "usuario"),
+('55544433322', 'Roberto Almeida', 'roberto.almeida@sp.senai.br', 'maint2024', 1, 'Coordenador', 'Coordenador de Manutenção dos Laboratórios', "usuario");
 
 
 -- =============================================
