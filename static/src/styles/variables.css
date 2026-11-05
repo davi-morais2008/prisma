@@ -78,7 +78,7 @@
 }
 
 [data-theme="dark"] {
-  --color-primary: #8E82FF;
+  --color-primary: #1600a7;
   --color-primary-dark: #A59BFF;
 
   --color-secondary: #5243FF;
@@ -87,10 +87,10 @@
   --color-accent-orange: #FFA834;
   --color-accent-peach: #FFC46B;
 
-  --color-bg-main: #0C0D16;
+  --color-bg-main: #12131C;
   --color-bg-card: #151726;
   --color-bg-input: #1D2036;
-  --color-bg-light: #252844;
+  --color-bg-light: #191e47;
   --color-bg-card-inactive: #0E0F19; 
 
   --color-glass-bg: rgba(21, 23, 38, 0.75);
