@@ -257,7 +257,6 @@ main {
 
 .theme-toggle:hover {
   transform: scale(1.08);
-  box-shadow: var(--shadow-md);
 }
 
 
