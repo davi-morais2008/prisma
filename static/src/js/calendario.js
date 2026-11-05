@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
 
-  // Elementos do Modal
+  // Elementos do Modal de Criação
   const modalOverlay = document.getElementById("modal-overlay");
   const eventTitleInput = document.getElementById("event-title");
   const eventStatusSelect = document.getElementById("event-status");
@@ -13,9 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const deleteEventTitle = document.getElementById("delete-event-title");
   const btnConfirmarDelete = document.getElementById("btn-confirmar-delete");
   const btnCancelarDelete = document.getElementById("btn-cancelar-delete");
+  const bgOverlayDelete = modalDeleteOverlay.querySelector('.event-delete__overlay');
 
-  let eventToDelete = null; // Variável para armazenar o evento que será excluído
-
+  let eventToDelete = null;
   let selectedDateInfo = null;
 
   const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -26,9 +26,9 @@ document.addEventListener("DOMContentLoaded", function () {
     height: "100%",
 
     headerToolbar: {
-    left: 'prev,today,next',
-    center: 'title',
-    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      left: 'prev,today,next',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
     },
 
     buttonText: {
@@ -46,7 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
       { title: "Apresentação", start: "2026-10-28", className: "evento-success" }
     ],
 
-    // Clique num dia abre o modal
     dateClick: function (info) {
       selectedDateInfo = info;
       eventTitleInput.value = "";
@@ -56,15 +55,15 @@ document.addEventListener("DOMContentLoaded", function () {
     },
 
     eventClick: function (info) {
-      eventToDelete = info.event; // Salva o evento clicado
-      deleteEventTitle.textContent = info.event.title; // Coloca o nome no modal
-      modalDeleteOverlay.classList.remove("hidden"); // Exibe o modal
+      eventToDelete = info.event;
+      deleteEventTitle.textContent = "Excluir: " + info.event.title; 
+      modalDeleteOverlay.classList.remove("hidden");
     }
   });
 
   calendar.render();
 
-  // Funções de Controlo do Modal
+
   function fecharModal() {
     modalOverlay.classList.add("hidden");
     selectedDateInfo = null;
@@ -86,26 +85,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Event Listeners
   btnSalvar.addEventListener("click", salvarEvento);
   btnCancelar.addEventListener("click", fecharModal);
 
-  // Fechar ao clicar no fundo fosco
   modalOverlay.addEventListener("click", function (e) {
     if (e.target === modalOverlay) {
       fecharModal();
     }
   });
 
-  // Salvar com a tecla Enter
   eventTitleInput.addEventListener("keypress", function (e) {
     if (e.key === "Enter") {
       salvarEvento();
     }
   });
-});
 
-// Funções de Controlo do Modal de Exclusão
   function fecharModalDelete() {
     modalDeleteOverlay.classList.add("hidden");
     eventToDelete = null;
@@ -113,18 +107,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function confirmarExclusao() {
     if (eventToDelete) {
-      eventToDelete.remove(); // Remove o evento do calendário
+      eventToDelete.remove();
       fecharModalDelete();
     }
   }
 
-  // Event Listeners do Modal de Exclusão
   btnConfirmarDelete.addEventListener("click", confirmarExclusao);
   btnCancelarDelete.addEventListener("click", fecharModalDelete);
 
-  // Fechar ao clicar no fundo fosco
-  modalDeleteOverlay.addEventListener("click", function (e) {
-    if (e.target === modalDeleteOverlay) {
-      fecharModalDelete();
-    }
-  });
+  if (bgOverlayDelete) {
+    bgOverlayDelete.addEventListener("click", fecharModalDelete);
+  }
+});
