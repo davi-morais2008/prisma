@@ -122,3 +122,9 @@ def consulta_tipo_maquinas():
     conexao.close()
 
     return resposta
+
+def adicionar_falha(tipo_maquina, falha):
+    conexao, cursor = conectar()
+    cursor.execute("INSERT INTO falhas (id_tipo_falha, falha) VALUES (%s, %s)", (tipo_maquina, falha))
+    conexao.commit()
+    conexao.close()

@@ -28,7 +28,8 @@ CREATE TABLE IF NOT EXISTS usuarios (
  status_usuario BOOL DEFAULT true,
  descricao_usuario VARCHAR(255),
  imagem_perfil VARCHAR(255),
- cargo VARCHAR(100) DEFAULT "Técnico"
+ cargo VARCHAR(100) DEFAULT "Técnico",
+ rbac VARCHAR(100) DEFAULT "usuario"
 );
 
 CREATE UNIQUE INDEX UQ_EMAIL ON USUARIOS (email);

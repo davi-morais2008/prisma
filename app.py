@@ -18,7 +18,6 @@ from functools import wraps
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'PRISMA_maintence'
 
-# Configurações do Gmail da empresa
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
@@ -30,6 +29,13 @@ mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 
+@app.context_processor
+def inject_user_permissions():
+    return {
+        'user_rbac' : session.get('user_rbac'),
+        'user' : session.get('user')
+    }
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -39,7 +45,21 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-
+def roles_required(*roles):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not session.get('user'):
+                return redirect(url_for('pagina_login'))
+            
+            user_role = session.get('user_rbac')
+            if user_role not in roles:
+                flash('Você não tem permissão para acessar este recurso.', 'danger')
+                return redirect(url_for('pagina_inicial'))
+                
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
 
 @app.route('/esqueci-senha', methods=['GET', 'POST'])
 @app.route('/recuperacaoSenha', methods=['GET', 'POST'])
@@ -47,7 +67,6 @@ def esqueci_senha():
     if request.method == 'POST':
         email = request.form.get('email')
 
-        # Chama a função do model para buscar no banco
         usuario = buscar_usuario_por_email(email)
 
         if usuario:
@@ -84,7 +103,6 @@ def redefinir_senha(token):
         nova_senha = request.form.get('senha')
         senha_hash = generate_password_hash(nova_senha)
 
-        # Chama a função do model para atualizar a senha
         atualizar_senha_usuario(email, senha_hash)
 
         flash('Sua senha foi alterada com sucesso!', 'success')
@@ -95,6 +113,7 @@ def redefinir_senha(token):
 
 @app.route('/painelGeral')
 @login_required
+@roles_required('admin', 'root')
 def painel_geral():
     return render_template('painelGeral.html')
 
@@ -155,7 +174,6 @@ def api_get_ordem():
             return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route("/telaInicial/post-register-order", methods=["POST"])
-@login_required
 def register_os():
     maquinas = consultar_maquinas()
     nmr_patrimonio = request.form.get('numero_patrimonio')
@@ -223,9 +241,10 @@ def post_login():
     for user in usuarios:
         if user['cpf'] == usuario and user['senha'] == senha:
             session['user'] = usuario
+            session['user_rbac'] = user['rbac']
             print(session['user'])
             return redirect('/telaInicial')
-    flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
+    flash('Usuário ou Senha incorreto. Tente Novamente!', 'error')
     return redirect('/login')
 
 
@@ -273,6 +292,7 @@ def maquinas_api_get():
     return jsonify(maquinas), 200
 
 @app.route('/maquinas/post_register_machine', methods = ['POST'])
+@roles_required('admin', 'root')
 def maquinas_post_register():
     avatar_file = request.files.get("avatar-upload")
     type_machine = request.form.get("type-machine")
@@ -291,12 +311,14 @@ def maquinas_post_register():
     return redirect('/maquinas')
 
 @app.route('/maquinas/api_delete_machines', methods = ['POST'])
+@roles_required('admin', 'root')
 def maquinas_delete_machines():
     id_machine = request.get_json()
     deletar_maquina(int(id_machine['id']))
     return jsonify({"status": "sucesso", "mensagem": "Máquina Deletada!"}), 200
 
 @app.route('/maquinas/update_machines', methods = ['POST'])
+@roles_required('admin', 'root')
 def maquinas_update_machines():
     
     avatar_file = request.files.get("edit-machine-img")
@@ -343,6 +365,7 @@ def pagina_perfil_update():
 
 @app.route('/usuarios', methods=['GET'])
 @login_required
+@roles_required('admin', 'root')
 def pagina_usuarios():
     
     lista_de_usuarios = buscar_usuario()

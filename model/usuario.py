@@ -6,7 +6,7 @@ def buscar_usuario(usuario=False):
 
     Retorna:
         Lista de tuplas contendo os dados dos usuários 
-            (cpf, nome, sobrenome, email, especialidade).
+            (cpf, nome, sobrenome, email, especialidade, rbac).
     """
 
     conexao, cursor = conectar()
@@ -20,7 +20,7 @@ def buscar_usuario(usuario=False):
         
         resposta = cursor.fetchall()
         return(resposta)
-    cursor.execute("""SELECT usuarios.cpf, usuarios.status_usuario, usuarios.nome, usuarios.email, usuarios.senha, especialidades.especialidade FROM usuarios
+    cursor.execute("""SELECT usuarios.cpf, usuarios.status_usuario, usuarios.nome, usuarios.email, usuarios.senha, especialidades.especialidade, usuarios.rbac FROM usuarios
                       LEFT JOIN tecnicos_especialidades 
                         ON usuarios.cpf = tecnicos_especialidades.cpf
                       LEFT JOIN especialidades 
