@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{% block titulo %}{% endblock %}</title>
     <link rel="stylesheet" href="{{url_for('static', filename = 'src/styles/layout.css')}}">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
     {% block estilo %}
     {% endblock %}
 
 </head>
+
 <body>
     <header class="header">
         <div class="header-bar">
@@ -24,10 +25,10 @@
         </div>
             <span class="helogo">PRISMA</span>
             <button id="menu-toggle" class="menu-btn" aria-label="Abrir menu">
-            ☰
+                ☰
             </button>
         </div>
-        
+
         <nav id="mobile-dropdown" class="dropdown-menu">
             <ul>
                 <li><a href="/telaInicial">Serviços</a></li>
@@ -73,24 +74,33 @@
             </ul>
         </nav>
 
+        <div class="navbar__buttons">
+            <div class="sidebar_light_dark">
+                <button class="theme-toggle" type="button" aria-label="Alternar para modo escuro">
+                    <img class="theme-toggle__icon" src="../static/src/img/dark_mode_imagem.png"
+                        alt="Ícone de tema escuro">
+                </button>
+            </div>
 
-        <div class="sidebar_light_dark">        
-            <button class="theme-toggle" type="button" aria-label="Alternar para modo escuro">
-                <img class="theme-toggle__icon" src="../static/src/img/dark_mode_imagem.png" alt="Ícone de tema escuro">
-            </button>
+            <div class="sidebar__user">
+                <span style="height: 45px;">
+                    <a href="/profile" class="material-symbols-outlined profile__photo-nav">account_circle</a>
+                </span>
+            </div>
+
+            <div class="sidebar__logoff">
+                <span>
+                    <a class="material-symbols-outlined sidebar__logoff--icon" href="/logoff">exit_to_app</a>
+                </span>
+            </div>
         </div>
-        
-        <div class="sidebar__user">
-            <span >
-                <a href="/profile" class="material-icons profile__photo-nav">account_circle</a>
-            </span>
-        </div>
+
 
     </aside>
 
-        {% block conteudo %}
-        {% endblock %}
-    
+    {% block conteudo %}
+    {% endblock %}
+
 
     <footer class="footer">
         <div class="footer__content">
@@ -104,10 +114,11 @@
         </div>
     </footer>
 
-    <script type="module" src="/static/src/js/header.js"></script>
+    <script src="/static/src/js/header.js"></script>
     
     {% block script %}
     {% endblock %}
 
 </body>
+
 </html>
