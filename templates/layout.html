@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{% block titulo %}{% endblock %}</title>
     <link rel="stylesheet" href="{{url_for('static', filename = 'src/styles/layout.css')}}">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     {% block estilo %}
     {% endblock %}
 
 </head>
+
 <body>
     <header class="header">
-        
-        <div class="sidebar_light_dark">        
+
+        <div class="sidebar_light_dark">
             <button class="theme-toggle" type="button" aria-label="Alternar para modo escuro">
                 <img class="theme-toggle__icon" src="../static/src/img/dark_mode_imagem.png" alt="Ícone de tema escuro">
             </button>
@@ -25,10 +26,10 @@
         <div class="header-bar">
             <span class="helogo">PRISMA</span>
             <button id="menu-toggle" class="menu-btn" aria-label="Abrir menu">
-            ☰
+                ☰
             </button>
         </div>
-        
+
         <nav id="mobile-dropdown" class="dropdown-menu">
             <ul>
                 <li><a href="/telaInicial">Serviços</a></li>
@@ -75,23 +76,29 @@
         </nav>
 
 
-        <div class="sidebar_light_dark">        
+        <div class="sidebar_light_dark">
             <button class="theme-toggle" type="button" aria-label="Alternar para modo escuro">
                 <img class="theme-toggle__icon" src="../static/src/img/dark_mode_imagem.png" alt="Ícone de tema escuro">
             </button>
         </div>
-        
+
         <div class="sidebar__user">
-            <span >
+            <span>
                 <a href="/profile" class="material-icons profile__photo-nav">account_circle</a>
+            </span>
+        </div>
+
+        <div class="sidebar__logoff">
+            <span class="">
+                <a class="material-icons sidebar__logoff--icon" href="">keyboard_backspace</a>
             </span>
         </div>
 
     </aside>
 
-        {% block conteudo %}
-        {% endblock %}
-    
+    {% block conteudo %}
+    {% endblock %}
+
 
     <footer class="footer">
         <div class="footer__content">
@@ -106,9 +113,10 @@
     </footer>
 
     <script src="/static/src/js/header.js"></script>
-    
+
     {% block script %}
     {% endblock %}
 
 </body>
+
 </html>
