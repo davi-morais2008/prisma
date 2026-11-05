@@ -456,8 +456,11 @@ Página Inicial
                             <div class="order-create__field order-create__field--full">
                                 <label class="order-create__label" for="create_falha">Falha Identificada</label>
                                 <div class="inputs-falha">
-                                    <select class="order-create__select" name="" id="">Selecione...
-                                        <option value="1">Falha no freio</option>
+                                    <select class="order-create__select" name="falhas" id="falhas">
+                                        <option disabled selected value="1">Selecione...</option>
+                                        {% for falha in falhas %}
+                                        <option value="{{falha.id_falha}}">{{falha.falha}}</option>
+                                        {% endfor %}
                                     </select>
 
                                     <button title="Adicionar falha" class="order-create__btn--add-falha">
