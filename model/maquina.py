@@ -147,3 +147,10 @@ def adicionar_tipo_maquina(nome_tipo):
         if conexao:
             conexao.close()
         return False
+
+    
+def adicionar_falha(tipo_maquina, falha):
+    conexao, cursor = conectar()
+    cursor.execute("INSERT INTO falhas (id_tipo_falha, falha) VALUES (%s, %s)", (tipo_maquina, falha))
+    conexao.commit()
+    conexao.close()
