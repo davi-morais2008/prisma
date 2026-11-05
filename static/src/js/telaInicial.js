@@ -5,12 +5,14 @@ const orderModal = document.querySelector('.order-details')
 const overlayModal = document.querySelector('#modalOverlay')
 const homeOrders = document.querySelector('.home__orders')
 
+const currentPath = window.location.pathname;
+const filterButton = document.querySelectorAll('.filter-button')
 
 // OS INFO CARD
 const btnClose = document.querySelector('#btnClose')
 const btnEdit = document.querySelector('#btnEdit')
 const btnDelete = document.querySelector('#btnDelete')
-// const btnFinish = document.querySelector('#btnFinish')
+
 
 // Imagem
 const imagemMaquina = document.querySelector('.order-details__image')
@@ -100,6 +102,14 @@ function openCreateModal(){
 function closeCreateModal(){
     createModal.classList.remove('active')
 }
+
+// Destaca o botão de filtragem selecionado
+filterButton.forEach(button => {
+    if (button.getAttribute('href') === currentPath) {
+        button.classList.add('active')
+    }
+})
+
 
 // Função auxiliar para converter e formatar data para PT-BR
 function formatarDataPT(dataString) {
