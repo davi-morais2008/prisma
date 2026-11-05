@@ -131,7 +131,7 @@ setupFilePreview(filePreviewInputEdit, filePreviewEdit);
 
 async function requestMachine() {
     try {
-        const resposta = await fetch(`http://127.0.0.1:8080/maquinas/api_request_machines`, {
+        const resposta = await fetch(`/maquinas/api_request_machines`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json; charset=utf-8',
