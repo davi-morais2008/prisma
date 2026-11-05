@@ -234,7 +234,7 @@ def post_login():
             session['user_rbac'] = user['rbac']
             print(session['user'])
             return redirect('/telaInicial')
-    flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
+    flash('Usuário ou Senha incorreto. Tente Novamente!', 'error')
     return redirect('/login')
 
 
