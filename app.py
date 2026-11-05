@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.OS import consultar_ordem_servico, cadastrar_ordem_servico
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico
 from model.usuario import buscar_usuario, atualizar_usuario
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
 from model.dashboard import buscar_dados_dashboard
@@ -112,10 +112,20 @@ def get_dados():
 
 @app.route("/telaInicial")
 def pagina_inicial():
-    ordem_servico = consultar_ordem_servico()
-    print(ordem_servico)
+    ordens = consultar_ordem_servico()
     tecnicos = buscar_usuario()
-    return render_template("telaInicial.html", ordem_servico = ordem_servico, tecnicos = tecnicos)
+    return render_template("telaInicial.html", ordem_servico = ordens, tecnicos = tecnicos)
+
+@app.route ("/telaInicial/filtro/<tipo>", methods=["GET"])
+def filtrar_ordens(tipo):
+    ordens_filtro = filtrar_ordem_servico(tipo)
+
+    # Se a lista retornada estiver vazia:
+    if not ordens_filtro:
+        flash(f"Nenhuma ordem de serviço do tipo {tipo} foi encontrada.", "warning")
+
+    return render_template("telaInicial.html", ordem_servico = ordens_filtro)
+
 
 @app.route("/api/get/ordens_servico/", methods=["GET"])
 def api_get_ordem():
