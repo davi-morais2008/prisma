@@ -122,6 +122,12 @@ def get_dados():
     except Exception as e:
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
+@app.route('/logoff')
+def logoff():
+    session.clear()
+    return redirect('/login')
+
+@app.route('/')
 @app.route("/telaInicial")
 @login_required
 def pagina_inicial():
@@ -193,7 +199,7 @@ def api_get_info_manutencao(id_ordem):
     except Exception as e:
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
-@app.route('/')
+
 @app.route('/login')
 def pagina_login():
     return render_template('cadastroLogin.html')
