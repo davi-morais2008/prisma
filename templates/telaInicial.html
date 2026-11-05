@@ -19,11 +19,29 @@ Página Inicial
     <div class="home__order-filters">
         <input type="text" id="search-bar" name="search-bar" class="home__search-bar" placeholder="Buscar máquina...">
         <div class="order-filter-buttons">
-            <button class="filter-button">Preventiva</button>
-            <button class="filter-button">Preditiva</button>
-            <button class="filter-button">Corretiva</button>
+            <a href="/telaInicial/filtro/Preventiva" class="filter-button">Preventiva</a>
+            <a href="/telaInicial/filtro/Preditiva" class="filter-button">Preditiva</a>
+            <a href="/telaInicial/filtro/Corretiva" class="filter-button">Corretiva</a>
+            <a href="/telaInicial">
+                <span class="material-symbols-outlined filter-button">
+                    block
+                </span>
+            </a>
         </div>
     </div>
+
+    <!-- Exibição de Mensagens Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
 
     <div class="home__orders">
         {% for os in ordem_servico %}
@@ -174,7 +192,8 @@ Página Inicial
                     </div>
 
                     {% if ordem_servico %}
-                    <a role="button" class="order__btn-finish" id="btnFinish" href="/telaInicial/finalizar/{{ordem_servico[0].id_ordem}}">
+                    <a role="button" class="order__btn-finish" id="btnFinish"
+                        href="/telaInicial/finalizar/{{ordem_servico[0].id_ordem}}">
                         Finalizar Ordem de Serviço
                     </a>
                     {% endif %}
@@ -341,7 +360,8 @@ Página Inicial
             </header>
 
             <!-- FORMULÁRIO DE CADASTRO -->
-            <form class="order-create__form" id="formCreateOrder" method="post" action="/telaInicial/post-register-order">
+            <form class="order-create__form" id="formCreateOrder" method="post"
+                action="/telaInicial/post-register-order">
                 <div class="order-create__body">
 
                     <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
@@ -349,11 +369,13 @@ Página Inicial
                         <legend class="order-create__section-title">INFORMAÇÕES GERAIS</legend>
 
                         <div class="order-create__grid order-create__grid--2-col">
-                        
+
                             <div class="order-create__field">
-                                <label class="order-create__label" for="create_numero_patrimonio">Número de Patrimônio</label>
-                                <input class="order-create__input" type="text" id="create_numero_patrimonio" name="numero_patrimonio"
-                                    name="numero_patrimonio" placeholder="Número de Patrimônio" required>
+                                <label class="order-create__label" for="create_numero_patrimonio">Número de
+                                    Patrimônio</label>
+                                <input class="order-create__input" type="text" id="create_numero_patrimonio"
+                                    name="numero_patrimonio" name="numero_patrimonio" placeholder="Número de Patrimônio"
+                                    required>
                             </div>
 
                             <div class="order-create__field">
@@ -376,7 +398,7 @@ Página Inicial
                                     <option value="" disabled selected>Selecione...</option>
                                     {% for tecnico in tecnicos %}
                                     {% if tecnico.status_usuario == 'Ativo' %}
-                                    <option value="{{tecnico.cpf}}" >{{tecnico.nome}}</option>
+                                    <option value="{{tecnico.cpf}}">{{tecnico.nome}}</option>
                                     {% endif %}
                                     {% endfor %}
                                 </select>
@@ -409,7 +431,7 @@ Página Inicial
                                     name="create__data_parada" min="1000-01-01" max="9999-12-31">
                             </div>
 
-                        
+
                         </div>
                     </fieldset>
 
