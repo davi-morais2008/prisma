@@ -112,4 +112,44 @@ def atribuir_ordem_servico(cpf:str, id:int) -> bool:
         return True
     except:
         return False
-    
+
+
+def filtrar_ordem_servico(tipo:str):
+    """Filtra as ordens de serviço pelo tipo de manutenção.
+
+    Parâmetros:
+        tipo (str): O tipo de manutenção utilizado como filtro (ex.: 'preventiva', 'corretiva').
+
+    Retorna:
+        list[dict]: Lista contendo apenas as ordens de serviço correspondentes ao tipo informado.
+    """
+    conexao, cursor = conectar()
+    try:
+        cursor.execute('''
+            SELECT 
+                os.id_ordem,
+                tm.tipo_maquina AS nome_maquina,
+                m.numero_patrimonio,
+                f.falha,
+                u.nome AS tecnico_responsavel,
+                os.status_ordem,
+                os.tipo_manutencao,
+                os.descricao_problema,
+                os.data_parada,
+                os.data_prev_inicio_manutencao,
+                os.data_prev_termino_manutencao,
+                os.data_inicio_manutencao,
+                os.data_termino_manutencao
+            FROM ordens_servicos os
+            INNER JOIN maquinas m ON os.id_maquina = m.id_maquina
+            INNER JOIN tipos_maquinas tm ON m.id_tipo_maquina = tm.id_tipo_maquina
+            LEFT JOIN falhas f ON os.id_falha = f.id_falha
+            LEFT JOIN usuarios u ON os.cpf = u.cpf
+            WHERE tipo_manutencao = %s AND status_ordem <> %s
+            ORDER BY id_ordem;
+        ''', (tipo, 'Finalizada'))
+        reposta = cursor.fetchall()
+        return reposta
+    finally:
+        cursor.close()
+        conexao.close()
