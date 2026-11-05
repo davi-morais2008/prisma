@@ -191,7 +191,7 @@ main {
     justify-content: center;
     text-decoration: none;
     color: var(--color-text-light);
-    font-size: 32px !important; /* Corrigido de propriedades duplicadas conflitantes */
+    font-size: 40px !important; /* Corrigido de propriedades duplicadas conflitantes */
     transition: transform 0.2s ease, color 0.2s ease;
 }
 
