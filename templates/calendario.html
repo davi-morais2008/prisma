@@ -42,22 +42,35 @@
           </div>
         </div>
       </div>
-            <!-- Modal para Excluir Eventos -->
-      <div id="modal-delete-overlay" class="modal-overlay hidden">
-        <div class="modal-container">
-          <h2 style="color: #d9534f;">Excluir Evento</h2>
-          
-          <div style="margin: 20px 0;">
-            <p>Deseja realmente remover o evento <strong id="delete-event-title"></strong>?</p>
-            <p style="font-size: 0.9em; color: #666; margin-top: 8px;">Esta ação não poderá ser revertida.</p>
-          </div>
+  <div id="modal-delete-overlay" class="event-delete hidden" role="dialog" aria-modal="true" aria-labelledby="delete-event-title">
+      <div class="event-delete__overlay" aria-label="Fechar modal de exclusão"></div>
+      <article class="event-delete__card">
 
-          <div class="modal-actions">
-            <button type="button" id="btn-cancelar-delete" class="btn btn-secondary">Cancelar</button>
-            <button type="button" id="btn-confirmar-delete" class="btn btn-primary" style="background-color: #d9534f; border-color: #d9534f;">Sim, Excluir</button>
+          <header class="event-delete__header">
+              <div class="event-delete__icon-wrapper">
+                  <span class="material-symbols-outlined" aria-hidden="true">delete_forever</span>
+              </div>
+              <h2 id="delete-event-title" class="event-delete__title">Excluir Evento</h2>
+          </header>
+          <div class="event-delete__body">
+              <p class="event-delete__description">
+                  Tem certeza que deseja remover este evento do seu calendário?
+              </p>
+              <p class="event-delete__disclaimer">
+                  Esta ação será permanente e não poderá ser desfeita.
+              </p>
           </div>
-        </div>
-      </div>
+          <footer class="event-delete__actions">
+              <button type="button" class="event-delete__button event-delete__button--cancel" id="btn-cancelar-delete">
+                  Cancelar
+              </button>
+              <button type="button" class="event-delete__button event-delete__button--confirm" id="btn-confirmar-delete">
+                  <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                  Excluir
+              </button>
+          </footer>
+      </article>
+  </div>
   {% endblock %}
 
   {% block script %}
