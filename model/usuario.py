@@ -64,12 +64,11 @@ def atualizar_usuario(cpf, nome,  email):
 
 def inativar_usuario(cpf,status_usuario):
     """
-    Inativa um usuário no banco de dados.
+    Altera o status_usuario (ativo/inativo) no banco de dados.
 
     Parâmetros:
         cpf (str): CPF do usuário que será inativado .
-        status_usuario (bool): Status do usuário, se é  "true" ou "false
-
+        status_usuario (bool): Status do usuário, se é 1 ou 0 ("true" ou "false")
 
     Retorna:
         bool: True se a atualização foi realizada com sucesso, False em caso de erro.
@@ -85,7 +84,7 @@ def inativar_usuario(cpf,status_usuario):
         conexao.commit()
         return True
     except Exception as e:
-        print(f"Erro ao atualizar: {e}")
+        print(f"Erro ao modificar status: {e}")
         conexao.rollback()
         return False
     finally:
