@@ -1,3 +1,5 @@
+import * as MyModule from "../js/painelGeral.js";
+
 const menuToggle = document.getElementById('menu-toggle');
 const mobileDropdown = document.getElementById('mobile-dropdown');
 
@@ -41,6 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('theme', newTheme);
         
         updateIcons(newTheme);
+
+        MyModule.carregarDadosDashboard(newTheme);
     }
 
     themeToggles.forEach(button => {
