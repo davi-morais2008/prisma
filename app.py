@@ -13,7 +13,7 @@ from werkzeug.security import generate_password_hash
 from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
-
+from functools import wraps
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'PRISMA_maintence'
@@ -28,6 +28,17 @@ app.config['MAIL_DEFAULT_SENDER'] = ('PRISMA', 'gustavocaua934@gmail.com')
 
 mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('user'):
+            flash('Por favor, faça login para acessar esta página.', 'warning')
+            return redirect(url_for('pagina_login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 
 @app.route('/esqueci-senha', methods=['GET', 'POST'])
@@ -83,6 +94,7 @@ def redefinir_senha(token):
 
 
 @app.route('/painelGeral')
+@login_required
 def painel_geral():
     return render_template('painelGeral.html')
 
@@ -110,7 +122,14 @@ def get_dados():
     except Exception as e:
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
+@app.route('/logoff')
+def logoff():
+    session.clear()
+    return redirect('/login')
+
+@app.route('/')
 @app.route("/telaInicial")
+@login_required
 def pagina_inicial():
     ordem_servico = consultar_ordem_servico()
     print(ordem_servico)
@@ -126,6 +145,7 @@ def api_get_ordem():
             return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route("/telaInicial/post-register-order", methods=["POST"])
+@login_required
 def register_os():
     maquinas = consultar_maquinas()
     nmr_patrimonio = request.form.get('numero_patrimonio')
@@ -166,6 +186,7 @@ def finish_os(id):
     return redirect ("/telaInicial")
 
 @app.route("/historico")
+@login_required
 def pagina_historico():
     OSfinalizado = buscar_os_finalizado()
     return render_template("historico.html", OSfinalizado = OSfinalizado)
@@ -178,7 +199,7 @@ def api_get_info_manutencao(id_ordem):
     except Exception as e:
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
-@app.route('/')
+
 @app.route('/login')
 def pagina_login():
     return render_template('cadastroLogin.html')
@@ -229,6 +250,7 @@ def post_cadastro():
 
 
 @app.route('/maquinas', methods = ['GET'])
+@login_required
 def pagina_maquinas():
     maquinas = consultar_maquinas()
     tipos_maquinas = consulta_tipo_maquinas()
@@ -286,17 +308,21 @@ def maquinas_update_machines():
     return redirect('/maquinas')
 
 
+
+
+
 @app.route('/profile')
+@login_required
 def pagina_perfil():
-    if session['user']:
-        users = buscar_usuario()
-        for user in users: 
-            if user['cpf'] == session['user']:
-                return render_template('perfil.html', usuario = user)
+    users = buscar_usuario()
+    for user in users: 
+        if user['cpf'] == session['user']:
+            return render_template('perfil.html', usuario = user)
 
 
 @app.route('/profile/uptade_information', methods=['POST'])
 def pagina_perfil_update():
+    
     nome = request.form.get('user-edit-name')
     email = request.form.get('user-edit-email')
     atualizar_usuario(session['user'], nome, email)
@@ -306,11 +332,13 @@ def pagina_perfil_update():
 
 
 @app.route('/usuarios', methods = ['GET'])
+@login_required
 def pagina_usuarios():
     return render_template('usuarios.html')
 
     
 @app.route('/calendario')
+@login_required
 def pagina_calendario():
     return render_template('calendario.html')
 
