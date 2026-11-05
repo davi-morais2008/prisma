@@ -260,24 +260,26 @@
 
 /* 2. Bloco: Theme Toggle */
 .theme-toggle {
-  /* Posicionamento fora do fluxo normal dos formulários */
-  position: absolute;
-  top: clamp(15px, 1vw, 15px);
-  right: clamp(5px, 1vw, 15px);
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-secondary);
+  background-color: #ffffff;
   border: none;
   border-radius: var(--border-radius-pill);
-  padding: clamp(6px, 1.5vw, 10px);
+  padding: 0.5rem;
   cursor: pointer;
   z-index: 10;
   box-shadow: var(--shadow-sm);
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease
 }
+
+.theme-toggle:hover {
+  transform: scale(1.08);
+  background-color: white;
+}
+
 
 /* Elemento: Ícone interno responsivo */
 .theme-toggle__icon {
@@ -288,13 +290,6 @@
   background-color: transparent;
   pointer-events: none;
 
-}
-
-.theme-toggle:hover {
-  transform: scale(1.08);
-  box-shadow: var(--shadow-md);
-  background-color: var(--color-secondary-hover);
-  transition: all 0.2s ease;
 }
 
 
