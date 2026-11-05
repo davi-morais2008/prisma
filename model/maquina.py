@@ -123,8 +123,16 @@ def consulta_tipo_maquinas():
 
     return resposta
 
+
+def consultar_falhas():
+    conexao, cursor = conectar()
+    cursor.execute('SELECT id_falha, id_tipo_maquina, falha FROM falhas')
+    resposta = cursor.fetchall()
+    conexao.commit()
+    return resposta
+
 def adicionar_falha(tipo_maquina, falha):
     conexao, cursor = conectar()
-    cursor.execute("INSERT INTO falhas (id_tipo_falha, falha) VALUES (%s, %s)", (tipo_maquina, falha))
+    cursor.execute("INSERT INTO falhas (id_tipo_maquina, falha) VALUES (%s, %s)", (tipo_maquina, falha))
     conexao.commit()
     conexao.close()
