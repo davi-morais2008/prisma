@@ -66,7 +66,7 @@ def redefinir_senha(token):
         return redirect(url_for('esqueci_senha'))
     except BadTimeSignature:
         flash('Link inválido ou corrompido.', 'danger')
-        return redirect(url_for('esqueci_senha'))
+        return redirect('https://prisma-maintenance.onrender.com/login')
 
     if request.method == 'POST':
         nova_senha = request.form.get('senha')
