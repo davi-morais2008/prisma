@@ -10,8 +10,7 @@ from model.consultaMaquinas import consultar_maquinas
 from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
-from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina
-from model.maquina import adicionar_falha, adicionar_tipo_maquina
+from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina, consultar_falhas, adicionar_falha, adicionar_tipo_maquina
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
 from functools import wraps
@@ -153,7 +152,10 @@ def logoff():
 def pagina_inicial():
     ordens = consultar_ordem_servico()
     tecnicos = buscar_usuario()
-    return render_template("telaInicial.html", ordem_servico = ordens, tecnicos = tecnicos)
+    falhas = consultar_falhas()
+    maquinas = consultar_maquinas()
+    tipo_maquinas = consulta_tipo_maquinas()
+    return render_template("telaInicial.html", ordem_servico = ordens, tecnicos = tecnicos, falhas = falhas, maquinas = maquinas, tipo_maquinas = tipo_maquinas)
 
 @app.route ("/telaInicial/filtro/<tipo>", methods=["GET"])
 def filtrar_ordens(tipo):

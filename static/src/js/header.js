@@ -12,17 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const htmlElement = document.documentElement; 
     
 
-    const darkIconPath = '../static/src/img/dark_mode_imagem.png'; 
-    const lightIconPath = '../static/src/img/light_mode_imagem.png'; 
+    const darkIconPath = 'dark_mode'; 
+    const lightIconPath = 'light_mode'; 
 
 
     function updateIcons(theme) {
         const themeIcons = document.querySelectorAll('.theme-toggle__icon');
         themeIcons.forEach(icon => {
             if (theme === 'dark') {
-                icon.src = lightIconPath; 
+                icon.textContent = lightIconPath; 
             } else {
-                icon.src = darkIconPath; 
+                icon.textContent = darkIconPath; 
             }
         });
     }
