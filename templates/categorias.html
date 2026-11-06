@@ -1,0 +1,205 @@
+{% extends "layout.html" %}
+
+{% block titulo %}
+Categorias e Configurações
+{% endblock %}
+
+{% block estilo %}
+<link rel="stylesheet" href="/static/src/styles/categorias.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+{% endblock %}
+
+{% block conteudo %}
+<main class="categories-page">
+    <header class="categories-page__header">
+        <h1 class="categories-page__title">Gerenciar Categorias do Sistema</h1>
+    </header>
+
+    <!-- SEÇÃO: TIPOS DE MÁQUINA -->
+    <section class="category-section">
+        <div class="category-section__header">
+            <h2 class="category-section__title">Tipos de Máquina</h2>
+            <button id="new-type-button" class="button button--primary btn-open-modal" data-target="#modal-tipo-maquina">
+                <span class="material-symbols-outlined">add</span> Novo Tipo
+            </button>
+        </div>
+
+        <div class="category-grid">
+            {% for tipo in tipos_maquina %}
+            <article class="category-card">
+                <div class="category-card__info">
+                    <h3 class="category-card__title">{{ tipo.tipo_maquina }}</h3>
+                </div>
+                <div class="category-card__actions">
+                    <button class="btn-action btn-action--edit" aria-label="Editar {{ tipo.tipo_maquina }}"
+                        data-id="{{ tipo.id_tipo_maquina }}">
+                        <span class="material-symbols-outlined">edit</span>
+                    </button>
+                    <button class="btn-action btn-action--delete" aria-label="Excluir {{ tipo.tipo_maquina }}"
+                        data-id="{{ tipo.id_tipo_maquina }}">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- SEÇÃO: SETORES -->
+    <section class="category-section">
+        <div class="category-section__header">
+            <h2 class="category-section__title">Setores</h2>
+            <button id="new-location-button" class="button button--primary btn-open-modal" data-target="#modal-setor">
+                <span class="material-symbols-outlined">add</span> Novo Setor
+            </button>
+        </div>
+
+        <div class="category-grid">
+            {% for sector in setores %}
+            <article class="category-card">
+                <div class="category-card__info">
+                    <h3 class="category-card__title">{{ sector.setor }}</h3>
+                </div>
+                <div class="category-card__actions">
+                    <button class="btn-action btn-action--edit" aria-label="Editar {{ sector.setor }}"
+                        data-id="{{ sector.id_setor }}">
+                        <span class="material-symbols-outlined">edit</span>
+                    </button>
+                    <button class="btn-action btn-action--delete" aria-label="Excluir {{ sector.setor }}"
+                        data-id="{{ sector.id_setor }}">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- SEÇÃO: TIPOS DE FALHAS POR MÁQUINA -->
+    <section class="category-section">
+        <div class="category-section__header">
+            <h2 class="category-section__title">Tipos de Falhas por Máquina</h2>
+            <button id="new-failure-button" class="button button--primary btn-open-modal" data-target="#modal-falha">
+                <span class="material-symbols-outlined">add</span> Nova Falha
+            </button>
+        </div>
+
+        <div class="failures-container">
+            {% for tipo in tipos_maquina %}
+            <div class="failure-group" data-tipo-id="{{ tipo.id_tipo_maquina }}">
+                <div class="failure-group__header">
+                    <span class="failure-group__badge">Tipo de Máquina</span>
+                    <h3 class="failure-group__title">{{ tipo.tipo_maquina }}</h3>
+                </div>
+                <div class="category-grid">
+                    {% for falha in tipo.falhas %}
+                    <article class="category-card">
+                        <div class="category-card__info">
+                            <h3 class="category-card__title">{{ falha.falha }}</h3>
+                        </div>
+                        <div class="category-card__actions">
+                            <button class="btn-action btn-action--edit" aria-label="Editar {{ falha.falha }}"
+                                data-id="{{ falha.id_falha }}">
+                                <span class="material-symbols-outlined">edit</span>
+                            </button>
+                            <button class="btn-action btn-action--delete" aria-label="Excluir {{ falha.falha }}"
+                                data-id="{{ falha.id_falha }}">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    </article>
+                    {% else %}
+                    <p class="failure-group__empty">Nenhuma falha cadastrada para este tipo de máquina.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- MODAL: TIPO DE MÁQUINA -->
+    <div class="category-modal__overlay" id="modal-tipo-maquina" aria-hidden="true">
+        <div class="category-modal" role="dialog" aria-labelledby="title-tipo-maquina">
+            <header class="category-modal__header">
+                <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="category-modal__logo">
+                <h2 id="title-tipo-maquina" class="category-modal__title">Tipo de Máquina</h2>
+                <button id="close-modal-tipo" type="button" class="category-modal__close-button" aria-label="Fechar janela">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </header>
+            <form class="category-modal__form">
+                <input type="hidden" name="id_tipo_maquina" class="form-id">
+                <div class="form-group">
+                    <label for="tipo-nome">Nome do Tipo</label>
+                    <input type="text" id="tipo-nome" name="tipo_maquina" placeholder="Ex: Torno CNC, Fresa, Impressora 3D" required>
+                </div>
+                <footer class="category-modal__footer">
+                    <button type="button" class="button button--secondary btn-close-modal">Cancelar</button>
+                    <button type="submit" class="button button--primary">Salvar</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: SETOR -->
+    <div class="category-modal__overlay" id="modal-setor" aria-hidden="true">
+        <div class="category-modal" role="dialog" aria-labelledby="title-setor">
+            <header class="category-modal__header">
+                <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="category-modal__logo">
+                <h2 id="title-setor" class="category-modal__title">Setor</h2>
+                <button id="close-modal-location" type="button" class="category-modal__close-button" aria-label="Fechar janela">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </header>
+            <form class="category-modal__form">
+                <input type="hidden" name="id_setor" class="form-id">
+                <div class="form-group">
+                    <label for="setor-nome">Nome do Setor</label>
+                    <input type="text" id="setor-nome" name="setor" placeholder="Ex: Usinagem, Montagem, Estamparia" required>
+                </div>
+                <footer class="category-modal__footer">
+                    <button type="button" class="button button--secondary btn-close-modal">Cancelar</button>
+                    <button type="submit" class="button button--primary">Salvar</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: TIPOS DE FALHAS -->
+    <div class="category-modal__overlay" id="modal-falha" aria-hidden="true">
+        <div class="category-modal" role="dialog" aria-labelledby="title-falha">
+            <header class="category-modal__header">
+                <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="category-modal__logo">
+                <h2 id="title-falha" class="category-modal__title">Tipo de Falha</h2>
+                <button id="close-modal-failure" type="button" class="category-modal__close-button" aria-label="Fechar janela">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </header>
+            <form class="category-modal__form">
+                <input type="hidden" name="id_falha" class="form-id">
+                <div class="form-group">
+                    <label for="falha-tipo-maquina">Tipo de Máquina Associado</label>
+                    <select id="falha-tipo-maquina" name="id_tipo_maquina" required>
+                        <option value="">Selecione um tipo...</option>
+                        {% for tipo in tipos_maquina %}
+                        <option value="{{ tipo.id_tipo_maquina }}">{{ tipo.tipo_maquina }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="falha-nome">Nome / Descrição da Falha</label>
+                    <input type="text" id="falha-nome" name="falha" placeholder="Ex: Sobreaquecimento do Motor, Desalinhamento" required>
+                </div>
+                <footer class="category-modal__footer">
+                    <button type="button" class="button button--secondary btn-close-modal">Cancelar</button>
+                    <button type="submit" class="button button--primary">Salvar</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block script %}
+<script src="/static/src/js/categorias.js"></script>
+{% endblock %}
