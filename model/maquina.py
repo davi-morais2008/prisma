@@ -122,3 +122,35 @@ def consulta_tipo_maquinas():
     conexao.close()
 
     return resposta
+
+def adicionar_tipo_maquina(nome_tipo):
+    """
+    Cadastra um novo tipo de máquina na tabela 'tipos_maquinas'.
+
+    Parâmetros:
+        nome_tipo (str): Nome do tipo de máquina (ex: 'Torno', 'Fresa', 'Prensa').
+
+    Retorna:
+        bool: True se o cadastro foi realizado com sucesso, False se ocorreu algum erro.
+    """
+    conexao, cursor = conectar()
+    try:
+        cursor.execute(
+            "INSERT INTO tipos_maquinas (tipo_maquina) VALUES (%s)", 
+            (nome_tipo,)
+        )
+        conexao.commit()
+        conexao.close()
+        return True
+    except Exception as e:
+        print(f"Erro ao adicionar tipo de máquina: {e}")
+        if conexao:
+            conexao.close()
+        return False
+
+    
+def adicionar_falha(tipo_maquina, falha):
+    conexao, cursor = conectar()
+    cursor.execute("INSERT INTO falhas (id_tipo_maquina, falha) VALUES (%s, %s)", (tipo_maquina, falha))
+    conexao.commit()
+    conexao.close()

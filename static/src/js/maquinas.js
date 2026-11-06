@@ -3,6 +3,13 @@ const inputSearchMachine = document.querySelector('.filter-input-search');
 const filterButtons = document.querySelectorAll('.filter-button');
 const machineButtons = document.querySelectorAll('.machine__button');
 
+const registerTypeMachineButtons = document.getElementById('btnOpenAddType')
+const registerTypeMachineModal = document.getElementById('modalAddTypeOverlay')
+const registerFailureMachineButtons = document.getElementById('btnOpenAddFailure')
+const registerFailureMachineModal = document.getElementById('modalAddFailureOverlay')
+const registerTypeCloseBtn = document.getElementById('closeAddTypeModal')
+const registerFailureCloseBtn = document.getElementById('closeAddFailureModal')
+
 const createModalContainer = document.querySelector('.machine-modal__overlay');
 const btnCloseCreateModal = document.querySelector('.machine-modal__close-button');
 const createMachineForm = document.querySelector('.machine-form');
@@ -131,7 +138,7 @@ setupFilePreview(filePreviewInputEdit, filePreviewEdit);
 
 async function requestMachine() {
     try {
-        const resposta = await fetch(`http://127.0.0.1:8080/maquinas/api_request_machines`, {
+        const resposta = await fetch(`/maquinas/api_request_machines`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json; charset=utf-8',
@@ -276,6 +283,16 @@ btnCloseDetailsModal.addEventListener('click', () => { detailsModalContainer.cla
 btnCloseEditModal.addEventListener('click', () => { editModalOverlay.classList.remove('active'); });
 btnCancelEdit.addEventListener('click', () => { editModalOverlay.classList.remove('active'); });
 
+if (registerTypeMachineButtons) registerTypeMachineButtons.addEventListener('click', () => {
+    registerTypeMachineModal.classList.add('active')})
+
+if (registerFailureMachineButtons) registerFailureMachineButtons.addEventListener('click', () => {
+    registerFailureMachineModal.classList.add('active')})
+
+if (registerTypeCloseBtn) registerTypeCloseBtn.addEventListener('click', () => {registerTypeMachineModal.classList.remove('active')})
+if (registerFailureCloseBtn) registerFailureCloseBtn.addEventListener('click', () => {registerFailureMachineModal.classList.remove('active')})
+
+console.log(registerFailureMachineButtons, registerFailureMachineModal, registerTypeMachineButtons, registerTypeMachineModal)
 
 if (btnCloseDeleteModal) btnCloseDeleteModal.addEventListener('click', () => { deleteConfirmationModal.classList.remove('active'); });
 if (btnCancelDeleteHeader) btnCancelDeleteHeader.addEventListener('click', () => { deleteConfirmationModal.classList.remove('active'); });

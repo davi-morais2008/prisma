@@ -29,20 +29,22 @@ Página Inicial
             </a>
         </div>
     </div>
-
-    <!-- Exibição de Mensagens Flash -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-    <div class="flash-messages">
+    <div class="container mt-3">
         {% for category, message in messages %}
-        <div class="alert alert-{{ category }}">
+        <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
+            role="alert">
             {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         {% endfor %}
     </div>
     {% endif %}
     {% endwith %}
 
+    
+  
     <div class="home__orders">
         {% for os in ordem_servico %}
         <article class="work-order work-order--baixa" id_order="{{os.id_ordem}}">
@@ -442,8 +444,18 @@ Página Inicial
                         <div class="order-create__grid">
                             <div class="order-create__field order-create__field--full">
                                 <label class="order-create__label" for="create_falha">Falha Identificada</label>
-                                <input class="order-create__input" type="text" id="create_falha" name="falha"
-                                    placeholder="Sintoma ou falha identificada" required>
+                                <div class="inputs-falha">
+                                    <select class="order-create__select" name="" id="">Selecione...
+                                        <option value="1">Falha no freio</option>
+                                    </select>
+
+                                    <button title="Adicionar falha" class="order-create__btn--add-falha">
+                                        <span class="material-symbols-outlined">
+                                            add
+                                        </span>
+                                    </button>
+                                </div>
+
                             </div>
 
                             <div class="order-create__field order-create__field--full">

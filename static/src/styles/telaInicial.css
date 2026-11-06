@@ -9,6 +9,86 @@
 }
 
 
+/* Container das mensagens */
+.container-flash {
+    width: 100%;
+    max-width: 600px;
+    margin: 15px auto;
+    padding: 0 15px;
+}
+
+/* Estrutura base do alerta */
+.alert {
+    position: relative;
+    padding: 14px 40px 14px 16px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: system-ui, -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    animation: fadeInDown 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Variações por Categoria */
+.alert-danger, .alert-error {
+    background-color: #fde8e8;
+    color: #9b1c1c;
+    border-left: 5px solid #f05252;
+}
+
+.alert-success {
+    background-color: #def7ec;
+    color: #03543f;
+    border-left: 5px solid #0e9f6e;
+}
+
+.alert-warning {
+    background-color: #fdf6b2;
+    color: #723b13;
+    border-left: 5px solid #e3a008;
+}
+
+.alert-info {
+    background-color: #e1effe;
+    color: #1e429f;
+    border-left: 5px solid #3f83f8;
+}
+
+/* Botão de Fechar */
+.btn-close {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    line-height: 1;
+    color: currentColor;
+    opacity: 0.6;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.btn-close:hover {
+    opacity: 1;
+}
+
+/* Animação de entrada */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .home {
     width: 100%;
     max-width: 1200px;
@@ -119,6 +199,10 @@
     font-weight: var(--font-weight-bold);
     box-shadow: var(--shadow-sm);
     transition: all 0.2s ease;
+}
+
+.filter-button:hover{
+    transform: translateY(-2px);
 }
 
 .filter-button.active{
@@ -955,6 +1039,27 @@
     padding: 8px 12px;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputs-falha{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    
+}
+
+.order-create__btn--add-falha{
+    height: 40px;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-input);
+    border: 1px solid var(--color-bg-light);
+    border-radius: var(--border-radius-sm);
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
 }
 
 .order-create__input,
