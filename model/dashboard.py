@@ -5,14 +5,17 @@ def buscar_dados_dashboard():
 
     try:
         # 1. Total de Ordens de Serviço
-        cursor.execute("SELECT COUNT(*) AS total FROM ordens_servicos WHERE status_ordem = %s",  ("Finalizada",))
+        cursor.execute("SELECT COUNT(*) AS total FROM ordens_servicos")
         total_os = cursor.fetchone()['total']
+
+        cursor.execute("SELECT COUNT(*) AS total FROM ordens_servicos WHERE status_ordem = %s",  ("Finalizada",))
+        finalizada_os = cursor.fetchone()['total']
 
         # 2. Ordens em Andamento / Pendentes
         cursor.execute("""
             SELECT COUNT(*) AS total 
             FROM ordens_servicos 
-            WHERE status_ordem NOT IN ('Concluída', 'Finalizada', 'Cancelada')
+            WHERE status_ordem NOT IN ('Finalizada', 'Cancelada')
         """)
         os_pendentes = cursor.fetchone()['total']
 
@@ -64,6 +67,7 @@ def buscar_dados_dashboard():
 
         return {
             "total_os": total_os,
+            "finalizada_os": finalizada_os,
             "os_pendentes": os_pendentes,
             "maquinas_total": maquinas_total,
             "maquinas_paradas": maquinas_paradas,

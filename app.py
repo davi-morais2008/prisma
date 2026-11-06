@@ -124,6 +124,7 @@ def get_dados():
         return jsonify({
             "kpis": {
                 "total_os": informacoes["total_os"],
+                "finalizada_os": informacoes["finalizada_os"],
                 "os_pendentes": informacoes["os_pendentes"],
                 "maquinas_ativas": informacoes["maquinas_total"],
                 "maquinas_paradas": informacoes["maquinas_paradas"],
