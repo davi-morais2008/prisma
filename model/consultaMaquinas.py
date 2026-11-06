@@ -40,3 +40,44 @@ GROUP BY
     conexao.close()
 
     return resposta
+
+def filtrar_maquinas(tipo):
+    """
+    Função SELECT para retornar os dados de TODAS as máquinas.
+
+    Retorna:
+        Variável "resposta"
+    """
+    conexao, cursor = conectar()
+
+    cursor.execute("""SELECT 
+    maquinas.id_maquina,
+    maquinas.id_tipo_maquina, 
+    tipos_maquinas.tipo_maquina, 
+    MAX(imagens_maquinas.url_imagem) AS url_imagem, 
+    maquinas.modelo_maquina, 
+    maquinas.numero_patrimonio, 
+    maquinas.localizacao, 
+    maquinas.manual_operacao, 
+    maquinas.status_maquina, 
+    maquinas.is_inativa 
+FROM maquinas 
+LEFT JOIN tipos_maquinas 
+    ON maquinas.id_tipo_maquina = tipos_maquinas.id_tipo_maquina 
+LEFT JOIN imagens_maquinas 
+    ON maquinas.id_maquina = imagens_maquinas.id_maquina
+WHERE maquinas.is_inativa = 0 AND tipo_maquina = %s
+GROUP BY 
+    maquinas.id_maquina,
+    maquinas.id_tipo_maquina, 
+    tipos_maquinas.tipo_maquina, 
+    maquinas.modelo_maquina, 
+    maquinas.numero_patrimonio, 
+    maquinas.localizacao, 
+    maquinas.manual_operacao, 
+    maquinas.status_maquina, 
+    maquinas.is_inativa;""", (tipo, ))
+    
+    resposta = cursor.fetchall()
+    conexao.close()
+    return resposta
