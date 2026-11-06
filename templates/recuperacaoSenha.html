@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRISMA - Recuperar Senha</title>
 
-    <link rel="stylesheet" href="../static/src/styles/recuperacaoSenha.css">
+    <!-- Corrigido para carregar o CSS via url_for -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='src/styles/recuperacaoSenha.css') }}">
 </head>
 
 <body>
@@ -50,14 +51,14 @@
                 >
             </div>
 
+            <button class="botao_logar botoes" type="submit">
+                Continuar
+            </button>
             <div>
-                <button class="botao_logar botoes" type="submit">
-                    Continuar
-                </button>
             </div>
 
             <div class="container_recuperar_senha">
-                <a href="{{ url_for('pagina_login') }}">
+                <a href="">
                     Voltar para o login
                 </a>
             </div>

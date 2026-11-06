@@ -4,7 +4,7 @@ from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico
 from model.usuario import buscar_usuario, atualizar_usuario
-from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
+
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas
 from model.finalizarOS import finalizar_OS
