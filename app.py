@@ -395,11 +395,13 @@ def pagina_perfil_update():
     
 
 
-@app.route('/usuarios', methods = ['GET'])
+@app.route('/usuarios', methods=['GET'])
 @login_required
 @roles_required('admin', 'root')
 def pagina_usuarios():
-    return render_template('usuarios.html')
+    
+    lista_de_usuarios = buscar_usuario()
+    return render_template('usuarios.html', usuarios=lista_de_usuarios)
 
     
 @app.route('/calendario')
