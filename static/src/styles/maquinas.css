@@ -52,23 +52,14 @@ body {
     grid-column: 2;
 }
 
-.machines__button-register {
-    background-color: var(--color-accent-orange);
-    width: 60px;
-    height: 60px;
-    border-radius: 35px;
-    border: 0;
-    font-family: var(--font-family-base);
-    font-size: 40px;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-light);
-    cursor: pointer;
-    transition: ease-in 150ms;
-    margin-left: auto;
-}
-
-.machines__button-register:hover {
+.machines__button-register:hover
+ {
     background-color: var(--color-accent-peach);
+    transform: scale(1.05);
+}
+.add-button--new-type-failure:hover
+ {
+    background-color: var(--color-primary-dark);
     transform: scale(1.05);
 }
 
@@ -1647,7 +1638,7 @@ body {
 }
 
 
-/* Botão Cancelar (Neutro/Seguro) */
+
 .order-delete__btn--cancel {
     background-color: transparent;
     color: var(--color-text-secondary);
@@ -1661,7 +1652,7 @@ body {
 }
 
 
-/* Botão Confirmar Exclusão (Destrutivo) */
+
 .order-delete__btn--confirm {
     background-color: var(--color-status-danger);
     color: var(--color-text-primary);
@@ -1675,6 +1666,105 @@ body {
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
 }
+
+
+
+/* ======================================================================= */
+/* =========== MODAL ADICIONAR FALHA E ADICIONAR TIPO MÁQUINA =============*/
+/* ======================================================================= */
+/* ==========================================================================
+   MODAIS ADICIONAIS: TIPO DE MÁQUINA & REGISTRO DE FALHAS
+   ========================================================================== */
+
+
+.machine-modal__overlay--add-type,
+.machine-modal__overlay--add-failure {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+
+.machine-modal__overlay--add-type.active,
+.machine-modal__overlay--add-failure.active{
+    display: flex;
+}
+
+.modalAddTypeOverlay .machine-modal,
+.modalAddFailureOverlay .machine-modal {
+    max-width: 520px;
+    width: 100%;
+    margin: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+
+.modalAddTypeOverlay .machine-form__basic-info,
+.modalAddFailureOverlay .machine-form__basic-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.add-buttons{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 20px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.add-button_new-category{
+    width: 200px;
+    height: 45px;
+    border-radius: 60px;
+    border: none;
+    z-index: 998;
+    cursor: pointer;
+    font-size: large;
+    font-weight: var(--font-weight-bold);
+
+}
+
+.machines__button-register{
+    background-color: var(--color-accent-peach);
+    color: var(--color-bg-light);
+}
+.add-button--new-type-failure{
+    background-color: var(--color-primary);
+    color: var(--color-bg-light);
+}
+
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ======================================= */
+/* =========   MEDIA QUERIES  ============ */
+/* ======================================= */
+
+
 /* ======================================= */
 /* =========   MEDIA QUERIES  ============ */
 /* ======================================= */
@@ -1709,18 +1799,6 @@ body {
 
 
 @media (max-width: 768px) {
-    .machines__button-register {
-        background-color: var(--color-accent-orange);
-        width: 40px;
-        height: 40px;
-        border-radius: 35px;
-        border: 0;
-        font-family: var(--font-family-base);
-        font-size: var(--font-size-xl);
-        font-weight: var(--font-weight-bold);
-        color: var(--color-text-light);
-        cursor: pointer;
-    }
 
     .filter-input-search {
         width: 100%;

@@ -43,8 +43,8 @@ Página Inicial
     {% endif %}
     {% endwith %}
 
-    
-  
+
+
     <div class="home__orders">
         {% for os in ordem_servico %}
         <article class="work-order work-order--baixa" id_order="{{os.id_ordem}}">
@@ -399,7 +399,7 @@ Página Inicial
                                     name="tecnico_responsavel" placeholder="Nome do técnico" required>
                                     <option value="" disabled selected>Selecione...</option>
                                     {% for tecnico in tecnicos %}
-                                    {% if tecnico.status_usuario == 'Ativo' %}
+                                    {% if tecnico.rbac == 'usuario' %}
                                     <option value="{{tecnico.cpf}}">{{tecnico.nome}}</option>
                                     {% endif %}
                                     {% endfor %}
@@ -452,7 +452,8 @@ Página Inicial
                                         {% endfor %}
                                     </select>
 
-                                    <button title="Adicionar falha" class="order-create__btn--add-falha">
+                                    <button title="Adicionar falha" class="order-create__btn--add-falha"
+                                        id="btnAddFalha">
                                         <span class="material-symbols-outlined">
                                             add
                                         </span>
@@ -525,6 +526,68 @@ Página Inicial
                     Sim, Excluir
                 </button>
             </footer>
+        </article>
+    </div>
+
+    <!-- Modal de Cadastro de Falhas -->
+    <div class="fault-create" id="createFaultModal" role="dialog" aria-modal="true" aria-labelledby="faultCreateTitle">
+        <div class="fault-create__overlay" id="createFaultModalOverlay"></div>
+
+        <article class="fault-create__card">
+            <!-- CABEÇALHO SUPERIOR -->
+            <header class="fault-create__header">
+                <div class="fault-create__brand">
+                    <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="fault-create__brand-image">
+                </div>
+                <h1 class="fault-create__brand-title" id="faultCreateTitle">CADASTRAR FALHA</h1>
+                <button class="fault-create__close-btn" id="btnCancelCreateFault"
+                    aria-label="Fechar formulário de cadastro de falha">
+                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                </button>
+            </header>
+
+            <!-- FORMULÁRIO DE CADASTRO -->
+            <form class="fault-create__form" id="formCreateFault" method="post"
+                action="/telaInicial/post-register-falha">
+                <div class="fault-create__body">
+
+                    <!-- SEÇÃO: DADOS DA FALHA -->
+
+
+                    <div class="fault-create__grid">
+
+                        <!-- SELECT: CATEGORIA DA FALHA -->
+                        <div class="fault-create__field">
+                            <label class="fault-create__label" for="create_categoria_falha">Selecione a
+                                máquina...</label>
+                            <select class="fault-create__select" id="create_categoria_falha" name="categoria_falha" required>
+                                <option value="" disabled selected>Selecione a máquina...</option>
+                                {% for maquina in tipo_maquinas %}
+                                <option value="{{maquina.id_tipo_maquina}}">{{maquina.tipo_maquina}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- INPUT: NOME DA FALHA -->
+                        <div class="fault-create__field">
+                            <label class="fault-create__label" for="create_nome_falha">Nome / Descrição da
+                                Falha</label>
+                            <input class="fault-create__input" type="text" id="create_nome_falha" name="nome_falha"
+                                placeholder="Ex: Superaquecimento do motor" required>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <!-- RODAPÉ COM AÇÕES -->
+                <footer class="fault-create__footer">
+                    <button type="button" class="fault-create__btn fault-create__btn--cancel"
+                        id="btnCancelCreateFaultForm">Cancelar</button>
+                    <button type="submit" class="fault-create__btn fault-create__btn--submit">Cadastrar Falha</button>
+                </footer>
+            </form>
         </article>
     </div>
 
