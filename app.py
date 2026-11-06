@@ -366,6 +366,9 @@ def adicionar_tipo_maquina_post():
     return redirect('/maquinas')
 
 
+@app.route('/categorias')
+def categorias():
+    return render_template('categorias.html')
 
 @app.route('/profile')
 @login_required
