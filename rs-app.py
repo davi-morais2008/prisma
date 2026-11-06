@@ -7,7 +7,7 @@ from flask_mail import Mail, Message
 import os
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, session, flash, jsonify, url_for
-import traceback
+
 load_dotenv()
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
@@ -47,8 +47,8 @@ def esqueci_senha():
             with mail.connect() as conn:
                 conn.send(msg)
         except Exception as e:
-            print("=== ERRO DETALHADO NO ENVIO DE EMAIL ===", flush=True)
-            traceback.print_exc()
+            
+            
             flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
             return redirect(url_for('esqueci_senha'))
 
@@ -76,7 +76,7 @@ def redefinir_senha(token):
         atualizar_senha_usuario(email, senha_hash)
 
         flash('Sua senha foi alterada com sucesso!', 'success')
-        return redirect(url_for('pagina_login'))
+        return redirect('https://prisma-maintenance.onrender.com/login')
 
     return render_template('redefinir_senha.html', token=token)
 
