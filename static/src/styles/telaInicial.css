@@ -1545,7 +1545,16 @@
 }
 
 /* Responsividade para Telas Menores */
-@media (max-width: 480px) {
+
+@media (max-width: 400px) {
+
+    .home__button-register{
+        font-size: var(--font-size-sm);
+        width: 170px;
+        height: 45px;
+
+    }
+
     .order-details__primary-info {
         flex-direction: column;
         align-items: flex-start;
@@ -1599,23 +1608,10 @@
     .work-order {
         padding: 24px 30px;
     }
-
     
 }
 
 @media (max-width: 768px){
-    .home__button-register{
-        background-color: var(--color-accent-orange);
-        width: 40px;
-        height: 40px;
-        border-radius: 35px;
-        border: 0;
-        font-family: var(--font-family-base);
-        font-size: var(--font-size-xl);
-        font-weight: var(--font-weight-bold);
-        color: var(--color-text-light);
-        cursor: pointer;
-    }
 
     .home__title{
         font-size: var(--font-size-md);
@@ -1627,5 +1623,4 @@
 
 }
     
-
 
