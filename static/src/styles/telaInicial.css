@@ -256,6 +256,7 @@
     justify-content: space-between;
     padding: 0 var(--border-radius-md);
     box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .order-details__brand {
@@ -574,6 +575,7 @@
     justify-content: space-between;
     padding: 0 var(--border-radius-md);
     box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .order-edit__brand {
@@ -823,6 +825,7 @@
     justify-content: space-between;
     padding: 0 var(--border-radius-md);
     box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .order-create__brand {
