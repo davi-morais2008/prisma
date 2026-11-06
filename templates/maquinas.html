@@ -19,12 +19,25 @@ Máquinas
         <div class="machines__filters">
             <input type="text" class="filter-input-search" placeholder="Buscar máquina...">
             <div class="filter-buttons">
-                <button class="filter-button">Filtro 1</button>
-                <button class="filter-button">Filtro 2</button>
-                <button class="filter-button">Filtro 3</button>
-                <button class="filter-button">Filtro 4</button>
+                {% for tipo in tipos_maquinas %}
+                <a href="/maquinas/filtro/{{tipo.tipo_maquina}}" class="filter-button">{{tipo.tipo_maquina}}</a>
+                {% endfor %}
             </div>
         </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="container mt-3">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
+                role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
 
         <div class="machines__machines-grid">
             {% for maquina in maquinas %}
