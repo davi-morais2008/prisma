@@ -69,7 +69,7 @@ Máquinas
                         </div>
                         <div class="machine__detail-item">
                             <dt class="machine__detail-label">Setor:</dt>
-                            <dd class="machine__detail-value">{{maquina.localizacao}}</dd>
+                            <dd class="machine__detail-value">{{maquina.setor}}</dd>
                         </div>
                     </dl>
 
@@ -143,8 +143,12 @@ Máquinas
 
                             <div class="machine-form__field">
                                 <label for="location-machine" class="machine-form__label">Localização / Setor</label>
-                                <input type="text" id="location-machine" name="location-machine"
-                                    class="machine-form__input" placeholder="Ex: Setor A - Linha 2">
+                                <select id="location-machine" name="location-machine" class="machine-form__select">
+                                    <option value="" disabled selected>Selecione o setor...</option>
+                                    {% for setor in setores %}
+                                    <option value="{{setor.id_setor}}">{{setor.setor}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
 
                             <div class="machine-form__field">
@@ -550,11 +554,14 @@ Máquinas
                                 <input type="text" id="edit-patrimony" name="edit-patrimony" class="machine-edit__input"
                                     value="MAQ-SP-0014">
                             </div>
-                            <div class="machine-edit__field">
-                                <label for="edit-location" class="machine-edit__label">Localização</label>
-                                <input type="text" id="edit-location" name="edit-location" class="machine-edit__input"
-                                    value="Setor A">
-                            </div>
+                            <label for="-edit-location" class="machine-edit__label">Localização/Setor</label>
+                            <select id="edit-location" name="edit-location" class="machine-edit__input">
+                                <option value="" id="default" selected>Selecionar</option>
+                                {% for setor in setores %}
+                                <option value="{{setor.id_setor}}">{{setor.setor}}
+                                </option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
 

@@ -156,11 +156,11 @@ async function fillEditModal(machineId) {
     const machine = machines.find((item) => item.id_maquina == machineId);
 
     if (machine) {
-        console.log(machine.id_tipo_maquina)
+
         if (editOptionDefaultInput) editOptionDefaultInput.value = machine.id_tipo_maquina || '';
         if (editOptionDefaultInput) editOptionDefaultInput.textContent = machine.tipo_maquina || '';
         if (editPatrimonyInput) editPatrimonyInput.value = machine.numero_patrimonio || '';
-        if (editLocationInput) editLocationInput.value = machine.localizacao || '';
+        if (editLocationInput) editLocationInput.value = machine.id_setor || '';
         if (editProdTimeInput) editProdTimeInput.value = machine.tempo_producao || '';
         if (editWorkHoursInput) editWorkHoursInput.value = machine.total_horas || '';
         if (editCostInput) editCostInput.value = machine.custo_acumulado || '';
@@ -189,7 +189,7 @@ machineButtons.forEach((machineButton) => {
             if (detailsImage) detailsImage.src = machine.url_imagem || '/static/src/img/torno_mecanico.jpg';
             if (detailsTypeText) detailsTypeText.textContent = machine.tipo_maquina || 'N/A';
             if (detailsPatrimonyText) detailsPatrimonyText.textContent = machine.numero_patrimonio || 'N/A';
-            if (detailsLocationText) detailsLocationText.textContent = machine.localizacao || 'N/A';
+            if (detailsLocationText) detailsLocationText.textContent = machine.setor || 'N/A';
 
             if (detailsStatValues && detailsStatValues.length >= 5) {
                 detailsStatValues[0].textContent = `${machine.tempo_producao || 0}h`;
@@ -257,7 +257,7 @@ if (btnConfirmDelete) {
             }
 
             const resultado = await response.json();
-            console.log('Máquina Inativada:', resultado);
+
 
         } catch (error) {
             console.error('Falha ao inativar Máquina:', error);

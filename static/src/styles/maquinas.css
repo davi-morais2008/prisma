@@ -1057,7 +1057,7 @@ body {
 .machine-details__statistics {
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: 100%;
     gap: 8px;
 }
 
@@ -1148,7 +1148,7 @@ body {
 /* --- MANUTENÇÃO PREVENTIVA --- */
 .machine-details__prev-maintance {
     background-color: var(--color-bg-light);
-    width: 90%;
+    width: 100%;
     border-radius: var(--border-radius-md);
     padding: 12px 16px;
     box-sizing: border-box;
@@ -1176,7 +1176,7 @@ body {
 /* --- HISTÓRICO DE MANUTENÇÕES --- */
 .machine-details__maintance-history {
     background-color: var(--color-bg-light);
-    width: 90%;
+    width: 100%;
     border-radius: var(--border-radius-md);
     padding: 12px 16px;
     box-sizing: border-box;

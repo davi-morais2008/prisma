@@ -10,7 +10,7 @@ from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
 from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
-from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina, consultar_falhas, adicionar_falha, adicionar_tipo_maquina
+from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina, consulta_setores, consultar_falhas, adicionar_falha, adicionar_tipo_maquina
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
 from functools import wraps
@@ -124,6 +124,7 @@ def get_dados():
         return jsonify({
             "kpis": {
                 "total_os": informacoes["total_os"],
+                "finalizada_os": informacoes["finalizada_os"],
                 "os_pendentes": informacoes["os_pendentes"],
                 "maquinas_ativas": informacoes["maquinas_total"],
                 "maquinas_paradas": informacoes["maquinas_paradas"],
@@ -283,7 +284,8 @@ def post_cadastro():
 def pagina_maquinas():
     maquinas = consultar_maquinas()
     tipos_maquinas = consulta_tipo_maquinas()
-    return render_template('maquinas.html', maquinas = maquinas, tipos_maquinas = tipos_maquinas)
+    setores = consulta_setores()
+    return render_template('maquinas.html', maquinas = maquinas, tipos_maquinas = tipos_maquinas, setores = setores)
 
 
 @app.route('/maquinas/api_request_machines', methods = ['GET'])
