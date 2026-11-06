@@ -10,7 +10,7 @@ from model.consultaMaquinas import consultar_maquinas
 from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
-from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina, consultar_falhas, adicionar_falha, adicionar_tipo_maquina
+from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina, consulta_setores, consultar_falhas, adicionar_falha, adicionar_tipo_maquina
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
 from functools import wraps
@@ -287,7 +287,8 @@ def post_cadastro():
 def pagina_maquinas():
     maquinas = consultar_maquinas()
     tipos_maquinas = consulta_tipo_maquinas()
-    return render_template('maquinas.html', maquinas = maquinas, tipos_maquinas = tipos_maquinas)
+    setores = consulta_setores()
+    return render_template('maquinas.html', maquinas = maquinas, tipos_maquinas = tipos_maquinas, setores = setores)
 
 
 @app.route('/maquinas/api_request_machines', methods = ['GET'])
@@ -339,7 +340,6 @@ def maquinas_update_machines():
     status_machine = request.form.get("edit-maintance-status")
     scheduled_date = request.form.get("edit-maintance-date")
     id_machine = request.form.get('id-machine')
-    print(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
     atualizar_editar_maquina(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
     return redirect('/maquinas')
 
