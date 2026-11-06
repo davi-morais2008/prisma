@@ -123,6 +123,8 @@ def consulta_tipo_maquinas():
 
     return resposta
 
+
+
 def adicionar_tipo_maquina(nome_tipo):
     """
     Cadastra um novo tipo de máquina na tabela 'tipos_maquinas'.
@@ -148,6 +150,13 @@ def adicionar_tipo_maquina(nome_tipo):
             conexao.close()
         return False
 
+
+def consultar_falhas():
+    conexao, cursor = conectar()
+    cursor.execute('SELECT id_falha, id_tipo_maquina, falha FROM falhas')
+    resposta = cursor.fetchall()
+    conexao.commit()
+    return resposta
     
 def adicionar_falha(tipo_maquina, falha):
     conexao, cursor = conectar()
