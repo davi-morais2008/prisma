@@ -16,7 +16,8 @@ def consultar_maquinas():
     MAX(imagens_maquinas.url_imagem) AS url_imagem, 
     maquinas.modelo_maquina, 
     maquinas.numero_patrimonio, 
-    setores.setor, 
+    setores.setor,
+    maquinas.id_setor,
     maquinas.manual_operacao, 
     maquinas.status_maquina, 
     maquinas.is_inativa 
