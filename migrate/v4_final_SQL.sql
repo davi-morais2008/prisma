@@ -28,7 +28,6 @@ CREATE TABLE IF NOT EXISTS usuarios (
  status_usuario BOOL DEFAULT true,
  descricao_usuario VARCHAR(255),
  imagem_perfil VARCHAR(255),
- cargo VARCHAR(100) DEFAULT "Técnico",
  rbac VARCHAR(100) DEFAULT "usuario"
 );
 
@@ -48,9 +47,9 @@ CREATE TABLE IF NOT EXISTS setores (
 CREATE TABLE IF NOT EXISTS maquinas (
  id_maquina INT PRIMARY KEY NOT NULL auto_increment,
  id_tipo_maquina INT,
+ id_setor INT,
  modelo_maquina VARCHAR(100),
  numero_patrimonio VARCHAR(255) NOT NULL,
- id_setor INT,
  manual_operacao VARCHAR(500),
  status_maquina VARCHAR(100),
  is_inativa bool default false
