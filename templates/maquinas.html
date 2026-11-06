@@ -130,8 +130,12 @@ Máquinas
 
                             <div class="machine-form__field">
                                 <label for="location-machine" class="machine-form__label">Localização / Setor</label>
-                                <input type="text" id="location-machine" name="location-machine"
-                                    class="machine-form__input" placeholder="Ex: Setor A - Linha 2">
+                                <select id="location-machine" name="location-machine" class="machine-form__select">
+                                    <option value="" disabled selected>Selecione o setor...</option>
+                                    {% for setor in setores %}
+                                    <option value="{{setor.id_setor}}">{{setor.setor}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
 
                             <div class="machine-form__field">
@@ -317,7 +321,7 @@ Máquinas
                 </div>
 
                 <!-- INFORMAÇÕES PRIMÁRIAS -->
-                 <div class="machine-details__body">
+                <div class="machine-details__body">
                     <div class="machine-details__primary-info">
                         <div class="machine-details__img-machine">
                             <img src="/static/src/img/torno_mecanico.jpg" alt="Injetora de Plástico - Modelo H500"
@@ -474,7 +478,7 @@ Máquinas
                             </tbody>
                         </table>
                     </div>
-                 </div>
+                </div>
             </div>
             <!-- Modal de Confirmação de Exclusão -->
         </div>
@@ -537,11 +541,14 @@ Máquinas
                                 <input type="text" id="edit-patrimony" name="edit-patrimony" class="machine-edit__input"
                                     value="MAQ-SP-0014">
                             </div>
-                            <div class="machine-edit__field">
-                                <label for="edit-location" class="machine-edit__label">Localização</label>
-                                <input type="text" id="edit-location" name="edit-location" class="machine-edit__input"
-                                    value="Setor A">
-                            </div>
+                            <label for="-edit-location" class="machine-edit__label">Localização/Setor</label>
+                            <select id="edit-location" name="edit-location" class="machine-edit__input">
+                                <option value="" id="default" selected>Selecionar</option>
+                                {% for setor in setores %}
+                                <option value="{{setor.id_setor}}">{{setor.setor}}
+                                </option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
 
@@ -681,221 +688,217 @@ Máquinas
             </div>
         </div>
 
-         <div class="order-delete" id="deleteModal" role="dialog" aria-modal="true"
-                        aria-labelledby="deleteModalTitle" aria-describedby="deleteModalDescription">
-                <div class="order-delete__overlay" id="deleteModalOverlay"></div>
+        <div class="order-delete" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle"
+            aria-describedby="deleteModalDescription">
+            <div class="order-delete__overlay" id="deleteModalOverlay"></div>
 
 
-                <article class="order-delete__card">
-                    <!-- CABEÇALHO SUPERIOR -->
-                    <header class="order-delete__header">
-                        <div class="order-delete__brand">
-                            <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
-                                class="order-delete__brand-image">
-                            <h1 class="order-delete__brand-title" id="deleteModalTitle">EXCLUIR ORDEM DE SERVIÇO</h1>
-                        </div>
-                        <button class="order-delete__close-btn" id="btnCancelDeleteHeader"
-                            aria-label="Fechar confirmação de exclusão">
-                            <span class="material-symbols-outlined" aria-hidden="true">close</span>
-                        </button>
-                    </header>
+            <article class="order-delete__card">
+                <!-- CABEÇALHO SUPERIOR -->
+                <header class="order-delete__header">
+                    <div class="order-delete__brand">
+                        <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
+                            class="order-delete__brand-image">
+                        <h1 class="order-delete__brand-title" id="deleteModalTitle">EXCLUIR ORDEM DE SERVIÇO</h1>
+                    </div>
+                    <button class="order-delete__close-btn" id="btnCancelDeleteHeader"
+                        aria-label="Fechar confirmação de exclusão">
+                        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                    </button>
+                </header>
 
 
-                    <!-- CORPO DO MODAL DE ALERTA -->
-                    <div class="order-delete__body">
-                        <div class="order-delete__icon-wrapper">
-                            <span class="material-symbols-outlined order-delete__icon" aria-hidden="true">warning</span>
-                        </div>
-
-
-                        <div class="order-delete__content">
-                            <h2 class="order-delete__heading">Tem certeza que deseja excluir?</h2>
-                            <p class="order-delete__description" id="deleteModalDescription">
-                                Esta ação excluirá permanentemente a Ordem de Serviço selecionada do sistema PRISMA e
-                                não
-                                poderá ser desfeita.
-                            </p>
-                        </div>
+                <!-- CORPO DO MODAL DE ALERTA -->
+                <div class="order-delete__body">
+                    <div class="order-delete__icon-wrapper">
+                        <span class="material-symbols-outlined order-delete__icon" aria-hidden="true">warning</span>
                     </div>
 
 
-                    <!-- RODAPÉ DE AÇÕES -->
-                    <footer class="order-delete__footer">
-                        <button type="button" class="order-delete__btn order-delete__btn--cancel" id="btnCancelDelete">
-                            Cancelar
-                        </button>
-                        <button type="button" class="order-delete__btn order-delete__btn--confirm"
-                            id="btnConfirmDelete">
-
-                            <span class="material-symbols-outlined" aria-hidden="true">delete</span>
-                            Sim, Excluir
-                        </button>
-                    </footer>
-                </article>
-            </div>
-
-         <div class="order-delete" id="deleteModal" role="dialog" aria-modal="true"
-                        aria-labelledby="deleteModalTitle" aria-describedby="deleteModalDescription">
-                <div class="order-delete__overlay" id="deleteModalOverlay"></div>
+                    <div class="order-delete__content">
+                        <h2 class="order-delete__heading">Tem certeza que deseja excluir?</h2>
+                        <p class="order-delete__description" id="deleteModalDescription">
+                            Esta ação excluirá permanentemente a Ordem de Serviço selecionada do sistema PRISMA e
+                            não
+                            poderá ser desfeita.
+                        </p>
+                    </div>
+                </div>
 
 
-                <article class="order-delete__card">
-                    <!-- CABEÇALHO SUPERIOR -->
-                    <header class="order-delete__header">
-                        <div class="order-delete__brand">
-                            <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
-                                class="order-delete__brand-image">
-                            <h1 class="order-delete__brand-title" id="deleteModalTitle">EXCLUIR ORDEM DE SERVIÇO</h1>
-                        </div>
-                        <button class="order-delete__close-btn" id="btnCancelDeleteHeader"
-                            aria-label="Fechar confirmação de exclusão">
-                            <span class="material-symbols-outlined" aria-hidden="true">close</span>
-                        </button>
-                    </header>
+                <!-- RODAPÉ DE AÇÕES -->
+                <footer class="order-delete__footer">
+                    <button type="button" class="order-delete__btn order-delete__btn--cancel" id="btnCancelDelete">
+                        Cancelar
+                    </button>
+                    <button type="button" class="order-delete__btn order-delete__btn--confirm" id="btnConfirmDelete">
+
+                        <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                        Sim, Excluir
+                    </button>
+                </footer>
+            </article>
+        </div>
+
+        <div class="order-delete" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle"
+            aria-describedby="deleteModalDescription">
+            <div class="order-delete__overlay" id="deleteModalOverlay"></div>
 
 
-                    <!-- CORPO DO MODAL DE ALERTA -->
-                    <div class="order-delete__body">
-                        <div class="order-delete__icon-wrapper">
-                            <span class="material-symbols-outlined order-delete__icon" aria-hidden="true">warning</span>
-                        </div>
+            <article class="order-delete__card">
+                <!-- CABEÇALHO SUPERIOR -->
+                <header class="order-delete__header">
+                    <div class="order-delete__brand">
+                        <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
+                            class="order-delete__brand-image">
+                        <h1 class="order-delete__brand-title" id="deleteModalTitle">EXCLUIR ORDEM DE SERVIÇO</h1>
+                    </div>
+                    <button class="order-delete__close-btn" id="btnCancelDeleteHeader"
+                        aria-label="Fechar confirmação de exclusão">
+                        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                    </button>
+                </header>
 
 
-                        <div class="order-delete__content">
-                            <h2 class="order-delete__heading">Tem certeza que deseja excluir?</h2>
-                            <p class="order-delete__description" id="deleteModalDescription">
-                                Esta ação excluirá permanentemente a Ordem de Serviço selecionada do sistema PRISMA e
-                                não
-                                poderá ser desfeita.
-                            </p>
-                        </div>
+                <!-- CORPO DO MODAL DE ALERTA -->
+                <div class="order-delete__body">
+                    <div class="order-delete__icon-wrapper">
+                        <span class="material-symbols-outlined order-delete__icon" aria-hidden="true">warning</span>
                     </div>
 
 
-                    <!-- RODAPÉ DE AÇÕES -->
-                    <footer class="order-delete__footer">
-                        <button type="button" class="order-delete__btn order-delete__btn--cancel" id="btnCancelDelete">
-                            Cancelar
-                        </button>
-                        <button type="button" class="order-delete__btn order-delete__btn--confirm"
-                            id="btnConfirmDelete">
-
-                            <span class="material-symbols-outlined" aria-hidden="true">delete</span>
-                            Sim, Excluir
-                        </button>
-                    </footer>
-                </article>
-            </div>
-
-         <div class="order-delete" id="deleteModal" role="dialog" aria-modal="true"
-                        aria-labelledby="deleteModalTitle" aria-describedby="deleteModalDescription">
-                <div class="order-delete__overlay" id="deleteModalOverlay"></div>
+                    <div class="order-delete__content">
+                        <h2 class="order-delete__heading">Tem certeza que deseja excluir?</h2>
+                        <p class="order-delete__description" id="deleteModalDescription">
+                            Esta ação excluirá permanentemente a Ordem de Serviço selecionada do sistema PRISMA e
+                            não
+                            poderá ser desfeita.
+                        </p>
+                    </div>
+                </div>
 
 
-                <article class="order-delete__card">
-                    <!-- CABEÇALHO SUPERIOR -->
-                    <header class="order-delete__header">
-                        <div class="order-delete__brand">
-                            <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
-                                class="order-delete__brand-image">
-                            <h1 class="order-delete__brand-title" id="deleteModalTitle">EXCLUIR ORDEM DE SERVIÇO</h1>
-                        </div>
-                        <button class="order-delete__close-btn" id="btnCancelDeleteHeader"
-                            aria-label="Fechar confirmação de exclusão">
-                            <span class="material-symbols-outlined" aria-hidden="true">close</span>
-                        </button>
-                    </header>
+                <!-- RODAPÉ DE AÇÕES -->
+                <footer class="order-delete__footer">
+                    <button type="button" class="order-delete__btn order-delete__btn--cancel" id="btnCancelDelete">
+                        Cancelar
+                    </button>
+                    <button type="button" class="order-delete__btn order-delete__btn--confirm" id="btnConfirmDelete">
+
+                        <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                        Sim, Excluir
+                    </button>
+                </footer>
+            </article>
+        </div>
+
+        <div class="order-delete" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle"
+            aria-describedby="deleteModalDescription">
+            <div class="order-delete__overlay" id="deleteModalOverlay"></div>
 
 
-                    <!-- CORPO DO MODAL DE ALERTA -->
-                    <div class="order-delete__body">
-                        <div class="order-delete__icon-wrapper">
-                            <span class="material-symbols-outlined order-delete__icon" aria-hidden="true">warning</span>
-                        </div>
+            <article class="order-delete__card">
+                <!-- CABEÇALHO SUPERIOR -->
+                <header class="order-delete__header">
+                    <div class="order-delete__brand">
+                        <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
+                            class="order-delete__brand-image">
+                        <h1 class="order-delete__brand-title" id="deleteModalTitle">EXCLUIR ORDEM DE SERVIÇO</h1>
+                    </div>
+                    <button class="order-delete__close-btn" id="btnCancelDeleteHeader"
+                        aria-label="Fechar confirmação de exclusão">
+                        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                    </button>
+                </header>
 
 
-                        <div class="order-delete__content">
-                            <h2 class="order-delete__heading">Tem certeza que deseja excluir?</h2>
-                            <p class="order-delete__description" id="deleteModalDescription">
-                                Esta ação excluirá permanentemente a Ordem de Serviço selecionada do sistema PRISMA e
-                                não
-                                poderá ser desfeita.
-                            </p>
-                        </div>
+                <!-- CORPO DO MODAL DE ALERTA -->
+                <div class="order-delete__body">
+                    <div class="order-delete__icon-wrapper">
+                        <span class="material-symbols-outlined order-delete__icon" aria-hidden="true">warning</span>
                     </div>
 
 
-                    <!-- RODAPÉ DE AÇÕES -->
-                    <footer class="order-delete__footer">
-                        <button type="button" class="order-delete__btn order-delete__btn--cancel" id="btnCancelDelete">
-                            Cancelar
-                        </button>
-                        <button type="button" class="order-delete__btn order-delete__btn--confirm"
-                            id="btnConfirmDelete">
-
-                            <span class="material-symbols-outlined" aria-hidden="true">delete</span>
-                            Sim, Excluir
-                        </button>
-                    </footer>
-                </article>
-            </div>
-
-         <div class="order-delete" id="deleteModal" role="dialog" aria-modal="true"
-                        aria-labelledby="deleteModalTitle" aria-describedby="deleteModalDescription">
-                <div class="order-delete__overlay" id="deleteModalOverlay"></div>
+                    <div class="order-delete__content">
+                        <h2 class="order-delete__heading">Tem certeza que deseja excluir?</h2>
+                        <p class="order-delete__description" id="deleteModalDescription">
+                            Esta ação excluirá permanentemente a Ordem de Serviço selecionada do sistema PRISMA e
+                            não
+                            poderá ser desfeita.
+                        </p>
+                    </div>
+                </div>
 
 
-                <article class="order-delete__card">
-                    <!-- CABEÇALHO SUPERIOR -->
-                    <header class="order-delete__header">
-                        <div class="order-delete__brand">
-                            <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
-                                class="order-delete__brand-image">
-                            <h1 class="order-delete__brand-title" id="deleteModalTitle">EXCLUIR ORDEM DE SERVIÇO</h1>
-                        </div>
-                        <button class="order-delete__close-btn" id="btnCancelDeleteHeader"
-                            aria-label="Fechar confirmação de exclusão">
-                            <span class="material-symbols-outlined" aria-hidden="true">close</span>
-                        </button>
-                    </header>
+                <!-- RODAPÉ DE AÇÕES -->
+                <footer class="order-delete__footer">
+                    <button type="button" class="order-delete__btn order-delete__btn--cancel" id="btnCancelDelete">
+                        Cancelar
+                    </button>
+                    <button type="button" class="order-delete__btn order-delete__btn--confirm" id="btnConfirmDelete">
+
+                        <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                        Sim, Excluir
+                    </button>
+                </footer>
+            </article>
+        </div>
+
+        <div class="order-delete" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle"
+            aria-describedby="deleteModalDescription">
+            <div class="order-delete__overlay" id="deleteModalOverlay"></div>
 
 
-                    <!-- CORPO DO MODAL DE ALERTA -->
-                    <div class="order-delete__body">
-                        <div class="order-delete__icon-wrapper">
-                            <span class="material-symbols-outlined order-delete__icon" aria-hidden="true">warning</span>
-                        </div>
+            <article class="order-delete__card">
+                <!-- CABEÇALHO SUPERIOR -->
+                <header class="order-delete__header">
+                    <div class="order-delete__brand">
+                        <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
+                            class="order-delete__brand-image">
+                        <h1 class="order-delete__brand-title" id="deleteModalTitle">EXCLUIR ORDEM DE SERVIÇO</h1>
+                    </div>
+                    <button class="order-delete__close-btn" id="btnCancelDeleteHeader"
+                        aria-label="Fechar confirmação de exclusão">
+                        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                    </button>
+                </header>
 
 
-                        <div class="order-delete__content">
-                            <h2 class="order-delete__heading">Tem certeza que deseja excluir?</h2>
-                            <p class="order-delete__description" id="deleteModalDescription">
-                                Esta ação excluirá permanentemente a Ordem de Serviço selecionada do sistema PRISMA e
-                                não
-                                poderá ser desfeita.
-                            </p>
-                        </div>
+                <!-- CORPO DO MODAL DE ALERTA -->
+                <div class="order-delete__body">
+                    <div class="order-delete__icon-wrapper">
+                        <span class="material-symbols-outlined order-delete__icon" aria-hidden="true">warning</span>
                     </div>
 
 
-                    <!-- RODAPÉ DE AÇÕES -->
-                    <footer class="order-delete__footer">
-                        <button type="button" class="order-delete__btn order-delete__btn--cancel" id="btnCancelDelete">
-                            Cancelar
-                        </button>
-                        <button type="button" class="order-delete__btn order-delete__btn--confirm"
-                            id="btnConfirmDelete">
+                    <div class="order-delete__content">
+                        <h2 class="order-delete__heading">Tem certeza que deseja excluir?</h2>
+                        <p class="order-delete__description" id="deleteModalDescription">
+                            Esta ação excluirá permanentemente a Ordem de Serviço selecionada do sistema PRISMA e
+                            não
+                            poderá ser desfeita.
+                        </p>
+                    </div>
+                </div>
 
-                            <span class="material-symbols-outlined" aria-hidden="true">delete</span>
-                            Sim, Excluir
-                        </button>
-                    </footer>
-                </article>
-            </div>
 
-    <div class="add-buttons">
-        <button type="button" class="add-button_new-category machines__button-register">+ Adicionar Máquina</button>
-    </div>
+                <!-- RODAPÉ DE AÇÕES -->
+                <footer class="order-delete__footer">
+                    <button type="button" class="order-delete__btn order-delete__btn--cancel" id="btnCancelDelete">
+                        Cancelar
+                    </button>
+                    <button type="button" class="order-delete__btn order-delete__btn--confirm" id="btnConfirmDelete">
+
+                        <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                        Sim, Excluir
+                    </button>
+                </footer>
+            </article>
+        </div>
+
+        <div class="add-buttons">
+            <button type="button" class="add-button_new-category machines__button-register">+ Adicionar Máquina</button>
+        </div>
 
     </section>
 

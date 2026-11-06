@@ -160,7 +160,7 @@ async function fillEditModal(machineId) {
         if (editOptionDefaultInput) editOptionDefaultInput.value = machine.id_tipo_maquina || '';
         if (editOptionDefaultInput) editOptionDefaultInput.textContent = machine.tipo_maquina || '';
         if (editPatrimonyInput) editPatrimonyInput.value = machine.numero_patrimonio || '';
-        if (editLocationInput) editLocationInput.value = machine.setor || '';
+        if (editLocationInput) editLocationInput.value = machine.id_setor || '';
         if (editProdTimeInput) editProdTimeInput.value = machine.tempo_producao || '';
         if (editWorkHoursInput) editWorkHoursInput.value = machine.total_horas || '';
         if (editCostInput) editCostInput.value = machine.custo_acumulado || '';
