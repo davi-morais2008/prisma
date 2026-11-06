@@ -120,27 +120,6 @@
     grid-column: 2;
 }
 
-.home__button-register {
-    background-color: var(--color-accent-orange);
-    width: 60px;
-    height: 60px;
-    border-radius: 35px;
-    border: 0;
-    font-family: var(--font-family-base);
-    font-size: 40px;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-light);
-    cursor: pointer;
-    transition: ease-in 150ms;
-    margin-left: auto;
-}
-
-.home__button-register:hover {
-    background-color: var(--color-accent-peach);
-    transform: scale(1.05);
-}
-
-
 .home__order-filters {
     width: 100%;
     max-width: 600px;
@@ -886,7 +865,7 @@
 .order-create__card {
     position: relative;
     width: 100%;
-    max-width: 520px;
+    max-width: 720px;
     max-height: 80vh;
     background-color: var(--color-bg-card);
     border-radius: var(--border-radius-lg);
@@ -1533,6 +1512,36 @@
     background-color: var(--color-primary-dark);
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
+}
+
+.add-button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 20px;
+    position: fixed;
+    bottom: 50px;
+    right: 40px;
+}
+
+.home__button-register {
+    width: 240px;
+    height: 50px;
+    border-radius: 60px;
+    border: none;
+    z-index: 998;
+    cursor: pointer;
+    background-color: var(--color-accent-peach);
+    color: var(--color-bg-light);
+    font-size: large;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
+}
+
+.home__button-register:hover{
+    background-color: orange;
+    transform: scale(1.05);
+    transition: all 130ms;
 }
 
 /* Responsividade para Telas Menores */
