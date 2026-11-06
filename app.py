@@ -371,8 +371,8 @@ def categorias():
     return render_template('categorias.html')
 
 @app.route('/categorias/api_get_categorias')
-def categorias():
-    
+def categorias_get_api():
+
     return render_template('categorias.html')
 
 @app.route('/profile')
