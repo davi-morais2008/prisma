@@ -13,7 +13,7 @@ Página Inicial
 <main class="home">
     <div class="home__header">
         <h1 class="home__title">Ordens de Serviço</h1>
-        <button class="home__button-register" aria-label="Cadastrar Nova OS">+</button>
+        
     </div>
 
     <div class="home__order-filters">
@@ -452,7 +452,7 @@ Página Inicial
                                         {% endfor %}
                                     </select>
 
-                                    <button title="Adicionar falha" class="order-create__btn--add-falha"
+                                    <button type="button" title="Adicionar falha" class="order-create__btn--add-falha"
                                         id="btnAddFalha">
                                         <span class="material-symbols-outlined">
                                             add
@@ -589,6 +589,10 @@ Página Inicial
                 </footer>
             </form>
         </article>
+    </div>
+
+    <div class="add-button">
+        <button class="home__button-register" aria-label="Cadastrar Nova OS">+ Ordem de Serviço</button>
     </div>
 
 </main>
