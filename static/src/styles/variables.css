@@ -22,6 +22,7 @@
   --color-bg-card: #FFFFFF;        /* Fundo dos cards e campos */
   --color-bg-input: #FFFFFF;       /* Fundo dos inputs de formulário */
   --color-bg-light: #EBEFFE;       /* Destaques leves/container interno */
+  --color-bg-card-inactive: #DADCED; /* Um tom um pouco mais escuro/acinzentado que o bg-main */
 
   /* Glassmorphism / Modal Translucido (Telas de Login/Cadastro) */
   --color-glass-bg: rgba(255, 255, 255, 0.45);
@@ -74,4 +75,39 @@
   --shadow-lg: 0px 8px 24px rgba(10, 8, 75, 0.15);
 
   --color-footer: #ffffff;
+}
+
+[data-theme="dark"] {
+  --color-primary: #1600a7;
+  --color-primary-dark: #A59BFF;
+
+  --color-secondary: #5243FF;
+  --color-secondary-hover: #7E73FF;
+
+  --color-accent-orange: #FFA834;
+  --color-accent-peach: #FFC46B;
+
+  --color-bg-main: #12131C;
+  --color-bg-card: #151726;
+  --color-bg-input: #1D2036;
+  --color-bg-light: #191e47;
+  --color-bg-card-inactive: #0E0F19; 
+
+  --color-glass-bg: rgba(21, 23, 38, 0.75);
+  --color-glass-border: rgba(255, 255, 255, 0.12);
+
+  --color-status-danger: #FF6B6B;
+  --color-status-danger-dark: #FF4B4B;
+  --color-status-warning: #FFD93D;
+  --color-status-success: #51CF66;
+
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #FFFFFF;
+  --color-text-light: #FFFFFF;
+
+  --shadow-sm: 0px 2px 8px rgba(236, 230, 230, 0.05);
+  --shadow-md: 0px 4px 16px rgba(236, 230, 230, 0.1);
+  --shadow-lg: 0px 8px 24px rgba(236, 230, 230, 0.2);
+
+  --color-footer: #151726;
 }

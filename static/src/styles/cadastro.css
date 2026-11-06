@@ -30,6 +30,7 @@
     overflow: hidden;
     box-shadow: var(--shadow-md);
     min-height: min(720px, 100vh);
+    transition: all 0.4s ease;
 }
 
 /* --- COLUNA ESQUERDA --- */
@@ -63,6 +64,7 @@
     font-size: clamp(1.4rem, 2.5vw, 1.75rem);
     font-weight: var(--font-weight-bold);
     text-align: center;
+    transition: all 0.2s ease;
 }
 
 .subtitulo_cadastro {
@@ -70,6 +72,7 @@
     font-size: var(--font-size-sm);
     text-align: center;
     margin-top: 4px;
+    transition: all 0.2s ease;
 }
 
 /* --- SLIDING INDICATOR --- */
@@ -98,7 +101,7 @@
     left: 4px;
     width: calc(50% - 4px);
     height: calc(100% - 8px);
-    background-color: #ffffff;
+    background-color: var(--color-bg-card);
     border-radius: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -112,7 +115,7 @@
     justify-content: center;
     font-size: 0.95rem;
     font-weight: 600;
-    color: #6c757d;
+    color: var(--color-text-secondary);
     cursor: pointer;
     z-index: 2;
     transition: color 0.3s ease;
@@ -174,6 +177,7 @@
 .form_input:focus {
     border-color: var(--color-secondary);
     box-shadow: 0 0 0 3px rgba(124, 114, 255, 0.2);
+    transition: all 0.2s ease;
 }
 
 /* Botão de Envio */
@@ -195,7 +199,7 @@
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
     margin-bottom: 2%;
 }
 
@@ -235,6 +239,7 @@
     padding: clamp(20px, 4vw, 40px);
     position: relative;
     min-height: 200px;
+    transition: all 0.2s ease;
 }
 
 .imagem_lateral {
@@ -245,6 +250,75 @@
     object-fit: contain;
     filter: drop-shadow(0 20px 30px rgba(10, 8, 75, 0.15));
 }
+
+
+/* 1. Preparar o container pai para ancorar o posicionamento absoluto */
+.coluna_formulario {
+  position: relative;
+  /* Mantenha o restante das suas regras do coluna_formulario aqui */
+}
+
+/* 2. Bloco: Theme Toggle */
+.theme-toggle {
+  /* Posicionamento fora do fluxo normal dos formulários */
+  position: absolute;
+  top: clamp(15px, 1vw, 15px);
+  right: clamp(5px, 1vw, 15px);
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: none;
+  border-radius: var(--border-radius-pill);
+  padding: clamp(6px, 1.5vw, 10px);
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease;
+}
+
+/* Elemento: Ícone interno responsivo */
+.theme-toggle__icon {
+  /* Tamanho fluido que se adapta entre mobile e desktop */
+  width: clamp(20px, 2vw, 25px);
+  height: clamp(20px, 2vw, 25px);
+  object-fit: contain;
+  background-color: transparent;
+  pointer-events: none;
+
+}
+
+.theme-toggle:hover {
+  transform: scale(1.08);
+  background-color: white;
+}
+
+
+[data-theme="dark"] .toggle_container {
+    background-color: var(--color-bg-light); /
+}
+
+[data-theme="dark"] .toggle_indicator {
+    background-color: var(--color-bg-card);
+}
+
+[data-theme="dark"] .btn_toggle {
+    color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] #signin:checked ~ .toggle_container label[for="signin"],
+[data-theme="dark"] #signup:checked ~ .toggle_container label[for="signup"] {
+    color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .btn_pwd {
+    color: var(--color-text-primary);
+}
+
+
+
 
 @view-transition {
     navigation: auto;

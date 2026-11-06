@@ -70,7 +70,7 @@
 .fc .fc-toolbar-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
+  color: var(--color-text-primary);
 }
 
 /* Botões com dimensionamento fluido */
@@ -282,6 +282,9 @@
 
 .btn-secondary:hover {
   background-color: #dce3fe;
+}
+.fc-daygrid-day-number{
+  color: var(--color-text-primary);
 }
 
 @media (max-width: 960px) {

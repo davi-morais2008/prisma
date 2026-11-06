@@ -72,6 +72,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
     gap: 20px;
 }
 
@@ -167,4 +168,35 @@ body {
     color: var(--color-text-secondary);
     font-size: 0.8rem;
     text-align: center;
+}
+
+.theme-toggle {
+  /* Posicionamento fora do fluxo normal dos formulários */
+  position: absolute;
+  top: clamp(15px, 1vw, 15px);
+  right: clamp(5px, 1vw, 15px);
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-secondary);
+  border: none;
+  border-radius: var(--border-radius-pill);
+  padding: clamp(6px, 1.5vw, 10px);
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: var(--shadow-sm);
+
+}
+
+/* Elemento: Ícone interno responsivo */
+.theme-toggle__icon {
+  /* Tamanho fluido que se adapta entre mobile e desktop */
+  width: clamp(15px, 1vw, 2px);
+  height: clamp(15px, 1vw, 2px);
+  object-fit: contain;
+  background-color: transparent;
+  pointer-events: none;
+
 }

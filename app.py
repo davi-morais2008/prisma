@@ -2,20 +2,172 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.OS import consultar_ordem_servico
-from model.usuario import buscar_usuario
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico
+from model.usuario import buscar_usuario, atualizar_usuario
 
+from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas
+from model.finalizarOS import finalizar_OS
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
+from werkzeug.security import generate_password_hash
+from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina, consultar_falhas, adicionar_falha, adicionar_tipo_maquina
 from model.cadastro import cadastrar_usuario
-
+from flask_mail import Mail, Message
+from functools import wraps
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'PRISMA_maintence'
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'gustavocaua934@gmail.com'
+app.config['MAIL_PASSWORD'] = 'srqt tyry lwjd qcxh'
+app.config['MAIL_DEFAULT_SENDER'] = ('PRISMA', 'gustavocaua934@gmail.com')
+
+mail = Mail(app)
+serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 
+@app.context_processor
+def inject_user_permissions():
+    return {
+        'user_rbac' : session.get('user_rbac'),
+        'user' : session.get('user')
+    }
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('user'):
+            flash('Por favor, faça login para acessar esta página.', 'warning')
+            return redirect(url_for('pagina_login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def roles_required(*roles):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not session.get('user'):
+                return redirect(url_for('pagina_login'))
+            
+            user_role = session.get('user_rbac')
+            if user_role not in roles:
+                flash('Você não tem permissão para acessar este recurso.', 'danger')
+                return redirect(url_for('pagina_inicial'))
+                
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+@app.route('/esqueci-senha', methods=['GET', 'POST'])
+@app.route('/recuperacaoSenha', methods=['GET', 'POST'])
+def esqueci_senha():
+    if request.method == 'POST':
+        email = request.form.get('email')
+
+        usuario = buscar_usuario_por_email(email)
+
+        if usuario:
+            token = serializer.dumps(email, salt='recuperar-senha-salt')
+            link_redefinicao = url_for('redefinir_senha', token=token, _external=True)
+
+            msg = Message('Recuperação de Senha - PRISMA', recipients=[email])
+            msg.body = f'Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos.'
+            
+            try:
+                mail.send(msg)
+            except Exception:
+                flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
+                return redirect(url_for('esqueci_senha'))
+
+        flash('Se o e-mail estiver cadastrado, você receberá um link de redefinção.', 'info')
+        return redirect(url_for('esqueci_senha'))
+
+    return render_template('recuperacaoSenha.html')
+
+
+@app.route('/reset-senha/<token>', methods=['GET', 'POST'])
+def redefinir_senha(token):
+    try:
+        email = serializer.loads(token, salt='recuperar-senha-salt', max_age=1800)
+    except SignatureExpired:
+        flash('O link expirou. Solicite uma nova recuperação.', 'warning')
+        return redirect(url_for('esqueci_senha'))
+    except BadTimeSignature:
+        flash('Link inválido ou corrompido.', 'danger')
+        return redirect(url_for('esqueci_senha'))
+
+    if request.method == 'POST':
+        nova_senha = request.form.get('senha')
+        senha_hash = generate_password_hash(nova_senha)
+
+        atualizar_senha_usuario(email, senha_hash)
+
+        flash('Sua senha foi alterada com sucesso!', 'success')
+        return redirect(url_for('pagina_login'))
+
+    return render_template('redefinir_senha.html', token=token)
+
+
+@app.route('/painelGeral')
+@login_required
+@roles_required('admin', 'root')
+def painel_geral():
+    return render_template('painelGeral.html')
+
+@app.route('/api/dados')
+def get_dados():
+    try:
+        informacoes = buscar_dados_dashboard()
+        return jsonify({
+            "kpis": {
+                "total_os": informacoes["total_os"],
+                "finalizada_os": informacoes["finalizada_os"],
+                "os_pendentes": informacoes["os_pendentes"],
+                "maquinas_ativas": informacoes["maquinas_total"],
+                "maquinas_paradas": informacoes["maquinas_paradas"],
+                "falhas_computadas": informacoes["falhas_computadas"]
+            },
+            "os_por_mes": {
+                "labels": informacoes["labels_mes"],
+                "valores": informacoes["valores_mes"]
+            },
+            "falhas_quantidade":{
+                "labels": informacoes["labels_falha"],
+                "valores": informacoes["valores_falha"]
+            }
+        })
+    except Exception as e:
+        return jsonify({"status": "erro", "mensagem": str(e)}), 500
+
+@app.route('/logoff')
+def logoff():
+    session.clear()
+    return redirect('/login')
+
+@app.route('/')
 @app.route("/telaInicial")
+@login_required
 def pagina_inicial():
-    ordem_servico = consultar_ordem_servico()
-    return render_template("telaInicial.html", ordem_servico = ordem_servico)
+    ordens = consultar_ordem_servico()
+    tecnicos = buscar_usuario()
+    falhas = consultar_falhas()
+    maquinas = consultar_maquinas()
+    tipo_maquinas = consulta_tipo_maquinas()
+    return render_template("telaInicial.html", ordem_servico = ordens, tecnicos = tecnicos, falhas = falhas, maquinas = maquinas, tipo_maquinas = tipo_maquinas)
+
+@app.route ("/telaInicial/filtro/<tipo>", methods=["GET"])
+def filtrar_ordens(tipo):
+    ordens_filtro = filtrar_ordem_servico(tipo)
+
+    # Se a lista retornada estiver vazia:
+    if not ordens_filtro:
+        flash(f"Nenhuma ordem de serviço do tipo {tipo} foi encontrada.", "warning")
+
+    return render_template("telaInicial.html", ordem_servico = ordens_filtro)
+
 
 @app.route("/api/get/ordens_servico/", methods=["GET"])
 def api_get_ordem():
@@ -25,7 +177,48 @@ def api_get_ordem():
     except Exception as e:
             return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
+@app.route("/telaInicial/post-register-order", methods=["POST"])
+def register_os():
+    maquinas = consultar_maquinas()
+    nmr_patrimonio = request.form.get('numero_patrimonio')
+    tipo_manutencao = request.form.get('tipo_manutencao')
+    tec_responsavel = request.form.get('tecnico_responsavel')
+    prev_data_inicio = request.form.get('data_prev_inicio')
+    prev_data_termino = request.form.get('data_prev_termino')
+    data_parada = request.form.get('data_parada')
+    desc_problema = request.form.get('desc_problema')
+
+    id_maquina = None
+
+    for maquina in maquinas:
+        if str(maquina['numero_patrimonio']) == str(nmr_patrimonio):
+            id_maquina = maquina['id_maquina']
+            print(id_maquina)
+
+    if id_maquina is None:
+        return "Máquina não encontrada com o patrimônio informado", 400
+
+    cadastrar_ordem_servico(id_maquina, 
+                            1, 
+                            tec_responsavel,
+                            'Ativa', 
+                            tipo_manutencao, 
+                            desc_problema,
+                            '2008-08-28',
+                            '2008-08-29', 
+                            data_parada, 
+                            prev_data_inicio, 
+                            prev_data_termino)
+    return redirect('/telaInicial')
+
+
+@app.route("/telaInicial/finalizar/<int:id>") 
+def finish_os(id):
+    finalizar_OS(id)
+    return redirect ("/telaInicial")
+
 @app.route("/historico")
+@login_required
 def pagina_historico():
     OSfinalizado = buscar_os_finalizado()
     return render_template("historico.html", OSfinalizado = OSfinalizado)
@@ -38,7 +231,7 @@ def api_get_info_manutencao(id_ordem):
     except Exception as e:
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
-@app.route('/')
+
 @app.route('/login')
 def pagina_login():
     return render_template('cadastroLogin.html')
@@ -51,9 +244,11 @@ def post_login():
     
     for user in usuarios:
         if user['cpf'] == usuario and user['senha'] == senha:
-            session['user'] = (usuario, senha)
+            session['user'] = usuario
+            session['user_rbac'] = user['rbac']
+            print(session['user'])
             return redirect('/telaInicial')
-    flash('Usuário ou Senha INCORRETOS. Tente Novamente!', 'error')
+    flash('Usuário ou Senha incorreto. Tente Novamente!', 'error')
     return redirect('/login')
 
 
@@ -75,7 +270,7 @@ def post_cadastro():
         return redirect('/login')
     try:
         if cadastrar_usuario(user_cpf, username, user_email, user_pwd):
-            flash('Efetue o Login para acessar o Sistema', 'sucsses')
+            flash('Efetue o Login para acessar o Sistema', 'success')
             return redirect('/login')
         else:
             flash('Erro ao cadastrar-se. Tente Novamente', 'error')
@@ -88,27 +283,134 @@ def post_cadastro():
 
 
 @app.route('/maquinas', methods = ['GET'])
+@login_required
 def pagina_maquinas():
     maquinas = consultar_maquinas()
-    return render_template('maquinas.html', maquinas = maquinas)
-
-@app.route('/maquinas;')
-
+    tipos_maquinas = consulta_tipo_maquinas()
+    return render_template('maquinas.html', maquinas = maquinas, tipos_maquinas = tipos_maquinas)
 
 
-@app.route('/usuarios', methods = ['GET'])
+@app.route('/maquinas/api_request_machines', methods = ['GET'])
+def maquinas_api_get():
+    maquinas = consultar_maquinas()
+    return jsonify(maquinas), 200
+
+@app.route('/maquinas/post_register_machine', methods = ['POST'])
+@roles_required('admin', 'root')
+def maquinas_post_register():
+    avatar_file = request.files.get("avatar-upload")
+    type_machine = request.form.get("type-machine")
+    number_machine = request.form.get("number-machine")
+    model_machine = request.form.get("model-machine")
+    location_machine = request.form.get("location-machine")
+    production_time = request.form.get("production-time")
+    total_hours = request.form.get("total-hours")
+    accumulated_cost = request.form.get("accumulated-cost")
+    parts_changed = request.form.get("parts-changed")
+    downtime = request.form.get("downtime")
+    manual_file = request.files.get("manual-upload")
+    status_machine = request.form.get("status-machine")
+    scheduled_date = request.form.get("scheduled-date")
+    cadastrar_maquina(type_machine, number_machine, model_machine, location_machine, "TESTE", status_machine)
+    return redirect('/maquinas')
+
+@app.route('/maquinas/api_delete_machines', methods = ['POST'])
+@roles_required('admin', 'root')
+def maquinas_delete_machines():
+    id_machine = request.get_json()
+    deletar_maquina(int(id_machine['id']))
+    return jsonify({"status": "sucesso", "mensagem": "Máquina Deletada!"}), 200
+
+@app.route('/maquinas/update_machines', methods = ['POST'])
+@roles_required('admin', 'root')
+def maquinas_update_machines():
+    
+    avatar_file = request.files.get("edit-machine-img")
+    type_machine = request.form.get("edit-type")
+    number_machine = request.form.get("edit-patrimony")
+    model_machine = request.form.get("edit-model")
+    location_machine = request.form.get('edit-location')
+    production_time = request.form.get("edit-prod-time")
+    total_hours = request.form.get("edit-work-hours")
+    accumulated_cost = request.form.get("edit-cost")
+    parts_changed = request.form.get("edit-parts")
+    downtime = request.form.get("edit-stop-time")
+    manual_file = request.files.get("manual-upload")
+    status_machine = request.form.get("edit-maintance-status")
+    scheduled_date = request.form.get("edit-maintance-date")
+    id_machine = request.form.get('id-machine')
+    print(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
+    atualizar_editar_maquina(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
+    return redirect('/maquinas')
+
+@app.route('/maquina/adicionar_falha', methods = ['POST'])
+@login_required
+@roles_required('admin', 'root')
+def adicionar_falha_post():
+    id_maquina = request.form.get('id_maquina')
+    falha =  request.form.get('descricao_falha')
+    try:
+        adicionar_falha(id_maquina, falha)
+        flash('Falha adicionada com sucesso', 'success')
+    except Exception as e:
+        pass
+    return redirect('/maquinas')
+
+@app.route('/maquina/adicionar_tipo_maquina', methods = ['POST'])
+@login_required
+@roles_required('admin', 'root')
+def adicionar_tipo_maquina_post():
+    tipo_maquina = request.form.get('nome_tipo')
+    try:
+        adicionar_tipo_maquina(tipo_maquina)
+        flash('Tipo de Máquina adicionado com sucesso', 'success')
+    except Exception as e:
+        pass
+    return redirect('/maquinas')
+
+
+@app.route('/categorias')
+def categorias():
+    return render_template('categorias.html')
+
+@app.route('/categorias/api_get_categorias')
+def categorias_get_api():
+
+    return render_template('categorias.html')
+
+@app.route('/profile')
+@login_required
+def pagina_perfil():
+    users = buscar_usuario()
+    for user in users: 
+        if user['cpf'] == session['user']:
+            return render_template('perfil.html', usuario = user)
+
+
+@app.route('/profile/uptade_information', methods=['POST'])
+def pagina_perfil_update():
+    
+    nome = request.form.get('user-edit-name')
+    email = request.form.get('user-edit-email')
+    atualizar_usuario(session['user'], nome, email)
+    return redirect('/profile')
+
+    
+
+
+@app.route('/usuarios', methods=['GET'])
+@login_required
+@roles_required('admin', 'root')
 def pagina_usuarios():
-    return render_template('usuarios.html')
+    
+    lista_de_usuarios = buscar_usuario()
+    return render_template('usuarios.html', usuarios=lista_de_usuarios)
 
     
 @app.route('/calendario')
+@login_required
 def pagina_calendario():
     return render_template('calendario.html')
 
-@app.route('/perfil')
-def pagina_perfil():
-    return render_template('perfil.html')
-
-if __name__ == '__main__':
-    # Roda localmente na porta 8080
-    app.run(host="0.0.0.0", port=8080, debug=True)  
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080, debug=True)

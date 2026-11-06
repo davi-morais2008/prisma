@@ -25,9 +25,10 @@ CREATE TABLE IF NOT EXISTS usuarios (
  nome VARCHAR(100),
  email VARCHAR(255),
  senha VARCHAR(500),
- status_usuario VARCHAR(100),
- imagem_perfil VARCHAR(255)
-
+ status_usuario BOOL DEFAULT true,
+ descricao_usuario VARCHAR(255),
+ imagem_perfil VARCHAR(255),
+ rbac VARCHAR(100) DEFAULT "usuario"
 );
 
 CREATE UNIQUE INDEX UQ_EMAIL ON USUARIOS (email);
@@ -38,26 +39,33 @@ CREATE TABLE IF NOT EXISTS falhas (
  falha VARCHAR(100)
 );
 
+CREATE TABLE IF NOT EXISTS setores (
+ id_setor INT PRIMARY KEY NOT NULL auto_increment,
+ setor VARCHAR(100)
+);
+
 CREATE TABLE IF NOT EXISTS maquinas (
  id_maquina INT PRIMARY KEY NOT NULL auto_increment,
  id_tipo_maquina INT,
+ id_setor INT,
  modelo_maquina VARCHAR(100),
  numero_patrimonio VARCHAR(255) NOT NULL,
- localizacao VARCHAR(255),
  manual_operacao VARCHAR(500),
- status_maquina VARCHAR(100)
+ status_maquina VARCHAR(100),
+ is_inativa bool default false
 );
 
 CREATE TABLE IF NOT EXISTS ordens_servicos (
  id_ordem INT PRIMARY KEY NOT NULL auto_increment,
+ id_especialidade INT,
  id_maquina INT,
  id_falha INT,
  cpf VARCHAR(11),
  status_ordem VARCHAR(100),
  tipo_manutencao VARCHAR(100),
  descricao_problema VARCHAR(255),
- data_inicio_manutencao DATE,
- data_termino_manutencao DATETIME,
+ data_inicio_manutencao DATE DEFAULT NULL,
+ data_termino_manutencao DATETIME DEFAULT NULL,
  data_parada DATE,
  data_prev_inicio_manutencao DATE,
  data_prev_termino_manutencao DATE
@@ -86,10 +94,12 @@ CREATE TABLE IF NOT EXISTS imagens_maquinas (
 ALTER TABLE falhas ADD CONSTRAINT FK_falhas_0 FOREIGN KEY (id_tipo_maquina) REFERENCES tipos_maquinas (id_tipo_maquina);
 
 ALTER TABLE maquinas ADD CONSTRAINT FK_maquinas_0 FOREIGN KEY (id_tipo_maquina) REFERENCES tipos_maquinas (id_tipo_maquina);
+ALTER TABLE maquinas ADD CONSTRAINT FK_maquinas_1 FOREIGN KEY (id_setor) REFERENCES setores (id_setor);
 
 ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_0 FOREIGN KEY (id_maquina) REFERENCES maquinas (id_maquina);
 ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_1 FOREIGN KEY (id_falha) REFERENCES falhas (id_falha);
 ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_2 FOREIGN KEY (cpf) REFERENCES usuarios (cpf);
+ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_3 FOREIGN KEY (id_especialidade) REFERENCES especialidades (id_especialidade);
 
 ALTER TABLE tecnicos_especialidades ADD CONSTRAINT FK_tecnicos_especialidades_0 FOREIGN KEY (cpf) REFERENCES usuarios (cpf);
 ALTER TABLE tecnicos_especialidades ADD CONSTRAINT FK_tecnicos_especialidades_1 FOREIGN KEY (id_especialidade) REFERENCES especialidades (id_especialidade);

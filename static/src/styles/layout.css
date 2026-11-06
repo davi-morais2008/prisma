@@ -9,26 +9,26 @@
 
 /* Largura da barra vertical */
 ::-webkit-scrollbar {
-  width: 5px;
+    width: 5px;
 }
 
 /* A trilha (fundo onde a barra desliza) */
 ::-webkit-scrollbar-track {
-  background: #ffffff;
+    background: #ffffff;
 }
 
 /* O "puxador" da barra (a parte que você arrasta) */
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
+    background: var(--color-primary);
 }
 
 /* Cor do puxador ao passar o mouse */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+    background: #555;
 }
 
 body{
-    margin-left: 200px;
+    margin-left: 170px;
     background-color: var(--color-bg-main);
 }
 
@@ -36,12 +36,11 @@ main {
     min-height: 100vh;
 }
 
-.header{
+.header {
     display: none;
 }
 
 .sidebar {
-    width: 200px;
     height: 100%;
     position: fixed;
     top: 0;
@@ -64,7 +63,7 @@ main {
     border-bottom: 1px solid var(--color-bg-hover);
 }
 
-.sidebar__logo img{
+.sidebar__logo img {
     max-width: 140px;
     height: auto;
     object-fit: contain;
@@ -106,30 +105,101 @@ main {
     transform: translateX(4px)
 }
 
-.sidebar__user {
-    text-align: center;
+.navbar__buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem; /* Substitui o space-between por um espaçamento uniforme entre os botões */
+    width: 100%;
+    margin-top: auto; /* Empurra o grupo de botões para o final da sidebar */
     padding-top: 1rem;
-    border-top: 1px solid var(--color-bg-hover);
+    border-top: 1px solid var(--color-bg-hover); /* Divisória visual elegante */
 }
 
-.sidebar__user .material-symbols-outlined {
-    font-size: 2rem;
-    color: var(--color-text-muted);
+/* Ajustes e alinhamento do botão de tema */
+.sidebar_light_dark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
-.sidebar__user-link {
-    color: var(--color-text-light);
+/* Limpeza de propriedades duplicadas e padronização do botão de alternância de tema */
+.theme-toggle {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-secondary);
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.08);
+    box-shadow: var(--shadow-md);
+    background-color: var(--color-secondary-hover);
+}
+
+.theme-toggle__icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+/* Ajustes do botão/link de Perfil */
+.sidebar__user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.profile__photo-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 600;
-    transition: color var(--transition-speed) ease;
+    color: var(--color-text-light);
+    font-size: 36px !important; /* Ajustado para manter proporção visual com a sidebar */
+    transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.sidebar__user-link:hover {
+.profile__photo-nav:hover {
+    transform: scale(1.1);
     color: var(--color-accent);
 }
 
-.footer{
+/* Ajustes do botão/link de Logoff */
+.sidebar__logoff {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.sidebar__logoff--icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--color-text-light);
+    font-size: 40px !important; /* Corrigido de propriedades duplicadas conflitantes */
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.sidebar__logoff--icon:hover {
+    transform: scale(1.1);
+    color: #ff4d4d; /* Cor visual de destaque para ação de saída */
+}
+
+.footer {
     width: 100%;
     height: 8vh;
     background-color: var(--color-footer);
@@ -145,39 +215,96 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
     font-size: clamp(0.65rem, 2.5vw, 1rem);
     gap: 15px;
-    
+
 }
 
 .helogo {
     margin-right: 10px;
 }
 
+/* Estilização base do botão de tema */
+
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: none;
+  border-radius: var(--border-radius-pill);
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease
+}
+
+.theme-toggle:hover {
+  transform: scale(1.08);
+  background-color: white;
+}
+
+
+.sidebar_light_dark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+.theme-toggle__icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.dark-mode .theme-toggle__icon {
+    filter: invert(1);
+}
+.profile__photo-nav {
+    text-decoration: none;
+    color: var(--color-text-light);
+    font-size: 45px !important;
+}
+
+
 @media (max-width: 768px) {
 
-    body{
+    body {
         margin-left: 0px !important;
+    }
+
+    main{
+        margin-top: 75px !important;
     }
 
     .sidebar {
         display: none;
     }
 
+
     .header {
         background-color: var(--color-primary);
         color: var(--color-text-light);
-        position: relative;
+        position: fixed;
         display: flex;
+        width: 100%;
         flex-direction: column;
+        top: 0;
+        z-index: 9999;
+
     }
 
     .header-bar {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1rem;
+        padding: 20px;
     }
 
     .menu-btn {
@@ -191,12 +318,16 @@ main {
     /* Dropdown escondido por padrão no mobile */
     .dropdown-menu {
         display: none;
-        background-color: #07244d;
+        background-color: #271f6b;
         flex-direction: column;
+        
     }
 
     .dropdown-menu.active {
         display: flex; /* Exibe quando ativo via JS */
+        width: 100%;
+        margin-top: 70px;
+        position: fixed;
     }
 
     .dropdown-menu ul {
@@ -208,11 +339,19 @@ main {
         padding: 0.75rem 1rem;
         color: white;
         text-decoration: none;
-        border-top: 1px solid #475569;
+        border-top: 1px solid #ffffff;
     }
 
     .content {
         padding: 1.5rem;
         flex: 1;
     }
+
+    .sidebar_light_dark {
+        width: auto;
+        padding: 0;
+        z-index: 20;
+        transform: none;
+    }
+
 }

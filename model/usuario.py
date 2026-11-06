@@ -6,7 +6,7 @@ def buscar_usuario(usuario=False):
 
     Retorna:
         Lista de tuplas contendo os dados dos usuários 
-            (cpf, nome, sobrenome, email, especialidade).
+            (cpf, nome, sobrenome, email, especialidade, rbac).
     """
 
     conexao, cursor = conectar()
@@ -20,7 +20,7 @@ def buscar_usuario(usuario=False):
         
         resposta = cursor.fetchall()
         return(resposta)
-    cursor.execute("""SELECT usuarios.cpf, usuarios.nome, usuarios.email, usuarios.senha, especialidades.especialidade FROM usuarios
+    cursor.execute("""SELECT usuarios.cpf, usuarios.status_usuario, usuarios.nome, usuarios.email, usuarios.senha, especialidades.especialidade, usuarios.rbac FROM usuarios
                       LEFT JOIN tecnicos_especialidades 
                         ON usuarios.cpf = tecnicos_especialidades.cpf
                       LEFT JOIN especialidades 
@@ -60,4 +60,32 @@ def atualizar_usuario(cpf, nome,  email):
         return False
     finally:
         conexao.close()
+        
 
+def inativar_usuario(cpf,status_usuario):
+    """
+    Altera o status_usuario (ativo/inativo) no banco de dados.
+
+    Parâmetros:
+        cpf (str): CPF do usuário que será inativado .
+        status_usuario (bool): Status do usuário, se é 1 ou 0 ("true" ou "false")
+
+    Retorna:
+        bool: True se a atualização foi realizada com sucesso, False em caso de erro.
+    """
+    conexao, cursor = conectar()
+    try:
+        cursor.execute("""
+            UPDATE usuarios 
+            SET status_usuario = %s
+            WHERE cpf = %s
+        """, (status_usuario,cpf,))
+        
+        conexao.commit()
+        return True
+    except Exception as e:
+        print(f"Erro ao modificar status: {e}")
+        conexao.rollback()
+        return False
+    finally:
+        conexao.close()

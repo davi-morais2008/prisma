@@ -1,40 +1,73 @@
-INSERT INTO especialidades(especialidade)
-VALUES('Técnico em Eletromecânica');
+USE db_manutencaoDS_EM;
 
-INSERT INTO usuarios(cpf, nome, email, senha, status_usuario)
-VALUES('47126589832', 'Guxta Pereira', 'gustavo.h.pereira13@aluno.senai.br', 'gu1234', 'Ativo');
-VALUES('00000000000', 'admin root', 'admin.root@aluno.senai.br', 'senai603Prisma', 'Ativo');
+-- 1. Inserção de Especialidades
+INSERT INTO especialidades (especialidade) VALUES
+('Eletrotécnica'),
+('Mecânica Industrial'),
+('Automação');
 
+-- 2. Inserção de Tipos de Máquinas
+INSERT INTO tipos_maquinas (tipo_maquina) VALUES
+('Torno Mecânico'),
+('Prensa Hidráulica'),
+('Fresadora');
 
-INSERT INTO tecnicos_especialidades
-VALUES('47126589832', 1);
+-- 3. Inserção dos Usuários Solicitados
+INSERT INTO usuarios (cpf, nome, email, senha, status_usuario, rbac, descricao_usuario, imagem_perfil) VALUES
+('47126589832', 'Guxta Pereira', 'gustavo.h.pereira13@aluno.senai.br', 'gu1234', 1, 'usuario', 'Técnico', 'Aluno do Curso Técnico em Eletromecânica'),
+('00000000000', 'admin root', 'admin.root@sp.senai.br', 'senai603Prisma', 1, 'root', 'Administrador', 'Usuário administrador do sistema');
 
-INSERT INTO tipos_maquinas(tipo_maquina)
-VALUES('Fresa');
+-- 4. Inserção de Setores
+INSERT INTO setores (setor) VALUES
+('Usinagem'),
+('Prensas'),
+('Manutenção Geral');
 
-INSERT INTO falhas(id_tipo_maquina, falha)
-VALUES(1, 'Falha no freio');
+-- 5. Inserção de Falhas
+INSERT INTO falhas (id_tipo_maquina, falha) VALUES
+(1, 'Desalinhamento do barramento'),
+(2, 'Vazamento no pistão hidráulico'),
+(3, 'Superaquecimento do motor');
 
-INSERT INTO maquinas(id_tipo_maquina, modelo_maquina, numero_patrimonio, localizacao, manual_operacao, status_maquina)
-VALUES(1, 'Modelo A', '85737498211', 'Setor A', 'https://www.youtube.com/', 'Ativo');
+-- 6. Inserção de Máquinas
+INSERT INTO maquinas (id_tipo_maquina, modelo_maquina, numero_patrimonio, id_setor, manual_operacao, status_maquina, is_inativa) VALUES
+(1, 'Romi T240', 'PAT-2023-001', 1, 'https://manuais.local/romi-t240.pdf', 'Em Funcionamento', false),
+(2, 'Schuler 100T', 'PAT-2023-002', 2, 'https://manuais.local/schuler-100t.pdf', 'Em Manutenção', false);
 
-INSERT INTO maquinas(id_tipo_maquina, modelo_maquina, numero_patrimonio, localizacao, manual_operacao, status_maquina)
-VALUES(1, 'Modelo B', '27384938244', 'Setor A', 'https://www.youtube.com/', 'Ativo');
+-- 7. Inserção de Ordens de Serviço (Contemplando Ativa, Finalizada e Cancelada)
+-- Obs: A Ordem 2 (Finalizada) possui a data_termino_manutencao preenchida.
+INSERT INTO ordens_servicos (
+    id_especialidade, id_maquina, id_falha, cpf, status_ordem, tipo_manutencao, 
+    descricao_problema, data_inicio_manutencao, data_termino_manutencao, data_parada, 
+    data_prev_inicio_manutencao, data_prev_termino_manutencao
+) VALUES
+(
+    1, 1, 1, '47126589832', 'Ativa', 'Corretiva', 
+    'Ruído excessivo durante o movimento do barramento.', 
+    '2026-11-01', NULL, '2026-11-01', '2026-11-01', '2026-11-05'
+),
+(
+    2, 2, 2, '47126589832', 'Finalizada', 'Preventiva', 
+    'Troca de reparos do cilindro hidráulico principal.', 
+    '2026-10-10', '2026-10-12 16:30:00', '2026-10-10', '2026-10-10', '2026-10-13'
+),
+(
+    3, 1, 3, '00000000000', 'Cancelada', 'Preditiva', 
+    'Alarme falso disparado pelo sensor de temperatura.', 
+    NULL, NULL, NULL, '2026-10-15', '2026-10-15'
+);
 
-INSERT INTO imagens_maquinas(id_maquina, url_imagem)
-VALUES(1, 'https://galpaodasmaquinas.com.br/storage/files/produtos/fresa-ferramenteira-veker-10326_1_desktop.webp');
+-- 8. Inserção de Técnicos vs Especialidades
+INSERT INTO tecnicos_especialidades (cpf, id_especialidade) VALUES
+('47126589832', 1),
+('47126589832', 2);
 
-INSERT INTO ordens_servicos(id_maquina, id_falha, cpf, status_ordem, tipo_manutencao, descricao_problema, data_inicio_manutencao, data_termino_manutencao, data_parada, data_prev_inicio_manutencao, data_prev_termino_manutencao)
-VALUES(1, 1, 47126589832, 'Finalizada', 'Preventiva', 'Problema no freio da máquina', '2008-08-26', '2008-08-29', '2008-08-27', '2008-08-26', '2008-08-29');
+-- 9. Inserção de Fases da Manutenção
+INSERT INTO fases_manutencao (id_ordem, status, fase, data, observacao) VALUES
+(1, 'Em Andamento', 'Desmontagem e Diagnóstico', '2026-11-02', 'Aguardando peça de reposição'),
+(2, 'Concluída', 'Testes de Pressão', '2026-10-12', 'Equipamento liberado para a produção');
 
-INSERT INTO ordens_servicos(id_maquina, id_falha, cpf, status_ordem, tipo_manutencao, descricao_problema, data_inicio_manutencao, data_termino_manutencao, data_parada, data_prev_inicio_manutencao, data_prev_termino_manutencao)
-VALUES(1, 1, 47126589832, 'Finalizada', 'Corretiva', 'Pau no freio da máquina', '2008-08-22', '2008-08-29', '2008-08-21', '2008-08-23', '2008-08-29');
-
-INSERT INTO ordens_servicos(id_maquina, id_falha, cpf, status_ordem, tipo_manutencao, descricao_problema, data_inicio_manutencao, data_termino_manutencao, data_parada, data_prev_inicio_manutencao, data_prev_termino_manutencao)
-VALUES(2, 1, 47126589832, 'Finalizada', 'Corretiva', 'Ferrou no freio da máquina', '2008-08-22', '2008-08-29', '2008-08-21', '2008-08-23', '2008-08-29');
-
-INSERT INTO fases_manutencao(id_ordem, status, fase, data, observacao)
-VALUES(1, 'Em andamento', 'Trocando o Freio', '2008-08-28', 'Precisa de peça nova.');
-
-
-SELECT * FROM usuarios;
+-- 10. Inserção de Imagens das Máquinas
+INSERT INTO imagens_maquinas (id_maquina, url_imagem) VALUES
+(1, 'https://imagens.local/maquinas/torno_romi_01.jpg'),
+(2, 'https://imagens.local/maquinas/prensa_schuler_01.jpg');

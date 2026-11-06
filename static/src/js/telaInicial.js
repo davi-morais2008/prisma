@@ -1,73 +1,93 @@
+// ==========================================
+// SELEÇÃO DOS ELEMENTOS DO DOM
+// ==========================================
 
-// Cards das Ordens de Serviço
+// Elementos Principais e Filtros
 const workOrders = document.querySelectorAll('.work-order');
-const orderModal = document.querySelector('.order-details')
-const overlayModal = document.querySelector('#modalOverlay')
-const homeOrders = document.querySelector('.home__orders')
+const filterButton = document.querySelectorAll('.filter-button');
+const currentPath = window.location.pathname;
+const homeOrders = document.querySelector('.home__orders');
 
+// Modal: Detalhes da OS
+const orderModal = document.querySelector('.order-details');
+const overlayModal = document.querySelector('#modalOverlay');
+const btnClose = document.querySelector('#btnClose');
+const btnEdit = document.querySelector('#btnEdit');
+const btnDelete = document.querySelector('#btnDelete');
 
-// OS INFO CARD
-const btnClose = document.querySelector('#btnClose')
-const btnEdit = document.querySelector('#btnEdit')
-const btnDelete = document.querySelector('#btnDelete')
+// Campos de Informação da OS (Detalhes)
+const imagemMaquina = document.querySelector('.order-details__image');
+const statusOrdem = document.querySelector('#status_ordem');
+const faseManutencao = document.querySelector('#fase_manutencao');
+const tipoManutencao = document.querySelector('#tipo_manutencao');
+const tecnicoResponsavel = document.querySelector('#tecnico_responsavel');
+const dataPrevInicio = document.querySelector('#data_prev_inicio_manutencao');
+const dataPrevTermino = document.querySelector('#data_prev_termino_manutencao');
+const dataParada = document.querySelector('#data_parada');
+const dataInicioReal = document.querySelector('#data_inicio');
+const falhaIdentificada = document.querySelector('#falha');
+const descricaoProblema = document.querySelector('#desc_problema');
 
-// Imagem
-const imagemMaquina = document.querySelector('.order-details__image')
-
-// Informações Primárias
-const statusOrdem = document.querySelector('#status_ordem')
-const faseManutencao = document.querySelector('#fase_manutencao')
-const tipoManutencao = document.querySelector('#tipo_manutencao')
-const tecnicoResponsavel = document.querySelector('#tecnico_responsavel')
-
-// Cronograma e Datas
-const dataPrevInicio = document.querySelector('#data_prev_inicio_manutencao')
-const dataPrevTermino = document.querySelector('#data_prev_termino_manutencao')
-const dataParada = document.querySelector('#data_parada')
-const dataInicioReal = document.querySelector('#data_inicio')
-const dataTerminoReal = document.querySelector('#data_termino')
-
-// Diagnóstico e Falha
-const falhaIdentificada = document.querySelector('#falha')
-const descricaoProblema = document.querySelector('#desc_problema')
-
-// MODAL DE EDIÇÃO
+// Modal: Edição
 const editModal = document.querySelector('.order-edit');
-const btnCloseUpdate = document.querySelector('#btnCancelUpdate')
-const btnCancelUpdate = document.querySelector('#btnCancelEditForm')
-const overlayUpdate = document.querySelector('#updateModalOverlay')
+const overlayUpdate = document.querySelector('#updateModalOverlay');
+const btnCloseUpdate = document.querySelector('#btnCancelUpdate');
+const btnCancelUpdate = document.querySelector('#btnCancelEditForm');
 
-// MODAL DE CONFIRMAÇÃO DE EXCLUSÃO
-const deleteModal = document.querySelector('.order-delete')
-const btnCloseDelete = document.querySelector('#btnCancelDeleteHeader')
-const btnCancelDelete = document.querySelector('#btnCancelDelete')
-const btnConfirmDelete = document.querySelector('#btnConfirmDelete')
+// Modal: Exclusão
+const deleteModal = document.querySelector('.order-delete');
+const btnCloseDelete = document.querySelector('#btnCancelDeleteHeader');
+const btnCancelDelete = document.querySelector('#btnCancelDelete');
+const btnConfirmDelete = document.querySelector('#btnConfirmDelete');
 
-function openOrderModal() {
-    orderModal.classList.add('active')
-}
+// Modal: Cadastro de OS
+const bntCreate = document.querySelector('.home__button-register');
+const createModal = document.querySelector('#createModal');
+const modalOverlay = document.querySelector('#createModalOverlay');
+const btnCloseModal = document.querySelector('#btnCancelCreate');
+const btnCancelForm = document.querySelector('#btnCancelCreateForm');
 
-function closeOrderModal() {
-    orderModal.classList.remove('active')
-}
+// Formulário de Cadastro e Campos
+const formCreateOrder = document.querySelector('#formCreateOrder');
+const inputNumeroPatrimonio = document.querySelector('#create_numero_patrimonio');
+const selectTipoManutencao = document.querySelector('#create_tipo_manutencao');
+const inputTecnicoResponsavel = document.querySelector('#create_tecnico_responsavel');
+const inputDataPrevInicio = document.querySelector('#create_data_prev_inicio');
+const inputDataPrevTermino = document.querySelector('#create_data_prev_termino');
+const inputDataParada = document.querySelector('#create_data_parada');
+const inputFalha = document.querySelector('#create_falha');
+const textareaDescProblema = document.querySelector('#create_desc_problema');
 
-function openEditModal() {
-    editModal.classList.add('active')
-}
+// Modal: Adicionar Falha
+const btnAddFalha = document.querySelector('#btnAddFalha');
+const falhaModal = document.querySelector('.fault-create');
+const overlayFalha = document.querySelector('.fault-create__overlay');
+const btnCloseFalha = document.querySelector('.fault-create__close-btn');
+const btnCancelFalha = document.querySelector('#btnCancelCreateFaultForm');
 
-function closeEditModal() {
-    editModal.classList.remove('active')
-}
 
-function openDeleteModal() {
-    deleteModal.classList.add('active')
-}
+// ==========================================
+// FUNÇÕES DE CONTROLE DOS MODAIS
+// ==========================================
+const openOrderModal = () => orderModal.classList.add('active');
+const closeOrderModal = () => orderModal.classList.remove('active');
 
-function closeDeleteModal() {
-    deleteModal.classList.remove('active')
-}
+const openEditModal = () => editModal.classList.add('active');
+const closeEditModal = () => editModal.classList.remove('active');
 
-// Função auxiliar para converter e formatar data para PT-BR
+const openDeleteModal = () => deleteModal.classList.add('active');
+const closeDeleteModal = () => deleteModal.classList.remove('active');
+
+const openCreateModal = () => createModal.classList.add('active');
+const closeCreateModal = () => createModal.classList.remove('active');
+
+const openFalhaModal = () => falhaModal.classList.add('active');
+const closeFalhaModal = () => falhaModal.classList.remove('active');
+
+
+// ==========================================
+// FUNÇÃO AUXILIAR DE FORMATAR DATA
+// ==========================================
 function formatarDataPT(dataString) {
     if (!dataString) return '-';
     
@@ -88,28 +108,36 @@ function formatarDataPT(dataString) {
     return `${diaSemana}, ${dia} ${mes} ${ano} ${hora}:${min}:${seg}`;
 }
 
-// abrir modal OS
+
+// ==========================================
+// EVENT LISTENERS E REGRAS DE NEGÓCIO
+// ==========================================
+
+// Destaca botão do filtro atual
+filterButton.forEach(button => {
+    if (button.getAttribute('href') === currentPath) {
+        button.classList.add('active');
+    }
+});
+
+// Busca e exibição dos dados da OS ao clicar no card
 workOrders.forEach(order => {
     order.addEventListener('click', async (event) => {
-
         const idOrder = event.currentTarget.getAttribute('id_order');
 
-        const resposta = await fetch(`http://127.0.0.1:8080/api/get/ordens_servico/`, {
+        const resposta = await fetch('https://prisma-maintenance.onrender.com/api/get/ordens_servico/', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json; charset=utf-8',
                 'Content-Type': 'application/json; charset=utf-8'
             }
-        }
-        );
+        });
 
         if (!resposta.ok) {
-            alert("ERRO AO CARREGADAR DADOS!")
+            alert("ERRO AO CARREGAR DADOS!");
         } else {
-
             const ordens = await resposta.json();
             ordens.forEach(os => {
-
                 if (os.id_ordem == idOrder) {
                     statusOrdem.textContent = os.status_ordem;
                     faseManutencao.textContent = "Em Execução";
@@ -120,36 +148,43 @@ workOrders.forEach(order => {
                     dataPrevTermino.textContent = formatarDataPT(os.data_prev_termino_manutencao);
                     dataParada.textContent = formatarDataPT(os.data_parada);
                     dataInicioReal.textContent = formatarDataPT(os.data_inicio_manutencao);
-                    dataTerminoReal.textContent = formatarDataPT(os.data_termino_manutencao);
 
                     falhaIdentificada.textContent = os.falha;
                     descricaoProblema.textContent = os.descricao_problema;
                     openOrderModal();
                 }
-
-
             });
         }
-
     });
 });
-// Fechar modal OS
-btnClose.addEventListener('click', closeOrderModal)
-overlayModal.addEventListener('click', closeOrderModal)
-btnDelete.addEventListener('click', openDeleteModal) // abre o modal para confirmar exclusão
 
-// Abrir modal de edição
-btnEdit.addEventListener('click', openEditModal)
+// Abertura dos Modais
+btnEdit.addEventListener('click', openEditModal);
+btnDelete.addEventListener('click', openDeleteModal);
+bntCreate.addEventListener('click', openCreateModal);
+btnAddFalha.addEventListener('click', openFalhaModal);
 
-// Fechar modal de edição
-btnCloseUpdate.addEventListener('click', closeEditModal)
-overlayUpdate.addEventListener('click', closeEditModal)
-btnCancelUpdate.addEventListener('click', closeEditModal)
-
-btnCancelDelete.addEventListener('click', closeDeleteModal)
+// Confirmação da Exclusão
 btnConfirmDelete.addEventListener('click', () => {
     closeDeleteModal();
     closeOrderModal();
-    //aqui tambem deve ser adicionado a logica de exclusão da OS no BCD
-})
+});
 
+// ==========================================
+// AGRUPAMENTO DE EVENTOS DE FECHAMENTO
+// ==========================================
+
+// Fechar Modal de Detalhes da OS
+[btnClose, overlayModal].forEach(el => el.addEventListener('click', closeOrderModal));
+
+// Fechar Modal de Edição
+[btnCloseUpdate, overlayUpdate, btnCancelUpdate].forEach(el => el.addEventListener('click', closeEditModal));
+
+// Fechar Modal de Exclusão
+[btnCloseDelete, btnCancelDelete].forEach(el => el.addEventListener('click', closeDeleteModal));
+
+// Fechar Modal de Cadastro
+[modalOverlay, btnCloseModal, btnCancelForm].forEach(el => el.addEventListener('click', closeCreateModal));
+
+// Fechar Modal de Cadastro de Falha
+[btnCloseFalha, overlayFalha, btnCancelFalha].forEach(el => el.addEventListener('click', closeFalhaModal));
