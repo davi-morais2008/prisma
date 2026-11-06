@@ -370,6 +370,11 @@ def adicionar_tipo_maquina_post():
 def categorias():
     return render_template('categorias.html')
 
+@app.route('/categorias/api_get_categorias')
+def categorias():
+    
+    return render_template('categorias.html')
+
 @app.route('/profile')
 @login_required
 def pagina_perfil():
