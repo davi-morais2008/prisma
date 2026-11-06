@@ -6,7 +6,7 @@ from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_ema
 from flask_mail import Mail, Message
 import os
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, render_template, request, redirect, session, flash, jsonify, url_for
 
 load_dotenv()
 app = Flask(__name__)
