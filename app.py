@@ -6,7 +6,7 @@ from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_o
 from model.usuario import buscar_usuario, atualizar_usuario
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
 from model.dashboard import buscar_dados_dashboard
-from model.consultaMaquinas import consultar_maquinas
+from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
 from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
@@ -161,7 +161,6 @@ def pagina_inicial():
 def filtrar_ordens(tipo):
     ordens_filtro = filtrar_ordem_servico(tipo)
 
-    # Se a lista retornada estiver vazia:
     if not ordens_filtro:
         flash(f"Nenhuma ordem de serviço do tipo {tipo} foi encontrada.", "warning")
 
@@ -192,7 +191,6 @@ def register_os():
     for maquina in maquinas:
         if str(maquina['numero_patrimonio']) == str(nmr_patrimonio):
             id_maquina = maquina['id_maquina']
-            print(id_maquina)
 
     if id_maquina is None:
         return "Máquina não encontrada com o patrimônio informado", 400
@@ -245,7 +243,6 @@ def post_login():
         if user['cpf'] == usuario and user['senha'] == senha:
             session['user'] = usuario
             session['user_rbac'] = user['rbac']
-            print(session['user'])
             return redirect('/telaInicial')
     flash('Usuário ou Senha incorreto. Tente Novamente!', 'error')
     return redirect('/login')
@@ -294,6 +291,16 @@ def maquinas_api_get():
     maquinas = consultar_maquinas()
     return jsonify(maquinas), 200
 
+@app.route('/maquinas/filtro/<tipo>', methods=["GET"])
+def filtro_maquinas(tipo):
+    maquinas_filtradas = filtrar_maquinas(tipo)
+    tipos_maquinas = consulta_tipo_maquinas()
+    
+    if not maquinas_filtradas:
+        flash(f"Nenhuma máquina do tipo {tipo} foi encontrada.", "warning")
+
+    return render_template("maquinas.html", maquinas = maquinas_filtradas, tipos_maquinas = tipos_maquinas)
+
 @app.route('/maquinas/post_register_machine', methods = ['POST'])
 @roles_required('admin', 'root')
 def maquinas_post_register():
@@ -338,7 +345,7 @@ def maquinas_update_machines():
     status_machine = request.form.get("edit-maintance-status")
     scheduled_date = request.form.get("edit-maintance-date")
     id_machine = request.form.get('id-machine')
-    print(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
+
     atualizar_editar_maquina(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
     return redirect('/maquinas')
 
