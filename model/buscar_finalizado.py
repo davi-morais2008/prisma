@@ -13,7 +13,8 @@ def buscar_os_finalizado():
         INNER JOIN falhas ON ordens_servicos.id_falha = falhas.id_falha
         INNER JOIN maquinas ON ordens_servicos.id_maquina = maquinas.id_maquina
         INNER JOIN usuarios ON ordens_servicos.cpf = usuarios.cpf
-        WHERE status_ordem = %s""", ("Finalizada",))
+        WHERE status_ordem = %s
+        ORDER BY YEAR(data_termino_manutencao) ASC, MONTH(data_termino_manutencao) ASC""", ("Finalizada",))
     resposta = cursor.fetchall()
     conexao.close()
 
