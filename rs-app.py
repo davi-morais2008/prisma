@@ -15,9 +15,9 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'PRISMA_maintence')
 app.config['PREFERRED_URL_SCHEME'] = 'https'
 # Substitua a configuração da porta e TLS/SSL por esta:
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = 'gustavocaua934@gmail.com'
 app.config['MAIL_PASSWORD'] = 'difk voha efzq rmsj'
 app.config['MAIL_DEFAULT_SENDER'] = ('PRISMA', 'gustavocaua934@gmail.com')
