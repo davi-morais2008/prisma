@@ -7,7 +7,7 @@ from flask_mail import Mail, Message
 import os
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, session, flash, jsonify, url_for
-
+import traceback
 load_dotenv()
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
@@ -41,14 +41,16 @@ def esqueci_senha():
             msg = Message('Recuperação de Senha - PRISMA', recipients=[email])
             msg.body = f'Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos.'
             
-            try:
-                with mail.connect() as conn:
-                    conn.send(msg)
-            except Exception as e:
-                # Exibe apenas a mensagem direta do erro no log do Render
-                print(f"ERRO EMAIL: {e}", flush=True)
-                flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
-                return redirect(url_for('esqueci_senha'))
+ 
+
+        try:
+            with mail.connect() as conn:
+                conn.send(msg)
+        except Exception as e:
+            print("=== ERRO DETALHADO NO ENVIO DE EMAIL ===", flush=True)
+            traceback.print_exc()
+            flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
+            return redirect(url_for('esqueci_senha'))
 
         flash('Se o e-mail estiver cadastrado, você receberá um link de redefinição.', 'info')
         return redirect(url_for('esqueci_senha'))
