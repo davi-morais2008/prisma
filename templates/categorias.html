@@ -25,55 +25,18 @@ Categorias e Configurações
         </div>
 
         <div class="category-grid">
-            <!-- EXEMPLOS VISUAIS ESTÁTICOS -->
-            <article class="category-card">
-                <div class="category-card__info">
-                    <h3 class="category-card__title">Torno CNC</h3>
-                    <p class="category-card__description">Máquinas de usinagem computadorizada para peças cilíndricas.
-                    </p>
-                </div>
-                <div class="category-card__actions">
-                    <button class="btn-action btn-action--edit" aria-label="Editar Torno CNC" data-id="demo-1">
-                        <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="btn-action btn-action--delete" aria-label="Excluir Torno CNC" data-id="demo-1">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
-                </div>
-            </article>
-
-            <article class="category-card">
-                <div class="category-card__info">
-                    <h3 class="category-card__title">Fresadora Universal</h3>
-                    <p class="category-card__description">Equipamento para corte e usinagem de superfícies planas ou
-                        moldadas.</p>
-                </div>
-                <div class="category-card__actions">
-                    <button class="btn-action btn-action--edit" aria-label="Editar Fresadora Universal"
-                        data-id="demo-2">
-                        <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="btn-action btn-action--delete" aria-label="Excluir Fresadora Universal"
-                        data-id="demo-2">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
-                </div>
-            </article>
-
-            <!-- LOOP JINJA2 -->
             {% for tipo in tipos_maquina %}
             <article class="category-card">
                 <div class="category-card__info">
-                    <h3 class="category-card__title">{{ tipo.nome }}</h3>
-                    <p class="category-card__description">{{ tipo.descricao or 'Sem descrição.' }}</p>
+                    <h3 class="category-card__title">{{ tipo.tipo_maquina }}</h3>
                 </div>
                 <div class="category-card__actions">
-                    <button class="btn-action btn-action--edit" aria-label="Editar {{ tipo.nome }}"
-                        data-id="{{ tipo.id }}">
+                    <button class="btn-action btn-action--edit" aria-label="Editar {{ tipo.tipo_maquina }}"
+                        data-id="{{ tipo.id_tipo_maquina }}">
                         <span class="material-symbols-outlined">edit</span>
                     </button>
-                    <button class="btn-action btn-action--delete" aria-label="Excluir {{ tipo.nome }}"
-                        data-id="{{ tipo.id }}">
+                    <button class="btn-action btn-action--delete" aria-label="Excluir {{ tipo.tipo_maquina }}"
+                        data-id="{{ tipo.id_tipo_maquina }}">
                         <span class="material-symbols-outlined">delete</span>
                     </button>
                 </div>
@@ -92,55 +55,18 @@ Categorias e Configurações
         </div>
 
         <div class="category-grid">
-            <!-- EXEMPLOS VISUAIS ESTÁTICOS -->
+            {% for sector in setores %}
             <article class="category-card">
                 <div class="category-card__info">
-                    <h3 class="category-card__title">Usinagem Heavy Duty</h3>
-                    <p class="category-card__description">Localização/Bloco: Galpão A - Setor Sul</p>
+                    <h3 class="category-card__title">{{ sector.setor }}</h3>
                 </div>
                 <div class="category-card__actions">
-                    <button class="btn-action btn-action--edit" aria-label="Editar Usinagem Heavy Duty"
-                        data-id="demo-setor-1">
+                    <button class="btn-action btn-action--edit" aria-label="Editar {{ sector.setor }}"
+                        data-id="{{ sector.id_setor }}">
                         <span class="material-symbols-outlined">edit</span>
                     </button>
-                    <button class="btn-action btn-action--delete" aria-label="Excluir Usinagem Heavy Duty"
-                        data-id="demo-setor-1">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
-                </div>
-            </article>
-
-            <article class="category-card">
-                <div class="category-card__info">
-                    <h3 class="category-card__title">Montagem Final</h3>
-                    <p class="category-card__description">Localização/Bloco: Galpão B - Pavimento 1</p>
-                </div>
-                <div class="category-card__actions">
-                    <button class="btn-action btn-action--edit" aria-label="Editar Montagem Final"
-                        data-id="demo-setor-2">
-                        <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="btn-action btn-action--delete" aria-label="Excluir Montagem Final"
-                        data-id="demo-setor-2">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
-                </div>
-            </article>
-
-            <!-- LOOP JINJA2 -->
-            {% for setor in setores %}
-            <article class="category-card">
-                <div class="category-card__info">
-                    <h3 class="category-card__title">{{ setor.nome }}</h3>
-                    <p class="category-card__description">Localização/Bloco: {{ setor.localizacao or 'N/A' }}</p>
-                </div>
-                <div class="category-card__actions">
-                    <button class="btn-action btn-action--edit" aria-label="Editar {{ setor.nome }}"
-                        data-id="{{ setor.id }}">
-                        <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="btn-action btn-action--delete" aria-label="Excluir {{ setor.nome }}"
-                        data-id="{{ setor.id }}">
+                    <button class="btn-action btn-action--delete" aria-label="Excluir {{ sector.setor }}"
+                        data-id="{{ sector.id_setor }}">
                         <span class="material-symbols-outlined">delete</span>
                     </button>
                 </div>
@@ -159,95 +85,25 @@ Categorias e Configurações
         </div>
 
         <div class="failures-container">
-            <!-- EXEMPLO ESTÁTICO DE GRUPO 1: TORNO CNC -->
-            <div class="failure-group">
-                <div class="failure-group__header">
-                    <span class="failure-group__badge">Tipo de Máquina</span>
-                    <h3 class="failure-group__title">Torno CNC</h3>
-                </div>
-                <div class="category-grid">
-                    <article class="category-card">
-                        <div class="category-card__info">
-                            <h3 class="category-card__title">Sobreaquecimento do Spindle</h3>
-                            <p class="category-card__description">Gravidade: Crítica</p>
-                        </div>
-                        <div class="category-card__actions">
-                            <button class="btn-action btn-action--edit" aria-label="Editar Falha"
-                                data-id="demo-falha-1">
-                                <span class="material-symbols-outlined">edit</span>
-                            </button>
-                            <button class="btn-action btn-action--delete" aria-label="Excluir Falha"
-                                data-id="demo-falha-1">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </div>
-                    </article>
-                    <article class="category-card">
-                        <div class="category-card__info">
-                            <h3 class="category-card__title">Desgaste da Ferramenta de Corte</h3>
-                            <p class="category-card__description">Gravidade: Média</p>
-                        </div>
-                        <div class="category-card__actions">
-                            <button class="btn-action btn-action--edit" aria-label="Editar Falha"
-                                data-id="demo-falha-2">
-                                <span class="material-symbols-outlined">edit</span>
-                            </button>
-                            <button class="btn-action btn-action--delete" aria-label="Excluir Falha"
-                                data-id="demo-falha-2">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </div>
-                    </article>
-                </div>
-            </div>
-
-            <!-- EXEMPLO ESTÁTICO DE GRUPO 2: FRESADORA UNIVERSAL -->
-            <div class="failure-group">
-                <div class="failure-group__header">
-                    <span class="failure-group__badge">Tipo de Máquina</span>
-                    <h3 class="failure-group__title">Fresadora Universal</h3>
-                </div>
-                <div class="category-grid">
-                    <article class="category-card">
-                        <div class="category-card__info">
-                            <h3 class="category-card__title">Desalinhamento de Eixo X/Y</h3>
-                            <p class="category-card__description">Gravidade: Média</p>
-                        </div>
-                        <div class="category-card__actions">
-                            <button class="btn-action btn-action--edit" aria-label="Editar Falha"
-                                data-id="demo-falha-3">
-                                <span class="material-symbols-outlined">edit</span>
-                            </button>
-                            <button class="btn-action btn-action--delete" aria-label="Excluir Falha"
-                                data-id="demo-falha-3">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </div>
-                    </article>
-                </div>
-            </div>
-
-            <!-- ESTRUTURA JINJA2 AGRUPADA POR TIPO DE MÁQUINA -->
             {% for tipo in tipos_maquina %}
-            <div class="failure-group" data-tipo-id="{{ tipo.id }}">
+            <div class="failure-group" data-tipo-id="{{ tipo.id_tipo_maquina }}">
                 <div class="failure-group__header">
                     <span class="failure-group__badge">Tipo de Máquina</span>
-                    <h3 class="failure-group__title">{{ tipo.nome }}</h3>
+                    <h3 class="failure-group__title">{{ tipo.tipo_maquina }}</h3>
                 </div>
                 <div class="category-grid">
                     {% for falha in tipo.falhas %}
                     <article class="category-card">
                         <div class="category-card__info">
-                            <h3 class="category-card__title">{{ falha.nome }}</h3>
-                            <p class="category-card__description">Gravidade: {{ falha.severidade }}</p>
+                            <h3 class="category-card__title">{{ falha.falha }}</h3>
                         </div>
                         <div class="category-card__actions">
-                            <button class="btn-action btn-action--edit" aria-label="Editar {{ falha.nome }}"
-                                data-id="{{ falha.id }}">
+                            <button class="btn-action btn-action--edit" aria-label="Editar {{ falha.falha }}"
+                                data-id="{{ falha.id_falha }}">
                                 <span class="material-symbols-outlined">edit</span>
                             </button>
-                            <button class="btn-action btn-action--delete" aria-label="Excluir {{ falha.nome }}"
-                                data-id="{{ falha.id }}">
+                            <button class="btn-action btn-action--delete" aria-label="Excluir {{ falha.falha }}"
+                                data-id="{{ falha.id_falha }}">
                                 <span class="material-symbols-outlined">delete</span>
                             </button>
                         </div>
@@ -272,16 +128,10 @@ Categorias e Configurações
                 </button>
             </header>
             <form class="category-modal__form">
-                <input type="hidden" name="id" class="form-id">
+                <input type="hidden" name="id_tipo_maquina" class="form-id">
                 <div class="form-group">
                     <label for="tipo-nome">Nome do Tipo</label>
-                    <input type="text" id="tipo-nome" name="nome" placeholder="Ex: Torno CNC, Fresa, Impressora 3D"
-                        required>
-                </div>
-                <div class="form-group">
-                    <label for="tipo-descricao">Descrição</label>
-                    <textarea id="tipo-descricao" name="descricao" rows="3"
-                        placeholder="Descrição opcional..."></textarea>
+                    <input type="text" id="tipo-nome" name="tipo_maquina" placeholder="Ex: Torno CNC, Fresa, Impressora 3D" required>
                 </div>
                 <footer class="category-modal__footer">
                     <button type="button" class="button button--secondary btn-close-modal">Cancelar</button>
@@ -302,16 +152,10 @@ Categorias e Configurações
                 </button>
             </header>
             <form class="category-modal__form">
-                <input type="hidden" name="id" class="form-id">
+                <input type="hidden" name="id_setor" class="form-id">
                 <div class="form-group">
                     <label for="setor-nome">Nome do Setor</label>
-                    <input type="text" id="setor-nome" name="nome" placeholder="Ex: Usinagem, Montagem, Estamparia"
-                        required>
-                </div>
-                <div class="form-group">
-                    <label for="setor-localizacao">Localização / Bloco</label>
-                    <input type="text" id="setor-localizacao" name="localizacao"
-                        placeholder="Ex: Galpão A, Pavimento 2">
+                    <input type="text" id="setor-nome" name="setor" placeholder="Ex: Usinagem, Montagem, Estamparia" required>
                 </div>
                 <footer class="category-modal__footer">
                     <button type="button" class="button button--secondary btn-close-modal">Cancelar</button>
@@ -332,22 +176,19 @@ Categorias e Configurações
                 </button>
             </header>
             <form class="category-modal__form">
-                <input type="hidden" name="id" class="form-id">
+                <input type="hidden" name="id_falha" class="form-id">
                 <div class="form-group">
                     <label for="falha-tipo-maquina">Tipo de Máquina Associado</label>
                     <select id="falha-tipo-maquina" name="id_tipo_maquina" required>
                         <option value="">Selecione um tipo...</option>
-                        <option value="demo-1">Torno CNC</option>
-                        <option value="demo-2">Fresadora Universal</option>
                         {% for tipo in tipos_maquina %}
-                        <option value="{{ tipo.id }}">{{ tipo.nome }}</option>
+                        <option value="{{ tipo.id_tipo_maquina }}">{{ tipo.tipo_maquina }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="falha-nome">Nome / Descrição da Falha</label>
-                    <input type="text" id="falha-nome" name="nome"
-                        placeholder="Ex: Sobreaquecimento do Motor, Desalinhamento" required>
+                    <input type="text" id="falha-nome" name="falha" placeholder="Ex: Sobreaquecimento do Motor, Desalinhamento" required>
                 </div>
                 <footer class="category-modal__footer">
                     <button type="button" class="button button--secondary btn-close-modal">Cancelar</button>
@@ -356,7 +197,9 @@ Categorias e Configurações
             </form>
         </div>
     </div>
-
-    
 </main>
+{% endblock %}
+
+{% block script %}
+<script src="/static/src/js/categorias.js"></script>
 {% endblock %}
