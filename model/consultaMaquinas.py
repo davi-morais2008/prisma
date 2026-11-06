@@ -16,7 +16,7 @@ def consultar_maquinas():
     MAX(imagens_maquinas.url_imagem) AS url_imagem, 
     maquinas.modelo_maquina, 
     maquinas.numero_patrimonio, 
-    maquinas.localizacao, 
+    setores.setor, 
     maquinas.manual_operacao, 
     maquinas.status_maquina, 
     maquinas.is_inativa 
@@ -25,13 +25,15 @@ LEFT JOIN tipos_maquinas
     ON maquinas.id_tipo_maquina = tipos_maquinas.id_tipo_maquina 
 LEFT JOIN imagens_maquinas 
     ON maquinas.id_maquina = imagens_maquinas.id_maquina
+LEFT JOIN setores
+    ON maquinas.id_setor = setores.id_setor
 WHERE maquinas.is_inativa = 0
 GROUP BY 
     maquinas.id_maquina, 
     tipos_maquinas.tipo_maquina, 
     maquinas.modelo_maquina, 
     maquinas.numero_patrimonio, 
-    maquinas.localizacao, 
+    setores.setor, 
     maquinas.manual_operacao, 
     maquinas.status_maquina, 
     maquinas.is_inativa;""")
