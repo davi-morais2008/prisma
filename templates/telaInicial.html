@@ -64,7 +64,7 @@ Página Inicial
 
         <!-- FORMULÁRIO ENVOLVENDO O CONTEÚDO DO MODAL -->
         <form class="order-details__form" id="orderForm" method="POST"
-            action="{% if ordem_servico %}/telaInicial/finalizar/{{ordem_servico[0].id_ordem}}{% endif %}">
+            action="/telaInicial/finalizar/{% if ordem_servico%}{{ordem_servico[0].id_ordem}}{% endif %}">
             <article class="order-details__card">
                 <!-- CABEÇALHO SUPERIOR -->
                 <header class="order-details__header">
@@ -238,22 +238,6 @@ Página Inicial
                                 <span class="order-details__stat-label">Peças Cadastradas na OS:</span>
                                 <ul class="order-details__parts-list" id="lista_pecas_cadastradas">
                                     <!-- Exemplo de item cadastrado com quantidade e preço -->
-                                    <li class="order-details__part-item">
-                                        <div class="order-details__part-info">
-                                            <span class="order-details__part-name">Sensor Térmico PT100</span>
-                                            <div class="order-details__part-meta">
-                                                <span class="order-details__part-qty">1x</span>
-                                                <strong class="order-details__part-price">R$ 85,00</strong>
-                                            </div>
-                                        </div>
-                                        <input type="hidden" name="pecas_nome[]" value="Sensor Térmico PT100">
-                                        <input type="hidden" name="pecas_qtd[]" value="1">
-                                        <input type="hidden" name="pecas_preco[]" value="85.00">
-                                        <button type="button" class="order-details__part-remove"
-                                            aria-label="Remover peça">
-                                            <span class="material-symbols-outlined" aria-hidden="true">close</span>
-                                        </button>
-                                    </li>
                                 </ul>
                             </div>
 
