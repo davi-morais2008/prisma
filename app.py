@@ -3,7 +3,7 @@ from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico
-from model.usuario import buscar_usuario, atualizar_usuario
+from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
 
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
@@ -236,7 +236,6 @@ def api_get_info_manutencao(id_ordem):
 @app.route('/login')
 def pagina_login():
     return render_template('cadastroLogin.html')
-
 @app.route('/login/post', methods=['POST'])
 def post_login():
     usuarios = buscar_usuario()
@@ -244,13 +243,24 @@ def post_login():
     senha = request.form.get('login_senha')
     
     for user in usuarios:
-        if user['cpf'] == usuario and user['senha'] == senha:
-            session['user'] = usuario
-            session['user_rbac'] = user['rbac']
+        # Índices da query de buscar_usuario():
+        # [0]=cpf, [1]=status_usuario, [2]=nome, [3]=email, [4]=senha, [5]=especialidade, [6]=rbac
+        cpf_db = user[0]
+        status_db = user[1]
+        senha_db = user[4]
+        rbac_db = user[6]
+
+        if cpf_db == usuario and senha_db == senha:
+            if not status_db:  # Bloqueia se status_usuario for 0, False ou None
+                flash('Seu cadastro está aguardando aprovação de um administrador ou está inativo.', 'warning')
+                return redirect('/login')
+
+            session['user'] = cpf_db
+            session['user_rbac'] = rbac_db
             return redirect('/telaInicial')
+
     flash('Usuário ou Senha incorreto. Tente Novamente!', 'error')
     return redirect('/login')
-
 
 @app.route('/cadastro/post', methods = ['POST'])
 def post_cadastro():
@@ -270,7 +280,7 @@ def post_cadastro():
         return redirect('/login')
     try:
         if cadastrar_usuario(user_cpf, username, user_email, user_pwd):
-            flash('Efetue o Login para acessar o Sistema', 'success')
+            flash('Cadastro enviado! Aguarde a aprovação de um administrador para acessar o sistema.', 'info')
             return redirect('/login')
         else:
             flash('Erro ao cadastrar-se. Tente Novamente', 'error')
@@ -393,9 +403,10 @@ def categorias_get_api():
 @login_required
 def pagina_perfil():
     users = buscar_usuario()
-    for user in users: 
-        if user['cpf'] == session['user']:
-            return render_template('perfil.html', usuario = user)
+    for user in users:
+        if user[0] == session['user']:
+            return render_template('perfil.html', usuario=user)
+    return redirect('/telaInicial')
 
 
 @app.route('/profile/uptade_information', methods=['POST'])
@@ -423,5 +434,27 @@ def pagina_usuarios():
 def pagina_calendario():
     return render_template('calendario.html')
 
+
+
+@app.route('/usuarios/api_alterar_status', methods=['POST'])
+@login_required
+@roles_required('admin', 'root')
+def api_alterar_status_usuario():
+    dados = request.get_json()
+    cpf = dados.get('cpf')
+    novo_status = dados.get('status')  # 1 para ativar/aprovar, 0 para inativar
+
+    try:
+        alterar_status_usuario(cpf, novo_status)
+        
+        if int(novo_status) == 1:
+            flash('Usuário ativado e aprovado com sucesso!', 'success')
+        else:
+            flash('Usuário inativado com sucesso!', 'warning')
+
+        return jsonify({"status": "sucesso", "mensagem": "Status atualizado com sucesso!"}), 200
+    except Exception as e:
+        flash('Erro ao atualizar o status do usuário.', 'danger')
+        return jsonify({"status": "erro", "mensagem": str(e)}), 500
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
