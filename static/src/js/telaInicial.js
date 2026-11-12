@@ -32,7 +32,24 @@ const descricaoProblema = document.querySelector('#desc_problema');
 const editModal = document.querySelector('.order-edit');
 const overlayUpdate = document.querySelector('#updateModalOverlay');
 const btnCloseUpdate = document.querySelector('#btnCancelUpdate');
-const btnCancelUpdate = document.querySelector('#btnCancel EditForm');
+const btnCancelUpdate = document.querySelector('#btnCancelEditForm');
+
+// Variável de estado para guardar a OS selecionada
+let ordemAtual = null;
+
+// Formulário de Edição e Campos
+const formUpdateOrder = document.querySelector('#formUpdateOrder');
+const editStatusOrdem = document.querySelector('#edit_status_ordem');
+const editFaseManutencao = document.querySelector('#edit_fase_manutencao');
+const editTipoManutencao = document.querySelector('#edit_tipo_manutencao');
+const editTecnicoResponsavel = document.querySelector('#edit_tecnico_responsavel');
+const editDataPrevInicio = document.querySelector('#edit_data_prev_inicio');
+const editDataPrevTermino = document.querySelector('#edit_data_prev_termino');
+const editDataParada = document.querySelector('#edit_data_parada');
+const editDataInicio = document.querySelector('#edit_data_inicio');
+const editFalha = document.querySelector('#edit_falha');
+const editDescProblema = document.querySelector('#edit_desc_problema');
+const btnSubmitUpdate = document.querySelector('.order-edit__btn--submit');
 
 // Modal: Exclusão
 const deleteModal = document.querySelector('.order-delete');
@@ -162,6 +179,41 @@ workOrders.forEach(order => {
             openOrderModal();
         }
     });
+});
+
+function formatarDataParaInput(dataString) {
+    if (!dataString) return '';
+    
+    const data = new Date(dataString);
+    if (isNaN(data.getTime())) return '';
+
+    // Mantém o padrão UTC que você já utiliza na formatarDataPT()
+    return data.toISOString().slice(0, 16);
+}
+
+btnEdit.addEventListener('click', () => {
+    if (!ordemAtual) return;
+
+    // Armazena o ID da OS no próprio formulário para usar no envio (submit)
+    formUpdateOrder.dataset.idOrdem = ordemAtual.id_ordem;
+
+    // Seção 1: Informações Gerais
+    editStatusOrdem.value = ordemAtual.status_ordem || '';
+    editFaseManutencao.value = ordemAtual.fase_manutencao || 'Execução';
+    editTipoManutencao.value = ordemAtual.tipo_manutencao || '';
+    editTecnicoResponsavel.value = ordemAtual.tecnico_responsavel || '';
+
+    // Seção 2: Cronograma e Datas
+    editDataPrevInicio.value = formatarDataParaInput(ordemAtual.data_prev_inicio_manutencao);
+    editDataPrevTermino.value = formatarDataParaInput(ordemAtual.data_prev_termino_manutencao);
+    editDataParada.value = formatarDataParaInput(ordemAtual.data_parada);
+    editDataInicio.value = formatarDataParaInput(ordemAtual.data_inicio_manutencao);
+
+    // Seção 3: Diagnóstico e Falha
+    editFalha.value = ordemAtual.falha || '';
+    editDescProblema.value = ordemAtual.descricao_problema || '';
+
+    openEditModal();
 });
 
 // Abertura dos Modais

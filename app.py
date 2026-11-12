@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, atualizar_ordem_servico
 from model.usuario import buscar_usuario, atualizar_usuario
 
 from model.dashboard import buscar_dados_dashboard
@@ -157,8 +157,6 @@ def pagina_inicial():
     maquinas = consultar_maquinas()
     tipo_maquinas = consulta_tipo_maquinas()
 
-    print(ordens)
-
     return render_template("telaInicial.html", ordem_servico = ordens, tecnicos = tecnicos, falhas = falhas, maquinas = maquinas, tipo_maquinas = tipo_maquinas)
 
 @app.route ("/telaInicial/filtro/<tipo>", methods=["GET"])
@@ -187,7 +185,7 @@ def register_os():
     tec_responsavel = request.form.get('tecnico_responsavel')
     prev_data_inicio = request.form.get('data_prev_inicio')
     prev_data_termino = request.form.get('data_prev_termino')
-    data_parada = request.form.get('create__data_parada')
+    data_parada = request.form.get('data_parada')
     desc_problema = request.form.get('desc_problema')
 
     id_maquina = None
@@ -217,6 +215,24 @@ def register_os():
 def finish_os(id):
     finalizar_OS(id)
     return redirect ("/telaInicial")
+
+@app.route("/telaInicial/editar", methods=["POST"])
+def editar_os():
+
+    status_ordem = request.form.get("status_ordem")
+    fase_manutencao = request.form.get("fase_manutencao")
+    tipo_manutencao = request.form.get("tipo_manutencao")
+    tecnico_responsavel = request.form.get("tecnico_responsavel")
+
+    data_prev_inicio_manutencao = request.form.get("data_prev_inicio_manutencao")
+    data_prev_termino_manutencao = request.form.get("data_prev_termino_manutencao")
+    data_parada = request.form.get("data_parada")
+    data_inicio = request.form.get("data_inicio")
+
+    falha = request.form.get("falha")
+    desc_problema = request.form.get("desc_problema")
+
+    atualizar_ordem_servico(status_ordem, tipo_manutencao, data_prev_inicio_manutencao)
 
 @app.route("/historico")
 @login_required
