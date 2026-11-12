@@ -210,10 +210,26 @@ def register_os():
     return redirect('/telaInicial')
 
 
-@app.route("/telaInicial/finalizar/<int:id>") 
+@app.route("/telaInicial/finalizar/<int:id>", methods=['POST']) 
 def finish_os(id):
-    finalizar_OS(id)
-    return redirect ("/telaInicial")
+    desc_manutencao = request.form.get('desc_manutencao')
+
+    nomes = request.form.getlist('pecas_nome[]')
+    qtds = request.form.getlist('pecas_qtd[]')
+    precos = request.form.getlist('pecas_preco[]')
+    pecas = [
+        {
+            'nome': nome,
+            'qtd': int(qtd),
+            'custo': float(preco)
+        }
+        for nome, qtd, preco in zip(nomes, qtds, precos)
+    ]
+
+    print(desc_manutencao, pecas)
+    finalizar_OS(id, desc_manutencao, pecas)
+    return redirect('/telaInicial')
+
 
 @app.route("/historico")
 @login_required
