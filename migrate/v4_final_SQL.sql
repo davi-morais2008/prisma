@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS ordens_servicos (
  id_falha INT,
  cpf VARCHAR(11),
  status_ordem VARCHAR(100),
+ fase_manutencao VARCHAR(250),
  tipo_manutencao VARCHAR(100),
  descricao_problema VARCHAR(255),
  data_inicio_manutencao DATE DEFAULT NULL,
