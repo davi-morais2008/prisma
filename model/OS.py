@@ -73,6 +73,7 @@ def consultar_ordem_servico() -> list[tuple]:
                 os.status_ordem,
                 os.tipo_manutencao,
                 os.descricao_problema,
+                os.fase_manutencao,
                 os.data_parada,
                 os.data_prev_inicio_manutencao,
                 os.data_prev_termino_manutencao,
@@ -150,6 +151,37 @@ def filtrar_ordem_servico(tipo:str):
         ''', (tipo, 'Finalizada'))
         reposta = cursor.fetchall()
         return reposta
+    finally:
+        cursor.close()
+        conexao.close()
+
+def iniciar_OS(id_ordem):
+    """
+    Atualiza o campo fase_manutencao de uma OS específica para 'Em andamento'.
+
+    Parâmetros:
+        id_ordem (int): Identificador da ordem de serviço.
+
+    Retorna:
+        bool: True se a atualização foi realizada com sucesso, False se ocorreu algum erro.
+    """
+    conexao, cursor = conectar()
+
+    try:
+        cursor.execute("""
+            UPDATE ordens_servicos 
+            SET fase_manutencao = 'Em andamento',
+                data_inicio_manutencao = NOW()
+            WHERE id_ordem = %s
+        """, (id_ordem,))
+        conexao.commit()
+        return True
+
+    except Exception as erro:
+        conexao.rollback()
+        print(f"Erro ao iniciar OS: {erro}")
+        return False
+
     finally:
         cursor.close()
         conexao.close()

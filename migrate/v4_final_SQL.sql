@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
  nome VARCHAR(100),
  email VARCHAR(255),
  senha VARCHAR(500),
- status_usuario BOOL DEFAULT true,
+ status_usuario BOOL DEFAULT false,
  descricao_usuario VARCHAR(255),
  imagem_perfil VARCHAR(255),
  rbac VARCHAR(100) DEFAULT "usuario"
@@ -61,13 +61,14 @@ CREATE TABLE IF NOT EXISTS ordens_servicos (
  id_falha INT,
  cpf VARCHAR(11),
  status_ordem VARCHAR(100),
+ fase_manutencao VARCHAR(250) default 'Aguardando Início',
  tipo_manutencao VARCHAR(100),
  descricao_problema VARCHAR(255),
- data_inicio_manutencao DATE DEFAULT NULL,
+ data_inicio_manutencao DATETIME DEFAULT NULL,
  data_termino_manutencao DATETIME DEFAULT NULL,
- data_parada DATE,
- data_prev_inicio_manutencao DATE,
- data_prev_termino_manutencao DATE
+ data_parada DATETIME,
+ data_prev_inicio_manutencao DATETIME,
+ data_prev_termino_manutencao DATETIME
 );
 
 CREATE TABLE IF NOT EXISTS tecnicos_especialidades (
