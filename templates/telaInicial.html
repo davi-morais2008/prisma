@@ -64,7 +64,7 @@ Página Inicial
 
         <!-- FORMULÁRIO ENVOLVENDO O CONTEÚDO DO MODAL -->
         <form class="order-details__form" id="orderForm" method="POST"
-            action="/telaInicial/finalizar/{% if ordem_servico%}{{ordem_servico[0].id_ordem}}{% endif %}">
+            action="{% if ordem_servico%}{% if ordem_servico.fase_manutencao == 'Aguardando Início%}/telaInicial/iniciar/{{ordem_servico[0].id_ordem}}{% endif %}{% else %}/telaInicial/finalizar/{% if ordem_servico%}{{ordem_servico[0].id_ordem}}{% endif %}">
             <article class="order-details__card">
                 <!-- CABEÇALHO SUPERIOR -->
                 <header class="order-details__header">
@@ -197,9 +197,9 @@ Página Inicial
                             </div>
                         </div>
                     </section>
-
+                    {% if ordem_servico.fase_manutencao == 'Aguardando Início' %}
                     <!-- NOVA SEÇÃO: EXECUÇÃO DA MANUTENÇÃO E PEÇAS ADQUIRIDAS -->
-                    <section class="order-details__section">
+                    <section class="order-details__section" id="execute-OS-section">
                         <h2 class="order-details__section-title">EXECUÇÃO E PEÇAS</h2>
 
                         <div class="order-details__card-group">
@@ -240,10 +240,14 @@ Página Inicial
                                     <!-- Exemplo de item cadastrado com quantidade e preço -->
                                 </ul>
                             </div>
-
+                            {% endif %}
                             {% if ordem_servico %}
                             <button type="submit" class="order__btn-finish" id="btnFinish">
-                                Finalizar Ordem de Serviço
+                                {% if ordem_servico.fase_manutencao == 'Aguardando Início' %}
+                                Iniciar Manutenção
+                                {% else %}
+                                Iniciar Manutenção
+                                {% endif %}
                             </button>
                             {% endif %}
                     </section>
