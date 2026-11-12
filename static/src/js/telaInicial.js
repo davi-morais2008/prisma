@@ -34,11 +34,9 @@ const overlayUpdate = document.querySelector('#updateModalOverlay');
 const btnCloseUpdate = document.querySelector('#btnCancelUpdate');
 const btnCancelUpdate = document.querySelector('#btnCancelEditForm');
 
-// Variável de estado para guardar a OS selecionada
-let ordemAtual = null;
-
 // Formulário de Edição e Campos
 const formUpdateOrder = document.querySelector('#formUpdateOrder');
+const editIdOrdem = document.querySelector('#edit_id_ordem'); // <-- Input hidden que faltava
 const editStatusOrdem = document.querySelector('#edit_status_ordem');
 const editFaseManutencao = document.querySelector('#edit_fase_manutencao');
 const editTipoManutencao = document.querySelector('#edit_tipo_manutencao');
@@ -49,7 +47,9 @@ const editDataParada = document.querySelector('#edit_data_parada');
 const editDataInicio = document.querySelector('#edit_data_inicio');
 const editFalha = document.querySelector('#edit_falha');
 const editDescProblema = document.querySelector('#edit_desc_problema');
-const btnSubmitUpdate = document.querySelector('.order-edit__btn--submit');
+
+let ordemAtual = null
+let selectedOrderId = null;
 
 // Modal: Exclusão
 const deleteModal = document.querySelector('.order-delete');
@@ -188,7 +188,43 @@ function formatarDataParaInput(dataString) {
     if (isNaN(data.getTime())) return '';
 
     // Mantém o padrão UTC que você já utiliza na formatarDataPT()
-    return data.toISOString().slice(0, 16);
+    return data.toISOString().slice(0, 10);
+}
+
+// ==========================================
+// NOVAS FUNÇÕES AUXILIARES PARA EDIÇÃO
+// ==========================================
+function preencherIdOrdem(idOrdem) {
+    const inputIdOrdem = document.querySelector('#edit_id_ordem');
+    if (inputIdOrdem) {
+        inputIdOrdem.value = idOrdem || '';
+    }
+}
+
+function selecionarOpcaoSelect(selectElement, valorOuTexto) {
+    if (!selectElement || !valorOuTexto) return;
+
+    const alvo = String(valorOuTexto).trim();
+    const optionEncontrada = Array.from(selectElement.options).find(
+        (opt) => opt.value.trim() === alvo || opt.textContent.trim() === alvo
+    );
+
+    if (optionEncontrada) {
+        selectElement.value = optionEncontrada.value;
+    }
+}
+
+function completarDadosEdicao(os) {
+    if (!os) return;
+
+    // 1. Preenche o <input type="hidden" id="edit_id_ordem" name="id_ordem">
+    preencherIdOrdem(os.id_ordem);
+
+    // 2. Seleciona o Técnico pelo CPF ou pelo Nome
+    selecionarOpcaoSelect(editTecnicoResponsavel, os.cpf_tecnico || os.tecnico_responsavel);
+
+    // 3. Seleciona a Falha pelo ID ou pela Descrição
+    selecionarOpcaoSelect(editFalha, os.id_falha || os.falha);
 }
 
 btnEdit.addEventListener('click', () => {
@@ -208,11 +244,13 @@ btnEdit.addEventListener('click', () => {
     editDataPrevTermino.value = formatarDataParaInput(ordemAtual.data_prev_termino_manutencao);
     editDataParada.value = formatarDataParaInput(ordemAtual.data_parada);
     editDataInicio.value = formatarDataParaInput(ordemAtual.data_inicio_manutencao);
+    console.log(editDataPrevInicio.value, editDataPrevTermino.value, editDataParada.value, editDataInicio.value)
 
     // Seção 3: Diagnóstico e Falha
     editFalha.value = ordemAtual.falha || '';
     editDescProblema.value = ordemAtual.descricao_problema || '';
 
+    completarDadosEdicao(ordemAtual);
     openEditModal();
 });
 
