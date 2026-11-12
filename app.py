@@ -156,6 +156,9 @@ def pagina_inicial():
     falhas = consultar_falhas()
     maquinas = consultar_maquinas()
     tipo_maquinas = consulta_tipo_maquinas()
+
+    print(ordens)
+
     return render_template("telaInicial.html", ordem_servico = ordens, tecnicos = tecnicos, falhas = falhas, maquinas = maquinas, tipo_maquinas = tipo_maquinas)
 
 @app.route ("/telaInicial/filtro/<tipo>", methods=["GET"])
@@ -184,7 +187,7 @@ def register_os():
     tec_responsavel = request.form.get('tecnico_responsavel')
     prev_data_inicio = request.form.get('data_prev_inicio')
     prev_data_termino = request.form.get('data_prev_termino')
-    data_parada = request.form.get('data_parada')
+    data_parada = request.form.get('create__data_parada')
     desc_problema = request.form.get('desc_problema')
 
     id_maquina = None
