@@ -44,27 +44,49 @@ Página Inicial
 
 
 
-    <div class="home__orders">
-        {% for os in ordem_servico %}
-        <article class="work-order work-order--baixa" id_order="{{os.id_ordem}}">
-            <div class="work-order__description">
-                <h3 class="work-order__title">Número da Ordem: {{os.id_ordem}}</h3>
-                <p>Responsável: {{os.tecnico_responsavel}}</p>
-                <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
-                <p>Máquina: {{os.nome_maquina}}</p>
-                <p>Data Parada: {{os.data_parada}}</p>
-            </div>
-        </article>
-        {% endfor %}
-    </div>
+   <section class="home__orders" aria-label="Ordens de Serviço Ativas">
+    {% for os in ordem_servico %}
+    {% if os.status_ordem == 'Ativa' %}
+    <article class="work-order work-order--baixa" id_order="{{os.id_ordem}}" tabindex="0">
+        
+        <header class="work-order__header">
+            <h3 class="work-order__title">Número da Ordem: {{os.id_ordem}}</h3>
+            <span class="work-order__badge">Ativa</span>
+        </header>
+
+        <div class="work-order__description">
+            <p class="work-order__item">
+                <span class="work-order__label">Responsável:</span>
+                <span class="work-order__value">{{os.tecnico_responsavel}}</span>
+            </p>
+            <p class="work-order__item">
+                <span class="work-order__label">Número Patrimônio:</span>
+                <span class="work-order__value">{{os.numero_patrimonio}}</span>
+            </p>
+            <p class="work-order__item">
+                <span class="work-order__label">Máquina:</span>
+                <span class="work-order__value">{{os.nome_maquina}}</span>
+            </p>
+        </div>
+
+        <footer class="work-order__footer">
+            <span class="work-order__date-label">Data Parada:</span>
+            <time class="work-order__date-value">{{os.data_parada}}</time>
+        </footer>
+
+    </article>
+    {% endif %}
+    {% endfor %}
+</section>
 
     <!-- Modal de Detalhes da Ordem de Serviço (OS) -->
     <div class="order-details" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
         <div class="order-details__overlay" id="modalOverlay"></div>
 
         <!-- FORMULÁRIO ENVOLVENDO O CONTEÚDO DO MODAL -->
+         
         <form class="order-details__form" id="orderForm" method="POST"
-            action="{% if ordem_servico%}{% if ordem_servico.fase_manutencao == 'Aguardando Início%}/telaInicial/iniciar/{{ordem_servico[0].id_ordem}}{% endif %}{% else %}/telaInicial/finalizar/{% if ordem_servico%}{{ordem_servico[0].id_ordem}}{% endif %}">
+            action="">
             <article class="order-details__card">
                 <!-- CABEÇALHO SUPERIOR -->
                 <header class="order-details__header">
@@ -197,59 +219,52 @@ Página Inicial
                             </div>
                         </div>
                     </section>
-                    {% if ordem_servico.fase_manutencao == 'Aguardando Início' %}
                     <!-- NOVA SEÇÃO: EXECUÇÃO DA MANUTENÇÃO E PEÇAS ADQUIRIDAS -->
                     <section class="order-details__section" id="execute-OS-section">
-                        <h2 class="order-details__section-title">EXECUÇÃO E PEÇAS</h2>
+                        
+                        <!-- CONTAINER APENAS DOS CAMPOS (aplique o display: none neste ID) -->
+                        <div id="campos_execucao">
+                            <h2 class="order-details__section-title">EXECUÇÃO E PEÇAS</h2>
 
-                        <div class="order-details__card-group">
-                            <!-- Campo: Descrição da Manutenção -->
-                            <div class="order-details__form-group">
-                                <label for="desc_manutencao" class="order-details__stat-label">Descrição da Manutenção
-                                    Realizada:</label>
-                                <textarea class="order-details__textarea" id="desc_manutencao" name="desc_manutencao"
-                                    rows="4" placeholder="Descreva os procedimentos realizados, ajustes e testes..."
-                                    required></textarea>
-                            </div>
+                            <div class="order-details__card-group">
+                                <!-- Campo: Descrição da Manutenção -->
+                                <div class="order-details__form-group">
+                                    <label for="desc_manutencao" class="order-details__stat-label">Descrição da Manutenção Realizada:</label>
+                                    <textarea class="order-details__textarea" id="desc_manutencao" name="desc_manutencao"
+                                        rows="4" placeholder="Descreva os procedimentos realizados, ajustes e testes..."
+                                        required></textarea>
+                                </div>
 
-                            <!-- Campo: Adicionar Peças Adquiridas com Quantidade e Preço -->
-                            <div class="order-details__form-group">
-                                <label for="input_peca" class="order-details__stat-label">Peças Adquiridas /
-                                    Utilizadas:</label>
-                                <div class="order-details__input-group">
-                                    <input type="text" class="order-details__input" id="input_peca"
-                                        placeholder="Nome da peça (Ex: Rolamento SKF 6204)">
-                                    <input type="number" min="1" step="1" value="1"
-                                        class="order-details__input order-details__input--qty" id="input_peca_qtd"
-                                        aria-label="Quantidade" placeholder="Qtd">
-                                    <input type="number" step="0.01" min="0"
-                                        class="order-details__input order-details__input--price" id="input_peca_preco"
-                                        placeholder="Preço (R$)">
-                                    <button type="button" class="order-details__add-btn" id="btnAddPeca"
-                                        aria-label="Adicionar peça">
-                                        <span class="material-symbols-outlined" aria-hidden="true">add</span>
-                                        Adicionar
-                                    </button>
+                                <!-- Campo: Adicionar Peças Adquiridas com Quantidade e Preço -->
+                                <div class="order-details__form-group">
+                                    <label for="input_peca" class="order-details__stat-label">Peças Adquiridas / Utilizadas:</label>
+                                    <div class="order-details__input-group">
+                                        <input type="text" class="order-details__input" id="input_peca"
+                                            placeholder="Nome da peça (Ex: Rolamento SKF 6204)">
+                                        <input type="number" min="1" step="1" value="1"
+                                            class="order-details__input order-details__input--qty" id="input_peca_qtd"
+                                            aria-label="Quantidade" placeholder="Qtd">
+                                        <input type="number" step="0.01" min="0"
+                                            class="order-details__input order-details__input--price" id="input_peca_preco"
+                                            placeholder="Preço (R$)">
+                                        <button type="button" class="order-details__add-btn" id="btnAddPeca"
+                                            aria-label="Adicionar peça">
+                                            <span class="material-symbols-outlined" aria-hidden="true">add</span>
+                                            Adicionar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Área de Exibição das Peças Cadastradas -->
+                                <div class="order-details__parts-container">
+                                    <span class="order-details__stat-label">Peças Cadastradas na OS:</span>
+                                    <ul class="order-details__parts-list" id="lista_pecas_cadastradas"></ul>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Área de Exibição das Peças Cadastradas -->
-                            <div class="order-details__parts-container">
-                                <span class="order-details__stat-label">Peças Cadastradas na OS:</span>
-                                <ul class="order-details__parts-list" id="lista_pecas_cadastradas">
-                                    <!-- Exemplo de item cadastrado com quantidade e preço -->
-                                </ul>
-                            </div>
-                            {% endif %}
-                            {% if ordem_servico %}
-                            <button type="submit" class="order__btn-finish" id="btnFinish">
-                                {% if ordem_servico.fase_manutencao == 'Aguardando Início' %}
-                                Iniciar Manutenção
-                                {% else %}
-                                Iniciar Manutenção
-                                {% endif %}
-                            </button>
-                            {% endif %}
+                        <!-- BOTÃO FORA DO CONTAINER DOS CAMPOS (permanece sempre visível) -->
+                        <button type="submit" class="order__btn-finish" id="btnFinish"></button>
                     </section>
                 </div>
             </article>
