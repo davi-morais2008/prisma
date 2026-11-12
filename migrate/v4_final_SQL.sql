@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS tipos_maquinas (
  tipo_maquina VARCHAR(100)
 );
 
+
 CREATE TABLE IF NOT EXISTS usuarios (
  cpf VARCHAR(11) NOT NULL PRIMARY KEY,
  nome VARCHAR(100),
@@ -80,7 +81,17 @@ CREATE TABLE IF NOT EXISTS imagens_maquinas (
  id_maquina INT,
  url_imagem VARCHAR(500)
 );
- 
+
+CREATE TABLE IF NOT EXISTS ordem_inspecao (
+id_ordem_inspecao INT PRIMARY KEY NOT NULL auto_increment,
+id_maquina INT,
+cpf VARCHAR(11),
+descricao_inspecao VARCHAR(250),
+status_inspecao bool default TRUE); 
+
+ALTER TABLE ordem_inspecao ADD CONSTRAINT FK_inspecao_0 FOREIGN KEY (id_maquina) REFERENCES maquinas (id_maquina);
+ALTER TABLE ordem_inspecao ADD CONSTRAINT FK_inspecao_1 FOREIGN KEY (cpf) REFERENCES usuarios (cpf);
+
 ALTER TABLE falhas ADD CONSTRAINT FK_falhas_0 FOREIGN KEY (id_tipo_maquina) REFERENCES tipos_maquinas (id_tipo_maquina);
 
 ALTER TABLE maquinas ADD CONSTRAINT FK_maquinas_0 FOREIGN KEY (id_tipo_maquina) REFERENCES tipos_maquinas (id_tipo_maquina);
