@@ -73,6 +73,7 @@ def consultar_ordem_servico() -> list[tuple]:
                 os.status_ordem,
                 os.tipo_manutencao,
                 os.descricao_problema,
+                os.fase_manutencao,
                 os.data_parada,
                 os.data_prev_inicio_manutencao,
                 os.data_prev_termino_manutencao,
@@ -169,10 +170,10 @@ def iniciar_OS(id_ordem):
     try:
         cursor.execute("""
             UPDATE ordens_servicos 
-            SET fase_manutencao = 'Em andamento'
+            SET fase_manutencao = 'Em andamento',
+                data_inicio_manutencao = NOW()
             WHERE id_ordem = %s
         """, (id_ordem,))
-
         conexao.commit()
         return True
 
