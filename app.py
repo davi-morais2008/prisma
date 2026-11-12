@@ -210,10 +210,26 @@ def register_os():
     return redirect('/telaInicial')
 
 
-@app.route("/telaInicial/finalizar/<int:id>") 
+@app.route("/telaInicial/finalizar/<int:id>", methods=['POST']) 
 def finish_os(id):
-    finalizar_OS(id)
-    return redirect ("/telaInicial")
+    desc_manutencao = request.form.get('desc_manutencao')
+
+    nomes = request.form.getlist('pecas_nome[]')
+    qtds = request.form.getlist('pecas_qtd[]')
+    precos = request.form.getlist('pecas_preco[]')
+    pecas = [
+        {
+            'nome': nome,
+            'qtd': int(qtd),
+            'custo': float(preco)
+        }
+        for nome, qtd, preco in zip(nomes, qtds, precos)
+    ]
+
+    print(desc_manutencao, pecas)
+    finalizar_OS(id, desc_manutencao, pecas)
+    return redirect('/telaInicial')
+
 
 @app.route("/historico")
 @login_required
@@ -450,5 +466,37 @@ def api_alterar_status_usuario():
     except Exception as e:
         flash('Erro ao atualizar o status do usuário.', 'danger')
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
+@app.route('/api/ordens-servico')
+@login_required
+def api_ordens_servico():
+    ordens = consultar_ordem_servico()
+    
+    # Mapeia o status para as classes CSS que você já tem
+    classes_status = {
+        "Ativa": "evento-primary",
+        "Finalizada": "evento-success",
+        "Cancelada": "evento-danger"
+    }
+
+    eventos = []
+    for os in ordens:
+        
+        status = (os.get("status_ordem") or "Ativa").capitalize()
+        
+        eventos.append({
+            "id": os["id_ordem"],
+            "title": f"#{os['id_ordem']} - {os['tipo_manutencao']}",
+            "start": os["data_prev_inicio_manutencao"].isoformat(),
+            "end": os["data_prev_fim_manutencao"].isoformat() if os.get("data_prev_fim_manutencao") else None,
+            "className": classes_status.get(status, "evento-primary"),
+            "extendedProps": {
+                "tipo": os.get("tipo_manutencao"),
+                "descricao": os.get("descricao_problema"),
+                "status": status
+            }
+        })
+
+    return jsonify(eventos)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
