@@ -19,7 +19,8 @@ def finalizar_OS(id_ordem, desc_manutencao, pecas):
         cursor.execute("""
             UPDATE ordens_servicos 
             SET status_ordem = 'Finalizada',
-                descricao_manutencao = %s
+                descricao_manutencao = %s,
+                data_termino_manutencao = NOW()
             WHERE id_ordem = %s
         """, (desc_manutencao, id_ordem))
 

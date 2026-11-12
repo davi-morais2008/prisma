@@ -14,6 +14,8 @@ const overlayModal = document.querySelector('#modalOverlay');
 const btnClose = document.querySelector('#btnClose');
 const btnEdit = document.querySelector('#btnEdit');
 const btnDelete = document.querySelector('#btnDelete');
+const formDetails = document.querySelector('#orderForm');
+const btnFinishOS = document.querySelector('#btnFinish')
 
 // Campos de Informação da OS (Detalhes)
 const imagemMaquina = document.querySelector('.order-details__image');
@@ -27,6 +29,11 @@ const dataParada = document.querySelector('#data_parada');
 const dataInicioReal = document.querySelector('#data_inicio');
 const falhaIdentificada = document.querySelector('#falha');
 const descricaoProblema = document.querySelector('#desc_problema');
+const executeContainer = document.getElementById('execute-OS-section')
+const camposExecucao = document.getElementById('campos_execucao');
+const textareaDesc = document.getElementById('desc_manutencao');
+
+
 
 // Modal: Edição
 const editModal = document.querySelector('.order-edit');
@@ -139,11 +146,24 @@ workOrders.forEach(order => {
             const ordens = await resposta.json();
             ordens.forEach(os => {
                 if (os.id_ordem == idOrder) {
+                    btnFinishOS.textContent = os.fase_manutencao == 'Aguardando Início' ? 'Iniciar Manutenção' : 'Finalizar Ordem de Serviço'
+                    formDetails.action = os.fase_manutencao == 'Aguardando Início' ? `/telaInicial/iniciar/${os.id_ordem}` : `/telaInicial/finalizar/${os.id_ordem}`
+                    if (os.fase_manutencao == 'Aguardando Início') {
+                        camposExecucao.style.display = 'none';
+                        textareaDesc.required = false;
+                    }
+                    else {
+                        camposExecucao.style.display = 'block';
+                        textareaDesc.required = true;
+                    }
+
+
+
+
                     statusOrdem.textContent = os.status_ordem;
-                    faseManutencao.textContent = "Em Execução";
+                    faseManutencao.textContent = os.fase_manutencao;
                     tipoManutencao.textContent = os.tipo_manutencao;
                     tecnicoResponsavel.textContent = os.tecnico_responsavel;
-
                     dataPrevInicio.textContent = formatarDataPT(os.data_prev_inicio_manutencao);
                     dataPrevTermino.textContent = formatarDataPT(os.data_prev_termino_manutencao);
                     dataParada.textContent = formatarDataPT(os.data_parada);
@@ -184,16 +204,23 @@ btnConfirmDelete.addEventListener('click', () => {
 [btnCloseDelete, btnCancelDelete].forEach(el => el.addEventListener('click', closeDeleteModal));
 
 // Fechar Modal de Cadastro
-[modalOverlay, btnCloseModal, btnCancelForm].forEach(el => el.addEventListener('click', closeCreateModal));
+[modalOverlay, btnCloseModal, btnCancelForm].forEach(el => {
+    el.addEventListener('click', closeCreateModal)
+});
 
 // Fechar Modal de Cadastro de Falha
 [btnCloseFalha, overlayFalha, btnCancelFalha].forEach(el => el.addEventListener('click', closeFalhaModal));
+
 
 const btnAddPeca = document.getElementById('btnAddPeca');
 const inputNome = document.getElementById('input_peca');
 const inputQtd = document.getElementById('input_peca_qtd');
 const inputPreco = document.getElementById('input_peca_preco');
 const listaPecas = document.getElementById('lista_pecas_cadastradas');
+
+
+
+
 
 btnAddPeca.addEventListener('click', () => {
     const nome = inputNome.value.trim();
