@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalEdit = document.getElementById("modalEditUser");
     const closeBtnEdit = modalEdit ? modalEdit.querySelector(".user-edit__close-button") : null;
     const overlayEdit = modalEdit ? modalEdit.querySelector(".user-edit__overlay") : null;
-    const editButtons = document.querySelectorAll(".user-card__actions .button--secondary");
+    const editButtons = document.querySelectorAll("#modal_edit");
 
     const openModalEdit = () => {
         if (modalEdit) modalEdit.classList.add("user-edit--active");

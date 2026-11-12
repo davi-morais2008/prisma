@@ -20,11 +20,8 @@ def buscar_usuario(usuario=False):
         
         resposta = cursor.fetchall()
         return(resposta)
-    cursor.execute("""SELECT usuarios.cpf, usuarios.status_usuario, usuarios.nome, usuarios.email, usuarios.senha, especialidades.especialidade, usuarios.rbac FROM usuarios
-                      LEFT JOIN tecnicos_especialidades 
-                        ON usuarios.cpf = tecnicos_especialidades.cpf
-                      LEFT JOIN especialidades 
-                        ON tecnicos_especialidades.id_especialidade = especialidades.id_especialidade""")
+    cursor.execute("""SELECT usuarios.cpf, usuarios.status_usuario, usuarios.nome, usuarios.email, usuarios.senha, usuarios.rbac FROM usuarios
+                        """)
     resposta = cursor.fetchall()
     conexao.commit()
     conexao.close()
@@ -62,7 +59,7 @@ def atualizar_usuario(cpf, nome,  email):
         conexao.close()
         
 
-def inativar_usuario(cpf,status_usuario):
+def inativar_usuario(cpf, status_usuario):
     """
     Altera o status_usuario (ativo/inativo) no banco de dados.
 
@@ -79,7 +76,7 @@ def inativar_usuario(cpf,status_usuario):
             UPDATE usuarios 
             SET status_usuario = %s
             WHERE cpf = %s
-        """, (status_usuario,cpf,))
+        """, (status_usuario, cpf,))
         
         conexao.commit()
         return True
