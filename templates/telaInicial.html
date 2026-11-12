@@ -13,7 +13,7 @@ Página Inicial
 <main class="home">
     <div class="home__header">
         <h1 class="home__title">Ordens de Serviço</h1>
-        
+
     </div>
 
     <div class="home__order-filters">
@@ -216,7 +216,7 @@ Página Inicial
             <header class="order-edit__header">
                 <div class="order-edit__brand">
                     <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="order-edit__brand-image">
-                    <h1 class="order-edit__brand-title" id="orderEditTitle"> ORDEM DE SERVIÇO</h1>
+                    <h1 class="order-edit__brand-title" id="orderEditTitle">EDITAR ORDEM DE SERVIÇO</h1>
                 </div>EDITAR
                 <button class="order-edit__close-btn" id="btnCancelUpdate" aria-label="Fechar formulário de edição">
                     <span class="material-symbols-outlined" aria-hidden="true">close</span>
@@ -224,7 +224,10 @@ Página Inicial
             </header>
 
             <!-- FORMULÁRIO DE EDIÇÃO -->
-            <form class="order-edit__form" id="formUpdateOrder">
+            <form class="order-edit__form" id="formUpdateOrder" method="POST" action="/telaInicial/post-update-order">
+
+                <input type="hidden" id="edit_id_ordem" name="id_ordem" value="">
+
                 <div class="order-edit__body">
 
                     <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
@@ -268,9 +271,14 @@ Página Inicial
                             <div class="order-edit__field">
                                 <label class="order-edit__label" for="edit_tecnico_responsavel">Técnico
                                     Responsável</label>
-                                <input class="order-edit__input" type="text" id="edit_tecnico_responsavel"
-                                    name="tecnico_responsavel" value="João Silva" placeholder="Nome do técnico"
-                                    required>
+                                <select class="order-edit__select" id="edit_tecnico_responsavel"
+                                    name="tecnico_responsavel" required>
+                                    {% for tecnico in tecnicos %}
+                                    {% if tecnico.rbac == 'usuario' %}
+                                    <option value="{{ tecnico.cpf }}">{{ tecnico.nome }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                     </fieldset>
@@ -283,26 +291,26 @@ Página Inicial
                             <div class="order-edit__field">
                                 <label class="order-edit__label" for="edit_data_prev_inicio">Prev. Início
                                     Manutenção</label>
-                                <input class="order-edit__input" type="datetime-local" id="edit_data_prev_inicio"
+                                <input class="order-edit__input" type="date" id="edit_data_prev_inicio"
                                     name="data_prev_inicio_manutencao" required>
                             </div>
 
                             <div class="order-edit__field">
                                 <label class="order-edit__label" for="edit_data_prev_termino">Prev. Término
                                     Manutenção</label>
-                                <input class="order-edit__input" type="datetime-local" id="edit_data_prev_termino"
+                                <input class="order-edit__input" type="date" id="edit_data_prev_termino"
                                     name="data_prev_termino_manutencao" required>
                             </div>
 
                             <div class="order-edit__field">
                                 <label class="order-edit__label" for="edit_data_parada">Data da Parada</label>
-                                <input class="order-edit__input" type="datetime-local" id="edit_data_parada"
+                                <input class="order-edit__input" type="date" id="edit_data_parada"
                                     name="data_parada">
                             </div>
 
                             <div class="order-edit__field">
                                 <label class="order-edit__label" for="edit_data_inicio">Data Início Real</label>
-                                <input class="order-edit__input" type="datetime-local" id="edit_data_inicio"
+                                <input class="order-edit__input" type="date" id="edit_data_inicio"
                                     name="data_inicio">
                             </div>
 
@@ -316,9 +324,11 @@ Página Inicial
                         <div class="order-edit__grid">
                             <div class="order-edit__field order-edit__field--full">
                                 <label class="order-edit__label" for="edit_falha">Falha Identificada</label>
-                                <input class="order-edit__input" type="text" id="edit_falha" name="falha"
-                                    value="Sobreaquecimento no motor principal"
-                                    placeholder="Sintoma ou falha identificada" required>
+                                <select class="order-edit__select" id="edit_falha" name="id_falha" required>
+                                    {% for falha in falhas %}
+                                        <option value="{{falha.id_falha}}">{{falha.falha}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
 
                             <div class="order-edit__field order-edit__field--full">
@@ -326,7 +336,7 @@ Página Inicial
                                     Problema</label>
                                 <textarea class="order-edit__textarea" id="edit_desc_problema" name="desc_problema"
                                     rows="3" placeholder="Detalhamento do problema ocorrido..."
-                                    required>A máquina apresentou ruídos excessivos e desligamento automático por proteção térmica após 3 horas contínuas de operação no turno matutino.</textarea>
+                                    required></textarea>
                             </div>
                         </div>
                     </fieldset>
@@ -337,7 +347,7 @@ Página Inicial
                 <footer class="order-edit__footer">
                     <button type="button" class="order-edit__btn order-edit__btn--cancel"
                         id="btnCancelEditForm">Cancelar</button>
-                    <button class="order-edit__btn order-edit__btn--submit">Salvar Alterações</button>
+                    <button type="submit" class="order-edit__btn order-edit__btn--submit">Salvar Alterações</button>
                 </footer>
             </form>
         </article>
@@ -427,9 +437,9 @@ Página Inicial
                             </div>
 
                             <div class="order-create__field">
-                                <label class="order-create__label" for="create__data_parada">Data da Parada</label>
-                                <input class="order-create__input" type="date" id="create__data_parada"
-                                    name="create__data_parada" min="1000-01-01" max="9999-12-31">
+                                <label class="order-create__label" for="data_parada">Data da Parada</label>
+                                <input class="order-create__input" type="date" id="create_data_parada"
+                                    name="data_parada" min="1000-01-01" max="9999-12-31">
                             </div>
 
 
@@ -559,7 +569,8 @@ Página Inicial
                         <div class="fault-create__field">
                             <label class="fault-create__label" for="create_categoria_falha">Selecione a
                                 máquina...</label>
-                            <select class="fault-create__select" id="create_categoria_falha" name="categoria_falha" required>
+                            <select class="fault-create__select" id="create_categoria_falha" name="categoria_falha"
+                                required>
                                 <option value="" disabled selected>Selecione a máquina...</option>
                                 {% for maquina in tipo_maquinas %}
                                 <option value="{{maquina.id_tipo_maquina}}">{{maquina.tipo_maquina}}</option>
