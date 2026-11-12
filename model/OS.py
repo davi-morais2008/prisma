@@ -154,9 +154,39 @@ def filtrar_ordem_servico(tipo:str):
         cursor.close()
         conexao.close()
 
-def atualizar_ordem_servico(status, tipo, cpf, prev_inicio, prev_termino, data_parada, data_inicio, id_falha, descricao_problema):
+def atualizar_ordem_servico(status, 
+                            tipo, 
+                            cpf, 
+                            prev_inicio, 
+                            prev_termino, 
+                            data_parada, 
+                            data_inicio, 
+                            id_falha, 
+                            descricao_problema, 
+                            id_ordem):
     conexao, cursor = conectar()
-    cursor.execute("""UPDATE ordens_servico SET (status_ordem, tipo_manutencao, cpf, prev_inicio_manutencao, prev_termino_manutencao, data_parada, data_inicio_manutencao, id_falha, descricao_problema)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""", (status, tipo, cpf, prev_inicio, prev_termino, data_parada, data_inicio, id_falha, descricao_problema))
+    cursor.execute("""UPDATE ordens_servicos
+        SET status_ordem = %s, 
+            tipo_manutencao = %s, 
+            cpf = %s, 
+            data_prev_inicio_manutencao = %s, 
+            data_prev_termino_manutencao = %s, 
+            data_parada = %s, 
+            data_inicio_manutencao = %s, 
+            id_falha = %s, 
+            descricao_problema = %s
+            WHERE id_ordem = %s
+            """, 
+                    (status, 
+                    tipo, 
+                    cpf, 
+                    prev_inicio, 
+                    prev_termino, 
+                    data_parada, 
+                    data_inicio, 
+                    id_falha, 
+                    descricao_problema, 
+                    id_ordem))
     conexao.commit()
     conexao.close()
+    return True
