@@ -27,6 +27,7 @@ const dataParada = document.querySelector('#data_parada');
 const dataInicioReal = document.querySelector('#data_inicio');
 const falhaIdentificada = document.querySelector('#falha');
 const descricaoProblema = document.querySelector('#desc_problema');
+const executeContainer = document.getElementById('execute-OS-section')
 
 // Modal: Edição
 const editModal = document.querySelector('.order-edit');
@@ -184,16 +185,20 @@ btnConfirmDelete.addEventListener('click', () => {
 [btnCloseDelete, btnCancelDelete].forEach(el => el.addEventListener('click', closeDeleteModal));
 
 // Fechar Modal de Cadastro
-[modalOverlay, btnCloseModal, btnCancelForm].forEach(el => el.addEventListener('click', closeCreateModal));
+[modalOverlay, btnCloseModal, btnCancelForm].forEach(el => {el.addEventListener('click', closeCreateModal)
+});
 
 // Fechar Modal de Cadastro de Falha
 [btnCloseFalha, overlayFalha, btnCancelFalha].forEach(el => el.addEventListener('click', closeFalhaModal));
+
 
 const btnAddPeca = document.getElementById('btnAddPeca');
 const inputNome = document.getElementById('input_peca');
 const inputQtd = document.getElementById('input_peca_qtd');
 const inputPreco = document.getElementById('input_peca_preco');
 const listaPecas = document.getElementById('lista_pecas_cadastradas');
+
+
 
 btnAddPeca.addEventListener('click', () => {
     const nome = inputNome.value.trim();
