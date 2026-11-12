@@ -125,7 +125,7 @@ workOrders.forEach(order => {
     order.addEventListener('click', async (event) => {
         const idOrder = event.currentTarget.getAttribute('id_order');
 
-        const resposta = await fetch('https://prisma-maintenance.onrender.com/api/get/ordens_servico/', {
+        const resposta = await fetch('/api/get/ordens_servico/', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json; charset=utf-8',
