@@ -32,7 +32,7 @@ const descricaoProblema = document.querySelector('#desc_problema');
 const editModal = document.querySelector('.order-edit');
 const overlayUpdate = document.querySelector('#updateModalOverlay');
 const btnCloseUpdate = document.querySelector('#btnCancelUpdate');
-const btnCancelUpdate = document.querySelector('#btnCancelEditForm');
+const btnCancelUpdate = document.querySelector('#btnCancel EditForm');
 
 // Modal: Exclusão
 const deleteModal = document.querySelector('.order-delete');
@@ -125,7 +125,7 @@ workOrders.forEach(order => {
     order.addEventListener('click', async (event) => {
         const idOrder = event.currentTarget.getAttribute('id_order');
 
-        const resposta = await fetch('https://prisma-maintenance.onrender.com/api/get/ordens_servico/', {
+        const resposta = await fetch('/api/get/ordens_servico/', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json; charset=utf-8',
@@ -135,25 +135,31 @@ workOrders.forEach(order => {
 
         if (!resposta.ok) {
             alert("ERRO AO CARREGAR DADOS!");
-        } else {
-            const ordens = await resposta.json();
-            ordens.forEach(os => {
-                if (os.id_ordem == idOrder) {
-                    statusOrdem.textContent = os.status_ordem;
-                    faseManutencao.textContent = "Em Execução";
-                    tipoManutencao.textContent = os.tipo_manutencao;
-                    tecnicoResponsavel.textContent = os.tecnico_responsavel;
+            return;
+        }
 
-                    dataPrevInicio.textContent = formatarDataPT(os.data_prev_inicio_manutencao);
-                    dataPrevTermino.textContent = formatarDataPT(os.data_prev_termino_manutencao);
-                    dataParada.textContent = formatarDataPT(os.data_parada);
-                    dataInicioReal.textContent = formatarDataPT(os.data_inicio_manutencao);
+        const ordens = await resposta.json();
+        const os = ordens.find(item => item.id_ordem == idOrder);
 
-                    falhaIdentificada.textContent = os.falha;
-                    descricaoProblema.textContent = os.descricao_problema;
-                    openOrderModal();
-                }
-            });
+        if (os) {
+            // Salva os dados originais da OS para usar na edição/exclusão
+            ordemAtual = os;
+
+            // Preenche o modal de visualização
+            statusOrdem.textContent = os.status_ordem;
+            faseManutencao.textContent = "Em Execução";
+            tipoManutencao.textContent = os.tipo_manutencao;
+            tecnicoResponsavel.textContent = os.tecnico_responsavel;
+
+            dataPrevInicio.textContent = formatarDataPT(os.data_prev_inicio_manutencao);
+            dataPrevTermino.textContent = formatarDataPT(os.data_prev_termino_manutencao);
+            dataParada.textContent = formatarDataPT(os.data_parada);
+            dataInicioReal.textContent = formatarDataPT(os.data_inicio_manutencao);
+
+            falhaIdentificada.textContent = os.falha;
+            descricaoProblema.textContent = os.descricao_problema;
+            
+            openOrderModal();
         }
     });
 });
