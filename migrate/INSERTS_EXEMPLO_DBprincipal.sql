@@ -52,7 +52,7 @@ INSERT INTO ordens_servicos (
     '2026-10-10', '2026-10-12 16:30:00', '2026-10-10', '2026-10-10', '2026-10-13'
 ),
 (
-    3, 1, 3, '00000000000', 'Cancelada', 'Preditiva', 
+    3, 1, 3, '47126589832', 'Cancelada', 'Preditiva', 
     'Alarme falso disparado pelo sensor de temperatura.', 
     NULL, NULL, NULL, '2026-10-15', '2026-10-15'
 );
@@ -61,11 +61,6 @@ INSERT INTO ordens_servicos (
 INSERT INTO tecnicos_especialidades (cpf, id_especialidade) VALUES
 ('47126589832', 1),
 ('47126589832', 2);
-
--- 9. Inserção de Fases da Manutenção
-INSERT INTO fases_manutencao (id_ordem, status, fase, data, observacao) VALUES
-(1, 'Em Andamento', 'Desmontagem e Diagnóstico', '2026-11-02', 'Aguardando peça de reposição'),
-(2, 'Concluída', 'Testes de Pressão', '2026-10-12', 'Equipamento liberado para a produção');
 
 -- 10. Inserção de Imagens das Máquinas
 INSERT INTO imagens_maquinas (id_maquina, url_imagem) VALUES
