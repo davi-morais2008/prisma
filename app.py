@@ -216,11 +216,11 @@ def finish_os(id):
     finalizar_OS(id)
     return redirect ("/telaInicial")
 
-@app.route("/telaInicial/editar", methods=["POST"])
+@app.route("/telaInicial/post-update-order", methods=["POST"])
 def editar_os():
 
+    id_ordem = request.form.get("id_ordem")
     status_ordem = request.form.get("status_ordem")
-    fase_manutencao = request.form.get("fase_manutencao")
     tipo_manutencao = request.form.get("tipo_manutencao")
     tecnico_responsavel = request.form.get("tecnico_responsavel")
 
@@ -229,10 +229,21 @@ def editar_os():
     data_parada = request.form.get("data_parada")
     data_inicio = request.form.get("data_inicio")
 
-    falha = request.form.get("falha")
+    falha = request.form.get("id_falha")
     desc_problema = request.form.get("desc_problema")
 
-    atualizar_ordem_servico(status_ordem, tipo_manutencao, data_prev_inicio_manutencao)
+    atualizar_ordem_servico(status_ordem, 
+                            tipo_manutencao, 
+                            tecnico_responsavel, 
+                            data_prev_inicio_manutencao, 
+                            data_prev_termino_manutencao, 
+                            data_parada, 
+                            data_inicio,
+                            falha,
+                            desc_problema,
+                            id_ordem)
+    print(status_ordem, tipo_manutencao, tecnico_responsavel, data_prev_inicio_manutencao, data_prev_termino_manutencao, data_parada, data_inicio, falha, desc_problema, id_ordem)
+    return redirect('/telaInicial')
 
 @app.route("/historico")
 @login_required
