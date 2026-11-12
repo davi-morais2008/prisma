@@ -219,6 +219,9 @@ def finish_os(id):
 @login_required
 def pagina_historico():
     OSfinalizado = buscar_os_finalizado()
+    print(OSfinalizado)
+    if OSfinalizado == []:
+        flash("Nenhum histórico encontrado.", "warning")
     return render_template("historico.html", OSfinalizado = OSfinalizado)
 
 @app.route("/api/get/info_manutencao/<int:id_ordem>", methods=["GET"])
