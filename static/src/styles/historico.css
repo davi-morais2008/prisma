@@ -291,6 +291,30 @@
     border-left: 5px solid #e3a008;
 }
 
+.filtros-container {
+    display: flex;
+    gap: 12px;
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.filtros-container input, .filtros-container button {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+}
+
+.filtros-container input[type="text"] {
+    flex: 1;
+}
+
+.filtros-container button {
+    background-color: #1e1b4b;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
 
 /* RESPONSIVIDADE MOBILE */
 @media (max-width: 768px) {

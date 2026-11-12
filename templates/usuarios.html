@@ -49,7 +49,7 @@
                                 Editar
                             </button>
 
-                            {% if usuario[1] %}
+                            {% if usuario.status_usuario %}
                                 <!-- Envia 0 na URL para inativar -->
                                 <form action="/api/inactivate/{{ usuario.cpf }}/0" method="POST" style="display: inline;">
                                     <button type="submit" class="button button--danger button--small btn-inativar">
@@ -145,9 +145,6 @@
             <div class="modal__actions-row">
                 <button type="button" class="button button--small button--cancel" id="btnCancelarInativar">
                     Cancelar
-                </button>
-                <button type="button" class="button button--danger button--small" id="btnConfirmarInativar">
-                    Sim, Inativar.
                 </button>
             </div>
         </div>

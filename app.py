@@ -3,7 +3,7 @@ from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico
-from model.usuario import buscar_usuario, atualizar_usuario, inativar_usuario
+from model.usuario import buscar_usuario, atualizar_usuario, inativar_usuario, especialidades_usuario
 
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
@@ -386,16 +386,17 @@ def categorias():
 
 @app.route('/categorias/api_get_categorias')
 def categorias_get_api():
-
     return render_template('categorias.html')
 
 @app.route('/profile')
 @login_required
 def pagina_perfil():
     users = buscar_usuario()
+    cpf_sessao = session.get('user')
+    especialidades = especialidades_usuario(cpf_sessao)
     for user in users: 
         if user['cpf'] == session['user']:
-            return render_template('perfil.html', usuario = user)
+            return render_template('perfil.html', usuario = user, especialidades = especialidades)
 
 
 @app.route('/profile/uptade_information', methods=['POST'])
@@ -405,8 +406,6 @@ def pagina_perfil_update():
     email = request.form.get('user-edit-email')
     atualizar_usuario(session['user'], nome, email)
     return redirect('/profile')
-
-    
 
 
 @app.route('/usuarios', methods=['GET'])
@@ -421,8 +420,7 @@ def pagina_usuarios():
 def usuarios_inactivate(cpf, status):
     
     inativar_usuario(cpf, status)
-    lista_de_usuarios = buscar_usuario()
-    return render_template('usuarios.html', usuarios = lista_de_usuarios)
+    return redirect(url_for('pagina_usuarios'))
 
     
 @app.route('/calendario')

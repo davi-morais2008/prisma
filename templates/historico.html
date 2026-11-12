@@ -13,6 +13,12 @@
             <div class="history__content">
                 <h1 class="history__title">Histórico de Manutenção</h1>
 
+                <div class="filtros-container">
+                    <input type="text" id="filtroTexto" placeholder="Buscar por Ordem, Responsável, Falha ou Patrimônio...">
+                    <input type="date" id="filtroData">
+                    <button type="button" onclick="limparFiltros()">Limpar</button>
+                </div>
+
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}

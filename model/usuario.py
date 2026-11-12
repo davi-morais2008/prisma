@@ -86,3 +86,24 @@ def inativar_usuario(cpf, status_usuario):
         return False
     finally:
         conexao.close()
+
+def especialidades_usuario(cpf):
+    conexao, cursor = conectar()
+    try:
+        cursor.execute("""
+            SELECT usuarios.cpf, especialidades.especialidade FROM usuarios
+                      LEFT JOIN tecnicos_especialidades 
+                        ON usuarios.cpf = tecnicos_especialidades.cpf
+                      LEFT JOIN especialidades 
+                        ON tecnicos_especialidades.id_especialidade = especialidades.id_especialidade
+                        WHERE usuarios.cpf = %s;
+        """, (cpf,))
+        
+        especialidades = cursor.fetchall()
+        return especialidades
+    except Exception as e:
+        print(f"Erro ao modificar status: {e}")
+        conexao.rollback()
+        return False
+    finally:
+        conexao.close()

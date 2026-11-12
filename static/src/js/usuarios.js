@@ -27,27 +27,27 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. MODAL DE INATIVAÇÃO DE USUÁRIO
     // ==========================================
     // Certifique-se de que o modal no HTML possua o id "modalInativarUser"
-    const modalInativar = document.getElementById("modalInativarUser");
-    const overlayInativar = modalInativar ? modalInativar.querySelector(".modal__overlay") : null;
-    const closeBtnInativar = modalInativar ? modalInativar.querySelector(".modal__close") : null;
-    const cancelBtnInativar = modalInativar ? modalInativar.querySelector(".button--cancelar") : null;
-    const botoesInativar = document.querySelectorAll(".user-card__actions .button--danger");
+    // const modalInativar = document.getElementById("modalInativarUser");
+    // const overlayInativar = modalInativar ? modalInativar.querySelector(".modal__overlay") : null;
+    // const closeBtnInativar = modalInativar ? modalInativar.querySelector(".modal__close") : null;
+    // const cancelBtnInativar = modalInativar ? modalInativar.querySelector(".button--cancelar") : null;
+    // const botoesInativar = document.querySelectorAll(".btn-inativar");
 
-    const abrirModalInativar = () => {
-        if (modalInativar) modalInativar.classList.add("modal--active");
-    };
+    // const abrirModalInativar = () => {
+    //     if (modalInativar) modalInativar.classList.add("modal--active");
+    // };
 
-    const fecharModalInativar = () => {
-        if (modalInativar) modalInativar.classList.remove("modal--active");
-    };
+    // const fecharModalInativar = () => {
+    //     if (modalInativar) modalInativar.classList.remove("modal--active");
+    // };
 
-    botoesInativar.forEach(button => {
-        button.addEventListener("click", abrirModalInativar);
-    });
+    // botoesInativar.forEach(button => {
+    //     button.addEventListener("click", abrirModalInativar);
+    // });
 
-    if (closeBtnInativar) closeBtnInativar.addEventListener("click", fecharModalInativar);
-    if (cancelBtnInativar) cancelBtnInativar.addEventListener("click", fecharModalInativar);
-    if (overlayInativar) overlayInativar.addEventListener("click", fecharModalInativar);
+    // if (closeBtnInativar) closeBtnInativar.addEventListener("click", fecharModalInativar);
+    // if (cancelBtnInativar) cancelBtnInativar.addEventListener("click", fecharModalInativar);
+    // if (overlayInativar) overlayInativar.addEventListener("click", fecharModalInativar);
 
 
     // ==========================================
@@ -59,10 +59,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (modalEdit && modalEdit.classList.contains("user-edit--active")) {
                 closeModalEdit();
             }
+            
             // Fecha o modal de inativação se estiver aberto
-            if (modalInativar && modalInativar.classList.contains("modal--active")) {
-                fecharModalInativar();
-            }
+            // if (modalInativar && modalInativar.classList.contains("modal--active")) {
+            //     fecharModalInativar();
+            // }
         }
     });
 });

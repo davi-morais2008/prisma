@@ -15,12 +15,20 @@ Perfil
 
         <div class="profile-card__avatar-wrapper">
             <img class="profile-card__avatar"
-                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80"
+                src="static/src/img/Profile_avatar_placeholder_large.png"
                 alt="Foto de perfil de João da Silva">
         </div>
 
         <h1 class="profile-card__name">{{usuario.nome}}</h1>
-        <h2 class="profile-card__role">{{usuario.especialidade}}</h2>
+        <h2 class="profile-card__role">
+            {% if especialidades %}
+                {% for esp in especialidades %}
+                    <p>{{esp.especialidade}}</p>
+                {% endfor %}
+            {% else %}
+                <p>Você não especificou suas especialidades.</p>
+            {% endif %}
+        </h2>
 
         <div class="profile-card__details">
             <address class="profile-card__contact">
