@@ -29,17 +29,16 @@ Página Inicial
             </a>
         </div>
     </div>
+
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-    <div class="container mt-3">
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
-            role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
+        role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+    {% endfor %}
     {% endif %}
     {% endwith %}
 
@@ -63,146 +62,194 @@ Página Inicial
     <div class="order-details" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
         <div class="order-details__overlay" id="modalOverlay"></div>
 
-        <article class="order-details__card">
-            <!-- CABEÇALHO SUPERIOR -->
-            <header class="order-details__header">
-                <div class="order-details__brand">
-                    <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="order-details__brand-image">
+        <!-- FORMULÁRIO ENVOLVENDO O CONTEÚDO DO MODAL -->
+        <form class="order-details__form" id="orderForm" method="POST"
+            action="/telaInicial/finalizar/{% if ordem_servico%}{{ordem_servico[0].id_ordem}}{% endif %}">
+            <article class="order-details__card">
+                <!-- CABEÇALHO SUPERIOR -->
+                <header class="order-details__header">
+                    <div class="order-details__brand">
+                        <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
+                            class="order-details__brand-image">
+                    </div>
+                    <h1 class="order-details__brand-title" id="orderModalTitle">ORDEM DE SERVIÇO</h1>
+                    <button type="button" class="order-details__close-btn" id="btnClose"
+                        aria-label="Fechar detalhes da ordem de serviço">
+                        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                    </button>
+                </header>
+
+                <div class="order-details__body">
+                    <!-- INFORMAÇÕES PRIMÁRIAS DA OS -->
+                    <section class="order-details__primary-info">
+                        <div class="order-details__image-container">
+                            <img src="/static/src/img/torno_mecanico.jpg" alt="Imagem da máquina associada"
+                                class="order-details__image">
+                        </div>
+                        <div class="order-details__primary-content">
+                            <div class="order-details__info-group">
+                                <span class="order-details__label">Status da Ordem:</span>
+                                <strong class="order-details__badge order-details__badge--success" id="status_ordem">Em
+                                    Andamento</strong>
+                            </div>
+                            <div class="order-details__info-group">
+                                <span class="order-details__label">Fase da Manutenção:</span>
+                                <strong class="order-details__value" id="fase_manutencao">Execução</strong>
+                            </div>
+                            <div class="order-details__info-group">
+                                <span class="order-details__label">Tipo de Manutenção:</span>
+                                <strong class="order-details__value" id="tipo_manutencao">Corretiva</strong>
+                            </div>
+                            <div class="order-details__info-group">
+                                <span class="order-details__label">Técnico Responsável:</span>
+                                <strong class="order-details__value" id="tecnico_responsavel">João Silva</strong>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- CRONOGRAMA E DATAS DA MANUTENÇÃO -->
+                    <section class="order-details__section">
+                        <div class="order-details__section-header">
+                            <h2 class="order-details__section-title">CRONOGRAMA E DATAS</h2>
+                            <div class="order-details__actions">
+                                <button type="button" class="order-details__action-btn order-details__action-btn--edit"
+                                    id="btnEdit" aria-label="Editar Ordem de Serviço">
+                                    <span class="material-symbols-outlined" aria-hidden="true">edit_square</span>
+                                </button>
+                                <button type="button"
+                                    class="order-details__action-btn order-details__action-btn--delete" id="btnDelete"
+                                    aria-label="Excluir Ordem de Serviço">
+                                    <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="order-details__grid">
+                            <!-- Lado Esquerdo: Previsões -->
+                            <div class="order-details__card-group">
+                                <div class="order-details__stat-item">
+                                    <span class="material-symbols-outlined order-details__stat-icon"
+                                        aria-hidden="true">event_upcoming</span>
+                                    <div class="order-details__stat-text">
+                                        <span class="order-details__stat-label">Previsão Início:</span>
+                                        <strong class="order-details__stat-value"
+                                            id="data_prev_inicio_manutencao">12/11/2024 - 08:00</strong>
+                                    </div>
+                                </div>
+
+                                <div class="order-details__stat-item">
+                                    <span class="material-symbols-outlined order-details__stat-icon"
+                                        aria-hidden="true">event_available</span>
+                                    <div class="order-details__stat-text">
+                                        <span class="order-details__stat-label">Previsão Término:</span>
+                                        <strong class="order-details__stat-value"
+                                            id="data_prev_termino_manutencao">14/11/2024 - 17:00</strong>
+                                    </div>
+                                </div>
+
+                                <div class="order-details__stat-item">
+                                    <span class="material-symbols-outlined order-details__stat-icon"
+                                        aria-hidden="true">pause_circle</span>
+                                    <div class="order-details__stat-text">
+                                        <span class="order-details__stat-label">Data da Parada:</span>
+                                        <strong class="order-details__stat-value" id="data_parada">10/11/2024 -
+                                            14:30</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Lado Direito: Execução Real -->
+                            <div class="order-details__card-group">
+                                <div class="order-details__stat-item">
+                                    <span class="material-symbols-outlined order-details__stat-icon"
+                                        aria-hidden="true">play_circle</span>
+                                    <div class="order-details__stat-text">
+                                        <span class="order-details__stat-label">Data de Início Real:</span>
+                                        <strong class="order-details__stat-value" id="data_inicio">12/11/2024 -
+                                            08:30</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- DIAGNÓSTICO E DESCRIÇÃO DO PROBLEMA -->
+                    <section class="order-details__section">
+                        <h2 class="order-details__section-title">DIAGNÓSTICO E FALHA</h2>
+
+                        <div class="order-details__card-group">
+                            <div class="order-details__stat-item">
+                                <span class="material-symbols-outlined order-details__stat-icon"
+                                    aria-hidden="true">warning</span>
+                                <div class="order-details__stat-text">
+                                    <span class="order-details__stat-label">Falha Identificada:</span>
+                                    <strong class="order-details__stat-value" id="falha">Sobreaquecimento no motor
+                                        principal</strong>
+                                </div>
+                            </div>
+
+                            <div class="order-details__description-block">
+                                <span class="order-details__stat-label">Descrição do Problema:</span>
+                                <p class="order-details__description-text" id="desc_problema">
+                                    A máquina apresentou ruídos excessivos e desligamento automático por proteção
+                                    térmica após 3 horas contínuas de operação no turno matutino.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- NOVA SEÇÃO: EXECUÇÃO DA MANUTENÇÃO E PEÇAS ADQUIRIDAS -->
+                    <section class="order-details__section">
+                        <h2 class="order-details__section-title">EXECUÇÃO E PEÇAS</h2>
+
+                        <div class="order-details__card-group">
+                            <!-- Campo: Descrição da Manutenção -->
+                            <div class="order-details__form-group">
+                                <label for="desc_manutencao" class="order-details__stat-label">Descrição da Manutenção
+                                    Realizada:</label>
+                                <textarea class="order-details__textarea" id="desc_manutencao" name="desc_manutencao"
+                                    rows="4" placeholder="Descreva os procedimentos realizados, ajustes e testes..."
+                                    required></textarea>
+                            </div>
+
+                            <!-- Campo: Adicionar Peças Adquiridas com Quantidade e Preço -->
+                            <div class="order-details__form-group">
+                                <label for="input_peca" class="order-details__stat-label">Peças Adquiridas /
+                                    Utilizadas:</label>
+                                <div class="order-details__input-group">
+                                    <input type="text" class="order-details__input" id="input_peca"
+                                        placeholder="Nome da peça (Ex: Rolamento SKF 6204)">
+                                    <input type="number" min="1" step="1" value="1"
+                                        class="order-details__input order-details__input--qty" id="input_peca_qtd"
+                                        aria-label="Quantidade" placeholder="Qtd">
+                                    <input type="number" step="0.01" min="0"
+                                        class="order-details__input order-details__input--price" id="input_peca_preco"
+                                        placeholder="Preço (R$)">
+                                    <button type="button" class="order-details__add-btn" id="btnAddPeca"
+                                        aria-label="Adicionar peça">
+                                        <span class="material-symbols-outlined" aria-hidden="true">add</span>
+                                        Adicionar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Área de Exibição das Peças Cadastradas -->
+                            <div class="order-details__parts-container">
+                                <span class="order-details__stat-label">Peças Cadastradas na OS:</span>
+                                <ul class="order-details__parts-list" id="lista_pecas_cadastradas">
+                                    <!-- Exemplo de item cadastrado com quantidade e preço -->
+                                </ul>
+                            </div>
+
+                            {% if ordem_servico %}
+                            <button type="submit" class="order__btn-finish" id="btnFinish">
+                                Finalizar Ordem de Serviço
+                            </button>
+                            {% endif %}
+                    </section>
                 </div>
-                <h1 class="order-details__brand-title" id="orderModalTitle">ORDEM DE SERVIÇO</h1>
-                <button class="order-details__close-btn" id="btnClose" aria-label="Fechar detalhes da ordem de serviço">
-                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
-                </button>
-            </header>
-
-            <div class="order-details__body">
-                <!-- INFORMAÇÕES PRIMÁRIAS DA OS -->
-                <section class="order-details__primary-info">
-                    <div class="order-details__image-container">
-                        <img src="/static/src/img/torno_mecanico.jpg" alt="Imagem da máquina associada"
-                            class="order-details__image">
-                    </div>
-                    <div class="order-details__primary-content">
-                        <div class="order-details__info-group">
-                            <span class="order-details__label">Status da Ordem:</span>
-                            <strong class="order-details__badge order-details__badge--success" id="status_ordem">Em
-                                Andamento</strong>
-                        </div>
-                        <div class="order-details__info-group">
-                            <span class="order-details__label">Fase da Manutenção:</span>
-                            <strong class="order-details__value" id="fase_manutencao">Execução</strong>
-                        </div>
-                        <div class="order-details__info-group">
-                            <span class="order-details__label">Tipo de Manutenção:</span>
-                            <strong class="order-details__value" id="tipo_manutencao">Corretiva</strong>
-                        </div>
-                        <div class="order-details__info-group">
-                            <span class="order-details__label">Técnico Responsável:</span>
-                            <strong class="order-details__value" id="tecnico_responsavel">João Silva</strong>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- CRONOGRAMA E DATAS DA MANUTENÇÃO -->
-                <section class="order-details__section">
-                    <div class="order-details__section-header">
-                        <h2 class="order-details__section-title">CRONOGRAMA E DATAS</h2>
-                        <div class="order-details__actions">
-                            <button class="order-details__action-btn order-details__action-btn--edit" id="btnEdit"
-                                aria-label="Editar Ordem de Serviço">
-                                <span class="material-symbols-outlined" aria-hidden="true">edit_square</span>
-                            </button>
-                            <button class="order-details__action-btn order-details__action-btn--delete" id="btnDelete"
-                                aria-label="Excluir Ordem de Serviço">
-                                <span class="material-symbols-outlined" aria-hidden="true">delete</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="order-details__grid">
-                        <!-- Lado Esquerdo: Previsões -->
-                        <div class="order-details__card-group">
-                            <div class="order-details__stat-item">
-                                <span class="material-symbols-outlined order-details__stat-icon"
-                                    aria-hidden="true">event_upcoming</span>
-                                <div class="order-details__stat-text">
-                                    <span class="order-details__stat-label">Previsão Início:</span>
-                                    <strong class="order-details__stat-value"
-                                        id="data_prev_inicio_manutencao">12/11/2024 - 08:00</strong>
-                                </div>
-                            </div>
-
-                            <div class="order-details__stat-item">
-                                <span class="material-symbols-outlined order-details__stat-icon"
-                                    aria-hidden="true">event_available</span>
-                                <div class="order-details__stat-text">
-                                    <span class="order-details__stat-label">Previsão Término:</span>
-                                    <strong class="order-details__stat-value"
-                                        id="data_prev_termino_manutencao">14/11/2024 - 17:00</strong>
-                                </div>
-                            </div>
-
-                            <div class="order-details__stat-item">
-                                <span class="material-symbols-outlined order-details__stat-icon"
-                                    aria-hidden="true">pause_circle</span>
-                                <div class="order-details__stat-text">
-                                    <span class="order-details__stat-label">Data da Parada:</span>
-                                    <strong class="order-details__stat-value" id="data_parada">10/11/2024 -
-                                        14:30</strong>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Lado Direito: Execução Real -->
-                        <div class="order-details__card-group">
-                            <div class="order-details__stat-item">
-                                <span class="material-symbols-outlined order-details__stat-icon"
-                                    aria-hidden="true">play_circle</span>
-                                <div class="order-details__stat-text">
-                                    <span class="order-details__stat-label">Data de Início Real:</span>
-                                    <strong class="order-details__stat-value" id="data_inicio">12/11/2024 -
-                                        08:30</strong>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </section>
-
-                <!-- DIAGNÓSTICO E DESCRIÇÃO DO PROBLEMA -->
-                <section class="order-details__section">
-                    <h2 class="order-details__section-title">DIAGNÓSTICO E FALHA</h2>
-
-                    <div class="order-details__card-group">
-                        <div class="order-details__stat-item">
-                            <span class="material-symbols-outlined order-details__stat-icon"
-                                aria-hidden="true">warning</span>
-                            <div class="order-details__stat-text">
-                                <span class="order-details__stat-label">Falha Identificada:</span>
-                                <strong class="order-details__stat-value" id="falha">Sobreaquecimento no motor
-                                    principal</strong>
-                            </div>
-                        </div>
-
-                        <div class="order-details__description-block">
-                            <span class="order-details__stat-label">Descrição do Problema:</span>
-                            <p class="order-details__description-text" id="desc_problema">
-                                A máquina apresentou ruídos excessivos e desligamento automático por proteção
-                                térmica após 3 horas contínuas de operação no turno matutino.
-                            </p>
-                        </div>
-                    </div>
-
-                    {% if ordem_servico %}
-                    <a role="button" class="order__btn-finish" id="btnFinish"
-                        href="/telaInicial/finalizar/{{ordem_servico[0].id_ordem}}">
-                        Finalizar Ordem de Serviço
-                    </a>
-                    {% endif %}
-
-                </section>
-            </div>
-        </article>
+            </article>
+        </form>
     </div>
 
 

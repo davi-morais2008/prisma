@@ -107,7 +107,7 @@ const closeFalhaModal = () => falhaModal.classList.remove('active');
 // ==========================================
 function formatarDataPT(dataString) {
     if (!dataString) return '-';
-    
+
     const data = new Date(dataString);
     if (isNaN(data.getTime())) return dataString;
 
@@ -284,3 +284,62 @@ btnConfirmDelete.addEventListener('click', () => {
 
 // Fechar Modal de Cadastro de Falha
 [btnCloseFalha, overlayFalha, btnCancelFalha].forEach(el => el.addEventListener('click', closeFalhaModal));
+
+const btnAddPeca = document.getElementById('btnAddPeca');
+const inputNome = document.getElementById('input_peca');
+const inputQtd = document.getElementById('input_peca_qtd');
+const inputPreco = document.getElementById('input_peca_preco');
+const listaPecas = document.getElementById('lista_pecas_cadastradas');
+
+btnAddPeca.addEventListener('click', () => {
+    const nome = inputNome.value.trim();
+    const qtd = parseInt(inputQtd.value) || 1;
+    const preco = parseFloat(inputPreco.value) || 0;
+
+    // Validação simples para não adicionar item vazio
+    if (!nome) {
+        alert('Digite o nome da peça.');
+        inputNome.focus();
+        return;
+    }
+
+    // Formata o preço para exibição visual (ex: R$ 85,00)
+    const precoFormatado = preco.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
+
+    // Cria o item da lista (<li>) contendo tanto o visual quanto os inputs ocultos
+    const li = document.createElement('li');
+    li.className = 'order-details__part-item';
+    li.innerHTML = `
+            <div class="order-details__part-info">
+                <span class="order-details__part-name">${nome}</span>
+                <div class="order-details__part-meta">
+                    <span class="order-details__part-qty">${qtd}x</span>
+                    <strong class="order-details__part-price">${precoFormatado}</strong>
+                </div>
+            </div>
+            
+            <!-- Inputs ocultos que serão enviados pelo Form para o Python -->
+            <input type="hidden" name="pecas_nome[]" value="${nome}">
+            <input type="hidden" name="pecas_qtd[]" value="${qtd}">
+            <input type="hidden" name="pecas_preco[]" value="${preco.toFixed(2)}">
+
+            <button type="button" class="order-details__part-remove" aria-label="Remover peça">
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+            </button>
+        `;
+
+    // Evento para remover a peça caso o usuário clique no "X"
+    li.querySelector('.order-details__part-remove').addEventListener('click', () => {
+        li.remove();
+    });
+
+    // Adiciona na tela e limpa os campos para a próxima peça
+    listaPecas.appendChild(li);
+    inputNome.value = '';
+    inputQtd.value = '1';
+    inputPreco.value = '';
+    inputNome.focus();
+});

@@ -1,5 +1,4 @@
 export async function carregarDadosDashboard(tema) {
-    console.log("Iniciando busca de dados no Flask...");
     try {
         const resposta = await fetch('/api/dados');
         if (!resposta.ok) {
@@ -7,7 +6,7 @@ export async function carregarDadosDashboard(tema) {
         }
 
         const dados = await resposta.json();
-        console.log("Dados recebidos da API:", dados);
+     
 
 
         // 1. Atualiza os cards de KPI
@@ -71,8 +70,7 @@ function renderizarGrafico(nomeGrafico, dadosGrafico, mensagem, cor, tema) {
     // Obtém variáveis de cor do CSS com fallback para valores padrão
     const estiloComputado = getComputedStyle(document.documentElement);
     const corTexto = (tema == 'dark' ? '#ffffff' : '#000000');
-    console.log(tema)
-    console.log(corTexto)
+
 
     nomeGrafico = new Chart(ctx, {
         type: 'bar',
@@ -111,7 +109,6 @@ function renderizarGrafico(nomeGrafico, dadosGrafico, mensagem, cor, tema) {
         }
     });
 
-    console.log("Gráfico renderizado com sucesso!");
 }
 
 // Garante a execução independente de quando o DOM terminar de carregar
