@@ -7,14 +7,6 @@ CREATE TABLE IF NOT EXISTS especialidades (
  especialidade VARCHAR(100)
 );
 
-CREATE TABLE IF NOT EXISTS logs_auditoria (
- id_log INT PRIMARY KEY NOT NULL auto_increment,
- usuario VARCHAR(100),
- acao VARCHAR(255),
- descricao VARCHAR(255),
- data_log DATE
-);
-
 CREATE TABLE IF NOT EXISTS tipos_maquinas (
  id_tipo_maquina INT PRIMARY KEY NOT NULL auto_increment,
  tipo_maquina VARCHAR(100)
@@ -52,7 +44,14 @@ CREATE TABLE IF NOT EXISTS maquinas (
  numero_patrimonio VARCHAR(255) NOT NULL,
  manual_operacao VARCHAR(500),
  status_maquina VARCHAR(100),
+ custo_acumulado INT,
  is_inativa bool default false
+);
+
+CREATE TABLE IF NOT EXISTS pecas (
+	id_pecas INT PRIMARY KEY NOT NULL auto_increment,
+	id_ordem INT,
+    custo_peca INT
 );
 
 CREATE TABLE IF NOT EXISTS ordens_servicos (
@@ -76,15 +75,6 @@ CREATE TABLE IF NOT EXISTS tecnicos_especialidades (
  id_especialidade INT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS fases_manutencao (
- id_fase INT PRIMARY KEY NOT NULL auto_increment,
- id_ordem INT,
- status VARCHAR(100),
- fase VARCHAR(100),
- data DATE,
- observacao VARCHAR(255)
-);
-
 CREATE TABLE IF NOT EXISTS imagens_maquinas (
  id_imagem INT PRIMARY KEY NOT NULL auto_increment,
  id_maquina INT,
@@ -96,6 +86,8 @@ ALTER TABLE falhas ADD CONSTRAINT FK_falhas_0 FOREIGN KEY (id_tipo_maquina) REFE
 ALTER TABLE maquinas ADD CONSTRAINT FK_maquinas_0 FOREIGN KEY (id_tipo_maquina) REFERENCES tipos_maquinas (id_tipo_maquina);
 ALTER TABLE maquinas ADD CONSTRAINT FK_maquinas_1 FOREIGN KEY (id_setor) REFERENCES setores (id_setor);
 
+ALTER TABLE pecas ADD CONSTRAINT FK_pecas_0 FOREIGN KEY (id_ordem) REFERENCES ordens_servicos (id_ordem);
+
 ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_0 FOREIGN KEY (id_maquina) REFERENCES maquinas (id_maquina);
 ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_1 FOREIGN KEY (id_falha) REFERENCES falhas (id_falha);
 ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_2 FOREIGN KEY (cpf) REFERENCES usuarios (cpf);
@@ -103,7 +95,5 @@ ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_3 FOREIGN KEY (id_
 
 ALTER TABLE tecnicos_especialidades ADD CONSTRAINT FK_tecnicos_especialidades_0 FOREIGN KEY (cpf) REFERENCES usuarios (cpf);
 ALTER TABLE tecnicos_especialidades ADD CONSTRAINT FK_tecnicos_especialidades_1 FOREIGN KEY (id_especialidade) REFERENCES especialidades (id_especialidade);
-
-ALTER TABLE fases_manutencao ADD CONSTRAINT FK_fases_manutencao_0 FOREIGN KEY (id_ordem) REFERENCES ordens_servicos (id_ordem);
 
 ALTER TABLE imagens_maquinas ADD CONSTRAINT FK_imagens_maquinas_0 FOREIGN KEY (id_maquina) REFERENCES maquinas (id_maquina);
