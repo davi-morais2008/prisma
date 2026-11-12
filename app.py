@@ -243,20 +243,14 @@ def post_login():
     senha = request.form.get('login_senha')
     
     for user in usuarios:
-        # Índices da query de buscar_usuario():
-        # [0]=cpf, [1]=status_usuario, [2]=nome, [3]=email, [4]=senha, [5]=especialidade, [6]=rbac
-        cpf_db = user[0]
-        status_db = user[1]
-        senha_db = user[4]
-        rbac_db = user[6]
-
-        if cpf_db == usuario and senha_db == senha:
-            if not status_db:  # Bloqueia se status_usuario for 0, False ou None
+        if user['cpf'] == usuario and user['senha'] == senha:
+            # Bloqueia se status_usuario for 0, False ou None
+            if not user.get('status_usuario'):
                 flash('Seu cadastro está aguardando aprovação de um administrador ou está inativo.', 'warning')
                 return redirect('/login')
 
-            session['user'] = cpf_db
-            session['user_rbac'] = rbac_db
+            session['user'] = user['cpf']
+            session['user_rbac'] = user['rbac']
             return redirect('/telaInicial')
 
     flash('Usuário ou Senha incorreto. Tente Novamente!', 'error')
@@ -403,8 +397,8 @@ def categorias_get_api():
 @login_required
 def pagina_perfil():
     users = buscar_usuario()
-    for user in users:
-        if user[0] == session['user']:
+    for user in users: 
+        if user['cpf'] == session['user']:
             return render_template('perfil.html', usuario=user)
     return redirect('/telaInicial')
 
