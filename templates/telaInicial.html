@@ -44,22 +44,57 @@ Página Inicial
 
 
 
-   <section class="home__orders" aria-label="Ordens de Serviço Ativas">
-        {% for os in ordem_servico %}
-            {% if os.status_ordem == 'Ativa' %}
+    <!-- SELETOR TIPO SLIDE (TABS) -->
+    <div class="home__view-switcher" role="tablist" aria-label="Alternar tipo de ordem">
+        <div class="home__switcher-track" id="switcherTrack">
+            <div class="home__switcher-slider" id="switcherSlider" aria-hidden="true"></div>
+
+            <button type="button" class="home__switcher-btn is-active" id="btnTabServico" role="tab"
+                aria-selected="true" aria-controls="container-ordens-servico" data-target="container-ordens-servico">
+                <span class="material-symbols-outlined" aria-hidden="true">build</span>
+                <span>Ordens de Serviço</span>
+            </button>
+
+            <button type="button" class="home__switcher-btn" id="btnTabInspecao" role="tab" aria-selected="false"
+                aria-controls="container-ordens-inspecao" data-target="container-ordens-inspecao">
+                <span class="material-symbols-outlined" aria-hidden="true">fact_check</span>
+                <span>Ordens de Inspeção</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTAINER INDIVIDUAL 1: ORDENS DE SERVIÇO -->
+    <section class="home__orders-container is-visible" id="container-ordens-servico" role="tabpanel"
+        aria-labelledby="btnTabServico">
+        <header class="home__group-header">
+            <div class="home__group-title-wrapper">
+                <span class="material-symbols-outlined home__group-icon" aria-hidden="true">build</span>
+                <h2 class="home__group-title">Ordens de Serviço</h2>
+            </div>
+        </header>
+
+        <div class="home__orders">
+            {% set ns_os = namespace(encontrou=false) %}
+            {% for os in ordem_servico %}
+            {% if (user_rbac in ['admin', 'root'] and os.status_ordem in ['Ativa', 'Pendente']) or (os.cpf == user.cpf
+            and os.status_ordem == 'Ativa') %}
+            {% set ns_os.encontrou = true %}
             <article class="work-order work-order--baixa" id_order="{{ os.id_ordem }}" tabindex="0">
                 <header class="work-order__header">
-                    <h3 class="work-order__title">Número da Ordem: {{ os.id_ordem }}</h3>
-                    <span class="work-order__badge">Ativa</span>
+                    <h3 class="work-order__title">Ordem #{{ os.id_ordem }}</h3>
+                    <span
+                        class="work-order__badge {{ 'work-order__badge--pendente' if os.status_ordem == 'Pendente' else '' }}">
+                        {{ os.status_ordem }}
+                    </span>
                 </header>
 
                 <div class="work-order__description">
                     <p class="work-order__item">
                         <span class="work-order__label">Responsável:</span>
-                        <span class="work-order__value">{{ os.tecnico_responsavel }}</span>
+                        <span class="work-order__value">{{ os.tecnico_responsavel or 'Não atribuído' }}</span>
                     </p>
                     <p class="work-order__item">
-                        <span class="work-order__label">Número Patrimônio:</span>
+                        <span class="work-order__label">Patrimônio:</span>
                         <span class="work-order__value">{{ os.numero_patrimonio }}</span>
                     </p>
                     <p class="work-order__item">
@@ -70,11 +105,74 @@ Página Inicial
 
                 <footer class="work-order__footer">
                     <span class="work-order__date-label">Data Parada:</span>
-                    <time class="work-order__date-value">{{ os.data_parada }}</time>
+                    <time class="work-order__date-value">{{ os.data_parada or 'Sem parada' }}</time>
                 </footer>
             </article>
             {% endif %}
-        {% endfor %}
+            {% endfor %}
+
+            {% if not ns_os.encontrou %}
+            <div class="home__empty-state">
+                <span class="material-symbols-outlined" aria-hidden="true">assignment_turned_in</span>
+                <p>Nenhuma ordem de serviço ativa no momento.</p>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- CONTAINER INDIVIDUAL 2: ORDENS DE INSPEÇÃO -->
+    <section class="home__orders-container" id="container-ordens-inspecao" role="tabpanel"
+        aria-labelledby="btnTabInspecao" hidden>
+        <header class="home__group-header">
+            <div class="home__group-title-wrapper">
+                <span class="material-symbols-outlined home__group-icon home__group-icon--inspecao"
+                    aria-hidden="true">fact_check</span>
+                <h2 class="home__group-title">Ordens de Inspeção</h2>
+            </div>
+        </header>
+
+        <div class="home__orders">
+            {% set ns_insp = namespace(encontrou=false) %}
+            {% for insp in ordens_inspecao %}
+            {% if insp.status_inspecao and (user_rbac in ['admin', 'root'] or insp.cpf == user.cpf) %}
+            {% set ns_insp.encontrou = true %}
+            <article class="work-order work-order--inspecao" id_inspecao="{{ insp.id_ordem_inspecao }}" tabindex="0">
+                <header class="work-order__header">
+                    <h3 class="work-order__title">Inspeção #{{ insp.id_ordem_inspecao }}</h3>
+                    <span class="work-order__badge work-order__badge--inspecao">Inspeção</span>
+                </header>
+
+                <div class="work-order__description">
+                    <p class="work-order__item">
+                        <span class="work-order__label">Solicitante:</span>
+                        <span class="work-order__value">{{ insp.nome_solicitante or insp.cpf }}</span>
+                    </p>
+                    <p class="work-order__item">
+                        <span class="work-order__label">Patrimônio:</span>
+                        <span class="work-order__value">{{ insp.numero_patrimonio }}</span>
+                    </p>
+                    <p class="work-order__item">
+                        <span class="work-order__label">Máquina:</span>
+                        <span class="work-order__value">{{ insp.nome_maquina }}</span>
+                    </p>
+                </div>
+
+                <footer class="work-order__footer">
+                    <span class="work-order__date-label">Observação:</span>
+                    <span class="work-order__date-value work-order__date-value--truncate">{{ insp.descricao_inspecao
+                        }}</span>
+                </footer>
+            </article>
+            {% endif %}
+            {% endfor %}
+
+            {% if not ns_insp.encontrou %}
+            <div class="home__empty-state">
+                <span class="material-symbols-outlined" aria-hidden="true">search_check</span>
+                <p>Nenhuma ordem de inspeção pendente.</p>
+            </div>
+            {% endif %}
+        </div>
     </section>
 
     <!-- Modal de Detalhes da Ordem de Serviço (OS) -->
@@ -82,9 +180,8 @@ Página Inicial
         <div class="order-details__overlay" id="modalOverlay"></div>
 
         <!-- FORMULÁRIO ENVOLVENDO O CONTEÚDO DO MODAL -->
-         
-        <form class="order-details__form" id="orderForm" method="POST"
-            action="">
+
+        <form class="order-details__form" id="orderForm" method="POST" action="">
             <article class="order-details__card">
                 <!-- CABEÇALHO SUPERIOR -->
                 <header class="order-details__header">
@@ -219,7 +316,7 @@ Página Inicial
                     </section>
                     <!-- NOVA SEÇÃO: EXECUÇÃO DA MANUTENÇÃO E PEÇAS ADQUIRIDAS -->
                     <section class="order-details__section" id="execute-OS-section">
-                        
+
                         <!-- CONTAINER APENAS DOS CAMPOS (aplique o display: none neste ID) -->
                         <div id="campos_execucao">
                             <h2 class="order-details__section-title">EXECUÇÃO E PEÇAS</h2>
@@ -227,15 +324,18 @@ Página Inicial
                             <div class="order-details__card-group">
                                 <!-- Campo: Descrição da Manutenção -->
                                 <div class="order-details__form-group">
-                                    <label for="desc_manutencao" class="order-details__stat-label">Descrição da Manutenção Realizada:</label>
-                                    <textarea class="order-details__textarea" id="desc_manutencao" name="desc_manutencao"
-                                        rows="4" placeholder="Descreva os procedimentos realizados, ajustes e testes..."
+                                    <label for="desc_manutencao" class="order-details__stat-label">Descrição da
+                                        Manutenção Realizada:</label>
+                                    <textarea class="order-details__textarea" id="desc_manutencao"
+                                        name="desc_manutencao" rows="4"
+                                        placeholder="Descreva os procedimentos realizados, ajustes e testes..."
                                         required></textarea>
                                 </div>
 
                                 <!-- Campo: Adicionar Peças Adquiridas com Quantidade e Preço -->
                                 <div class="order-details__form-group">
-                                    <label for="input_peca" class="order-details__stat-label">Peças Adquiridas / Utilizadas:</label>
+                                    <label for="input_peca" class="order-details__stat-label">Peças Adquiridas /
+                                        Utilizadas:</label>
                                     <div class="order-details__input-group">
                                         <input type="text" class="order-details__input" id="input_peca"
                                             placeholder="Nome da peça (Ex: Rolamento SKF 6204)">
@@ -243,8 +343,8 @@ Página Inicial
                                             class="order-details__input order-details__input--qty" id="input_peca_qtd"
                                             aria-label="Quantidade" placeholder="Qtd">
                                         <input type="number" step="0.01" min="0"
-                                            class="order-details__input order-details__input--price" id="input_peca_preco"
-                                            placeholder="Preço (R$)">
+                                            class="order-details__input order-details__input--price"
+                                            id="input_peca_preco" placeholder="Preço (R$)">
                                         <button type="button" class="order-details__add-btn" id="btnAddPeca"
                                             aria-label="Adicionar peça">
                                             <span class="material-symbols-outlined" aria-hidden="true">add</span>

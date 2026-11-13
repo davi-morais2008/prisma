@@ -1644,6 +1644,193 @@
 }
 
 /* ==========================================================================
+   BOTÃO SLIDE / ALTERNADOR DE SEÇÕES (ORDENS DE SERVIÇO VS INSPEÇÃO)
+   ========================================================================== */
+.home__view-switcher {
+    display: flex;
+    justify-content: flex-start;
+    margin: 1.5rem 0 1.25rem;
+}
+
+.home__switcher-track {
+    position: relative;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: #e2e8f0;
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    box-shadow: inset 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+
+.home__switcher-slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background-color: #ffffff;
+    border-radius: 9px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+/* Move o indicador branco para a direita quando Inspeção estiver ativo */
+.home__switcher-track.is-inspecao .home__switcher-slider {
+    transform: translateX(100%);
+}
+
+.home__switcher-btn {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    border: none;
+    background: transparent;
+    color: #475569;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 9px;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+}
+
+.home__switcher-btn .material-symbols-outlined {
+    font-size: 1.15rem;
+}
+
+.home__switcher-btn:hover {
+    color: #1e293b;
+}
+
+.home__switcher-btn.is-active {
+    color: #1d4ed8;
+}
+
+.home__switcher-track.is-inspecao .home__switcher-btn.is-active {
+    color: #0f766e;
+}
+
+/* ==========================================================================
+   CONTAINERS INDIVIDUAIS
+   ========================================================================== */
+.home__orders-container {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    animation: fadeSlideIn 0.25s ease;
+}
+
+.home__orders-container[hidden] {
+    display: none;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.home__group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.9rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.home__group-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.home__group-icon {
+    font-size: 1.4rem;
+    color: #1d4ed8;
+    background-color: #dbeafe;
+    padding: 0.45rem;
+    border-radius: 8px;
+}
+
+.home__group-icon--inspecao {
+    color: #0f766e;
+    background-color: #ccfbf1;
+}
+
+.home__group-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+/* Grid de cards dentro do container ativo */
+.home__orders {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+    width: 100%;
+}
+
+/* Variações de card/badge */
+.work-order--inspecao {
+    border-left: 4px solid #0d9488;
+}
+
+.work-order__badge--inspecao {
+    background-color: #ccfbf1;
+    color: #0f766e;
+}
+
+.work-order__badge--pendente {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.work-order__date-value--truncate {
+    display: inline-block;
+    max-width: 210px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+}
+
+.home__empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: #64748b;
+    background-color: #ffffff;
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+    gap: 0.5rem;
+}
+
+.home__empty-state .material-symbols-outlined {
+    font-size: 2.2rem;
+    color: #94a3b8;
+}
+
+/* ==========================================================================
    MODAL DE CADASTRO DE FALHA 
    ========================================================================== */
 .fault-create {
