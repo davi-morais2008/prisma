@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
+from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, iniciar_OS
 from model.usuario import buscar_usuario, atualizar_usuario
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -257,7 +258,6 @@ def api_get_info_manutencao(id_ordem):
 @app.route('/login')
 def pagina_login():
     return render_template('cadastroLogin.html')
-
 @app.route('/login/post', methods=['POST'])
 def post_login():
     usuarios = buscar_usuario()
@@ -267,11 +267,18 @@ def post_login():
     for user in usuarios:
         if user['cpf'] == usuario and check_password_hash(user['senha'], senha):
             session['user'] = user['cpf']
+        if user['cpf'] == usuario and user['senha'] == senha:
+            # Bloqueia se status_usuario for 0, False ou None
+            if not user.get('status_usuario'):
+                flash('Seu cadastro está aguardando aprovação de um administrador ou está inativo.', 'warning')
+                return redirect('/login')
+
+            session['user'] = user['cpf']
             session['user_rbac'] = user['rbac']
             return redirect('/telaInicial')
+
     flash('Usuário ou Senha incorreto. Tente Novamente!', 'error')
     return redirect('/login')
-
 
 @app.route('/cadastro/post', methods = ['POST'])
 def post_cadastro():
@@ -290,6 +297,8 @@ def post_cadastro():
         flash('As senhas não correspondem entre si. Tente o Cadastro Novamente!', 'error')
         return redirect('/login')
     try:
+        if cadastrar_usuario(user_cpf, username, user_email, user_pwd):
+            flash('Cadastro enviado! Aguarde a aprovação de um administrador para acessar o sistema.', 'info')
         senha_hash = generate_password_hash(user_confirm_pwd)
 
         if cadastrar_usuario(user_cpf, username, user_email, senha_hash):
@@ -418,7 +427,8 @@ def pagina_perfil():
     users = buscar_usuario()
     for user in users: 
         if user['cpf'] == session['user']:
-            return render_template('perfil.html', usuario = user)
+            return render_template('perfil.html', usuario=user)
+    return redirect('/telaInicial')
 
 
 @app.route('/profile/uptade_information', methods=['POST'])
@@ -446,6 +456,28 @@ def pagina_usuarios():
 def pagina_calendario():
     return render_template('calendario.html')
 
+
+
+@app.route('/usuarios/api_alterar_status', methods=['POST'])
+@login_required
+@roles_required('admin', 'root')
+def api_alterar_status_usuario():
+    dados = request.get_json()
+    cpf = dados.get('cpf')
+    novo_status = dados.get('status')  # 1 para ativar/aprovar, 0 para inativar
+
+    try:
+        alterar_status_usuario(cpf, novo_status)
+        
+        if int(novo_status) == 1:
+            flash('Usuário ativado e aprovado com sucesso!', 'success')
+        else:
+            flash('Usuário inativado com sucesso!', 'warning')
+
+        return jsonify({"status": "sucesso", "mensagem": "Status atualizado com sucesso!"}), 200
+    except Exception as e:
+        flash('Erro ao atualizar o status do usuário.', 'danger')
+        return jsonify({"status": "erro", "mensagem": str(e)}), 500
 @app.route('/api/ordens-servico')
 @login_required
 def api_ordens_servico():
