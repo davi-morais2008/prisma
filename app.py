@@ -23,8 +23,8 @@ app.config['SECRET_KEY'] = 'PRISMA_maintence'
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USERNAME'] = 'gustavocaua934@gmail.com'
 app.config['MAIL_PASSWORD'] = 'byec gkwq wtec wbml'
 app.config['MAIL_DEFAULT_SENDER'] = ('PRISMA', 'gustavocaua934@gmail.com')
