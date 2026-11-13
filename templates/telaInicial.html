@@ -472,11 +472,18 @@ Página Inicial
                                         min="1000-01-01" max="9999-12-31">
                                 </div>
 
+                                <!-- No Bloco 1 (Inspeção) -->
                                 <div class="order-create__field order-create__field--full">
                                     <span class="order-create__label">Solicitante</span>
-                                    <p class="order-create__readonly-text" id="insp_solicitante_texto">Usuário logado
+                                    {% set cpf_atual = user.cpf if user is mapping or user.cpf is defined else user %}
+                                    <p class="order-create__readonly-text" id="insp_solicitante_texto">
+                                        {% for tecnico in tecnicos %}
+                                        {% if tecnico.cpf | string | trim == cpf_atual | string | trim %}
+                                        {{ tecnico.nome }} ({{ tecnico.cpf }})
+                                        {% endif %}
+                                        {% endfor %}
                                     </p>
-                                    <input type="hidden" name="insp_solicitante" value="{{ user.cpf }}">
+                                    <input type="hidden" name="insp_solicitante" value="{{ cpf_atual }}">
                                 </div>
 
                                 <div class="order-create__field order-create__field--full">
@@ -538,32 +545,22 @@ Página Inicial
                                         {% endfor %}
                                     </select>
                                 </div>
+                                {% endif %}
 
-                                <!-- Para Ordem de Manutenção -->
-                                <div class="order-create__field order-create__field--full">
-                                    <span class="order-create__label">Solicitante da Manutenção</span>
-                                    <p class="order-create__readonly-text" id="create_solicitante_texto">
-                                        {% for tecnico in tecnicos %}
-                                        {% if tecnico.cpf == user.cpf %}
-                                        {{ tecnico.nome }} ({{ tecnico.cpf }})
-                                        {% endif %}
-                                        {% endfor %}
-                                    </p>
-                                    <input type="hidden" name="solicitante" value="{{ user.cpf }}">
-                                </div>
-
-                                <!-- Para Ordem de Inspeção -->
+                                <!-- No Bloco 1 (Inspeção) -->
                                 <div class="order-create__field order-create__field--full">
                                     <span class="order-create__label">Solicitante</span>
+                                    {% set cpf_atual = user.cpf if user is mapping or user.cpf is defined else user %}
                                     <p class="order-create__readonly-text" id="insp_solicitante_texto">
                                         {% for tecnico in tecnicos %}
-                                        {% if tecnico.cpf == user.cpf %}
+                                        {% if tecnico.cpf | string | trim == cpf_atual | string | trim %}
                                         {{ tecnico.nome }} ({{ tecnico.cpf }})
                                         {% endif %}
                                         {% endfor %}
                                     </p>
-                                    <input type="hidden" name="insp_solicitante" value="{{ user.cpf }}">
+                                    <input type="hidden" name="insp_solicitante" value="{{ cpf_atual }}">
                                 </div>
+
                             </div>
                         </fieldset>
 
