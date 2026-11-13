@@ -89,3 +89,11 @@ def inativar_usuario(cpf,status_usuario):
         return False
     finally:
         conexao.close()
+
+def alterar_status_usuario(cpf, novo_status):
+    conexao, cursor = conectar()
+    cursor.execute(
+        "UPDATE usuarios SET status_usuario = %s WHERE cpf = %s",
+        (novo_status, cpf)
+    )
+    conexao.commit()
