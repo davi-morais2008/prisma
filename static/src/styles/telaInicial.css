@@ -1520,7 +1520,7 @@
 
 /* Força exibição do campo de data de parada */
 #campo_data_parada {
-    display: flex !important;
+    display: flex;
     flex-direction: column;
     margin-top: 0.75rem;
 }
