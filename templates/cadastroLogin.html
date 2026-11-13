@@ -150,12 +150,29 @@
         </div>
 
         <div class="coluna_imagem">
-            <img src="/static/src/img/EmblemaPrisma.png" alt="Logo Prisma" class="imagem_lateral">
+   <model-viewer 
+  src="/static/src/img/penrose_triangle-large.glb" 
+  alt="Logo Prisma" 
+  auto-rotate 
+  camera-controls
+  environment-image="legacy"
+  exposure="0.55"
+  shadow-intensity="2"
+  shadow-softness="0.3"
+  style="
+    width: 400px; 
+    height: 400px; 
+    background-color: transparent;
+    filter: grayscale(100%) brightness(0.65) contrast(2.2) drop-shadow(0 15px 25px rgba(0, 0, 0, 0.8));
+  ">
+</model-viewer>
+
         </div>
 
     </main>
 
     <script src="../static/src/js/cadastroLogin.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </body>
 
 </html>
