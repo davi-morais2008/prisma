@@ -249,7 +249,7 @@ Página Inicial
                                         <input type="number" step="0.01" min="0"
                                             class="order-details__input order-details__input--price"
                                             id="input_peca_preco" placeholder="Preço (R$)">
-                                        <button type="button" class="order-details__add-btn" id="btnAddPeca"
+                                        <button type="button" class="order-details__add-btn" id="btnAddPecaCreate"
                                             aria-label="Adicionar peça">
                                             <span class="material-symbols-outlined" aria-hidden="true">add</span>
                                             Adicionar
@@ -431,7 +431,7 @@ Página Inicial
 
             <!-- FORMULÁRIO DE CADASTRO -->
             <form class="order-create__form" id="formCreateOrder" method="post"
-                action="/telaInicial/post-register-order">
+                action="/telaInicial/post-register-order-maintenance">
                 <div class="order-create__body">
 
                     <!-- SEÇÃO 0: TIPO DE ORDEM (SELEÇÃO PRINCIPAL) -->
@@ -586,32 +586,19 @@ Página Inicial
                                         name="data_prev_termino" min="1000-01-01" max="9999-12-31">
                                 </div>
 
-                                <!-- Datas Reais -->
-                                <div class="order-create__field">
-                                    <label class="order-create__label" for="create_data_inicio_real">Início Real da
-                                        Manutenção</label>
-                                    <input class="order-create__input" type="date" id="create_data_inicio_real"
-                                        name="data_inicio_manutencao" min="1000-01-01" max="9999-12-31">
-                                </div>
 
-                                <div class="order-create__field">
-                                    <label class="order-create__label" for="create_data_termino_real">Término Real da
-                                        Manutenção</label>
-                                    <input class="order-create__input" type="date" id="create_data_termino_real"
-                                        name="data_termino_manutencao" min="1000-01-01" max="9999-12-31">
-                                </div>
+
                             </div>
                             {% endif %}
                             <!-- Parada de Máquina (Fora da div de datas) -->
                             <div id="grupo_parada_maquina" class="order-create__field order-create__conditional-box">
                                 <div class="order-create__checkbox-wrapper">
                                     <input type="checkbox" id="check_maquina_parada" name="maquina_parada" value="1">
-                                    <label class="order-create__label" for="check_maquina_parada">A máquina encontra-se
+                                    <label class="order-create__label" for="check_maquina_parada">Máquina
                                         parada?</label>
                                 </div>
 
-                                <div id="campo_data_parada" class="order-create__field"
-                                    style="display: none; margin-top: 10px;">
+                                <div id="campo_data_parada" class="order-create__field" margin-top: 10px;">
                                     <label class="order-create__label" for="create_data_parada">Data da Parada</label>
                                     <input class="order-create__input" type="date" id="create_data_parada"
                                         name="data_parada" min="1000-01-01" max="9999-12-31">
