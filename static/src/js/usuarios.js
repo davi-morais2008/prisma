@@ -1,5 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
+    // FUNÇÃO DE COMUNICAÇÃO COM O BACKEND (FLASK)
+    // ==========================================
+    async function atualizarStatusUsuario(cpf, novoStatus) {
+        try {
+            const response = await fetch("/usuarios/api_alterar_status", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ cpf: cpf, status: novoStatus })
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                const erro = await response.json();
+                alert(erro.mensagem || "Erro ao atualizar o status do usuário.");
+            }
+        } catch (error) {
+            console.error("Erro na requisição:", error);
+            alert("Erro de conexão ao tentar atualizar o usuário.");
+        }
+    }
+
+
+    // ==========================================
     // 1. MODAL DE EDIÇÃO DE USUÁRIO
     // ==========================================
     const modalEdit = document.getElementById("modalEditUser");
@@ -26,24 +52,48 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     // 2. MODAL DE INATIVAÇÃO DE USUÁRIO
     // ==========================================
-    // Certifique-se de que o modal no HTML possua o id "modalInativarUser"
     const modalInativar = document.getElementById("modalInativarUser");
     const overlayInativar = modalInativar ? modalInativar.querySelector(".modal__overlay") : null;
     const closeBtnInativar = modalInativar ? modalInativar.querySelector(".modal__close") : null;
-    const cancelBtnInativar = modalInativar ? modalInativar.querySelector(".button--cancelar") : null;
-    const botoesInativar = document.querySelectorAll(".user-card__actions .button--danger");
+    const cancelBtnInativar = document.getElementById("btnCancelarInativar");
+    const confirmBtnInativar = document.getElementById("btnConfirmarInativar");
+    const nomeUsuarioSpan = document.getElementById("nomeUsuarioInativar");
+    const botoesInativar = document.querySelectorAll(".btn-inativar");
 
-    const abrirModalInativar = () => {
-        if (modalInativar) modalInativar.classList.add("modal--active");
+    let cpfSelecionadoParaInativar = null;
+
+    const abrirModalInativar = (cpf, nome) => {
+        cpfSelecionadoParaInativar = cpf;
+        if (nomeUsuarioSpan) {
+            nomeUsuarioSpan.textContent = nome;
+        }
+        if (modalInativar) {
+            modalInativar.classList.add("modal--active");
+        }
     };
 
     const fecharModalInativar = () => {
-        if (modalInativar) modalInativar.classList.remove("modal--active");
+        cpfSelecionadoParaInativar = null;
+        if (modalInativar) {
+            modalInativar.classList.remove("modal--active");
+        }
     };
 
     botoesInativar.forEach(button => {
-        button.addEventListener("click", abrirModalInativar);
+        button.addEventListener("click", () => {
+            const cpf = button.dataset.cpf;
+            const nome = button.dataset.nome;
+            abrirModalInativar(cpf, nome);
+        });
     });
+
+    if (confirmBtnInativar) {
+        confirmBtnInativar.addEventListener("click", () => {
+            if (cpfSelecionadoParaInativar) {
+                atualizarStatusUsuario(cpfSelecionadoParaInativar, 0);
+            }
+        });
+    }
 
     if (closeBtnInativar) closeBtnInativar.addEventListener("click", fecharModalInativar);
     if (cancelBtnInativar) cancelBtnInativar.addEventListener("click", fecharModalInativar);
@@ -51,15 +101,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ==========================================
-    // 3. ACESSIBILIDADE GLOBAL (TECLA ESC)
+    // 3. ATIVAÇÃO / APROVAÇÃO DE CADASTRO
+    // ==========================================
+    const botoesAtivar = document.querySelectorAll(".btn-ativar");
+
+    botoesAtivar.forEach(button => {
+        button.addEventListener("click", () => {
+            const cpf = button.dataset.cpf;
+            // Envia status 1 para ativar/aprovar o cadastro pendente
+            atualizarStatusUsuario(cpf, 1);
+        });
+    });
+
+
+    // ==========================================
+    // 4. ACESSIBILIDADE GLOBAL (TECLA ESC)
     // ==========================================
     document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
-            // Fecha o modal de edição se estiver aberto
             if (modalEdit && modalEdit.classList.contains("user-edit--active")) {
                 closeModalEdit();
             }
-            // Fecha o modal de inativação se estiver aberto
             if (modalInativar && modalInativar.classList.contains("modal--active")) {
                 fecharModalInativar();
             }
