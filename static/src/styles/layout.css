@@ -97,7 +97,7 @@ main {
 
 .sidebar__nav {
     flex: 1;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
 }
 
 .sidebar__nav-list {
@@ -307,9 +307,9 @@ main {
         position: static !important;
         border: none;
         flex-direction: column;
-        font-size: var(--font-size-sm);
+        font-size: 14px;
+        padding: 0;
     }
-
     }
 
 @media (max-width: 768px) {
