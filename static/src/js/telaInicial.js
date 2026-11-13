@@ -7,6 +7,14 @@ const workOrders = document.querySelectorAll('.work-order');
 const filterButton = document.querySelectorAll('.filter-button');
 const currentPath = window.location.pathname;
 const homeOrders = document.querySelector('.home__orders');
+const inputOrderMaintanence = document.getElementById('tipo_ordem_manutencao')
+const inputOrderInspection = document.getElementById('tipo_ordem_inspecao')
+const containerInspec = document.querySelector('#container_ordem_inspecao')
+const containerMaintanece = document.querySelector('#container_ordem_manutencao')
+const containerStopMachine = document.querySelector('#grupo_parada_maquina')
+
+
+
 
 // Modal: Detalhes da OS
 const orderModal = document.querySelector('.order-details');
@@ -274,3 +282,29 @@ btnAddPeca.addEventListener('click', () => {
     inputPreco.value = '';
     inputNome.focus();
 });
+
+
+
+// ==========================================
+// DIFERENCIAÇÃO DE ORDENS E VALIDAÇÃO DE DADOS
+// ==========================================
+containerInspec.classList.add('is-hidden')
+
+inputOrderInspection.addEventListener('input', () => {
+    containerInspec.classList.remove('is-hidden')
+    containerMaintanece.classList.add('is-hidden');
+})
+inputOrderMaintanence.addEventListener('input', () => {
+    containerInspec.classList.add('is-hidden');
+    containerMaintanece.classList.remove('is-hidden')
+})
+
+
+selectTipoManutencao.addEventListener('change', () => {
+    if (selectTipoManutencao.value == 'Corretiva'){
+    containerStopMachine.classList.remove('is-hidden')
+} else {
+    containerStopMachine.classList.add('is-hidden')
+}
+
+})
