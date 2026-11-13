@@ -3,51 +3,70 @@ from database.conexao import conectar
 def cadastrar_ordem_servico(
     id_maquina,
     id_falha,
-    cpf,
-    status_ordem,
+    cpf_solicitante,
+    cpf_tecnico,
     tipo_manutencao,
     descricao_problema,
-    data_inicio_manutencao,
-    data_termino_manutencao,
     data_parada,
     data_prev_inicio_manutencao,
     data_prev_termino_manutencao
 ):
     conexao, cursor = conectar()
     try:
-        cursor.execute('''
-            INSERT INTO ordens_servicos (
+        if cpf_tecnico:
+            cursor.execute('''
+                INSERT INTO ordens_servicos (
+                    id_maquina,
+                    id_falha,
+                    cpf_solicitante,
+                    cpf,
+                    tipo_manutencao,
+                    descricao_problema,
+                    data_parada,
+                    data_prev_inicio_manutencao,
+                    data_prev_termino_manutencao
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+            ''', (
                 id_maquina,
                 id_falha,
-                cpf,
-                status_ordem,
+                cpf_solicitante,
+                cpf_tecnico,
                 tipo_manutencao,
                 descricao_problema,
-                data_inicio_manutencao,
-                data_termino_manutencao,
                 data_parada,
                 data_prev_inicio_manutencao,
                 data_prev_termino_manutencao
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-        ''', (
-            id_maquina,
-            id_falha,
-            cpf,
-            status_ordem,
-            tipo_manutencao,
-            descricao_problema,
-            data_inicio_manutencao,
-            data_termino_manutencao,
-            data_parada,
-            data_prev_inicio_manutencao,
-            data_prev_termino_manutencao
-        ))
+            ))
+        else:
+            cursor.execute('''
+                INSERT INTO ordens_servicos (
+                    id_maquina,
+                    id_falha,
+                    cpf_solicitante,
+                    tipo_manutencao,
+                    descricao_problema,
+                    data_parada,
+                    data_prev_inicio_manutencao,
+                    data_prev_termino_manutencao
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+            ''', (
+                id_maquina,
+                id_falha,
+                cpf_solicitante,
+                tipo_manutencao,
+                descricao_problema,
+                data_parada,
+                data_prev_inicio_manutencao,
+                data_prev_termino_manutencao
+            ))
+
         conexao.commit()
-        return True
+        return cursor.lastrowid
     except Exception as e:
         print(f'ERRO ao cadastrar Ordem de Serviço: {e}')
-        return False
+        return None
     finally:
+        cursor.close()
         conexao.close()
 
 
