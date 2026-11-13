@@ -39,22 +39,22 @@ INSERT INTO maquinas (id_tipo_maquina, modelo_maquina, numero_patrimonio, id_set
 INSERT INTO ordens_servicos (
     id_especialidade, id_maquina, id_falha, cpf, status_ordem, tipo_manutencao, 
     descricao_problema, data_inicio_manutencao, data_termino_manutencao, data_parada, 
-    data_prev_inicio_manutencao, data_prev_termino_manutencao
+    data_prev_inicio_manutencao, data_prev_termino_manutencao, cpf_solicitante
 ) VALUES
 (
     1, 1, 1, '47126589832', 'Ativa', 'Corretiva', 
     'Ruído excessivo durante o movimento do barramento.', 
-    '2026-11-01', NULL, '2026-11-01', '2026-11-01', '2026-11-05'
+    '2026-11-01', NULL, '2026-11-01', '2026-11-01', '2026-11-05', '00000000000'
 ),
 (
     2, 2, 2, '47126589832', 'Finalizada', 'Preventiva', 
     'Troca de reparos do cilindro hidráulico principal.', 
-    '2026-10-10', '2026-10-12 16:30:00', '2026-10-10', '2026-10-10', '2026-10-13'
+    '2026-10-10', '2026-10-12 16:30:00', '2026-10-10', '2026-10-10', '2026-10-13',  '00000000000'
 ),
 (
     3, 1, 3, '47126589832', 'Cancelada', 'Preditiva', 
     'Alarme falso disparado pelo sensor de temperatura.', 
-    NULL, NULL, NULL, '2026-10-15', '2026-10-15'
+    NULL, NULL, NULL, '2026-10-15', '2026-10-15',  '00000000000'
 );
 
 -- 8. Inserção de Técnicos vs Especialidades
