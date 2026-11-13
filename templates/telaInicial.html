@@ -45,39 +45,37 @@ Página Inicial
 
 
    <section class="home__orders" aria-label="Ordens de Serviço Ativas">
-    {% for os in ordem_servico %}
-    {% if os.status_ordem == 'Ativa' %}
-    <article class="work-order work-order--baixa" id_order="{{os.id_ordem}}" tabindex="0">
-        
-        <header class="work-order__header">
-            <h3 class="work-order__title">Número da Ordem: {{os.id_ordem}}</h3>
-            <span class="work-order__badge">Ativa</span>
-        </header>
+        {% for os in ordem_servico %}
+            {% if os.status_ordem == 'Ativa' %}
+            <article class="work-order work-order--baixa" id_order="{{ os.id_ordem }}" tabindex="0">
+                <header class="work-order__header">
+                    <h3 class="work-order__title">Número da Ordem: {{ os.id_ordem }}</h3>
+                    <span class="work-order__badge">Ativa</span>
+                </header>
 
-        <div class="work-order__description">
-            <p class="work-order__item">
-                <span class="work-order__label">Responsável:</span>
-                <span class="work-order__value">{{os.tecnico_responsavel}}</span>
-            </p>
-            <p class="work-order__item">
-                <span class="work-order__label">Número Patrimônio:</span>
-                <span class="work-order__value">{{os.numero_patrimonio}}</span>
-            </p>
-            <p class="work-order__item">
-                <span class="work-order__label">Máquina:</span>
-                <span class="work-order__value">{{os.nome_maquina}}</span>
-            </p>
-        </div>
+                <div class="work-order__description">
+                    <p class="work-order__item">
+                        <span class="work-order__label">Responsável:</span>
+                        <span class="work-order__value">{{ os.tecnico_responsavel }}</span>
+                    </p>
+                    <p class="work-order__item">
+                        <span class="work-order__label">Número Patrimônio:</span>
+                        <span class="work-order__value">{{ os.numero_patrimonio }}</span>
+                    </p>
+                    <p class="work-order__item">
+                        <span class="work-order__label">Máquina:</span>
+                        <span class="work-order__value">{{ os.nome_maquina }}</span>
+                    </p>
+                </div>
 
-        <footer class="work-order__footer">
-            <span class="work-order__date-label">Data Parada:</span>
-            <time class="work-order__date-value">{{os.data_parada}}</time>
-        </footer>
-
-    </article>
-    {% endif %}
-    {% endfor %}
-</section>
+                <footer class="work-order__footer">
+                    <span class="work-order__date-label">Data Parada:</span>
+                    <time class="work-order__date-value">{{ os.data_parada }}</time>
+                </footer>
+            </article>
+            {% endif %}
+        {% endfor %}
+    </section>
 
     <!-- Modal de Detalhes da Ordem de Serviço (OS) -->
     <div class="order-details" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
