@@ -2,15 +2,13 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico
 from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
-from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, iniciar_OS
-from model.usuario import buscar_usuario, atualizar_usuario
-from werkzeug.security import generate_password_hash, check_password_hash
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
 from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina, consulta_setores, consultar_falhas, adicionar_falha, adicionar_tipo_maquina
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
@@ -261,22 +259,17 @@ def pagina_login():
 @app.route('/login/post', methods=['POST'])
 def post_login():
     usuarios = buscar_usuario()
-    usuario = request.form.get('login_cpf')
-    senha = request.form.get('login_senha')
+    usuario_cpf_digitado = request.form.get('login_cpf') 
+    senha_digitada = request.form.get('login_senha')
     
     for user in usuarios:
-        if user['cpf'] == usuario and check_password_hash(user['senha'], senha):
-            session['user'] = user['cpf']
-        if user['cpf'] == usuario and user['senha'] == senha:
-            # Bloqueia se status_usuario for 0, False ou None
-            if not user.get('status_usuario'):
-                flash('Seu cadastro está aguardando aprovação de um administrador ou está inativo.', 'warning')
-                return redirect('/login')
+        if str(user['cpf']) == str(usuario_cpf_digitado) and check_password_hash(user['senha'], senha_digitada):
 
             session['user'] = user['cpf']
             session['user_rbac'] = user['rbac']
+            
             return redirect('/telaInicial')
-
+            
     flash('Usuário ou Senha incorreto. Tente Novamente!', 'error')
     return redirect('/login')
 
@@ -297,12 +290,10 @@ def post_cadastro():
         flash('As senhas não correspondem entre si. Tente o Cadastro Novamente!', 'error')
         return redirect('/login')
     try:
-        if cadastrar_usuario(user_cpf, username, user_email, user_pwd):
+        
+        senha_check = check_password_hash(user_confirm_pwd)
+        if cadastrar_usuario(user_cpf, username, user_email, senha_check):
             flash('Cadastro enviado! Aguarde a aprovação de um administrador para acessar o sistema.', 'info')
-        senha_hash = generate_password_hash(user_confirm_pwd)
-
-        if cadastrar_usuario(user_cpf, username, user_email, senha_hash):
-            flash('Efetue o Login para acessar o Sistema', 'success')
             return redirect('/login')
         else:
             flash('Erro ao cadastrar-se. Tente Novamente', 'error')
@@ -483,7 +474,7 @@ def api_alterar_status_usuario():
 def api_ordens_servico():
     ordens = consultar_ordem_servico()
     
-
+    # Mapeia o status para as classes CSS que você já tem
     classes_status = {
         "Ativa": "evento-primary",
         "Finalizada": "evento-success",
