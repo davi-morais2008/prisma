@@ -82,9 +82,8 @@ Página Inicial
         <div class="order-details__overlay" id="modalOverlay"></div>
 
         <!-- FORMULÁRIO ENVOLVENDO O CONTEÚDO DO MODAL -->
-         
-        <form class="order-details__form" id="orderForm" method="POST"
-            action="">
+
+        <form class="order-details__form" id="orderForm" method="POST" action="">
             <article class="order-details__card">
                 <!-- CABEÇALHO SUPERIOR -->
                 <header class="order-details__header">
@@ -219,7 +218,7 @@ Página Inicial
                     </section>
                     <!-- NOVA SEÇÃO: EXECUÇÃO DA MANUTENÇÃO E PEÇAS ADQUIRIDAS -->
                     <section class="order-details__section" id="execute-OS-section">
-                        
+
                         <!-- CONTAINER APENAS DOS CAMPOS (aplique o display: none neste ID) -->
                         <div id="campos_execucao">
                             <h2 class="order-details__section-title">EXECUÇÃO E PEÇAS</h2>
@@ -227,15 +226,18 @@ Página Inicial
                             <div class="order-details__card-group">
                                 <!-- Campo: Descrição da Manutenção -->
                                 <div class="order-details__form-group">
-                                    <label for="desc_manutencao" class="order-details__stat-label">Descrição da Manutenção Realizada:</label>
-                                    <textarea class="order-details__textarea" id="desc_manutencao" name="desc_manutencao"
-                                        rows="4" placeholder="Descreva os procedimentos realizados, ajustes e testes..."
+                                    <label for="desc_manutencao" class="order-details__stat-label">Descrição da
+                                        Manutenção Realizada:</label>
+                                    <textarea class="order-details__textarea" id="desc_manutencao"
+                                        name="desc_manutencao" rows="4"
+                                        placeholder="Descreva os procedimentos realizados, ajustes e testes..."
                                         required></textarea>
                                 </div>
 
                                 <!-- Campo: Adicionar Peças Adquiridas com Quantidade e Preço -->
                                 <div class="order-details__form-group">
-                                    <label for="input_peca" class="order-details__stat-label">Peças Adquiridas / Utilizadas:</label>
+                                    <label for="input_peca" class="order-details__stat-label">Peças Adquiridas /
+                                        Utilizadas:</label>
                                     <div class="order-details__input-group">
                                         <input type="text" class="order-details__input" id="input_peca"
                                             placeholder="Nome da peça (Ex: Rolamento SKF 6204)">
@@ -243,9 +245,9 @@ Página Inicial
                                             class="order-details__input order-details__input--qty" id="input_peca_qtd"
                                             aria-label="Quantidade" placeholder="Qtd">
                                         <input type="number" step="0.01" min="0"
-                                            class="order-details__input order-details__input--price" id="input_peca_preco"
-                                            placeholder="Preço (R$)">
-                                        <button type="button" class="order-details__add-btn" id="btnAddPeca"
+                                            class="order-details__input order-details__input--price"
+                                            id="input_peca_preco" placeholder="Preço (R$)">
+                                        <button type="button" class="order-details__add-btn" id="btnAddPecaCreate"
                                             aria-label="Adicionar peça">
                                             <span class="material-symbols-outlined" aria-hidden="true">add</span>
                                             Adicionar
@@ -427,114 +429,252 @@ Página Inicial
 
             <!-- FORMULÁRIO DE CADASTRO -->
             <form class="order-create__form" id="formCreateOrder" method="post"
-                action="/telaInicial/post-register-order">
+                action="/telaInicial/post-register-order-maintenance">
                 <div class="order-create__body">
 
-                    <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
+                    <!-- SEÇÃO 0: TIPO DE ORDEM (SELEÇÃO PRINCIPAL) -->
                     <fieldset class="order-create__section">
-                        <legend class="order-create__section-title">INFORMAÇÕES GERAIS</legend>
+                        <legend class="order-create__section-title">TIPO DE ORDEM</legend>
+                        <div class="order-create__radio-group">
+                            <label class="order-create__radio-label" for="tipo_ordem_manutencao">
+                                <input type="radio" id="tipo_ordem_manutencao" name="tipo_ordem" value="manutencao"
+                                    checked>
+                                <span>Ordem de Manutenção</span>
+                            </label>
 
-                        <div class="order-create__grid order-create__grid--2-col">
-
-                            <div class="order-create__field">
-                                <label class="order-create__label" for="create_numero_patrimonio">Número de
-                                    Patrimônio</label>
-                                <input class="order-create__input" type="text" id="create_numero_patrimonio"
-                                    name="numero_patrimonio" name="numero_patrimonio" placeholder="Número de Patrimônio"
-                                    required>
-                            </div>
-
-                            <div class="order-create__field">
-                                <label class="order-create__label" for="create_tipo_manutencao">Tipo de
-                                    Manutenção</label>
-                                <select class="order-create__select" id="create_tipo_manutencao" name="tipo_manutencao"
-                                    required>
-                                    <option value="Corretiva" selected>Corretiva</option>
-                                    <option value="Preventiva">Preventiva</option>
-                                    <option value="Preditiva">Preditiva</option>
-                                </select>
-                            </div>
-
-
-                            <div class="order-create__field">
-                                <label class="order-create__label" for="create_tecnico_responsavel">Técnico
-                                    Responsável</label>
-                                <select class="order-create__input" type="text" id="create_tecnico_responsavel"
-                                    name="tecnico_responsavel" placeholder="Nome do técnico" required>
-                                    <option value="" disabled selected>Selecione...</option>
-                                    {% for tecnico in tecnicos %}
-                                    {% if tecnico.rbac == 'usuario' %}
-                                    <option value="{{tecnico.cpf}}">{{tecnico.nome}}</option>
-                                    {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </div>
+                            <label class="order-create__radio-label" for="tipo_ordem_inspecao">
+                                <input type="radio" id="tipo_ordem_inspecao" name="tipo_ordem" value="inspecao">
+                                <span>Ordem de Inspeção</span>
+                            </label>
                         </div>
                     </fieldset>
 
-                    <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->
-                    <fieldset class="order-create__section">
-                        <legend class="order-create__section-title">CRONOGRAMA E DATAS</legend>
+                    <!-- ===================================================================== -->
+                    <!-- BLOCO 1: ORDEM DE INSPEÇÃO (Inicia com display: none)                  -->
+                    <!-- ===================================================================== -->
+                    <div id="container_ordem_inspecao" class="order-create__flow-block">
+                        <fieldset class="order-create__section">
+                            <legend class="order-create__section-title">DADOS DA INSPEÇÃO</legend>
 
-                        <div class="order-create__grid order-create__grid--2-col">
-                            <div class="order-create__field">
-                                <label class="order-create__label" for="create_data_prev_inicio">Prev. Início
-                                    Manutenção</label>
-                                <input class="order-create__input" type="date" id="create_data_prev_inicio"
-                                    name="data_prev_inicio" min="1000-01-01" max="9999-12-31" required>
+                            <div class="order-create__grid order-create__grid--2-col">
+                                <div class="order-create__field">
+                                    <label class="order-create__label" for="insp_numero_patrimonio">Máquina (Nº
+                                        Patrimônio)</label>
+                                    <input class="order-create__input" type="text" id="insp_numero_patrimonio"
+                                        name="insp_numero_patrimonio" placeholder="Número de Patrimônio">
+                                </div>
+
+                                <div class="order-create__field">
+                                    <label class="order-create__label" for="insp_data">Data da Inspeção</label>
+                                    <input class="order-create__input" type="date" id="insp_data" name="insp_data"
+                                        min="1000-01-01" max="9999-12-31">
+                                </div>
+
+                                <!-- No Bloco 1 (Inspeção) -->
+                                <div class="order-create__field order-create__field--full">
+                                    <span class="order-create__label">Solicitante</span>
+                                    {% set cpf_atual = user.cpf if user is mapping or user.cpf is defined else user %}
+                                    <p class="order-create__readonly-text" id="insp_solicitante_texto">
+                                        {% for tecnico in tecnicos %}
+                                        {% if tecnico.cpf | string | trim == cpf_atual | string | trim %}
+                                        {{ tecnico.nome }} ({{ tecnico.cpf }})
+                                        {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                    <input type="hidden" name="insp_solicitante" value="{{ cpf_atual }}">
+                                </div>
+
+                                <div class="order-create__field order-create__field--full">
+                                    <label class="order-create__label" for="insp_descricao">Descrição da Inspeção /
+                                        Problema</label>
+                                    <textarea class="order-create__textarea" id="insp_descricao" name="insp_descricao"
+                                        rows="3" placeholder="Descreva os pontos observados na inspeção..."></textarea>
+                                </div>
                             </div>
+                        </fieldset>
+                    </div>
 
-                            <div class="order-create__field">
-                                <label class="order-create__label" for="create_data_prev_termino">Prev. Término
-                                    Manutenção</label>
-                                <input class="order-create__input" type="date" id="create_data_prev_termino"
-                                    name="data_prev_termino" min="1000-01-01" max="9999-12-31" required>
-                            </div>
+                    <!-- ===================================================================== -->
+                    <!-- BLOCO 2: ORDEM DE MANUTENÇÃO (Visível por padrão)                      -->
+                    <!-- ===================================================================== -->
+                    <div id="container_ordem_manutencao" class="order-create__flow-block">
 
-                            <div class="order-create__field">
-                                <label class="order-create__label" for="create__data_parada">Data da Parada</label>
-                                <input class="order-create__input" type="date" id="create__data_parada"
-                                    name="create__data_parada" min="1000-01-01" max="9999-12-31">
-                            </div>
+                        <!-- SEÇÃO 1: INFORMAÇÕES GERAIS E MÁQUINA -->
+                        <fieldset class="order-create__section">
+                            <legend class="order-create__section-title">INFORMAÇÕES GERAIS</legend>
 
+                            <div class="order-create__grid order-create__grid--2-col">
+                                <div class="order-create__field">
+                                    <label class="order-create__label" for="create_numero_patrimonio">Número de
+                                        Patrimônio</label>
+                                    <input class="order-create__input" type="text" id="create_numero_patrimonio"
+                                        name="numero_patrimonio" placeholder="Número de Patrimônio">
+                                </div>
 
-                        </div>
-                    </fieldset>
+                                <div class="order-create__field">
+                                    <label class="order-create__label" for="create_modelo_maquina">Modelo da
+                                        Máquina</label>
+                                    <input class="order-create__input" type="text" id="create_modelo_maquina"
+                                        name="modelo_maquina" placeholder="Modelo da máquina">
+                                </div>
 
-                    <!-- SEÇÃO 3: DIAGNÓSTICO E FALHA -->
-                    <fieldset class="order-create__section">
-                        <legend class="order-create__section-title">DIAGNÓSTICO E FALHA</legend>
+                                <div class="order-create__field">
+                                    <label class="order-create__label" for="create_tipo_manutencao">Tipo de
+                                        Manutenção</label>
+                                    <select class="order-create__select" id="create_tipo_manutencao"
+                                        name="tipo_manutencao">
+                                        <option value="Corretiva" selected>Corretiva</option>
+                                        <option value="Preventiva">Preventiva</option>
+                                        <option value="Preditiva">Preditiva</option>
+                                    </select>
+                                </div>
 
-                        <div class="order-create__grid">
-                            <div class="order-create__field order-create__field--full">
-                                <label class="order-create__label" for="create_falha">Falha Identificada</label>
-                                <div class="inputs-falha">
-                                    <select class="order-create__select" name="falhas" id="falhas">
-                                        <option disabled selected value="1">Selecione...</option>
-                                        {% for falha in falhas %}
-                                        <option value="{{falha.id_falha}}">{{falha.falha}}</option>
+                                {% if user_rbac in ['admin', 'root'] %}
+                                <div class="order-create__field">
+                                    <label class="order-create__label" for="create_tecnico_responsavel">Técnico
+                                        Responsável</label>
+                                    <select class="order-create__select" id="create_tecnico_responsavel"
+                                        name="tecnico_responsavel">
+                                        <option value="" disabled selected>Selecione...</option>
+                                        {% for tecnico in tecnicos %}
+                                        {% if tecnico.rbac == 'usuario' %}
+                                        <option value="{{tecnico.cpf}}">{{tecnico.nome}}</option>
+                                        {% endif %}
                                         {% endfor %}
                                     </select>
+                                </div>
+                                {% endif %}
 
-                                    <button type="button" title="Adicionar falha" class="order-create__btn--add-falha"
-                                        id="btnAddFalha">
-                                        <span class="material-symbols-outlined">
-                                            add
-                                        </span>
-                                    </button>
+                                <!-- No Bloco 1 (Inspeção) -->
+                                <div class="order-create__field order-create__field--full">
+                                    <span class="order-create__label">Solicitante</span>
+                                    {% set cpf_atual = user.cpf if user is mapping or user.cpf is defined else user %}
+                                    <p class="order-create__readonly-text" id="insp_solicitante_texto">
+                                        {% for tecnico in tecnicos %}
+                                        {% if tecnico.cpf | string | trim == cpf_atual | string | trim %}
+                                        {{ tecnico.nome }} ({{ tecnico.cpf }})
+                                        {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                    <input type="hidden" name="insp_solicitante" value="{{ cpf_atual }}">
                                 </div>
 
                             </div>
+                        </fieldset>
 
-                            <div class="order-create__field order-create__field--full">
-                                <label class="order-create__label" for="create_desc_problema">Descrição do
-                                    Problema</label>
-                                <textarea class="order-create__textarea" id="create_desc_problema" name="desc_problema"
-                                    rows="3" placeholder="Detalhamento do problema ocorrido..." required></textarea>
+                        <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->
+                        <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->
+                        <fieldset class="order-create__section">
+                            <legend class="order-create__section-title">CRONOGRAMA E DATAS</legend>
+                            {% if user_rbac in ['admin', 'root'] %}
+                            <!-- Div englobando apenas as datas (Controlável via JS) -->
+                            <div id="container_datas_manutencao" class="order-create__dates-wrapper">
+                                <!-- Datas de Previsão -->
+                                <div class="order-create__field">
+                                    <label class="order-create__label" for="create_data_prev_inicio">Prev. Início
+                                        Manutenção</label>
+                                    <input class="order-create__input" type="date" id="create_data_prev_inicio"
+                                        name="data_prev_inicio" min="1000-01-01" max="9999-12-31">
+                                </div>
+
+                                <div class="order-create__field">
+                                    <label class="order-create__label" for="create_data_prev_termino">Prev. Término
+                                        Manutenção</label>
+                                    <input class="order-create__input" type="date" id="create_data_prev_termino"
+                                        name="data_prev_termino" min="1000-01-01" max="9999-12-31">
+                                </div>
+
+
+
                             </div>
-                        </div>
-                    </fieldset>
+                            {% endif %}
+                            <!-- Parada de Máquina (Fora da div de datas) -->
+                            <div id="grupo_parada_maquina" class="order-create__field order-create__conditional-box">
+                                <div class="order-create__checkbox-wrapper">
+                                    <input type="checkbox" id="check_maquina_parada" name="maquina_parada" value="1">
+                                    <label class="order-create__label" for="check_maquina_parada">Máquina
+                                        parada?</label>
+                                </div>
 
+                                <div id="campo_data_parada" class="order-create__field" margin-top: 10px;">
+                                    <label class="order-create__label" for="create_data_parada">Data da Parada</label>
+                                    <input class="order-create__input" type="date" id="create_data_parada"
+                                        name="data_parada" min="1000-01-01" max="9999-12-31">
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- SEÇÃO 3: DIAGNÓSTICO E FALHA -->
+                        <fieldset class="order-create__section">
+                            <legend class="order-create__section-title">DIAGNÓSTICO E FALHA</legend>
+
+                            <div class="order-create__grid">
+                                <div class="order-create__field order-create__field--full">
+                                    <label class="order-create__label" for="falhas">Falha Identificada</label>
+                                    <div class="inputs-falha">
+                                        <select class="order-create__select" name="falhas" id="falhas">
+                                            <option disabled selected value="">Selecione...</option>
+                                            {% for falha in falhas %}
+                                            <option value="{{falha.id_falha}}">{{falha.falha}}</option>
+                                            {% endfor %}
+                                        </select>
+
+                                        <button type="button" title="Adicionar falha"
+                                            class="order-create__btn--add-falha" id="btnAddFalha">
+                                            <span class="material-symbols-outlined">add</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="order-create__field order-create__field--full">
+                                    <label class="order-create__label" for="create_desc_problema">Descrição do
+                                        Problema</label>
+                                    <textarea class="order-create__textarea" id="create_desc_problema"
+                                        name="desc_problema" rows="3"
+                                        placeholder="Detalhamento do problema ocorrido..."></textarea>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- SEÇÃO 4: SOLICITAÇÃO DE PEÇAS -->
+                        <fieldset class="order-create__section">
+                            <legend class="order-create__section-title">SOLICITAÇÃO DE PEÇAS</legend>
+
+                            <div class="order-create__checkbox-wrapper">
+                                <input type="checkbox" id="check_solicitar_pecas" name="solicitar_pecas" value="1">
+                                <label class="order-create__label" for="check_solicitar_pecas">Necessita solicitar
+                                    compra de peças?</label>
+                            </div>
+
+                            <!-- Inicia com display: none -->
+                            <div id="container_solicitar_pecas" class="order-create__pecas-container"
+                                style="display: none;">
+                                <div id="lista_pecas_requisicao">
+                                    <div class="order-create__peca-row">
+                                        <div class="order-create__field">
+                                            <label class="order-create__label">Nome / Descrição da Peça</label>
+                                            <input class="order-create__input" type="text" name="peca_nome[]"
+                                                placeholder="Ex: Rolamento 6205">
+                                        </div>
+                                        <div class="order-create__field order-create__field--qtd">
+                                            <label class="order-create__label">Qtd.</label>
+                                            <input class="order-create__input" type="number" name="peca_quantidade[]"
+                                                min="1" value="1">
+                                        </div>
+                                        <button type="button" class="order-create__btn--remove-peca"
+                                            title="Remover peça">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="order-create__btn--add-peca" id="btnAddPeca">
+                                    <span class="material-symbols-outlined">add</span> Adicionar outra peça
+                                </button>
+                            </div>
+                        </fieldset>
+
+                    </div>
                 </div>
 
                 <!-- RODAPÉ COM AÇÕES -->
