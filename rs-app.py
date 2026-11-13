@@ -4,6 +4,8 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 import flask_mail
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
 from flask_mail import Mail, Message
+from model.cadastro import cadastrar_usuario
+from model.usuario import buscar_usuario
 import os
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, session, flash, jsonify, url_for
@@ -79,6 +81,37 @@ def redefinir_senha(token):
         return redirect('https://prisma-maintenance.onrender.com/login')
 
     return render_template('redefinir_senha.html', token=token)
+
+
+@app.route('/cadastro/post', methods = ['POST'])
+def post_cadastro():
+    username = request.form.get("cadastro-nome")
+    user_email = request.form.get("cadastro-email")
+    user_cpf = request.form.get("cadastro-cpf")
+    user_pwd = request.form.get("cadastro-pwd")
+    user_confirm_pwd = request.form.get("cadastro-confirmpwd")
+    if buscar_usuario((user_cpf, user_email))[0]['resultado'] == user_cpf:
+        flash ('Este CPF já está cadastrado no sistema. Tente o Cadastro Novamente!', 'error')
+        return redirect('/login')
+    if buscar_usuario((user_cpf, user_email))[0]['resultado'] == user_email:
+        flash('Este email já está vinculado a uma conta. Tente o Cadastro Novamente!', 'error')
+        return redirect('/login')
+    if user_pwd != user_confirm_pwd:
+        flash('As senhas não correspondem entre si. Tente o Cadastro Novamente!', 'error')
+        return redirect('/login')
+    try:
+        senha_hash = generate_password_hash(user_confirm_pwd)
+
+        if cadastrar_usuario(user_cpf, username, user_email, senha_hash):
+            flash('Efetue o Login para acessar o Sistema', 'success')
+            return redirect('/login')
+        else:
+            flash('Erro ao cadastrar-se. Tente Novamente', 'error')
+            return redirect('/login')
+    except Exception as e:
+        flash('Erro ao cadastrar-se. Tente Novamente', 'error')
+    return redirect('/login')
+    
 
 
 if __name__ == '__main__':

@@ -449,7 +449,7 @@ def pagina_calendario():
 def api_ordens_servico():
     ordens = consultar_ordem_servico()
     
-    # Mapeia o status para as classes CSS que você já tem
+
     classes_status = {
         "Ativa": "evento-primary",
         "Finalizada": "evento-success",
