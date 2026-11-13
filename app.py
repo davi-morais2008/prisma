@@ -4,7 +4,7 @@ from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, iniciar_OS
 from model.usuario import buscar_usuario, atualizar_usuario
-
+from werkzeug.security import generate_password_hash, check_password_hash
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
 from model.finalizarOS import finalizar_OS
@@ -265,8 +265,8 @@ def post_login():
     senha = request.form.get('login_senha')
     
     for user in usuarios:
-        if user['cpf'] == usuario and user['senha'] == senha:
-            session['user'] = usuario
+        if user['cpf'] == usuario and check_password_hash(user['senha'], senha):
+            session['user'] = user['cpf']
             session['user_rbac'] = user['rbac']
             return redirect('/telaInicial')
     flash('Usuário ou Senha incorreto. Tente Novamente!', 'error')
@@ -290,7 +290,9 @@ def post_cadastro():
         flash('As senhas não correspondem entre si. Tente o Cadastro Novamente!', 'error')
         return redirect('/login')
     try:
-        if cadastrar_usuario(user_cpf, username, user_email, user_pwd):
+        senha_hash = generate_password_hash(user_confirm_pwd)
+
+        if cadastrar_usuario(user_cpf, username, user_email, senha_hash):
             flash('Efetue o Login para acessar o Sistema', 'success')
             return redirect('/login')
         else:
