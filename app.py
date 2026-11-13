@@ -15,6 +15,8 @@ from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
 from model.recuperarSenha import atualizar_senha_usuario, buscar_usuario_por_email
 from functools import wraps
+import os
+import requests
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'PRISMA_maintence'
@@ -26,9 +28,10 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'gustavocaua934@gmail.com'
 app.config['MAIL_PASSWORD'] = 'byec gkwq wtec wbml'
 app.config['MAIL_DEFAULT_SENDER'] = ('PRISMA', 'gustavocaua934@gmail.com')
-    
+
 mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
 
 
 @app.route('/esqueci-senha', methods=['GET', 'POST'])
@@ -42,22 +45,34 @@ def esqueci_senha():
             token = serializer.dumps(email, salt='recuperar-senha-salt')
             link_redefinicao = url_for('redefinir_senha', token=token, _external=True)
 
-            msg = Message('Recuperação de Senha - PRISMA', recipients=[email])
-            msg.body = f'Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos.'
-            
+            url = "https://api.brevo.com/v3/smtp/email"
+            headers = {
+                "accept": "application/json",
+                "api-key": os.getenv('BREVO_API_KEY'),
+                "content-type": "application/json"
+            }
+            payload = {
+                "sender": {"name": "PRISMA", "email": "gustavocaua934@gmail.com"},
+                "to": [{"email": email}],
+                "subject": "Recuperação de Senha - PRISMA",
+                "textContent": f"Acesse o link para redefinir sua senha: {link_redefinicao}\n\nEste link expira em 30 minutos."
+            }
+
             try:
-                mail.send(msg)
+                response = requests.post(url, json=payload, headers=headers, timeout=10)
+                if response.status_code != 201:
+                    print("Erro na API do Brevo:", response.text)
+                    flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
+                    return redirect(url_for('esqueci_senha'))
             except Exception as e:
-                print(e)
+                print("Erro de requisição:", e)
                 flash('Erro ao enviar o e-mail. Tente novamente mais tarde.', 'danger')
                 return redirect(url_for('esqueci_senha'))
 
-        flash('Se o e-mail estiver cadastrado, você receberá um link de redefinção.', 'info')
+        flash('Se o e-mail estiver cadastrado, você receberá um link de redefinição.', 'info')
         return redirect(url_for('esqueci_senha'))
 
     return render_template('recuperacaoSenha.html')
-
-
 @app.route('/reset-senha/<token>', methods=['GET', 'POST'])
 def redefinir_senha(token):
     try:
