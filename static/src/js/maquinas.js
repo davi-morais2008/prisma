@@ -175,6 +175,53 @@ async function fillEditModal(machineId) {
     }
 }
 
+
+async function requestOrder() {
+    try {
+        const resposta = await fetch('/api/get/ordens_servico/', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        });
+        if (!resposta.ok) {
+            alert("ERRO AO CARREGAR INFORMAÇÃO!");
+            return [];
+        }
+        return await resposta.json();
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        return [];
+    }
+}
+
+
+
+async function avaliableIndexCalculation(operatingTime, machineId) {
+    const machines = await requestMachine();
+    const machine = machines.find((item) => item.id_maquina == machineId);
+
+    if (!machine) return null;
+
+    const orders = await requestOrder();
+    const machineOrders = orders.filter((item) => item.id_maquina == machineId);
+
+    const totalIdleTime = machineOrders.reduce((soma, order) => {
+        return soma + Number(order.data_parada || 0);
+    }, 0);
+
+    // Garante que operatingTime seja tratado como número
+    const validOperatingTime = Number(operatingTime || 0);
+    const totalTime = validOperatingTime + totalIdleTime;
+    
+    if (totalTime === 0) return 0;
+
+    const availabilityIndex = (validOperatingTime / totalTime) * 100;
+
+    return Number(availabilityIndex.toFixed(2));
+}
+
 machineButtons.forEach((machineButton) => {
     machineButton.addEventListener('click', async () => {
         detailsModalContainer.classList.add('active');
@@ -191,12 +238,17 @@ machineButtons.forEach((machineButton) => {
             if (detailsPatrimonyText) detailsPatrimonyText.textContent = machine.numero_patrimonio || 'N/A';
             if (detailsLocationText) detailsLocationText.textContent = machine.setor || 'N/A';
 
-            if (detailsStatValues && detailsStatValues.length >= 5) {
+            // Alterado para >= 6 pois você acessa até o índice [5]
+            if (detailsStatValues && detailsStatValues.length >= 6) {
+                // Calcula aguardando a resposta e passando os parâmetros corretos
+                const availability = await avaliableIndexCalculation(machine.tempo_producao, buttonId);
+
                 detailsStatValues[0].textContent = `${machine.tempo_producao || 0}h`;
                 detailsStatValues[1].textContent = `${machine.total_horas || 0}h`;
                 detailsStatValues[2].textContent = machine.pecas_alteradas || 0;
                 detailsStatValues[3].textContent = `${machine.tempo_parada || 0}h`;
-                detailsStatValues[4].textContent = `R$ ${machine.custo_acumulado || '0,00'}`;
+                detailsStatValues[4].textContent = `${availability ?? 0}%`;
+                detailsStatValues[5].textContent = `R$ ${machine.custo_acumulado || '0,00'}`;
             }
 
             if (detailsManualLinks.length > 0 && machine.url_manual) {
@@ -208,7 +260,8 @@ machineButtons.forEach((machineButton) => {
             if (detailsPreventiveStatusText) {
                 const status = machine.status_preventiva || 'Sem status';
                 const data = machine.data_preventiva || 'Sem data';
-                detailsPreventiveStatusText.textContent = `Status: ${status} - ${data}`;
+                // Removido o '-' que estava no início desta linha
+                detailsPreventiveStatusText.textContent = `Status: ${status} ${data}`;
             }
 
             if (detailsHistoryTableBody && machine.historico) {
@@ -227,6 +280,7 @@ machineButtons.forEach((machineButton) => {
         }
     });
 });
+
 
 btnEditFromDetails.addEventListener('click', async () => {
     if (selectedMachineId) {
