@@ -230,6 +230,11 @@ def finish_os(id):
     finalizar_OS(id, desc_manutencao, pecas)
     return redirect('/telaInicial')
 
+@app.route("/telaInicial/iniciar/<int:id>", methods=['POST']) 
+def start_os(id):
+    iniciar_OS(id)
+    return redirect('/telaInicial')
+
 
 @app.route("/historico")
 @login_required
