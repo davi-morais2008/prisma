@@ -34,7 +34,7 @@ serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 def inject_user_permissions():
     return {
         'user_rbac' : session.get('user_rbac'),
-        'user' : session.get('user')
+        'user' : session.get('user'),
     }
 
 def login_required(f):
@@ -67,7 +67,6 @@ def roles_required(*roles):
 def esqueci_senha():
     if request.method == 'POST':
         email = request.form.get('email')
-
         usuario = buscar_usuario_por_email(email)
 
         if usuario:
@@ -152,21 +151,75 @@ def logoff():
 @app.route("/telaInicial")
 @login_required
 def pagina_inicial():
-    ordens = consultar_ordem_servico()
+    ordens = consultar_ordem_servico() # <-- sua consulta SQL atual
     tecnicos = buscar_usuario()
     falhas = consultar_falhas()
     maquinas = consultar_maquinas()
     tipo_maquinas = consulta_tipo_maquinas()
-    return render_template("telaInicial.html", ordem_servico = ordens, tecnicos = tecnicos, falhas = falhas, maquinas = maquinas, tipo_maquinas = tipo_maquinas)
+
+    # 2. Depois, filtre usando uma nova variável (ex: ordens_filtradas)
+    if session.get('user_rbac') == 'root':
+        ordens_filtradas = ordens
+    else:
+        # Encontra o nome do técnico pelo CPF da sessão
+        cpf_logado = session.get('user')
+        tecnico = next((t for t in tecnicos if t['cpf'] == cpf_logado), None)
+        
+        if tecnico:
+            ordens_filtradas = [
+                os for os in ordens 
+                if os['tecnico_responsavel'] == tecnico['nome'] # ajuste 'nome' se a coluna tiver outro nome
+            ]
+        else:
+            ordens_filtradas = []
+
+    if not ordens_filtradas:
+                    flash(f"Nenhuma ordem de serviço foi encontrada.", "warning")
+
+    # 3. Passe 'ordens_filtradas' para o template
+    return render_template(
+        "telaInicial.html",
+        ordem_servico=ordens_filtradas,
+        tecnicos=tecnicos,
+        falhas=falhas,
+        maquinas=maquinas,
+        tipo_maquinas=tipo_maquinas
+    )
 
 @app.route ("/telaInicial/filtro/<tipo>", methods=["GET"])
 def filtrar_ordens(tipo):
-    ordens_filtro = filtrar_ordem_servico(tipo)
+    ordens = filtrar_ordem_servico(tipo)
+    tecnicos = buscar_usuario()
+    falhas = consultar_falhas()
+    maquinas = consultar_maquinas()
+    tipo_maquinas = consulta_tipo_maquinas()
 
-    if not ordens_filtro:
-        flash(f"Nenhuma ordem de serviço do tipo {tipo} foi encontrada.", "warning")
+    if session.get('user_rbac') == 'root':
+            ordens_filtradas = ordens
+    else:
+        # Encontra o nome do técnico pelo CPF da sessão
+        cpf_logado = session.get('user')
+        tecnico = next((t for t in tecnicos if t['cpf'] == cpf_logado), None)
+        
+        if tecnico:
+            ordens_filtradas = [
+                os for os in ordens 
+                if os['tecnico_responsavel'] == tecnico['nome']
+            ]
+        else:
+            ordens_filtradas = []
 
-    return render_template("telaInicial.html", ordem_servico = ordens_filtro)
+    if not ordens_filtradas:
+                flash(f"Nenhuma ordem de serviço do tipo {tipo} foi encontrada.", "warning")
+        
+
+    return render_template(
+            "telaInicial.html",
+            ordem_servico=ordens_filtradas,
+            tecnicos=tecnicos,
+            falhas=falhas,
+            maquinas=maquinas,
+            tipo_maquinas=tipo_maquinas)
 
 
 @app.route("/api/get/ordens_servico/", methods=["GET"])

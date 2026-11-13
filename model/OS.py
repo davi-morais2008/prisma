@@ -165,9 +165,9 @@ def filtrar_ordem_servico(tipo:str):
             INNER JOIN tipos_maquinas tm ON m.id_tipo_maquina = tm.id_tipo_maquina
             LEFT JOIN falhas f ON os.id_falha = f.id_falha
             LEFT JOIN usuarios u ON os.cpf = u.cpf
-            WHERE tipo_manutencao = %s AND status_ordem <> %s
+            WHERE tipo_manutencao = %s AND status_ordem <> %s AND status_ordem <> %s
             ORDER BY id_ordem;
-        ''', (tipo, 'Finalizada'))
+        ''', (tipo, 'Finalizada', 'Cancelada'))
         reposta = cursor.fetchall()
         return reposta
     finally:

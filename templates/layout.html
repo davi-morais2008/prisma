@@ -37,14 +37,24 @@
                 <li><a href="/profile">Perfil</a></li>
                 <li><a href="/calendario">Calendário</a></li>
                 {% if user_rbac in ['admin', 'root'] %}
-                <li><a href="/painelGeral">Painel Geral</a></li>
+                    <li><a href="/painelGeral">Painel Geral</a></li>
+                    <li><a href="/usuarios">Usuários</a></li>
                 {% endif %}
                 <li><a href="/maquinas">Máquinas</a></li>
                 <li><a href="/historico">Histórico</a></li>
-                {% if user_rbac in ['admin' 'root'] %}
-                <li><a href="/usuarios">Usuários</a></li>
-                {% endif %}
+                <li>
+                    <div class="identificacao">
+                        <p>CPF: {{session.get('user')}} / Acesso: {{session.get('user_rbac')}}</p>
+                        <div class="sidebar__logoff">
+                            <span>
+                                <a class="material-symbols-outlined sidebar__logoff--icon" href="/logoff">exit_to_app</a>
+                            </span>
+                        </div>
+                    </div>
+                    
+                </li>
             </ul>
+
         </nav>
     </header>
 
@@ -52,6 +62,11 @@
 
         <div class="sidebar__logo">
             <img src="/static/src/img/EmblemaPrisma.png" alt="" class="sidebar__logo-img">
+        </div>
+
+        <div class="identificacao">
+                <p>CPF: {{session.get('user')}}</p>
+                <p>Acesso: {{session.get('user_rbac')}}</p>
         </div>
 
         <nav class="sidebar__nav">
@@ -113,6 +128,7 @@
     {% block conteudo %}
     {% endblock %}
 
+    
 
     <footer class="footer">
         <div class="footer__content">
