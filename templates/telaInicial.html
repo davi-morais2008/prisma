@@ -64,7 +64,7 @@ Página Inicial
     </div>
 
     <!-- CONTAINER INDIVIDUAL 1: ORDENS DE SERVIÇO -->
-    <section class="home__orders-container is-visible" id="container-ordens-servico" role="tabpanel"
+    <section class="home__orders-container" id="container-ordens-servico" role="tabpanel"
         aria-labelledby="btnTabServico">
         <header class="home__group-header">
             <div class="home__group-title-wrapper">
@@ -121,8 +121,8 @@ Página Inicial
     </section>
 
     <!-- CONTAINER INDIVIDUAL 2: ORDENS DE INSPEÇÃO -->
-    <section class="home__orders-container" id="container-ordens-inspecao" role="tabpanel"
-        aria-labelledby="btnTabInspecao" hidden>
+    <section class="home__orders-container is-hidden" id="container-ordens-inspecao" role="tabpanel"
+        aria-labelledby="btnTabInspecao">
         <header class="home__group-header">
             <div class="home__group-title-wrapper">
                 <span class="material-symbols-outlined home__group-icon home__group-icon--inspecao"
@@ -360,7 +360,19 @@ Página Inicial
                                 </div>
                             </div>
                         </div>
-
+                        <div class="order-create__field" id="containerDestinate">
+                            <label class="order-create__label" for="create_tecnico_responsavel">Técnico
+                                Responsável</label>
+                            <select class="order-create__select" id="create_tecnico_responsavel"
+                                name="tecnico_responsavel">
+                                <option value="" disabled selected>Selecione...</option>
+                                {% for tecnico in tecnicos %}
+                                {% if tecnico.rbac == 'usuario' %}
+                                <option value="{{tecnico.cpf}}">{{tecnico.nome}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
                         <!-- BOTÃO FORA DO CONTAINER DOS CAMPOS (permanece sempre visível) -->
                         <button type="submit" class="order__btn-finish" id="btnFinish"></button>
                     </section>
