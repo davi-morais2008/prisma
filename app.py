@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os
 from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
 from model.OS_inspec import inserir_ordem_inspecao
 from model.dashboard import buscar_dados_dashboard
@@ -319,10 +319,17 @@ def finish_os(id):
     finalizar_OS(id, desc_manutencao, pecas)
     return redirect('/telaInicial')
 
-@app.route("/telaInicial/iniciar/<int:id>", methods=['POST']) 
-def start_os(id):
-    iniciar_OS(id)
+@app.route("/telaInicial/destinar/<int:id>", methods=['POST'])
+def assign_os(id):
+    cpf_tecnico = request.form.get('tecnico_responsavel')
+
+    destinar_tecnico_os(id, cpf_tecnico)
     return redirect('/telaInicial')
+
+# @app.route("/telaInicial/iniciar/<int:id>", methods=['POST']) 
+# def start_os(id):
+#     iniciar_OS(id)
+#     return redirect('/telaInicial')
 
 
 @app.route("/historico")
