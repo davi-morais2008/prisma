@@ -1796,23 +1796,28 @@
 }
 
 /* ==========================================================================
-   BOTÃO SLIDE / ALTERNADOR DE SEÇÕES (ORDENS DE SERVIÇO VS INSPEÇÃO)
+   BOTÃO SLIDE / ALTERNADOR DE SEÇÕES (RESPONSIVO)
    ========================================================================== */
 .home__view-switcher {
     display: flex;
-    justify-content: flex-start;
-    margin: 1.5rem 0 1.25rem;
+    justify-content: center;
+    width: 100%;
+    margin: 1.25rem 0 1rem;
+    box-sizing: border-box;
 }
 
 .home__switcher-track {
     position: relative;
-    display: inline-grid;
+    display: grid;
     grid-template-columns: 1fr 1fr;
+    width: 100%;
+    max-width: 460px;
     background-color: #e2e8f0;
     padding: 4px;
     border-radius: 12px;
     border: 1px solid #cbd5e1;
     box-shadow: inset 0 1px 3px rgba(15, 23, 42, 0.06);
+    box-sizing: border-box;
 }
 
 .home__switcher-slider {
@@ -1828,7 +1833,6 @@
     z-index: 1;
 }
 
-/* Move o indicador branco para a direita quando Inspeção estiver ativo */
 .home__switcher-track.is-inspecao .home__switcher-slider {
     transform: translateX(100%);
 }
@@ -1839,21 +1843,24 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.25rem;
+    gap: 0.4rem;
+    padding: 0.55rem 0.75rem;
     border: none;
     background: transparent;
     color: #475569;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
     border-radius: 9px;
     transition: color 0.2s ease;
-    white-space: nowrap;
+    text-align: center;
+    line-height: 1.2;
+    min-width: 0;
 }
 
 .home__switcher-btn .material-symbols-outlined {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
+    flex-shrink: 0;
 }
 
 .home__switcher-btn:hover {
@@ -1869,6 +1876,213 @@
 }
 
 /* ==========================================================================
+   CONTAINERS INDIVIDUAIS (MOBILE-FIRST)
+   ========================================================================== */
+.home__orders-container {
+    width: 100%;
+    max-width: 100%;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    box-sizing: border-box;
+    overflow: hidden;
+    animation: fadeSlideIn 0.25s ease;
+}
+
+.home__orders-container[hidden] {
+    display: none !important;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.home__group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.home__group-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 0;
+}
+
+.home__group-icon {
+    font-size: 1.25rem;
+    color: #1d4ed8;
+    background-color: #dbeafe;
+    padding: 0.4rem;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.home__group-icon--inspecao {
+    color: #0f766e;
+    background-color: #ccfbf1;
+}
+
+.home__group-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   GRID DE CARDS DENTRO DO CONTAINER (1 COLUNA NO MOBILE)
+   ========================================================================== */
+.home__orders-container .home__orders {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.home__orders-container .work-order {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+   VARIAÇÕES DE CARD, BADGE E TEXTOS LONGOS
+   ========================================================================== */
+.work-order--inspecao {
+    border-left: 4px solid #0d9488;
+}
+
+.work-order__badge--inspecao {
+    background-color: #ccfbf1;
+    color: #0f766e;
+}
+
+.work-order__badge--pendente {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.work-order__item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    word-break: break-word;
+}
+
+.work-order__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.work-order__date-label {
+    flex-shrink: 0;
+}
+
+.work-order__date-value--truncate {
+    flex: 1;
+    min-width: 0;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   ESTADO VAZIO
+   ========================================================================== */
+.home__empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #64748b;
+    background-color: #ffffff;
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+    gap: 0.5rem;
+}
+
+.home__empty-state .material-symbols-outlined {
+    font-size: 2rem;
+    color: #94a3b8;
+}
+
+.home__empty-state p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   BREAKPOINTS (TABLETS E DESKTOPS)
+   ========================================================================== */
+@media (min-width: 640px) {
+    .home__switcher-btn {
+        font-size: 0.95rem;
+        padding: 0.6rem 1.15rem;
+        gap: 0.5rem;
+    }
+
+    .home__orders-container {
+        padding: 1.35rem;
+        border-radius: 14px;
+    }
+
+    .home__group-title {
+        font-size: 1.15rem;
+    }
+
+    .home__orders-container .home__orders {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.15rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .home__orders-container {
+        padding: 1.5rem;
+    }
+
+    .home__group-title {
+        font-size: 1.2rem;
+    }
+
+}
+
+@media (min-width: 1400px) {
+    .home__orders-container .home__orders {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
    CONTAINERS INDIVIDUAIS
    ========================================================================== */
 .home__orders-container {
@@ -1880,9 +2094,6 @@
     animation: fadeSlideIn 0.25s ease;
 }
 
-.home__orders-container[hidden] {
-    display: none;
-}
 
 @keyframes fadeSlideIn {
     from {
