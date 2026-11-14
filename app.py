@@ -4,9 +4,10 @@ from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico
 from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
-
+from model.OS_inspec import inserir_ordem_inspecao
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
+from model.pecas import inserir_requisicoes_pecas
 from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
@@ -229,15 +230,37 @@ def api_get_ordem():
     except Exception as e:
             return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
-@app.route("/telaInicial/post-register-order", methods=["POST"])
-def register_os():
+@app.route("/telaInicial/post-register-order-inspec", methods=["POST"])
+def register_os_inspec():
+    maquinas = consultar_maquinas()
+    nmr_patrimonio = request.form.get('insp_numero_patrimonio')
+    date_inspec = request.form.get('insp_data')
+    inspec_descricao = request.form.get('insp_descricao')
+    solicitante = request.form.get('insp_solicitante')
+
+    for maquina in maquinas:
+        if str(maquina['numero_patrimonio']) == str(nmr_patrimonio):
+            id_maquina = maquina['id_maquina']
+
+    if id_maquina is None:
+        return "Máquina não encontrada com o patrimônio informado", 400
+
+    inserir_ordem_inspecao(id_maquina, solicitante, inspec_descricao, date_inspec )
+    return redirect('/telaInicial')
+
+
+
+
+@app.route("/telaInicial/post-register-order-maintenance", methods=["POST"])
+def register_os_maintenance():
     maquinas = consultar_maquinas()
     nmr_patrimonio = request.form.get('numero_patrimonio')
+    cpf_solicitante = request.form.get('insp_solicitante')
+    tec_responsavel = request.form.get('tecnico_responsavel') or None
     tipo_manutencao = request.form.get('tipo_manutencao')
-    tec_responsavel = request.form.get('tecnico_responsavel')
-    prev_data_inicio = request.form.get('data_prev_inicio')
-    prev_data_termino = request.form.get('data_prev_termino')
-    data_parada = request.form.get('data_parada')
+    prev_data_inicio = request.form.get('data_prev_inicio') or None
+    prev_data_termino = request.form.get('data_prev_termino') or None
+    data_parada = request.form.get('data_parada') or None
     desc_problema = request.form.get('desc_problema')
 
     id_maquina = None
@@ -249,19 +272,32 @@ def register_os():
     if id_maquina is None:
         return "Máquina não encontrada com o patrimônio informado", 400
 
-    cadastrar_ordem_servico(id_maquina, 
-                            1, 
-                            tec_responsavel,
-                            'Ativa', 
-                            tipo_manutencao, 
-                            desc_problema,
-                            '2008-08-28',
-                            '2008-08-29', 
-                            data_parada, 
-                            prev_data_inicio, 
-                            prev_data_termino)
-    return redirect('/telaInicial')
+    id_ordem = cadastrar_ordem_servico(
+        id_maquina,
+        1,
+        cpf_solicitante,
+        tec_responsavel,
+        tipo_manutencao,
+        desc_problema,
+        data_parada,
+        prev_data_inicio,
+        prev_data_termino
+    )
 
+    if request.form.get('solicitar_pecas') == '1':
+        nomes_pecas = request.form.getlist('peca_nome[]')
+        quantidades_pecas = request.form.getlist('peca_quantidade[]')
+
+        pecas_validas = [
+            (nome.strip(), int(qtd))
+            for nome, qtd in zip(nomes_pecas, quantidades_pecas)
+            if nome.strip()
+        ]
+
+        if pecas_validas:
+            inserir_requisicoes_pecas(id_ordem, pecas_validas)
+
+    return redirect('/telaInicial')
 
 @app.route("/telaInicial/finalizar/<int:id>", methods=['POST']) 
 def finish_os(id):
