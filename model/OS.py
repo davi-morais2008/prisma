@@ -204,3 +204,36 @@ def iniciar_OS(id_ordem):
     finally:
         cursor.close()
         conexao.close()
+
+
+def destinar_tecnico_os(id_ordem: int, cpf_tecnico: str) -> bool:
+    """
+    Atualiza exclusivamente o técnico responsável (campo 'cpf') de uma Ordem de Serviço.
+
+    Parâmetros:
+        id_ordem (int): Identificador da ordem de serviço a ser atualizada.
+        cpf_tecnico (str): CPF do técnico responsável que assumirá a OS.
+
+    Retorna:
+        bool: True se o técnico for destinado com sucesso, False em caso de erro.
+    """
+    conexao, cursor = conectar()
+
+    try:
+        cursor.execute('''
+            UPDATE ordens_servicos
+            SET cpf = %s,
+                status_ordem = 'Ativa'
+            WHERE id_ordem = %s;
+        ''', (cpf_tecnico, id_ordem))
+        conexao.commit()
+        return cursor.rowcount > 0
+
+    except Exception as erro:
+        conexao.rollback()
+        print(f"Erro ao destinar técnico para a OS: {erro}")
+        return False
+
+    finally:
+        cursor.close()
+        conexao.close()
