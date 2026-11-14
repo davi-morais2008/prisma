@@ -7,6 +7,16 @@ const workOrders = document.querySelectorAll('.work-order');
 const filterButton = document.querySelectorAll('.filter-button');
 const currentPath = window.location.pathname;
 const homeOrders = document.querySelector('.home__orders');
+const inputOrderMaintanence = document.getElementById('tipo_ordem_manutencao')
+const inputOrderInspection = document.getElementById('tipo_ordem_inspecao')
+const containerInspec = document.querySelector('#container_ordem_inspecao')
+const containerMaintanece = document.querySelector('#container_ordem_manutencao')
+const containerStopMachine = document.querySelector('#grupo_parada_maquina')
+const containerDataParada = document.querySelector('#campo_data_parada')
+const inputDateStop = document.querySelector('#check_maquina_parada')
+
+
+
 
 // Modal: Detalhes da OS
 const orderModal = document.querySelector('.order-details');
@@ -212,7 +222,7 @@ btnConfirmDelete.addEventListener('click', () => {
 [btnCloseFalha, overlayFalha, btnCancelFalha].forEach(el => el.addEventListener('click', closeFalhaModal));
 
 
-const btnAddPeca = document.getElementById('btnAddPeca');
+const btnAddPeca = document.getElementById('btnAddPecaCreate');
 const inputNome = document.getElementById('input_peca');
 const inputQtd = document.getElementById('input_peca_qtd');
 const inputPreco = document.getElementById('input_peca_preco');
@@ -220,57 +230,138 @@ const listaPecas = document.getElementById('lista_pecas_cadastradas');
 
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    const checkSolicitarPecas = document.getElementById('check_solicitar_pecas');
+    const containerSolicitarPecas = document.getElementById('container_solicitar_pecas');
+    const listaPecas = document.getElementById('lista_pecas_requisicao');
+    const btnAddPeca = document.getElementById('btnAddPeca');
 
-
-btnAddPeca.addEventListener('click', () => {
-    const nome = inputNome.value.trim();
-    const qtd = parseInt(inputQtd.value) || 1;
-    const preco = parseFloat(inputPreco.value) || 0;
-
-    // Validação simples para não adicionar item vazio
-    if (!nome) {
-        alert('Digite o nome da peça.');
-        inputNome.focus();
-        return;
+    // 1. Controla a exibição do container ao marcar/desmarcar o checkbox
+    if (checkSolicitarPecas) {
+        checkSolicitarPecas.addEventListener('change', () => {
+            if (checkSolicitarPecas.checked) {
+                containerSolicitarPecas.style.display = 'block';
+                atualizarRequiredPecas(true);
+            } else {
+                containerSolicitarPecas.style.display = 'none';
+                atualizarRequiredPecas(false);
+                resetarListaPecas();
+            }
+        });
     }
 
-    // Formata o preço para exibição visual (ex: R$ 85,00)
-    const precoFormatado = preco.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-    });
+    // 2. Adiciona uma nova linha de peça ao clicar em "Adicionar outra peça"
+    if (btnAddPeca) {
+        btnAddPeca.addEventListener('click', () => {
+            const novaLinha = criarLinhaPeca();
+            listaPecas.appendChild(novaLinha);
+        });
+    }
 
-    // Cria o item da lista (<li>) contendo tanto o visual quanto os inputs ocultos
-    const li = document.createElement('li');
-    li.className = 'order-details__part-item';
-    li.innerHTML = `
-            <div class="order-details__part-info">
-                <span class="order-details__part-name">${nome}</span>
-                <div class="order-details__part-meta">
-                    <span class="order-details__part-qty">${qtd}x</span>
-                    <strong class="order-details__part-price">${precoFormatado}</strong>
-                </div>
+    // 3. Remove uma linha de peça usando delegação de eventos
+    if (listaPecas) {
+        listaPecas.addEventListener('click', (event) => {
+            const btnRemover = event.target.closest('.order-create__btn--remove-peca');
+            if (!btnRemover) return;
+
+            const linhas = listaPecas.querySelectorAll('.order-create__peca-row');
+
+            if (linhas.length > 1) {
+                // Remove a linha clicada se houver mais de uma
+                btnRemover.closest('.order-create__peca-row').remove();
+            } else {
+                // Se for a última linha restante, apenas limpa os inputs
+                const linhaUnica = linhas[0];
+                linhaUnica.querySelector('input[name="peca_nome[]"]').value = '';
+                linhaUnica.querySelector('input[name="peca_quantidade[]"]').value = '1';
+            }
+        });
+    }
+
+    // Função auxiliar para montar o HTML de uma nova linha
+    function criarLinhaPeca() {
+        const divRow = document.createElement('div');
+        divRow.classList.add('order-create__peca-row');
+
+        divRow.innerHTML = `
+            <div class="order-create__field">
+                <label class="order-create__label">Nome / Descrição da Peça</label>
+                <input class="order-create__input" type="text" name="peca_nome[]"
+                    placeholder="Ex: Rolamento 6205" required>
             </div>
-            
-            <!-- Inputs ocultos que serão enviados pelo Form para o Python -->
-            <input type="hidden" name="pecas_nome[]" value="${nome}">
-            <input type="hidden" name="pecas_qtd[]" value="${qtd}">
-            <input type="hidden" name="pecas_preco[]" value="${preco.toFixed(2)}">
-
-            <button type="button" class="order-details__part-remove" aria-label="Remover peça">
-                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+            <div class="order-create__field order-create__field--qtd">
+                <label class="order-create__label">Qtd.</label>
+                <input class="order-create__input" type="number" name="peca_quantidade[]"
+                    min="1" value="1" required>
+            </div>
+            <button type="button" class="order-create__btn--remove-peca" title="Remover peça">
+                <span class="material-symbols-outlined">delete</span>
             </button>
         `;
 
-    // Evento para remover a peça caso o usuário clique no "X"
-    li.querySelector('.order-details__part-remove').addEventListener('click', () => {
-        li.remove();
-    });
+        return divRow;
+    }
 
-    // Adiciona na tela e limpa os campos para a próxima peça
-    listaPecas.appendChild(li);
-    inputNome.value = '';
-    inputQtd.value = '1';
-    inputPreco.value = '';
-    inputNome.focus();
+    // Ativa ou desativa o 'required' nos inputs de peça conforme o checkbox
+    function atualizarRequiredPecas(isRequired) {
+        const inputsNome = listaPecas.querySelectorAll('input[name="peca_nome[]"]');
+        const inputsQtd = listaPecas.querySelectorAll('input[name="peca_quantidade[]"]');
+
+        inputsNome.forEach(input => input.required = isRequired);
+        inputsQtd.forEach(input => input.required = isRequired);
+    }
+
+    // Restaura a lista para apenas 1 linha limpa caso o usuário desmarque o checkbox
+    function resetarListaPecas() {
+        const linhas = listaPecas.querySelectorAll('.order-create__peca-row');
+        linhas.forEach((linha, index) => {
+            if (index > 0) {
+                linha.remove();
+            } else {
+                linha.querySelector('input[name="peca_nome[]"]').value = '';
+                linha.querySelector('input[name="peca_quantidade[]"]').value = '1';
+            }
+        });
+    }
 });
+
+
+
+
+
+// ==========================================
+// DIFERENCIAÇÃO DE ORDENS E VALIDAÇÃO DE DADOS
+// ==========================================
+containerInspec.classList.add('is-hidden')
+
+inputOrderInspection.addEventListener('input', () => {
+    formCreateOrder.action = '/telaInicial/post-register-order-inspec'
+    containerInspec.classList.remove('is-hidden')
+    containerMaintanece.classList.add('is-hidden');
+})
+inputOrderMaintanence.addEventListener('input', () => {
+    formCreateOrder.action = '/telaInicial/post-register-order-maintenance'
+    containerInspec.classList.add('is-hidden');
+    containerMaintanece.classList.remove('is-hidden')
+})
+
+
+selectTipoManutencao.addEventListener('change', () => {
+    if (selectTipoManutencao.value == 'Corretiva'){
+    containerStopMachine.classList.remove('is-hidden')
+} else {
+    containerStopMachine.classList.add('is-hidden')
+}
+
+})
+
+console.log(inputDateStop)
+containerDataParada.classList.add('is-hidden')
+inputDateStop.addEventListener('input', () => {
+    if (!inputDateStop.checked) {
+        containerDataParada.classList.add('is-hidden')
+    }
+    else {
+        containerDataParada.classList.remove('is-hidden')
+    }
+})
