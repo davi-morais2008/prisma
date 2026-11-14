@@ -9,12 +9,17 @@ const currentPath = window.location.pathname;
 const homeOrders = document.querySelector('.home__orders');
 const inputOrderMaintanence = document.getElementById('tipo_ordem_manutencao')
 const inputOrderInspection = document.getElementById('tipo_ordem_inspecao')
-const containerInspec = document.querySelector('#container_ordem_inspecao')
+const containerInspecForm = document.querySelector('#container_ordem_inspecao')
 const containerMaintanece = document.querySelector('#container_ordem_manutencao')
 const containerStopMachine = document.querySelector('#grupo_parada_maquina')
 const containerDataParada = document.querySelector('#campo_data_parada')
 const inputDateStop = document.querySelector('#check_maquina_parada')
-
+const btnInspec = document.querySelector('#btnTabInspecao')
+const btnServico = document.querySelector('#btnTabServico')
+const containerInspec = document.querySelector('#container-ordens-inspecao')
+const containerServico = document.querySelector('#container-ordens-servico')
+const sliderBtn = document.getElementById('switcherSlider')
+const containerDestinate = document.getElementById('containerDestinate')
 
 
 
@@ -156,15 +161,20 @@ workOrders.forEach(order => {
             const ordens = await resposta.json();
             ordens.forEach(os => {
                 if (os.id_ordem == idOrder) {
-                    btnFinishOS.textContent = os.fase_manutencao == 'Aguardando Início' ? 'Iniciar Manutenção' : 'Finalizar Ordem de Serviço'
-                    formDetails.action = os.fase_manutencao == 'Aguardando Início' ? `/telaInicial/iniciar/${os.id_ordem}` : `/telaInicial/finalizar/${os.id_ordem}`
-                    if (os.fase_manutencao == 'Aguardando Início') {
+                    btnFinishOS.textContent = os.status_ordem == 'Pendente' ? 'Destinar Técnico' : 'Executar Ordem'
+                    formDetails.action = os.status_ordem == 'Pendente' ? `/telaInicial/destinar/${os.id_ordem}` : `/telaInicial/finalizar/${os.id_ordem}`
+                    
+                    if (os.status_ordem == 'Pendente') {
                         camposExecucao.style.display = 'none';
                         textareaDesc.required = false;
+                        containerDestinate.classList.remove('is-hidden')
+                        inputTecnicoResponsavel.required = 'True'
                     }
                     else {
+                        containerDestinate.classList.add('is-hidden')
                         camposExecucao.style.display = 'block';
                         textareaDesc.required = true;
+                        containerDestinate.classList.add('is-hidden')
                     }
 
 
@@ -187,6 +197,7 @@ workOrders.forEach(order => {
         }
     });
 });
+
 
 // Abertura dos Modais
 btnEdit.addEventListener('click', openEditModal);
@@ -332,30 +343,30 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==========================================
 // DIFERENCIAÇÃO DE ORDENS E VALIDAÇÃO DE DADOS
 // ==========================================
-containerInspec.classList.add('is-hidden')
+containerInspecForm.classList.add('is-hidden')
 
 inputOrderInspection.addEventListener('input', () => {
     formCreateOrder.action = '/telaInicial/post-register-order-inspec'
-    containerInspec.classList.remove('is-hidden')
+    containerInspecForm.classList.remove('is-hidden')
     containerMaintanece.classList.add('is-hidden');
 })
 inputOrderMaintanence.addEventListener('input', () => {
     formCreateOrder.action = '/telaInicial/post-register-order-maintenance'
-    containerInspec.classList.add('is-hidden');
+    containerInspecForm.classList.add('is-hidden');
     containerMaintanece.classList.remove('is-hidden')
 })
 
 
 selectTipoManutencao.addEventListener('change', () => {
-    if (selectTipoManutencao.value == 'Corretiva'){
-    containerStopMachine.classList.remove('is-hidden')
-} else {
-    containerStopMachine.classList.add('is-hidden')
-}
+    if (selectTipoManutencao.value == 'Corretiva') {
+        containerStopMachine.classList.remove('is-hidden')
+    } else {
+        containerStopMachine.classList.add('is-hidden')
+    }
 
 })
 
-console.log(inputDateStop)
+
 containerDataParada.classList.add('is-hidden')
 inputDateStop.addEventListener('input', () => {
     if (!inputDateStop.checked) {
@@ -365,3 +376,37 @@ inputDateStop.addEventListener('input', () => {
         containerDataParada.classList.remove('is-hidden')
     }
 })
+
+
+const switcherTrack = document.getElementById('switcherTrack');
+
+containerInspec.hidden = true;
+containerInspec.classList.add('is-hidden');
+
+btnInspec.addEventListener('click', () => {
+
+    btnInspec.classList.add('is-active');
+    btnServico.classList.remove('is-active');
+
+    switcherTrack.classList.add('is-inspecao');
+
+    containerServico.hidden = true;
+    containerServico.classList.add('is-hidden');
+
+    containerInspec.hidden = false;
+    containerInspec.classList.remove('is-hidden');
+});
+
+btnServico.addEventListener('click', () => {
+
+    btnServico.classList.add('is-active');
+    btnInspec.classList.remove('is-active');
+
+    switcherTrack.classList.remove('is-inspecao');
+
+    containerInspec.hidden = true;
+    containerInspec.classList.add('is-hidden');
+
+    containerServico.hidden = false;
+    containerServico.classList.remove('is-hidden');
+});
