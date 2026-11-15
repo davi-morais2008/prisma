@@ -4,7 +4,7 @@ from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os
 from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
-from model.OS_inspec import inserir_ordem_inspecao
+from model.OS_inspec import inserir_ordem_inspecao, consultar_ordens_inspecao, destinar_responsavel_inspecao
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
 from model.pecas import inserir_requisicoes_pecas
@@ -156,6 +156,7 @@ def pagina_inicial():
     falhas = consultar_falhas()
     maquinas = consultar_maquinas()
     tipo_maquinas = consulta_tipo_maquinas()
+    ordens_inspec = consultar_ordens_inspecao()
 
     # 2. Depois, filtre usando uma nova variável (ex: ordens_filtradas)
     if session.get('user_rbac') == 'root':
@@ -183,7 +184,8 @@ def pagina_inicial():
         tecnicos=tecnicos,
         falhas=falhas,
         maquinas=maquinas,
-        tipo_maquinas=tipo_maquinas
+        tipo_maquinas=tipo_maquinas,
+        ordens_inspecao = ordens_inspec
     )
 
 @app.route ("/telaInicial/filtro/<tipo>", methods=["GET"])
@@ -319,11 +321,18 @@ def finish_os(id):
     finalizar_OS(id, desc_manutencao, pecas)
     return redirect('/telaInicial')
 
-@app.route("/telaInicial/destinar/<int:id>", methods=['POST'])
-def assign_os(id):
+@app.route("/telaInicial/destinar-os-maintenance/<int:id>", methods=['POST'])
+def assign_os_maintenance(id):
     cpf_tecnico = request.form.get('tecnico_responsavel')
 
     destinar_tecnico_os(id, cpf_tecnico)
+    return redirect('/telaInicial')
+
+@app.route("/telaInicial/destinar-os-inspec/<int:id>", methods=['POST'])
+def assign_os_inspec(id):
+    cpf_tecnico = request.form.get('tecnico_responsavel')
+
+    destinar_responsavel_inspecao(id, cpf_tecnico)
     return redirect('/telaInicial')
 
 # @app.route("/telaInicial/iniciar/<int:id>", methods=['POST']) 
