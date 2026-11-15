@@ -174,6 +174,94 @@ Página Inicial
             {% endif %}
         </div>
     </section>
+    <!-- MODAL: DETALHES DA ORDEM DE INSPEÇÃO -->
+    <div class="order-details inspection-details" id="inspectionModal" role="dialog" aria-modal="true"
+        aria-labelledby="inspectionModalTitle">
+        <div class="order-details__overlay" id="inspectionModalOverlay"></div>
+
+        <div class="order-details__container">
+            <header class="order-details__header">
+                <div class="order-details__header-info">
+                    <h2 class="order-details__title" id="inspectionModalTitle">Detalhes da Inspeção</h2>
+                    <span class="work-order__badge work-order__badge--inspecao" id="insp_status_badge">Ativa</span>
+                </div>
+
+                <div class="order-details__header-actions">
+                    <button type="button" class="order-details__close-btn" id="btnCloseInspection" title="Fechar">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="order-details__body">
+                <div class="order-details__grid">
+                    <div class="order-details__info-group">
+                        <span class="order-details__label">Nº da Inspeção</span>
+                        <p class="order-details__value" id="insp_id">-</p>
+                    </div>
+
+                    <div class="order-details__info-group">
+                        <span class="order-details__label">Data Programada / Registro</span>
+                        <p class="order-details__value" id="insp_data">-</p>
+                    </div>
+
+                    <div class="order-details__info-group">
+                        <span class="order-details__label">Máquina</span>
+                        <p class="order-details__value" id="insp_maquina">-</p>
+                    </div>
+
+                    <div class="order-details__info-group">
+                        <span class="order-details__label">Nº Patrimônio</span>
+                        <p class="order-details__value" id="insp_patrimonio">-</p>
+                    </div>
+
+                    <div class="order-details__info-group order-details__info-group--full">
+                        <span class="order-details__label">Responsável / Solicitante</span>
+                        <p class="order-details__value" id="insp_responsavel">-</p>
+                    </div>
+
+                    <div class="order-details__info-group order-details__info-group--full">
+                        <span class="order-details__label">Descrição / Checklist da Inspeção</span>
+                        <p class="order-details__value order-details__value--box" id="insp_descricao">-</p>
+                    </div>
+                </div>
+
+                <!-- BLOCO DE ATRIBUIÇÃO DE RESPONSÁVEL (VISÍVEL PARA ADMIN / ROOT) -->
+                {% if user_rbac in ['admin', 'root'] %}
+                <form class="order-details__assign-form" id="formAssignInspection" method="POST">
+                    <label class="order-details__label" for="select_insp_responsavel">Destinar / Alterar
+                        Responsável</label>
+                    <div class="order-details__assign-row">
+                        <select class="order-create__input" name="tecnico_responsavel" id="select_insp_responsavel"
+                            required>
+                            <option value="" disabled selected>Selecione um técnico...</option>
+                            {% for usuario in usuarios %}
+                            <option value="{{ usuario.cpf }}">{{ usuario.nome }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="order-details__btn order-details__btn--secondary">
+                            Atribuir
+                        </button>
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+
+            <footer class="order-details__footer">
+                <form id="formFinishInspection" method="POST"
+                    style="width: 100%; display: flex; justify-content: flex-end; gap: 0.75rem;">
+                    <button type="button" class="order-details__btn order-details__btn--cancel"
+                        id="btnCancelInspectionFooter">
+                        Fechar
+                    </button>
+                    <button type="submit" class="order-details__btn order-details__btn--primary"
+                        id="btnFinishInspection">
+                        Concluir Inspeção
+                    </button>
+                </form>
+            </footer>
+        </div>
+    </div>
 
     <!-- Modal de Detalhes da Ordem de Serviço (OS) -->
     <div class="order-details" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
