@@ -52,16 +52,17 @@ CREATE TABLE IF NOT EXISTS ordens_servicos (
     id_especialidade INT,
     id_maquina INT NOT NULL,
     id_falha INT,
-    cpf VARCHAR(11) NOT NULL,
-    status_ordem VARCHAR(100),
+    cpf_solicitante VARCHAR(11) NOT NULL,
+    cpf VARCHAR(11) DEFAULT NULL,
+    status_ordem VARCHAR(100) default 'Pendente',
     fase_manutencao VARCHAR(250) DEFAULT 'Aguardando Início',
     tipo_manutencao VARCHAR(100),
     descricao_problema VARCHAR(255),
-    data_inicio_manutencao DATETIME DEFAULT NULL,
-    data_termino_manutencao DATETIME DEFAULT NULL,
-    data_parada DATETIME,
-    data_prev_inicio_manutencao DATETIME,
-    data_prev_termino_manutencao DATETIME
+    data_inicio_manutencao DATE DEFAULT NULL,
+    data_termino_manutencao DATE DEFAULT NULL,
+    data_parada DATE,
+    data_prev_inicio_manutencao DATE NULL,
+    data_prev_termino_manutencao DATE NULL
 );
 
 CREATE TABLE IF NOT EXISTS requisicoes_pecas (
@@ -90,12 +91,15 @@ CREATE TABLE IF NOT EXISTS ordem_inspecao (
     id_maquina INT NOT NULL,
     cpf VARCHAR(11) NOT NULL,
     descricao_inspecao VARCHAR(250),
-    status_inspecao BOOL DEFAULT TRUE
+    status_inspecao BOOL DEFAULT TRUE,
+    status_processo VARCHAR(100) default 'PENDENTE',
+    data_inspec DATE
 );
 
 -- Chaves Estrangeiras (Foreign Keys)
 ALTER TABLE ordem_inspecao ADD CONSTRAINT FK_inspecao_0 FOREIGN KEY (id_maquina) REFERENCES maquinas (id_maquina);
 ALTER TABLE ordem_inspecao ADD CONSTRAINT FK_inspecao_1 FOREIGN KEY (cpf) REFERENCES usuarios (cpf);
+
 
 ALTER TABLE falhas ADD CONSTRAINT FK_falhas_0 FOREIGN KEY (id_tipo_maquina) REFERENCES tipos_maquinas (id_tipo_maquina);
 
@@ -106,6 +110,7 @@ ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_0 FOREIGN KEY (id_
 ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_1 FOREIGN KEY (id_falha) REFERENCES falhas (id_falha);
 ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_2 FOREIGN KEY (cpf) REFERENCES usuarios (cpf);
 ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_3 FOREIGN KEY (id_especialidade) REFERENCES especialidades (id_especialidade);
+ALTER TABLE ordens_servicos ADD CONSTRAINT FK_ordens_servicos_4 FOREIGN KEY (cpf_solicitante) REFERENCES usuarios (cpf);
 
 ALTER TABLE requisicoes_pecas ADD CONSTRAINT FK_requisicoes_pecas_0 FOREIGN KEY (id_ordem) REFERENCES ordens_servicos (id_ordem);
 
