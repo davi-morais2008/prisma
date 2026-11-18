@@ -13,49 +13,61 @@
             <div class="history__content">
                 <h1 class="history__title">Histórico de Manutenção</h1>
 
-                
+                <form class="pesquisa-container" action="/historico/filtro/usuario" method="GET" name="tecnico">
+                        <div class="grupo-busca-tecnico">
+                            <input class="input-tecn" type="text" id="campoPesquisa" name="tecnico" placeholder="Nome do técnico responsável...">
+                            <button type="submit" class="btn-enviar">Buscar</button>
+                        </div>
 
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
+                        <div class="pesquisa-filtros-linha">
+                            <select id="filtroTipo" name="tipo">
+                                <option value="">Todos os tipos</option>
+                                <option value="Preventiva">Preventiva</option>
+                                <option value="Corretiva">Corretiva</option>
+                                <option value="Preditiva">Preditiva</option>
+                            </select>
+
+                            <input type="date" id="filtroData" name="data">
+
+                            <button class="btn-limpar" type="button" id="btn_limpar" onclick="limparPesquisa()" title="Limpar filtros">
+                                <span class="material-symbols-outlined">block</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
                     {% for category, message in messages %}
-                    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
-                        role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="container-flash">
+                        <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
+                            role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                     </div>
                     {% endfor %}
-                {% endif %}
-                {% endwith %}
+                    {% endif %}
+                    {% endwith %}
 
-                <div class="history__cards">
-                    <div class="pesquisa-container">
-                        <form class="grupo-busca-tecnico" onsubmit="enviarTecnico(event)">
-                            <input class="input-tecn" type="text" id="campoPesquisa" name="tecnico" placeholder="Nome do técnico responsável.">
-                            <button type="submit" class="btn-enviar">Buscar</button>
-                        </form>
-                        
-                        <select id="filtroTipo">
-                            <option value="">Todos os tipos</option>
-                            <option value="preventiva">Preventiva</option>
-                            <option value="corretiva">Corretiva</option>
-                            <option value="preditiva">Preditiva</option>
-                        </select>
-
-                        <input type="date" id="filtroData">
-
-                        <button class="btn-limpar" type="button" onclick="limparPesquisa()">Limpar</button>
+                    <div class="container-flash-js" id="sem-resultados">
+                        <div class="alert alert-warning alert-dismissible fade show" >
+                            Nenhum histórico encontrado.
+                        </div>
                     </div>
+                
+                <div class="history__cards" id="history_cards">
 
                     {% for os in OSfinalizado %}
-                    <div class="card__group">
+                    <div class="card__group" data-date="{{os.data_termino_manutencao.strftime('%Y-%m-%d')}}" data-type="{{os.tipo_manutencao}}">
                         <p class="maintence__title">{{os.data_termino_manutencao}}</p>
                         <div class="maintence__card">
                             <div class="upper__content">
                                 <div class="maintence__text">
                                     <h3 class="maintence_os">Número da Ordem: {{os.id_ordem}}</h3>
-                                    <p>Responsável: {{os.nome}}</p>
-                                    <p>Falha: {{os.falha}}</p>
-                                    <p>Número Patrimônio: {{os.numero_patrimonio}}</p>
+                                    <p><span>Responsável:</span> <strong>{{os.nome}}</strong></p>
+                                    <p><span>Número Patrimônio:</span> <strong>{{os.numero_patrimonio}}</strong></p>
+                                    <p><span>Tipo de Manutenção:</span> <strong>{{os.tipo_manutencao}}</strong></p>
+                                    <p class="linha-falha"><span>Falha:</span> <strong>{{os.falha}}</strong></p>
                                 </div>
                                 <div class="maintence__icon">
                                     <button class="maint__btn btn_show" id_os="{{os.id_ordem}}">
