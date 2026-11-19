@@ -13,6 +13,8 @@
             <div class="history__content">
                 <h1 class="history__title">Histórico de Manutenção</h1>
 
+                
+
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
@@ -26,6 +28,24 @@
                 {% endwith %}
 
                 <div class="history__cards">
+                    <div class="pesquisa-container">
+                        <form class="grupo-busca-tecnico" onsubmit="enviarTecnico(event)">
+                            <input class="input-tecn" type="text" id="campoPesquisa" name="tecnico" placeholder="Nome do técnico responsável.">
+                            <button type="submit" class="btn-enviar">Buscar</button>
+                        </form>
+                        
+                        <select id="filtroTipo">
+                            <option value="">Todos os tipos</option>
+                            <option value="preventiva">Preventiva</option>
+                            <option value="corretiva">Corretiva</option>
+                            <option value="preditiva">Preditiva</option>
+                        </select>
+
+                        <input type="date" id="filtroData">
+
+                        <button class="btn-limpar" type="button" onclick="limparPesquisa()">Limpar</button>
+                    </div>
+
                     {% for os in OSfinalizado %}
                     <div class="card__group">
                         <p class="maintence__title">{{os.data_termino_manutencao}}</p>

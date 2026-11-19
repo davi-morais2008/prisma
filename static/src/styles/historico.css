@@ -9,6 +9,8 @@
 
 .history{
   background-color: var(--color-bg-main);
+  padding: 32px 40px;
+  gap: 32px;
 }
 
 .history__content{
@@ -21,61 +23,121 @@
 .history__title{
     margin-top: 25px;
     font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+    margin-bottom: 15px;
     color: var(--color-text-primary);
 }
 
 .history__cards {
-      width: 80%;
+    width: 100%;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    align-content: start;
 }
 
+/* Grupo: Data + Card */
 .card__group {
-    margin: 25px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
 }
 
+/* Data acima do card */
 .maintence__title {
-    font-size: clamp(0.65rem, 2.5vw, 1rem);
+    margin: 0;
+    align-self: flex-start;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
     color: var(--color-primary);
 }
 
-.maintence__card{
+/* Card principal (seguindo a identidade do .work-order) */
+.maintence__card {
     width: 100%;
-    padding: 20px 24px;
+    padding: 1.25rem 1.75rem;
     background-color: var(--color-bg-card);
     border-radius: var(--border-radius-md);
-
-    margin-top: 10px;
-    box-shadow: -4px 0px 0px 0px var(--color-primary), var(--shadow-md);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    transition: transform 0.2s ease
+    box-shadow: var(--shadow-sm);
+    border-left: 6px solid var(--color-primary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.maintence__icon {
-    margin: auto 0;
+.maintence__card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
+/* Layout interno: Texto à esquerda, botão à direita */
 .upper__content {
     display: flex;
-    width: 100%;
-    flex-direction: row;
+    align-items: flex-start;
     justify-content: space-between;
+    gap: 1.5rem;
 }
 
-.maint__btn{
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
+/* Bloco de informações */
 .maintence__text {
-    font-size: clamp(0.65rem, 2.5vw, 1rem);
-    color: var(--color-text-primary);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex: 1;
 }
 
-.maintence__text p{
-    margin-top: 5px;
+.maintence_os {
+    margin: 0 0 0.4rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-bg-light);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    line-height: 1.3;
+}
+
+.maintence__text p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+}
+
+/* Área do botão expandir */
+.maintence__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.maint__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: none;
+    border-radius: var(--border-radius-pill);
+    background-color: var(--color-bg-light);
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.maint__btn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-bg-card);
+}
+
+.maint__btn:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
+}
+
+/* Classe auxiliar opcional para girar o ícone quando o card estiver aberto via JS */
+.maint__btn.is-open .material-icons {
+    transform: rotate(180deg);
+    transition: transform 0.2s ease;
 }
 
 .machine-tech__overlay{
@@ -291,6 +353,103 @@
     border-left: 5px solid #e3a008;
 }
 
+.pesquisa-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 90%;
+    max-width: 1100px;
+    margin: 20px auto;
+    box-sizing: border-box;
+}
+
+/* Container que une o input e o botão de enviar */
+.grupo-busca-tecnico {
+    display: flex;
+    flex: 1 1 320px; /* Ocupa o maior espaço da barra */
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    background-color: var(--color-bg-light);
+    border: 1px solid #535353;
+    overflow: hidden; /* Garante que os cantos internos não vazem */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.grupo-busca-tecnico:focus-within {
+    border-color: #535353;
+    box-shadow: 0 0 0 3px rgba(30, 27, 75, 0.1);
+}
+
+.grupo-busca-tecnico .input-tecn {
+    flex: 1;
+    border: none;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #ffffff;
+    outline: none;
+    background: transparent;
+    min-width: 0; /* Evita quebra em telas muito pequenas */
+}
+
+.grupo-busca-tecnico .btn-enviar {
+    padding: 0 20px;
+    border: none;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+
+/* Outros filtros (Select e Data) */
+.pesquisa-container select,
+.pesquisa-container input[type="date"] {
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid #535353;
+    background-color: var(--color-bg-light);
+    font-size: 14px;
+    color: var(--color-text-primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    outline: none;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.pesquisa-container select {
+    flex: 0 1 170px;
+}
+
+.pesquisa-container input[type="date"] {
+    flex: 0 1 160px;
+}
+
+.pesquisa-container select:focus,
+.pesquisa-container input[type="date"]:focus {
+    border-color: #535353;
+    box-shadow: 0 0 0 3px rgba(30, 27, 75, 0.1);
+}
+
+/* Botão Limpar */
+.btn-limpar {
+    flex: 0 1 auto;
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid #535353;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-limpar:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+}
 
 /* RESPONSIVIDADE MOBILE */
 @media (max-width: 768px) {
@@ -306,6 +465,17 @@
     margin-top: 75px !important;
   
   }
+  .pesquisa-container {
+        width: 94%;
+    }
+
+    .pesquisa-container input[type="text"],
+    .pesquisa-container select,
+    .pesquisa-container input[type="date"],
+    .pesquisa-container button {
+        flex: 1 1 100%;
+        width: 100%;
+    }
 }
 
 
