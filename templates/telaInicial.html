@@ -592,7 +592,7 @@ Página Inicial
 
     <!-- Modal de Edição da Ordem de Serviço (OS) -->
     {% for os in ordens %}
-    <div class="order-edit" id="updateModal-{{ os.id_ordem }}" role="dialog" aria-modal="true" aria-labelledby="orderEditTitle-{{ os.id_ordem }}">
+    <div class="order-edit" id="updateModalOverlay" role="dialog" aria-modal="true" aria-labelledby="orderEditTitle-{{ os.id_ordem }}">
         <div class="order-edit__overlay"></div>
     
         <article class="order-edit__card">
