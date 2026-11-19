@@ -68,6 +68,7 @@ const createModal = document.querySelector('#createModal');
 const modalOverlay = document.querySelector('#createModalOverlay');
 const btnCloseModal = document.querySelector('#btnCancelCreate');
 const btnCancelForm = document.querySelector('#btnCancelCreateForm');
+const EditFalha = document.querySelector('#edit_falha')
 
 // Formulário de Cadastro e Campos
 const formCreateOrder = document.querySelector('#formCreateOrder');
@@ -219,7 +220,7 @@ workOrders.forEach(order => {
             dados.ordens_manutencao.forEach(os => {
                 if (os.id_ordem == idOrder) {
                     btnFinishOS.textContent = os.status_ordem == 'Pendente' ? 'Destinar Técnico' : 'Executar Ordem';
-                    formDetails.action = os.status_ordem == 'Pendente' ? `/telaInicial/destinar/${os.id_ordem}` : `/telaInicial/finalizar/${os.id_ordem}`;
+                    formDetails.action = os.status_ordem == 'Pendente' ? `/telaInicial/destinar/${os.id_ordem}` : `/telaInicial/finalizar-maintenance/${os.id_ordem}`;
 
                     if (os.status_ordem == 'Pendente') {
                         camposExecucao.style.display = 'none';
@@ -448,6 +449,7 @@ inputOrderMaintanence.addEventListener('input', () => {
     formCreateOrder.action = '/telaInicial/post-register-order-maintenance'
     containerInspecForm.classList.add('is-hidden');
     containerMaintanece.classList.remove('is-hidden')
+
 })
 
 
@@ -503,4 +505,4 @@ btnServico.addEventListener('click', () => {
 
     containerServico.hidden = false;
     containerServico.classList.remove('is-hidden');
-});
+    EditFalha.required = true});
