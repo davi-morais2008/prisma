@@ -12,6 +12,7 @@ const btnServico = document.querySelector('#btnTabServico');
 const containerInspec = document.querySelector('#container-ordens-inspecao');
 const containerServico = document.querySelector('#container-ordens-servico');
 const switcherTrack = document.getElementById('switcherTrack');
+const inputTech = document.getElementById('search-bar');
 
 // Formulário de Cadastro (Diferenciação Manutenção vs Inspeção)
 const formCreateOrder = document.querySelector('#formCreateOrder');
@@ -51,7 +52,6 @@ const textareaDesc = document.getElementById('desc_manutencao');
 const inputTecnicoResponsavel = document.querySelector('#create_tecnico_responsavel');
 
 // Modal: Edição da OS
-const editModal = document.querySelector('#updateModal');
 const overlayUpdate = document.querySelector('#updateModalOverlay');
 const btnCloseUpdate = document.querySelector('#btnCancelUpdate');
 const btnCancelUpdate = document.querySelector('#btnCancelEditForm');
@@ -77,10 +77,36 @@ const overlayFalha = document.querySelector('.fault-create__overlay');
 const btnCloseFalha = document.querySelector('.fault-create__close-btn');
 const btnCancelFalha = document.querySelector('#btnCancelCreateFaultForm');
 
-const inputTech= document.getElementById('search-bar');
+// Modal: Detalhes e Edição da Ordem de Inspeção
+const inspectionModal = document.querySelector('#inspectionModal');
+const inspectionModalOverlay = document.querySelector('#inspectionModalOverlay');
+const btnCloseInspection = document.querySelector('#btnCloseInspection');
+const btnCancelInspectionFooter = document.querySelector('#btnCancelInspectionFooter');
 
-// Variável de controle da OS selecionada
+const btnEditInspection = document.querySelector('#btnEditInspection');
+const updateInspectionModal = document.querySelector('#updateInspectionModal');
+const updateInspectionOverlay = document.querySelector('#updateInspectionOverlay');
+const btnCancelUpdateInspection = document.querySelector('#btnCancelUpdateInspection');
+const btnCancelEditInspectionForm = document.querySelector('#btnCancelEditInspectionForm');
+const formUpdateInspection = document.querySelector('#formUpdateInspection');
+
+const inspIdEl = document.querySelector('#insp_id');
+const inspDataEl = document.querySelector('#insp_data');
+const inspMaquinaEl = document.querySelector('#insp_maquina');
+const inspPatrimonioEl = document.querySelector('#insp_patrimonio');
+const inspResponsavelEl = document.querySelector('#insp_responsavel');
+const inspSolicitanteEl = document.querySelector('#insp_solicitante');
+const inspDescricaoEl = document.querySelector('#insp_descricao');
+const inspStatusBadgeEl = document.querySelector('#insp_status_badge');
+
+const formAssignInspection = document.querySelector('#formAssignInspection');
+const selectInspResponsavel = document.querySelector('#select_insp_responsavel');
+const formFinishInspection = document.querySelector('#formFinishInspection');
+
+// Variáveis de controle da ordem selecionada
 let idOrdemAtual = null;
+let osAtualSelecionada = null;
+let inspecaoAtualSelecionada = null;
 
 
 // ==========================================
@@ -88,9 +114,6 @@ let idOrdemAtual = null;
 // ==========================================
 const openOrderModal = () => orderModal?.classList.add('active');
 const closeOrderModal = () => orderModal?.classList.remove('active');
-
-const openEditModal = () => overlayUpdate?.classList.add('active');
-const closeEditModal = () => overlayUpdate?.classList.remove('active');
 
 const openDeleteModal = () => deleteModal?.classList.add('active');
 const closeDeleteModal = () => deleteModal?.classList.remove('active');
@@ -235,6 +258,7 @@ workOrders.forEach(order => {
                 if (!os) return;
 
                 osAtualSelecionada = os;
+                idOrdemAtual = os.id_ordem;
 
                 if (btnFinishOS) {
                     btnFinishOS.textContent = os.status_ordem === 'Pendente' ? 'Destinar Técnico' : 'Executar Ordem';
@@ -315,54 +339,35 @@ workOrders.forEach(order => {
 // 6. ABERTURA E PREENCHIMENTO DOS MODAIS DE EDIÇÃO / AÇÕES
 // ==========================================
 btnEdit?.addEventListener('click', () => {
-    if (osAtualSelecionada) {
-        const formUpdateOrder = document.querySelector('#formUpdateOrder');
-        if (formUpdateOrder) formUpdateOrder.action = `/telaInicial/editar/${osAtualSelecionada.id_ordem}`;
+    if (!osAtualSelecionada) return;
 
-        const editStatus = document.querySelector('#edit_status_ordem');
-        const editFase = document.querySelector('#edit_fase_manutencao');
-        const editTipo = document.querySelector('#edit_tipo_manutencao');
-        const editTecnico = document.querySelector('#edit_tecnico_responsavel');
-
-        if (editStatus) editStatus.value = osAtualSelecionada.status_ordem || 'Pendente';
-        if (editFase) editFase.value = osAtualSelecionada.fase_manutencao || 'Aguardando Início';
-        if (editTipo) editTipo.value = osAtualSelecionada.tipo_manutencao || 'Corretiva';
-        if (editTecnico) editTecnico.value = osAtualSelecionada.cpf || '';
-
-        const editPrevInicio = document.querySelector('#edit_data_prev_inicio');
-        const editPrevTermino = document.querySelector('#edit_data_prev_termino');
-        const editDataParada = document.querySelector('#edit_data_parada');
-        const editDataInicio = document.querySelector('#edit_data_inicio');
-
-        if (editPrevInicio) editPrevInicio.value = formatarParaDatetimeLocal(osAtualSelecionada.data_prev_inicio_manutencao);
-        if (editPrevTermino) editPrevTermino.value = formatarParaDatetimeLocal(osAtualSelecionada.data_prev_termino_manutencao);
-        if (editDataParada) editDataParada.value = formatarParaDatetimeLocal(osAtualSelecionada.data_parada);
-        if (editDataInicio) editDataInicio.value = formatarParaDatetimeLocal(osAtualSelecionada.data_inicio_manutencao);
-
-        if (EditFalha && EditFalha.tagName === 'SELECT') {
-            const tipoMaquinaAtual = osAtualSelecionada.id_tipo_maquina ? String(osAtualSelecionada.id_tipo_maquina) : '';
-            const falhaAtualId = osAtualSelecionada.id_falha ? String(osAtualSelecionada.id_falha) : '';
-
-            Array.from(EditFalha.options).forEach(option => {
-                if (!option.value) {
-                    option.hidden = false;
-                    option.disabled = false;
-                    return;
-                }
-                const pertenceAMaquina = !tipoMaquinaAtual || option.dataset.tipoMaquina === tipoMaquinaAtual;
-                const ehAFalhaAtual = option.value === falhaAtualId;
-                option.hidden = !(pertenceAMaquina || ehAFalhaAtual);
-                option.disabled = !(pertenceAMaquina || ehAFalhaAtual);
-            });
-
-            EditFalha.value = falhaAtualId;
-        }
-
-        const editDescProblema = document.querySelector('#edit_desc_problema');
-        if (editDescProblema) editDescProblema.value = osAtualSelecionada.descricao_problema || '';
+    const modalDinamico = document.querySelector(`#updateModal-${osAtualSelecionada.id_ordem}`);
+    if (!modalDinamico) {
+        console.warn(`Modal #updateModal-${osAtualSelecionada.id_ordem} não encontrado.`);
+        return;
     }
 
-    openEditModal();
+    const selectFalhaModal = modalDinamico.querySelector('select[name="id_falha"]');
+    if (selectFalhaModal) {
+        const tipoMaquinaAtual = osAtualSelecionada.id_tipo_maquina ? String(osAtualSelecionada.id_tipo_maquina) : '';
+        const falhaAtualId = osAtualSelecionada.id_falha ? String(osAtualSelecionada.id_falha) : '';
+
+        Array.from(selectFalhaModal.options).forEach(option => {
+            if (!option.value) {
+                option.hidden = false;
+                option.disabled = false;
+                return;
+            }
+            const pertenceAMaquina = !tipoMaquinaAtual || option.dataset.tipoMaquina === tipoMaquinaAtual;
+            const ehAFalhaAtual = option.value === falhaAtualId;
+            option.hidden = !(pertenceAMaquina || ehAFalhaAtual);
+            option.disabled = !(pertenceAMaquina || ehAFalhaAtual);
+        });
+
+        selectFalhaModal.value = falhaAtualId;
+    }
+
+    modalDinamico.classList.add('active');
 });
 
 btnEditInspection?.addEventListener('click', () => {
@@ -402,7 +407,6 @@ document.querySelectorAll('.alert.alert-sucesso').forEach(alerta => {
 // 7. AGRUPAMENTO DE EVENTOS DE FECHAMENTO
 // ==========================================
 [btnClose, overlayModal].forEach(el => el?.addEventListener('click', closeOrderModal));
-[overlayUpdate, btnCloseUpdate, btnCancelUpdate].forEach(el => el?.addEventListener('click', closeEditModal));
 [btnCloseDelete, btnCancelDelete].forEach(el => el?.addEventListener('click', closeDeleteModal));
 [modalOverlay, btnCloseModal, btnCancelForm].forEach(el => el?.addEventListener('click', closeCreateModal));
 [btnCloseFalha, overlayFalha, btnCancelFalha].forEach(el => el?.addEventListener('click', closeFalhaModal));
@@ -505,7 +509,6 @@ inputOrderInspection?.addEventListener('input', () => {
     containerInspecForm?.classList.remove('is-hidden');
     containerMaintanece?.classList.add('is-hidden');
 
-    // Remove required dos campos ocultos de manutenção para evitar erro "is not focusable"
     if (inputFalhaCreate) inputFalhaCreate.required = false;
     if (selectTipoManutencao) selectTipoManutencao.required = false;
 });
@@ -515,7 +518,6 @@ inputOrderMaintanence?.addEventListener('input', () => {
     containerInspecForm?.classList.add('is-hidden');
     containerMaintanece?.classList.remove('is-hidden');
 
-    // Restaura required quando volta para manutenção
     if (inputFalhaCreate) inputFalhaCreate.required = true;
     if (selectTipoManutencao) selectTipoManutencao.required = true;
 });
@@ -530,25 +532,26 @@ selectTipoManutencao?.addEventListener('change', () => {
 
 inputDateStop?.addEventListener('input', () => {
     if (!inputDateStop.checked) {
-        containerDataParada.classList.add('is-hidden')
+        containerDataParada?.classList.add('is-hidden');
+    } else {
+        containerDataParada?.classList.remove('is-hidden');
     }
-    else {
-        containerDataParada.classList.remove('is-hidden')
-    }
-})
+});
 
+
+// ==========================================
+// 10. BARRA DE PESQUISA POR RESPONSÁVEL
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     const cardsOrders = document.querySelectorAll('.work-order');
     const msgVazio = document.getElementById('sem-resultados');
-    const flash = document.querySelector('.container-flash');
 
     function aplicarFiltros() {
         const termoBusca = (inputTech?.value || '').trim().toLowerCase();
         let visiveis = 0;
 
         cardsOrders.forEach(card => {
-            const orderCard = (card.getAttribute('data-responsavel') || '').toLowerCase()
-
+            const orderCard = (card.getAttribute('data-responsavel') || '').toLowerCase();
             const bateNome = !termoBusca || orderCard.includes(termoBusca);
 
             if (bateNome) {
@@ -562,58 +565,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (msgVazio) {
             msgVazio.style.display = (visiveis === 0) ? 'flex' : 'none';
         }
-
-        if (flash) {
-            msgVazio.style.display = 'none';
-        }
     }
 
-    inputTech.addEventListener('input', aplicarFiltros);
-});
-
-
-
-containerInspec.hidden = true;
-containerInspec.classList.add('is-hidden');
-
-btnInspec.addEventListener('click', () => {
-
-    btnInspec.classList.add('is-active');
-    btnServico.classList.remove('is-active');
-
-    switcherTrack.classList.add('is-inspecao');
-
-    containerServico.hidden = true;
-    containerServico.classList.add('is-hidden');
-
-    containerInspec.hidden = false;
-    containerInspec.classList.remove('is-hidden');
-});
-btnServico?.addEventListener('click', () => {
-    btnServico.classList.add('is-active');
-    btnInspec?.classList.remove('is-active');
-
-    switcherTrack?.classList.remove('is-inspecao');
-
-    if (containerInspec) {
-        containerInspec.hidden = true;
-        containerInspec.classList.add('is-hidden');
-    }
-
-    if (containerServico) {
-        containerServico.hidden = false;
-        containerServico.classList.remove('is-hidden');
-    }
-
-    if (EditFalha) {
-        EditFalha.required = true;
-    }
-});
-
-inputDateStop?.addEventListener('input', () => {
-    if (!inputDateStop.checked) {
-        containerDataParada?.classList.add('is-hidden');
-    } else {
-        containerDataParada?.classList.remove('is-hidden');
-    }
+    inputTech?.addEventListener('input', aplicarFiltros);
 });
