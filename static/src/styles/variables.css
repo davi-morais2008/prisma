@@ -66,6 +66,7 @@
   --border-radius-md: 16px;  /* Cards / Inputs */
   --border-radius-lg: 24px;  /* Modal / Containers principais */
   --border-radius-pill: 50px;/* Botões pill / Inputs arredondados */
+   --border-color: #b9b6b6;
 
   /* ========================================
      SOMBRAS E ELEVAÇÕES

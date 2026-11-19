@@ -1,6 +1,11 @@
 const maintBTN = document.querySelectorAll('.btn_show');
 const closeBTN = document.querySelectorAll('.btn_close');
 const modalShow = document.getElementById('modal_show');
+const inputTech = document.getElementById('campoPesquisa');
+const typeTech = document.getElementById('filtroTipo');
+const dateTech = document.getElementById('filtroData');
+const limparBTN = document.getElementById('btn_limpar');
+const containerCards = document.getElementById('history_cards');
 
 const textType = document.querySelector('#text-type');
 const textPatrimony = document.querySelector('#text-patrimony');
@@ -45,11 +50,66 @@ maintBTN.forEach((btn) => {
     })
 })
 
-
 closeBTN.forEach((btn) => {
     btn.addEventListener('click', () => {
         modalShow.classList.toggle('active');
     });
 })
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    function aplicarFiltros() {
+        const dataSelecionada = dateTech.value;
+        const tipoSelecionado = typeTech.value;
+        let visiveis = 0;
+
+        containerCards.querySelectorAll('.card__group').forEach(card => {
+            const dataCard = card.getAttribute('data-date') || '';
+            const tipoCard = card.getAttribute('data-type') || '';
+
+            // 1. Verifica a data (usa startsWith caso venha com horário YYYY-MM-DD HH:MM:SS)
+            const bateData = !dataSelecionada || dataCard.startsWith(dataSelecionada);
+
+            // 2. Verifica o tipo
+            const bateTipo = !tipoSelecionado || tipoCard === tipoSelecionado;
+
+            // Só exibe se passar nas DUAS condições simultaneamente
+            if (bateData && bateTipo) {
+                card.style.display = '';
+                visiveis++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        const msgVazio = document.getElementById('sem-resultados');
+        const flash = document.querySelector('.container-flash');
+        
+        if (msgVazio) {
+                msgVazio.style.display = (visiveis === 0) ? 'flex' : 'none';
+            };
+
+        if (flash) {
+                msgVazio.style.display = 'none';
+        }
+}
+
+    // Ambos os inputs disparam a mesma função combinada
+    dateTech.addEventListener('change', aplicarFiltros);
+    typeTech.addEventListener('change', aplicarFiltros);
+});
+
+function limparPesquisa() {
+    document.getElementById('campoPesquisa').value = '';
+    document.getElementById('filtroTipo').value = '';
+    document.getElementById('filtroData').value = '';
+
+    containerCards.querySelectorAll('.card__group').forEach(card => {
+        card.style = '';
+    });
+}
+
+
+limparBTN.addEventListener('click', limparPesquisa);
 
 

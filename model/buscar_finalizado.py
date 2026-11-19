@@ -19,3 +19,18 @@ def buscar_os_finalizado():
     conexao.close()
 
     return resposta
+
+def buscar_filtrado(nome_usuario):
+
+    conexao, cursor = conectar()
+
+    cursor.execute("""SELECT ordens_servicos.id_ordem, maquinas.numero_patrimonio, falhas.falha, usuarios.nome, ordens_servicos.tipo_manutencao, ordens_servicos.descricao_problema, ordens_servicos.data_inicio_manutencao, ordens_servicos.data_termino_manutencao FROM db_manutencaods_em.ordens_servicos
+        INNER JOIN falhas ON ordens_servicos.id_falha = falhas.id_falha
+        INNER JOIN maquinas ON ordens_servicos.id_maquina = maquinas.id_maquina
+        INNER JOIN usuarios ON ordens_servicos.cpf = usuarios.cpf
+        WHERE status_ordem = %s AND usuarios.nome = %s
+        ORDER BY YEAR(data_termino_manutencao) ASC, MONTH(data_termino_manutencao) ASC""", ("Finalizada", nome_usuario))
+    resposta = cursor.fetchall()
+    conexao.close()
+
+    return resposta

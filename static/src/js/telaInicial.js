@@ -77,35 +77,10 @@ const overlayFalha = document.querySelector('.fault-create__overlay');
 const btnCloseFalha = document.querySelector('.fault-create__close-btn');
 const btnCancelFalha = document.querySelector('#btnCancelCreateFaultForm');
 
-// Modal: Detalhes e Edição da Ordem de Inspeção
-const inspectionModal = document.querySelector('#inspectionModal');
-const inspectionModalOverlay = document.querySelector('#inspectionModalOverlay');
-const btnCloseInspection = document.querySelector('#btnCloseInspection');
-const btnCancelInspectionFooter = document.querySelector('#btnCancelInspectionFooter');
+const inputTech= document.getElementById('search-bar');
 
-const btnEditInspection = document.querySelector('#btnEditInspection');
-const updateInspectionModal = document.querySelector('#updateInspectionModal');
-const updateInspectionOverlay = document.querySelector('#updateInspectionOverlay');
-const btnCancelUpdateInspection = document.querySelector('#btnCancelUpdateInspection');
-const btnCancelEditInspectionForm = document.querySelector('#btnCancelEditInspectionForm');
-const formUpdateInspection = document.querySelector('#formUpdateInspection');
-
-const inspIdEl = document.querySelector('#insp_id');
-const inspDataEl = document.querySelector('#insp_data');
-const inspMaquinaEl = document.querySelector('#insp_maquina');
-const inspPatrimonioEl = document.querySelector('#insp_patrimonio');
-const inspResponsavelEl = document.querySelector('#insp_responsavel');
-const inspSolicitanteEl = document.querySelector('#insp_solicitante');
-const inspDescricaoEl = document.querySelector('#insp_descricao');
-const inspStatusBadgeEl = document.querySelector('#insp_status_badge');
-
-const formAssignInspection = document.querySelector('#formAssignInspection');
-const selectInspResponsavel = document.querySelector('#select_insp_responsavel');
-const formFinishInspection = document.querySelector('#formFinishInspection');
-
-// Estado global da ordem selecionada
-let osAtualSelecionada = null;
-let inspecaoAtualSelecionada = null;
+// Variável de controle da OS selecionada
+let idOrdemAtual = null;
 
 
 // ==========================================
@@ -550,6 +525,88 @@ selectTipoManutencao?.addEventListener('change', () => {
         containerStopMachine?.classList.remove('is-hidden');
     } else {
         containerStopMachine?.classList.add('is-hidden');
+    }
+});
+
+inputDateStop?.addEventListener('input', () => {
+    if (!inputDateStop.checked) {
+        containerDataParada.classList.add('is-hidden')
+    }
+    else {
+        containerDataParada.classList.remove('is-hidden')
+    }
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+    const cardsOrders = document.querySelectorAll('.work-order');
+    const msgVazio = document.getElementById('sem-resultados');
+    const flash = document.querySelector('.container-flash');
+
+    function aplicarFiltros() {
+        const termoBusca = (inputTech?.value || '').trim().toLowerCase();
+        let visiveis = 0;
+
+        cardsOrders.forEach(card => {
+            const orderCard = (card.getAttribute('data-responsavel') || '').toLowerCase()
+
+            const bateNome = !termoBusca || orderCard.includes(termoBusca);
+
+            if (bateNome) {
+                card.style.display = '';
+                visiveis++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (msgVazio) {
+            msgVazio.style.display = (visiveis === 0) ? 'flex' : 'none';
+        }
+
+        if (flash) {
+            msgVazio.style.display = 'none';
+        }
+    }
+
+    inputTech.addEventListener('input', aplicarFiltros);
+});
+
+
+
+containerInspec.hidden = true;
+containerInspec.classList.add('is-hidden');
+
+btnInspec.addEventListener('click', () => {
+
+    btnInspec.classList.add('is-active');
+    btnServico.classList.remove('is-active');
+
+    switcherTrack.classList.add('is-inspecao');
+
+    containerServico.hidden = true;
+    containerServico.classList.add('is-hidden');
+
+    containerInspec.hidden = false;
+    containerInspec.classList.remove('is-hidden');
+});
+btnServico?.addEventListener('click', () => {
+    btnServico.classList.add('is-active');
+    btnInspec?.classList.remove('is-active');
+
+    switcherTrack?.classList.remove('is-inspecao');
+
+    if (containerInspec) {
+        containerInspec.hidden = true;
+        containerInspec.classList.add('is-hidden');
+    }
+
+    if (containerServico) {
+        containerServico.hidden = false;
+        containerServico.classList.remove('is-hidden');
+    }
+
+    if (EditFalha) {
+        EditFalha.required = true;
     }
 });
 
