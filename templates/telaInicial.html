@@ -885,7 +885,6 @@ Página Inicial
                         </fieldset>
 
                         <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->
-                        <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->
                         <fieldset class="order-create__section">
                             <legend class="order-create__section-title">CRONOGRAMA E DATAS</legend>
                             {% if user_rbac in ['admin', 'root'] %}
@@ -918,7 +917,7 @@ Página Inicial
                                         parada?</label>
                                 </div>
 
-                                <div id="campo_data_parada" class="order-create__field" margin-top: 10px;">
+                                <div id="campo_data_parada" class="order-create__field" style="margin-top: 10px;">
                                     <label class="order-create__label" for="create_data_parada">Data da Parada</label>
                                     <input class="order-create__input" type="date" id="create_data_parada"
                                         name="data_parada" min="1000-01-01" max="9999-12-31">
@@ -932,9 +931,9 @@ Página Inicial
 
                             <div class="order-create__grid">
                                 <div class="order-create__field order-create__field--full">
-                                    <label class="order-create__label" for="falhas">Falha Identificada</label>
+                                    <label class="order-create__label" for="edit_falha">Falha Identificada</label>
                                     <div class="inputs-falha">
-                                        <select class="order-edit__select" id="edit_falha" name="id_falha" required>
+                                        <select class="order-edit__select" id="edit_falha" name="id_falha">
                                             <option value="" disabled selected>Selecione a falha...</option>
                                             {% for falha in falhas %}
                                             <option value="{{ falha.id_falha }}"
