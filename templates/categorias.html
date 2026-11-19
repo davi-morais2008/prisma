@@ -31,14 +31,11 @@ Categorias e Configurações
                     <h3 class="category-card__title">{{ tipo.tipo_maquina }}</h3>
                 </div>
                 <div class="category-card__actions">
-                    <button class="btn-action btn-action--edit" aria-label="Editar {{ tipo.tipo_maquina }}"
-                        data-id="{{ tipo.id_tipo_maquina }}">
-                        <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="btn-action btn-action--delete" aria-label="Excluir {{ tipo.tipo_maquina }}"
-                        data-id="{{ tipo.id_tipo_maquina }}">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
+                    <form action="/categorias/deletar_tipo/{{ tipo.id_tipo_maquina }}" method="POST">
+                        <button type="submit" class="btn-action btn-action--delete" aria-label="Excluir {{ tipo.tipo_maquina }}">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </form>
                 </div>
             </article>
             {% endfor %}
@@ -61,14 +58,11 @@ Categorias e Configurações
                     <h3 class="category-card__title">{{ sector.setor }}</h3>
                 </div>
                 <div class="category-card__actions">
-                    <button class="btn-action btn-action--edit" aria-label="Editar {{ sector.setor }}"
-                        data-id="{{ sector.id_setor }}">
-                        <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="btn-action btn-action--delete" aria-label="Excluir {{ sector.setor }}"
-                        data-id="{{ sector.id_setor }}">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
+                    <form action="/categorias/deletar_setor/{{ sector.id_setor }}" method="POST">
+                        <button type="submit" class="btn-action btn-action--delete" aria-label="Excluir {{ sector.setor }}">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </form>
                 </div>
             </article>
             {% endfor %}
@@ -98,14 +92,11 @@ Categorias e Configurações
                             <h3 class="category-card__title">{{ falha.falha }}</h3>
                         </div>
                         <div class="category-card__actions">
-                            <button class="btn-action btn-action--edit" aria-label="Editar {{ falha.falha }}"
-                                data-id="{{ falha.id_falha }}">
-                                <span class="material-symbols-outlined">edit</span>
-                            </button>
-                            <button class="btn-action btn-action--delete" aria-label="Excluir {{ falha.falha }}"
-                                data-id="{{ falha.id_falha }}">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
+                            <form action="/categorias/deletar_falha/{{ falha.id_falha }}" method="POST">
+                                <button type="submit" class="btn-action btn-action--delete" aria-label="Excluir {{ falha.falha }}">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </form>
                         </div>
                     </article>
                     {% else %}
@@ -127,8 +118,7 @@ Categorias e Configurações
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </header>
-            <form class="category-modal__form">
-                <input type="hidden" name="id_tipo_maquina" class="form-id">
+            <form class="category-modal__form" action="/categorias/adicionar_tipo" method="POST">
                 <div class="form-group">
                     <label for="tipo-nome">Nome do Tipo</label>
                     <input type="text" id="tipo-nome" name="tipo_maquina" placeholder="Ex: Torno CNC, Fresa, Impressora 3D" required>
@@ -151,8 +141,7 @@ Categorias e Configurações
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </header>
-            <form class="category-modal__form">
-                <input type="hidden" name="id_setor" class="form-id">
+            <form class="category-modal__form" action="/categorias/adicionar_setor" method="POST">
                 <div class="form-group">
                     <label for="setor-nome">Nome do Setor</label>
                     <input type="text" id="setor-nome" name="setor" placeholder="Ex: Usinagem, Montagem, Estamparia" required>
@@ -175,8 +164,7 @@ Categorias e Configurações
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </header>
-            <form class="category-modal__form">
-                <input type="hidden" name="id_falha" class="form-id">
+            <form class="category-modal__form" action="/categorias/adicionar_falha" method="POST">
                 <div class="form-group">
                     <label for="falha-tipo-maquina">Tipo de Máquina Associado</label>
                     <select id="falha-tipo-maquina" name="id_tipo_maquina" required>

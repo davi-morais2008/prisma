@@ -57,7 +57,8 @@ CREATE TABLE IF NOT EXISTS ordens_servicos (
     status_ordem VARCHAR(100) default 'Pendente',
     fase_manutencao VARCHAR(250) DEFAULT 'Aguardando Início',
     tipo_manutencao VARCHAR(100),
-    descricao_problema VARCHAR(255),
+    descricao_problema VARCHAR(255) NULL,
+    descricao_manutencao VARCHAR(255),
     data_inicio_manutencao DATE DEFAULT NULL,
     data_termino_manutencao DATE DEFAULT NULL,
     data_parada DATE,
@@ -89,11 +90,15 @@ CREATE TABLE IF NOT EXISTS imagens_maquinas (
 CREATE TABLE IF NOT EXISTS ordem_inspecao (
     id_ordem_inspecao INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_maquina INT NOT NULL,
-    cpf VARCHAR(11) NOT NULL,
+    cpf_solicitante VARCHAR(11) NOT NULL,
+    cpf VARCHAR(11) NULL,
     descricao_inspecao VARCHAR(250),
-    status_inspecao BOOL DEFAULT TRUE,
-    status_processo VARCHAR(100) default 'PENDENTE',
-    data_inspec DATE
+    status_inspecao VARCHAR(20) DEFAULT 'Ativa',
+    status_processo VARCHAR(100) DEFAULT 'PENDENTE',
+    data_inspec DATE,
+    FOREIGN KEY (id_maquina) REFERENCES maquinas(id_maquina),
+    FOREIGN KEY (cpf_solicitante) REFERENCES usuarios(cpf),
+    FOREIGN KEY (cpf) REFERENCES usuarios(cpf)
 );
 
 -- Chaves Estrangeiras (Foreign Keys)
