@@ -591,146 +591,135 @@ Página Inicial
 
 
     <!-- Modal de Edição da Ordem de Serviço (OS) -->
-    <!-- MODAL DE EDIÇÃO DA ORDEM DE SERVIÇO -->
-    <div class="order-edit" id="updateModal" role="dialog" aria-modal="true" aria-labelledby="orderEditTitle">
-        <div class="order-edit__overlay" id="updateModalOverlay"></div>
-
+    {% for os in ordens %}
+    <div class="order-edit" id="updateModal-{{ os.id_ordem }}" role="dialog" aria-modal="true" aria-labelledby="orderEditTitle-{{ os.id_ordem }}">
+        <div class="order-edit__overlay"></div>
+    
         <article class="order-edit__card">
             <!-- CABEÇALHO SUPERIOR -->
             <header class="order-edit__header">
                 <div class="order-edit__brand">
                     <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="order-edit__brand-image">
-                    <h1 class="order-edit__brand-title" id="orderEditTitle">EDITAR ORDEM DE SERVIÇO</h1>
+                    <h1 class="order-edit__brand-title" id="orderEditTitle-{{ os.id_ordem }}">EDITAR ORDEM DE SERVIÇO #{{ os.id_ordem }}</h1>
                 </div>
-                <button type="button" class="order-edit__close-btn" id="btnCancelUpdate"
-                    aria-label="Fechar formulário de edição">
+                <button type="button" class="order-edit__close-btn btn-fechar-edicao" aria-label="Fechar formulário de edição">
                     <span class="material-symbols-outlined" aria-hidden="true">close</span>
                 </button>
             </header>
-
+    
             <!-- FORMULÁRIO DE EDIÇÃO -->
-            <form class="order-edit__form" id="formUpdateOrder" method="POST" action="">
+            <form class="order-edit__form" action="/atualizar_ordem/{{ os.id_ordem }}" method="POST">
                 <div class="order-edit__body">
-
+    
                     <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
                     <fieldset class="order-edit__section">
                         <legend class="order-edit__section-title">INFORMAÇÕES GERAIS</legend>
-
+    
                         <div class="order-edit__grid order-edit__grid--2-col">
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_status_ordem">Status da Ordem</label>
-                                <select class="order-edit__select" id="edit_status_ordem" name="status_ordem" required>
-                                    <option value="Pendente">Pendente</option>
-                                    <option value="Ativa">Ativa</option>
-                                    <option value="Finalizada">Finalizada</option>
-                                    <option value="Cancelada">Cancelada</option>
+                                <label class="order-edit__label" for="edit_status_ordem_{{ os.id_ordem }}">Status da Ordem</label>
+                                <select class="order-edit__select" id="edit_status_ordem_{{ os.id_ordem }}" name="status_ordem" required>
+                                    <option value="Pendente" {% if os.status_ordem == 'Pendente' %}selected{% endif %}>Pendente</option>
+                                    <option value="Em Andamento" {% if os.status_ordem == 'Em Andamento' %}selected{% endif %}>Em Andamento</option>
+                                    <option value="Concluído" {% if os.status_ordem == 'Concluído' %}selected{% endif %}>Concluído</option>
+                                    <option value="Cancelado" {% if os.status_ordem == 'Cancelado' %}selected{% endif %}>Cancelado</option>
                                 </select>
                             </div>
-
+    
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_fase_manutencao">Fase da Manutenção</label>
-                                <select class="order-edit__select" id="edit_fase_manutencao" name="fase_manutencao"
-                                    required>
-                                    <option value="Aguardando Início">Aguardando Início</option>
-                                    <option value="Em andamento">Em andamento</option>
-                                    <option value="Finalizada">Finalizada</option>
+                                <label class="order-edit__label" for="edit_fase_manutencao_{{ os.id_ordem }}">Fase da Manutenção</label>
+                                <select class="order-edit__select" id="edit_fase_manutencao_{{ os.id_ordem }}" name="fase_manutencao" required>
+                                    <option value="Aguardando Início" {% if os.fase_manutencao == 'Aguardando Início' %}selected{% endif %}>Aguardando Início</option>
+                                    <option value="Triagem" {% if os.fase_manutencao == 'Triagem' %}selected{% endif %}>Triagem</option>
+                                    <option value="Diagnóstico" {% if os.fase_manutencao == 'Diagnóstico' %}selected{% endif %}>Diagnóstico</option>
+                                    <option value="Execução" {% if os.fase_manutencao == 'Execução' %}selected{% endif %}>Execução</option>
+                                    <option value="Testes" {% if os.fase_manutencao == 'Testes' %}selected{% endif %}>Testes</option>
+                                    <option value="Finalizado" {% if os.fase_manutencao == 'Finalizado' %}selected{% endif %}>Finalizado</option>
                                 </select>
                             </div>
-
+    
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_tipo_manutencao">Tipo de Manutenção</label>
-                                <select class="order-edit__select" id="edit_tipo_manutencao" name="tipo_manutencao"
-                                    required>
-                                    <option value="Corretiva">Corretiva</option>
-                                    <option value="Preventiva">Preventiva</option>
-                                    <option value="Preditiva">Preditiva</option>
+                                <label class="order-edit__label" for="edit_tipo_manutencao_{{ os.id_ordem }}">Tipo de Manutenção</label>
+                                <select class="order-edit__select" id="edit_tipo_manutencao_{{ os.id_ordem }}" name="tipo_manutencao" required>
+                                    <option value="Corretiva" {% if os.tipo_manutencao == 'Corretiva' %}selected{% endif %}>Corretiva</option>
+                                    <option value="Preventiva" {% if os.tipo_manutencao == 'Preventiva' %}selected{% endif %}>Preventiva</option>
+                                    <option value="Preditiva" {% if os.tipo_manutencao == 'Preditiva' %}selected{% endif %}>Preditiva</option>
                                 </select>
                             </div>
-
+    
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_tecnico_responsavel">Técnico
-                                    Responsável</label>
-                                <select class="order-edit__select" id="edit_tecnico_responsavel"
-                                    name="tecnico_responsavel">
-                                    <option value="">Não atribuído</option>
-                                    {% for tecnico in tecnicos %}
-                                    {% if tecnico.rbac == 'usuario' %}
-                                    <option value="{{ tecnico.cpf }}">{{ tecnico.nome }}</option>
-                                    {% endif %}
-                                    {% endfor %}
-                                </select>
+                                <label class="order-edit__label" for="edit_tecnico_responsavel_{{ os.id_ordem }}">Técnico Responsável (CPF)</label>
+                                <input class="order-edit__input" type="text" id="edit_tecnico_responsavel_{{ os.id_ordem }}"
+                                    name="tecnico_responsavel" value="{{ os.cpf or '' }}" placeholder="CPF do técnico" required>
                             </div>
                         </div>
                     </fieldset>
-
+    
                     <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->
                     <fieldset class="order-edit__section">
                         <legend class="order-edit__section-title">CRONOGRAMA E DATAS</legend>
-
+    
                         <div class="order-edit__grid order-edit__grid--2-col">
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_data_prev_inicio">Previsão Início</label>
-                                <input class="order-edit__input" type="datetime-local" id="edit_data_prev_inicio"
-                                    name="data_prev_inicio_manutencao" required>
+                                <label class="order-edit__label" for="edit_data_prev_inicio_{{ os.id_ordem }}">Prev. Início Manutenção</label>
+                                <input class="order-edit__input" type="datetime-local" id="edit_data_prev_inicio_{{ os.id_ordem }}"
+                                    name="data_prev_inicio_manutencao"
+                                    value="{{ os.data_prev_inicio_manutencao.strftime('%Y-%m-%dT%H:%M') if os.data_prev_inicio_manutencao else '' }}">
                             </div>
-
+    
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_data_prev_termino">Previsão Término</label>
-                                <input class="order-edit__input" type="datetime-local" id="edit_data_prev_termino"
-                                    name="data_prev_termino_manutencao" required>
+                                <label class="order-edit__label" for="edit_data_prev_termino_{{ os.id_ordem }}">Prev. Término Manutenção</label>
+                                <input class="order-edit__input" type="datetime-local" id="edit_data_prev_termino_{{ os.id_ordem }}"
+                                    name="data_prev_termino_manutencao"
+                                    value="{{ os.data_prev_termino_manutencao.strftime('%Y-%m-%dT%H:%M') if os.data_prev_termino_manutencao else '' }}">
                             </div>
-
+    
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_data_parada">Data da Parada</label>
-                                <input class="order-edit__input" type="datetime-local" id="edit_data_parada"
-                                    name="data_parada">
+                                <label class="order-edit__label" for="edit_data_parada_{{ os.id_ordem }}">Data da Parada</label>
+                                <input class="order-edit__input" type="datetime-local" id="edit_data_parada_{{ os.id_ordem }}"
+                                    name="data_parada"
+                                    value="{{ os.data_parada.strftime('%Y-%m-%dT%H:%M') if os.data_parada else '' }}">
                             </div>
-
+    
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_data_inicio">Data de Início Real</label>
-                                <input class="order-edit__input" type="datetime-local" id="edit_data_inicio"
-                                    name="data_inicio_manutencao">
+                                <label class="order-edit__label" for="edit_data_inicio_{{ os.id_ordem }}">Data Início Real</label>
+                                <input class="order-edit__input" type="datetime-local" id="edit_data_inicio_{{ os.id_ordem }}"
+                                    name="data_inicio"
+                                    value="{{ os.data_inicio_manutencao.strftime('%Y-%m-%dT%H:%M') if os.data_inicio_manutencao else '' }}">
                             </div>
                         </div>
                     </fieldset>
-
+    
                     <!-- SEÇÃO 3: DIAGNÓSTICO E FALHA -->
                     <fieldset class="order-edit__section">
                         <legend class="order-edit__section-title">DIAGNÓSTICO E FALHA</legend>
-
+    
                         <div class="order-edit__grid">
                             <div class="order-edit__field order-edit__field--full">
-                                <label class="order-edit__label" for="edit_falha">Falha Identificada</label>
-                                <select class="order-edit__select" id="edit_falha" name="id_falha" required>
-                                    <option value="" disabled selected>Selecione a falha...</option>
-                                    {% for falha in falhas %}
-                                    <option value="{{ falha.id_falha }}"
-                                        data-tipo-maquina="{{ falha.id_tipo_maquina }}">
-                                        {{ falha.falha }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
+                                <label class="order-edit__label" for="edit_falha_{{ os.id_ordem }}">Falha Identificada</label>
+                                <input class="order-edit__input" type="text" id="edit_falha_{{ os.id_ordem }}" name="falha"
+                                    value="{{ os.falha or '' }}" placeholder="Sintoma ou falha identificada" required>
                             </div>
-
+    
                             <div class="order-edit__field order-edit__field--full">
-                                <label class="order-edit__label" for="edit_desc_problema">Descrição do Problema</label>
-                                <textarea class="order-edit__textarea" id="edit_desc_problema" name="descricao_problema"
-                                    rows="3" placeholder="Detalhamento do problema ocorrido..." required></textarea>
+                                <label class="order-edit__label" for="edit_desc_problema_{{ os.id_ordem }}">Descrição do Problema</label>
+                                <textarea class="order-edit__textarea" id="edit_desc_problema_{{ os.id_ordem }}" name="desc_problema"
+                                    rows="3" placeholder="Detalhamento do problema ocorrido..." required>{{ os.descricao_problema or '' }}</textarea>
                             </div>
                         </div>
                     </fieldset>
-
+    
                 </div>
-
+    
                 <!-- RODAPÉ COM AÇÕES -->
                 <footer class="order-edit__footer">
-                    <button type="button" class="order-edit__btn order-edit__btn--cancel"
-                        id="btnCancelEditForm">Cancelar</button>
+                    <button type="button" class="order-edit__btn order-edit__btn--cancel btn-fechar-edicao">Cancelar</button>
                     <button type="submit" class="order-edit__btn order-edit__btn--submit">Salvar Alterações</button>
                 </footer>
             </form>
         </article>
     </div>
+    {% endfor %}
 
 
     <!-- Modal de Cadastro da Ordem de Serviço (OS) -->

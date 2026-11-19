@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os, atualizar_OS, iniciar_OS
 from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
 from model.OS_inspec import inserir_ordem_inspecao, consultar_ordens_inspecao, destinar_responsavel_inspecao, editar_ordem_inspecao, finalizar_ordem_inspecao
 from model.dashboard import buscar_dados_dashboard
@@ -12,6 +12,17 @@ from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
 from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina, consulta_setores, consultar_falhas, adicionar_falha, adicionar_tipo_maquina
+from model.categorias import (
+    listar_tipos_maquina,
+    listar_setores,
+    listar_falhas,
+    inserir_tipo_maquina,
+    inserir_setor,
+    inserir_falha_por_tipo,
+    deletar_tipo_maquina,
+    deletar_setor,
+    deletar_falha
+)
 from model.cadastro import cadastrar_usuario
 from flask_mail import Mail, Message
 from functools import wraps
@@ -33,9 +44,10 @@ serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 @app.context_processor
 def inject_user_permissions():
     return {
-        'user_rbac' : session.get('user_rbac'),
-        'user' : session.get('user'),
+        'user_rbac': session.get('user_rbac'),
+        'user': session.get('user'),
     }
+
 
 def login_required(f):
     @wraps(f)
@@ -45,6 +57,7 @@ def login_required(f):
             return redirect(url_for('pagina_login'))
         return f(*args, **kwargs)
     return decorated_function
+
 
 def roles_required(*roles):
     def decorator(f):
@@ -61,6 +74,7 @@ def roles_required(*roles):
             return f(*args, **kwargs)
         return decorated_function
     return decorator
+
 
 @app.route('/esqueci-senha', methods=['GET', 'POST'])
 @app.route('/recuperacaoSenha', methods=['GET', 'POST'])
@@ -117,6 +131,7 @@ def redefinir_senha(token):
 def painel_geral():
     return render_template('painelGeral.html')
 
+
 @app.route('/api/dados')
 def get_dados():
     try:
@@ -134,7 +149,7 @@ def get_dados():
                 "labels": informacoes["labels_mes"],
                 "valores": informacoes["valores_mes"]
             },
-            "falhas_quantidade":{
+            "falhas_quantidade": {
                 "labels": informacoes["labels_falha"],
                 "valores": informacoes["valores_falha"]
             }
@@ -142,64 +157,27 @@ def get_dados():
     except Exception as e:
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
+
 @app.route('/logoff')
 def logoff():
     session.clear()
     return redirect('/login')
 
+
 @app.route('/')
 @app.route("/telaInicial")
 @login_required
 def pagina_inicial():
-    ordens = consultar_ordem_servico() # <-- sua consulta SQL atual
+    ordens = consultar_ordem_servico()
     tecnicos = buscar_usuario()
     falhas = consultar_falhas()
     maquinas = consultar_maquinas()
     tipo_maquinas = consulta_tipo_maquinas()
     ordens_inspec = consultar_ordens_inspecao()
 
-    # 2. Depois, filtre usando uma nova variável (ex: ordens_filtradas)
     if session.get('user_rbac') == 'root':
         ordens_filtradas = ordens
     else:
-        # Encontra o nome do técnico pelo CPF da sessão
-        cpf_logado = session.get('user')
-        tecnico = next((t for t in tecnicos if t['cpf'] == cpf_logado), None)
-        
-        if tecnico:
-            ordens_filtradas = [
-                os for os in ordens 
-                if os['tecnico_responsavel'] == tecnico['nome'] # ajuste 'nome' se a coluna tiver outro nome
-            ]
-        else:
-            ordens_filtradas = []
-
-    if not ordens_filtradas:
-                    flash(f"Nenhuma ordem de serviço foi encontrada.", "warning")
-
-    # 3. Passe 'ordens_filtradas' para o template
-    return render_template(
-        "telaInicial.html",
-        ordem_servico=ordens_filtradas,
-        tecnicos=tecnicos,
-        falhas=falhas,
-        maquinas=maquinas,
-        tipo_maquinas=tipo_maquinas,
-        ordens_inspecao = ordens_inspec
-    )
-
-@app.route ("/telaInicial/filtro/<tipo>", methods=["GET"])
-def filtrar_ordens(tipo):
-    ordens = filtrar_ordem_servico(tipo)
-    tecnicos = buscar_usuario()
-    falhas = consultar_falhas()
-    maquinas = consultar_maquinas()
-    tipo_maquinas = consulta_tipo_maquinas()
-
-    if session.get('user_rbac') == 'root':
-            ordens_filtradas = ordens
-    else:
-        # Encontra o nome do técnico pelo CPF da sessão
         cpf_logado = session.get('user')
         tecnico = next((t for t in tecnicos if t['cpf'] == cpf_logado), None)
         
@@ -212,16 +190,53 @@ def filtrar_ordens(tipo):
             ordens_filtradas = []
 
     if not ordens_filtradas:
-                flash(f"Nenhuma ordem de serviço do tipo {tipo} foi encontrada.", "warning")
-        
+        flash("Nenhuma ordem de serviço foi encontrada.", "warning")
 
     return render_template(
-            "telaInicial.html",
-            ordem_servico=ordens_filtradas,
-            tecnicos=tecnicos,
-            falhas=falhas,
-            maquinas=maquinas,
-            tipo_maquinas=tipo_maquinas)
+        "telaInicial.html",
+        ordens=ordens,
+        ordem_servico=ordens_filtradas,
+        tecnicos=tecnicos,
+        falhas=falhas,
+        maquinas=maquinas,
+        tipo_maquinas=tipo_maquinas,
+        ordens_inspecao = ordens_inspec
+    )
+
+
+@app.route("/telaInicial/filtro/<tipo>", methods=["GET"])
+def filtrar_ordens(tipo):
+    ordens = filtrar_ordem_servico(tipo)
+    tecnicos = buscar_usuario()
+    falhas = consultar_falhas()
+    maquinas = consultar_maquinas()
+    tipo_maquinas = consulta_tipo_maquinas()
+
+    if session.get('user_rbac') == 'root':
+        ordens_filtradas = ordens
+    else:
+        cpf_logado = session.get('user')
+        tecnico = next((t for t in tecnicos if t['cpf'] == cpf_logado), None)
+        
+        if tecnico:
+            ordens_filtradas = [
+                os for os in ordens 
+                if os['tecnico_responsavel'] == tecnico['nome']
+            ]
+        else:
+            ordens_filtradas = []
+
+    if not ordens_filtradas:
+        flash(f"Nenhuma ordem de serviço do tipo {tipo} foi encontrada.", "warning")
+
+    return render_template(
+        "telaInicial.html",
+        ordem_servico=ordens_filtradas,
+        tecnicos=tecnicos,
+        falhas=falhas,
+        maquinas=maquinas,
+        tipo_maquinas=tipo_maquinas
+    )
 
 
 @app.route("/api/get/ordens_servico/", methods=["GET"])
@@ -237,6 +252,7 @@ def api_get_ordem():
     except Exception as e:
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
+
 @app.route("/telaInicial/post-register-order-inspec", methods=["POST"])
 def register_os_inspec():
     maquinas = consultar_maquinas()
@@ -245,6 +261,7 @@ def register_os_inspec():
     inspec_descricao = request.form.get('insp_descricao')
     solicitante = request.form.get('insp_solicitante')
 
+    id_maquina = None
     for maquina in maquinas:
         if str(maquina['numero_patrimonio']) == str(nmr_patrimonio):
             id_maquina = maquina['id_maquina']
@@ -252,10 +269,8 @@ def register_os_inspec():
     if id_maquina is None:
         return "Máquina não encontrada com o patrimônio informado", 400
 
-    inserir_ordem_inspecao(id_maquina, solicitante, inspec_descricao, date_inspec )
+    inserir_ordem_inspecao(id_maquina, solicitante, inspec_descricao, date_inspec)
     return redirect('/telaInicial')
-
-
 
 
 @app.route("/telaInicial/post-register-order-maintenance", methods=["POST"])
@@ -271,7 +286,6 @@ def register_os_maintenance():
     desc_problema = request.form.get('desc_problema')
 
     id_maquina = None
-
     for maquina in maquinas:
         if str(maquina['numero_patrimonio']) == str(nmr_patrimonio):
             id_maquina = maquina['id_maquina']
@@ -397,7 +411,8 @@ def pagina_historico():
     print(OSfinalizado)
     if OSfinalizado == []:
         flash("Nenhum histórico encontrado.", "warning")
-    return render_template("historico.html", OSfinalizado = OSfinalizado)
+    return render_template("historico.html", OSfinalizado=OSfinalizado)
+
 
 @app.route("/api/get/info_manutencao/<int:id_ordem>", methods=["GET"])
 def api_get_info_manutencao(id_ordem):
@@ -411,6 +426,8 @@ def api_get_info_manutencao(id_ordem):
 @app.route('/login')
 def pagina_login():
     return render_template('cadastroLogin.html')
+
+
 @app.route('/login/post', methods=['POST'])
 def post_login():
     usuarios = buscar_usuario()
@@ -419,7 +436,6 @@ def post_login():
     
     for user in usuarios:
         if user['cpf'] == usuario and user['senha'] == senha:
-            # Bloqueia se status_usuario for 0, False ou None
             if not user.get('status_usuario'):
                 flash('Seu cadastro está aguardando aprovação de um administrador ou está inativo.', 'warning')
                 return redirect('/login')
@@ -431,7 +447,8 @@ def post_login():
     flash('Usuário ou Senha incorreto. Tente Novamente!', 'error')
     return redirect('/login')
 
-@app.route('/cadastro/post', methods = ['POST'])
+
+@app.route('/cadastro/post', methods=['POST'])
 def post_cadastro():
     username = request.form.get("cadastro-nome")
     user_email = request.form.get("cadastro-email")
@@ -439,7 +456,7 @@ def post_cadastro():
     user_pwd = request.form.get("cadastro-pwd")
     user_confirm_pwd = request.form.get("cadastro-confirmpwd")
     if buscar_usuario((user_cpf, user_email))[0]['resultado'] == user_cpf:
-        flash ('Este CPF já está cadastrado no sistema. Tente o Cadastro Novamente!', 'error')
+        flash('Este CPF já está cadastrado no sistema. Tente o Cadastro Novamente!', 'error')
         return redirect('/login')
     if buscar_usuario((user_cpf, user_email))[0]['resultado'] == user_email:
         flash('Este email já está vinculado a uma conta. Tente o Cadastro Novamente!', 'error')
@@ -457,23 +474,22 @@ def post_cadastro():
     except Exception as e:
         flash('Erro ao cadastrar-se. Tente Novamente', 'error')
     return redirect('/login')
-    
 
 
-
-@app.route('/maquinas', methods = ['GET'])
+@app.route('/maquinas', methods=['GET'])
 @login_required
 def pagina_maquinas():
     maquinas = consultar_maquinas()
     tipos_maquinas = consulta_tipo_maquinas()
     setores = consulta_setores()
-    return render_template('maquinas.html', maquinas = maquinas, tipos_maquinas = tipos_maquinas, setores = setores)
+    return render_template('maquinas.html', maquinas=maquinas, tipos_maquinas=tipos_maquinas, setores=setores)
 
 
-@app.route('/maquinas/api_request_machines', methods = ['GET'])
+@app.route('/maquinas/api_request_machines', methods=['GET'])
 def maquinas_api_get():
     maquinas = consultar_maquinas()
     return jsonify(maquinas), 200
+
 
 @app.route('/maquinas/filtro/<tipo>', methods=["GET"])
 def filtro_maquinas(tipo):
@@ -483,9 +499,10 @@ def filtro_maquinas(tipo):
     if not maquinas_filtradas:
         flash(f"Nenhuma máquina do tipo {tipo} foi encontrada.", "warning")
 
-    return render_template("maquinas.html", maquinas = maquinas_filtradas, tipos_maquinas = tipos_maquinas)
+    return render_template("maquinas.html", maquinas=maquinas_filtradas, tipos_maquinas=tipos_maquinas)
 
-@app.route('/maquinas/post_register_machine', methods = ['POST'])
+
+@app.route('/maquinas/post_register_machine', methods=['POST'])
 @roles_required('admin', 'root')
 def maquinas_post_register():
     avatar_file = request.files.get("avatar-upload")
@@ -504,17 +521,18 @@ def maquinas_post_register():
     cadastrar_maquina(type_machine, number_machine, model_machine, location_machine, "TESTE", status_machine)
     return redirect('/maquinas')
 
-@app.route('/maquinas/api_delete_machines', methods = ['POST'])
+
+@app.route('/maquinas/api_delete_machines', methods=['POST'])
 @roles_required('admin', 'root')
 def maquinas_delete_machines():
     id_machine = request.get_json()
     deletar_maquina(int(id_machine['id']))
     return jsonify({"status": "sucesso", "mensagem": "Máquina Deletada!"}), 200
 
-@app.route('/maquinas/update_machines', methods = ['POST'])
+
+@app.route('/maquinas/update_machines', methods=['POST'])
 @roles_required('admin', 'root')
 def maquinas_update_machines():
-    
     avatar_file = request.files.get("edit-machine-img")
     type_machine = request.form.get("edit-type")
     number_machine = request.form.get("edit-patrimony")
@@ -533,12 +551,13 @@ def maquinas_update_machines():
     atualizar_editar_maquina(int(id_machine), type_machine, model_machine, number_machine, location_machine, status_machine)
     return redirect('/maquinas')
 
-@app.route('/maquina/adicionar_falha', methods = ['POST'])
+
+@app.route('/maquina/adicionar_falha', methods=['POST'])
 @login_required
 @roles_required('admin', 'root')
 def adicionar_falha_post():
     id_maquina = request.form.get('id_maquina')
-    falha =  request.form.get('descricao_falha')
+    falha = request.form.get('descricao_falha')
     try:
         adicionar_falha(id_maquina, falha)
         flash('Falha adicionada com sucesso', 'success')
@@ -546,7 +565,8 @@ def adicionar_falha_post():
         pass
     return redirect('/maquinas')
 
-@app.route('/maquina/adicionar_tipo_maquina', methods = ['POST'])
+
+@app.route('/maquina/adicionar_tipo_maquina', methods=['POST'])
 @login_required
 @roles_required('admin', 'root')
 def adicionar_tipo_maquina_post():
@@ -559,14 +579,103 @@ def adicionar_tipo_maquina_post():
     return redirect('/maquinas')
 
 
+# =========================================================
+# ROTAS DE CATEGORIAS (LISTAR E ADICIONAR)
+# =========================================================
+
 @app.route('/categorias')
+@login_required
+@roles_required('admin', 'root')
 def categorias():
-    return render_template('categorias.html')
+    tipos_maquina = listar_tipos_maquina()
+    setores = listar_setores()
+    falhas = listar_falhas()
 
-@app.route('/categorias/api_get_categorias')
-def categorias_get_api():
+    # Agrupa cada falha dentro do seu respectivo Tipo de Máquina
+    for tipo in tipos_maquina:
+        tipo['falhas'] = [
+            f for f in falhas
+            if f['id_tipo_maquina'] == tipo['id_tipo_maquina']
+        ]
 
-    return render_template('categorias.html')
+    return render_template(
+        'categorias.html',
+        tipos_maquina=tipos_maquina,
+        setores=setores
+    )
+
+
+@app.route('/categorias/adicionar_tipo', methods=['POST'])
+@login_required
+@roles_required('admin', 'root')
+def categorias_adicionar_tipo():
+    nome_tipo = request.form.get('tipo_maquina')
+    if nome_tipo and nome_tipo.strip():
+        if inserir_tipo_maquina(nome_tipo.strip()):
+            flash('Tipo de máquina cadastrado com sucesso!', 'success')
+        else:
+            flash('Erro ao cadastrar tipo de máquina.', 'danger')
+    return redirect('/categorias')
+
+
+@app.route('/categorias/adicionar_setor', methods=['POST'])
+@login_required
+@roles_required('admin', 'root')
+def categorias_adicionar_setor():
+    nome_setor = request.form.get('setor')
+    if nome_setor and nome_setor.strip():
+        if inserir_setor(nome_setor.strip()):
+            flash('Setor cadastrado com sucesso!', 'success')
+        else:
+            flash('Erro ao cadastrar setor.', 'danger')
+    return redirect('/categorias')
+
+
+@app.route('/categorias/adicionar_falha', methods=['POST'])
+@login_required
+@roles_required('admin', 'root')
+def categorias_adicionar_falha():
+    id_tipo_maquina = request.form.get('id_tipo_maquina')
+    nome_falha = request.form.get('falha')
+    if id_tipo_maquina and nome_falha and nome_falha.strip():
+        if inserir_falha_por_tipo(int(id_tipo_maquina), nome_falha.strip()):
+            flash('Falha cadastrada com sucesso!', 'success')
+        else:
+            flash('Erro ao cadastrar falha.', 'danger')
+    return redirect('/categorias')
+
+@app.route('/categorias/deletar_tipo/<int:id_tipo_maquina>', methods=['POST'])
+@login_required
+@roles_required('admin', 'root')
+def categorias_deletar_tipo(id_tipo_maquina):
+    if deletar_tipo_maquina(id_tipo_maquina):
+        flash('Tipo de máquina excluído com sucesso!', 'success')
+    else:
+        flash('Não foi possível excluir este tipo de máquina (verifique se existem máquinas ou falhas vinculadas a ele).', 'danger')
+    return redirect('/categorias')
+
+
+@app.route('/categorias/deletar_setor/<int:id_setor>', methods=['POST'])
+@login_required
+@roles_required('admin', 'root')
+def categorias_deletar_setor(id_setor):
+    if deletar_setor(id_setor):
+        flash('Setor excluído com sucesso!', 'success')
+    else:
+        flash('Não foi possível excluir este setor (verifique se existem máquinas vinculadas a ele).', 'danger')
+    return redirect('/categorias')
+
+
+@app.route('/categorias/deletar_falha/<int:id_falha>', methods=['POST'])
+@login_required
+@roles_required('admin', 'root')
+def categorias_deletar_falha(id_falha):
+    if deletar_falha(id_falha):
+        flash('Falha excluída com sucesso!', 'success')
+    else:
+        flash('Não foi possível excluir esta falha (verifique se existem ordens de serviço vinculadas a ela).', 'danger')
+    return redirect('/categorias')  
+
 
 @app.route('/profile')
 @login_required
@@ -580,29 +689,24 @@ def pagina_perfil():
 
 @app.route('/profile/uptade_information', methods=['POST'])
 def pagina_perfil_update():
-    
     nome = request.form.get('user-edit-name')
     email = request.form.get('user-edit-email')
     atualizar_usuario(session['user'], nome, email)
     return redirect('/profile')
-
-    
 
 
 @app.route('/usuarios', methods=['GET'])
 @login_required
 @roles_required('admin', 'root')
 def pagina_usuarios():
-    
     lista_de_usuarios = buscar_usuario()
     return render_template('usuarios.html', usuarios=lista_de_usuarios)
 
-    
+
 @app.route('/calendario')
 @login_required
 def pagina_calendario():
     return render_template('calendario.html')
-
 
 
 @app.route('/usuarios/api_alterar_status', methods=['POST'])
@@ -611,7 +715,7 @@ def pagina_calendario():
 def api_alterar_status_usuario():
     dados = request.get_json()
     cpf = dados.get('cpf')
-    novo_status = dados.get('status')  # 1 para ativar/aprovar, 0 para inativar
+    novo_status = dados.get('status')
 
     try:
         alterar_status_usuario(cpf, novo_status)
@@ -625,12 +729,13 @@ def api_alterar_status_usuario():
     except Exception as e:
         flash('Erro ao atualizar o status do usuário.', 'danger')
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
+
+
 @app.route('/api/ordens-servico')
 @login_required
 def api_ordens_servico():
     ordens = consultar_ordem_servico()
     
-    # Mapeia o status para as classes CSS que você já tem
     classes_status = {
         "Ativa": "evento-primary",
         "Finalizada": "evento-success",
@@ -639,7 +744,6 @@ def api_ordens_servico():
 
     eventos = []
     for os in ordens:
-        
         status = (os.get("status_ordem") or "Ativa").capitalize()
         
         eventos.append({
@@ -657,5 +761,27 @@ def api_ordens_servico():
 
     return jsonify(eventos)
 
+
+@app.route('/atualizar_ordem/<int:id_ordem>', methods=['POST'])
+def atualizar_ordem(id_ordem):
+    sucesso = atualizar_OS(
+        id_ordem=id_ordem,
+        status_ordem=request.form.get('status_ordem'),
+        cpf=request.form.get('tecnico_responsavel'),
+        fase_manutencao=request.form.get('fase_manutencao'),
+        tipo_manutencao=request.form.get('tipo_manutencao'),
+        descricao=request.form.get('desc_problema'),
+        data_prev_inicio=request.form.get('data_prev_inicio_manutencao'),
+        data_prev_termino=request.form.get('data_prev_termino_manutencao'),
+        data_parada=request.form.get('data_parada'),
+        data_inicio=request.form.get('data_inicio')
+    )
+
+    if sucesso:
+        return redirect('/telaInicial')
+    else:
+        return "Erro ao atualizar ordem de serviço", 400
+
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)  

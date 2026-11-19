@@ -23,6 +23,7 @@ const containerDestinate = document.getElementById('containerDestinate')
 
 
 
+
 // Modal: Detalhes da OS
 const orderModal = document.querySelector('#orderModalMaintenance');
 const overlayModal = document.querySelector('#modalOverlay');
@@ -30,7 +31,7 @@ const btnClose = document.querySelector('#btnClose');
 const btnEdit = document.querySelector('#btnEdit');
 const btnDelete = document.querySelector('#btnDelete');
 const formDetails = document.querySelector('#orderForm');
-const btnFinishOS = document.querySelector('#btnFinish')
+const btnFinishOS = document.querySelector('#btnFinish');
 
 // Campos de Informação da OS (Detalhes)
 const imagemMaquina = document.querySelector('.order-details__image');
@@ -44,7 +45,7 @@ const dataParada = document.querySelector('#data_parada');
 const dataInicioReal = document.querySelector('#data_inicio');
 const falhaIdentificada = document.querySelector('#falha');
 const descricaoProblema = document.querySelector('#desc_problema');
-const executeContainer = document.getElementById('execute-OS-section')
+const executeContainer = document.getElementById('execute-OS-section');
 const camposExecucao = document.getElementById('campos_execucao');
 const textareaDesc = document.getElementById('desc_manutencao');
 
@@ -88,15 +89,15 @@ const overlayFalha = document.querySelector('.fault-create__overlay');
 const btnCloseFalha = document.querySelector('.fault-create__close-btn');
 const btnCancelFalha = document.querySelector('#btnCancelCreateFaultForm');
 
+// Variável de controle da OS selecionada
+let idOrdemAtual = null;
+
 
 // ==========================================
 // FUNÇÕES DE CONTROLE DOS MODAIS
 // ==========================================
 const openOrderModal = () => orderModal.classList.add('active');
 const closeOrderModal = () => orderModal.classList.remove('active');
-
-const openEditModal = () => editModal.classList.add('active');
-const closeEditModal = () => editModal.classList.remove('active');
 
 const openDeleteModal = () => deleteModal.classList.add('active');
 const closeDeleteModal = () => deleteModal.classList.remove('active');
@@ -297,27 +298,40 @@ document.querySelectorAll('.alert.alert-sucesso').forEach(alerta => {
 
 
 // Confirmação da Exclusão
-btnConfirmDelete.addEventListener('click', () => {
-    closeDeleteModal();
-    closeOrderModal();
-});
+if (btnConfirmDelete) {
+    btnConfirmDelete.addEventListener('click', () => {
+        closeDeleteModal();
+        closeOrderModal();
+    });
+}
+
 
 // ==========================================
 // AGRUPAMENTO DE EVENTOS DE FECHAMENTO
 // ==========================================
 
-// Fechar Modal de Detalhes da OS
-[btnClose, overlayModal].forEach(el => el.addEventListener('click', closeOrderModal));
+// Fechar Modal de Edição (Jinja dinâmico)
+document.querySelectorAll('.btn-fechar-edicao, .order-edit__overlay').forEach(el => {
+    el.addEventListener('click', () => {
+        document.querySelectorAll('.order-edit.active').forEach(modal => {
+            modal.classList.remove('active');
+        });
+    });
+});
 
-// Fechar Modal de Edição
-[btnCloseUpdate, overlayUpdate, btnCancelUpdate].forEach(el => el.addEventListener('click', closeEditModal));
+// Fechar Modal de Detalhes da OS
+[btnClose, overlayModal].forEach(el => {
+    if (el) el.addEventListener('click', closeOrderModal);
+});
 
 // Fechar Modal de Exclusão
-[btnCloseDelete, btnCancelDelete].forEach(el => el.addEventListener('click', closeDeleteModal));
+[btnCloseDelete, btnCancelDelete].forEach(el => {
+    if (el) el.addEventListener('click', closeDeleteModal);
+});
 
 // Fechar Modal de Cadastro
 [modalOverlay, btnCloseModal, btnCancelForm].forEach(el => {
-    el.addEventListener('click', closeCreateModal)
+    if (el) el.addEventListener('click', closeCreateModal);
 });
 
 // Fechar Modal de Cadastro de Falha
@@ -373,10 +387,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const linhas = listaPecas.querySelectorAll('.order-create__peca-row');
 
             if (linhas.length > 1) {
-                // Remove a linha clicada se houver mais de uma
                 btnRemover.closest('.order-create__peca-row').remove();
             } else {
-                // Se for a última linha restante, apenas limpa os inputs
                 const linhaUnica = linhas[0];
                 linhaUnica.querySelector('input[name="peca_nome[]"]').value = '';
                 linhaUnica.querySelector('input[name="peca_quantidade[]"]').value = '1';
@@ -384,7 +396,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Função auxiliar para montar o HTML de uma nova linha
     function criarLinhaPeca() {
         const divRow = document.createElement('div');
         divRow.classList.add('order-create__peca-row');
@@ -408,7 +419,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return divRow;
     }
 
-    // Ativa ou desativa o 'required' nos inputs de peça conforme o checkbox
     function atualizarRequiredPecas(isRequired) {
         const inputsNome = listaPecas.querySelectorAll('input[name="peca_nome[]"]');
         const inputsQtd = listaPecas.querySelectorAll('input[name="peca_quantidade[]"]');
@@ -417,7 +427,6 @@ document.addEventListener('DOMContentLoaded', () => {
         inputsQtd.forEach(input => input.required = isRequired);
     }
 
-    // Restaura a lista para apenas 1 linha limpa caso o usuário desmarque o checkbox
     function resetarListaPecas() {
         const linhas = listaPecas.querySelectorAll('.order-create__peca-row');
         linhas.forEach((linha, index) => {
@@ -430,9 +439,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-
-
 
 
 // ==========================================
@@ -461,6 +467,7 @@ selectTipoManutencao.addEventListener('change', () => {
     }
 
 })
+if (containerDataParada) containerDataParada.classList.add('is-hidden');
 
 
 containerDataParada.classList.add('is-hidden')
