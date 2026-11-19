@@ -138,3 +138,35 @@ def editar_ordem_inspecao(
     finally:
         cursor.close()
         conexao.close()
+
+
+
+def finalizar_ordem_inspecao(id_ordem_inspecao: int) -> bool:
+    """
+    Finaliza uma ordem de inspeção removendo-a diretamente do banco de dados.
+
+    Parâmetros:
+        id_ordem_inspecao (int): Identificador da ordem de inspeção a ser finalizada/excluída.
+
+    Retorna:
+        bool: True se a ordem foi removida com sucesso, False se ocorreu algum erro.
+    """
+    conexao, cursor = conectar()
+
+    try:
+        cursor.execute("""
+            DELETE FROM ordem_inspecao
+            WHERE id_ordem_inspecao = %s;
+        """, (id_ordem_inspecao,))
+
+        conexao.commit()
+        return cursor.rowcount > 0
+
+    except Exception as erro:
+        conexao.rollback()
+        print(f"Erro ao finalizar (excluir) ordem de inspeção #{id_ordem_inspecao}: {erro}")
+        return False
+
+    finally:
+        cursor.close()
+        conexao.close()
