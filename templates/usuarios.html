@@ -12,25 +12,9 @@ Usuários
 
 {% block conteudo %}
 <main class="page__main">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <ul style="list-style: none; padding: 0; margin: 0 0 16px 0; width: 100%; font-family: sans-serif;">
-            {% for category, message in messages %}
-            <li style="padding: 12px 16px; margin-bottom: 8px; border-radius: 6px; font-size: 14px; font-weight: 500;
-                {% if category == 'success' %}
-                    background-color: #d7f8d9; color: #1c7227; border: 1px solid #c3e6cb;
-                {% elif category == 'warning' %}
-                    background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba;
-                {% else %}
-                    background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
-                {% endif %}
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
-                {{ message }}
-            </li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %}
+    <div class="users__header">
+        <h1 class="users__title">Página de Usuários</h1>
+    </div>
 
     <section class="search">
         <form class="search__form" role="search">
@@ -38,27 +22,44 @@ Usuários
                 <input class="search__input" type="search" placeholder="Buscar usuário..." name="busca"
                     aria-label="Buscar usuário">
             </div>
-            <div class="search__filter-group">
-                <select class="search__select" name="tipo" aria-label="Filtrar por tipo">
-                    <option value="">Selecione</option>
-                    <option value="admin">Admin</option>
-                    <option value="comum">Técnico</option>
-                </select>
-            </div>
         </form>
     </section>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="container-flash">
+            <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
+                role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="container-flash-js" id="sem-resultados">
+        <div class="alert alert-warning alert-dismissible fade show" >
+            Nenhum usuário encontrado.
+        </div>
+    </div>
+            
     <section class="user-list">
         {% for usuario in usuarios %}
             {% if usuario.rbac != 'root' %}
-            <article class="user-card {% if not usuario.status_usuario %}user-card--inactive{% endif %}">
+            <article class="user-card {% if not usuario.status_usuario %}user-card--inactive{% endif %}"
+                    data-nome="{{ usuario.nome }}"
+                    data-cargo="{{ usuario.rbac }}">
+                
                 <img class="user-card__avatar"
                     src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
                     alt="Foto de perfil">
 
                 <div class="user-card__info">
                     <h3 class="user-card__name">{{ usuario.nome }}</h3>
-                    <p class="user-card__specialty">{{ usuario.especialidade or 'Técnico Geral' }}</p>
+                    <p class="user-card__specialty">{{ usuario.rbac}}</p>
+                    <p class="user-card__email">{{ usuario.email}}</p>
 
                     <div class="user-card__details">
                         <!-- ... (conteúdo mantido) ... -->
@@ -88,8 +89,12 @@ Usuários
             </article>
             {% endif %}
         {% else %}
-            <p>Nenhum usuário cadastrado.</p>
+            <p class="user-list__empty">Nenhum usuário cadastrado.</p>
         {% endfor %}
+
+        <p id="sem-resultados" class="user-list__empty" style="display: none;">
+            Nenhum usuário encontrado para este filtro.
+        </p>
     </section>
 </main>
 

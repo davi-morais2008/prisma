@@ -17,7 +17,7 @@ Página Inicial
     </div>
 
     <div class="home__order-filters">
-        <input type="text" id="search-bar" name="search-bar" class="home__search-bar" placeholder="Buscar máquina...">
+        <input type="text" id="search-bar" name="search-bar" class="home__search-bar" placeholder="Buscar por responsável...">
         <div class="order-filter-buttons">
             <a href="/telaInicial/filtro/Preventiva" class="filter-button">Preventiva</a>
             <a href="/telaInicial/filtro/Preditiva" class="filter-button">Preditiva</a>
@@ -45,12 +45,16 @@ Página Inicial
         {% endif %}
         {% endwith %}
     
-
+        <div class="container-flash-js" id="sem-resultados">
+            <div class="alert alert-warning alert-dismissible fade show" >
+                Nenhuma ordem registrada.
+            </div>
+        </div>
 
    <section class="home__orders" aria-label="Ordens de Serviço Ativas">
         {% for os in ordem_servico %}
             {% if os.status_ordem == 'Ativa' %}
-            <article class="work-order work-order--baixa" id_order="{{ os.id_ordem }}" tabindex="0">
+            <article class="work-order work-order--baixa" data-responsavel="{{os.tecnico_responsavel}}" id_order="{{ os.id_ordem }}" tabindex="0">
                 <header class="work-order__header">
                     <h3 class="work-order__title">Número da Ordem: {{ os.id_ordem }}</h3>
                     <span class="work-order__badge">Ativa</span>

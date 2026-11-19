@@ -99,10 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
     typeTech.addEventListener('change', aplicarFiltros);
 });
 
-function enviarFiltros(event) {
-    event.preventDefault(); // Evita o recarregamento padrão da página
-}
-
 function limparPesquisa() {
     document.getElementById('campoPesquisa').value = '';
     document.getElementById('filtroTipo').value = '';

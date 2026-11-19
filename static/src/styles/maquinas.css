@@ -12,16 +12,21 @@
 }
 
 /* Container das mensagens */
+
 .container-flash {
     width: 100%;
-    max-width: 600px;
-    margin: 15px auto;
-    padding: 0 15px;
+    padding: 30px 24px 0px 30px;
+}
+
+.container-flash-js {
+    display: none;
+    width: 100%;
+    padding: 30px 24px 0px 30px;
 }
 
 /* Estrutura base do alerta */
 .alert {
-    position: relative;
+    width: 100%;
     padding: 14px 40px 14px 16px;
     margin-bottom: 12px;
     border-radius: 8px;
@@ -76,12 +81,16 @@ body {
 .machines {
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto;
+    min-height: 100vh;
     padding: 2rem 1rem;
+    margin: 0 auto;
+    background-color: var(--color-bg-main);
+    color: var(--color-text-primary);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    justify-items: center;
+    gap: 24px;
 }
 
 .machines__header {
@@ -93,7 +102,7 @@ body {
 
 .machines__title {
     text-align: center;
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-lg);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
     margin: auto 0;
@@ -117,12 +126,11 @@ body {
 
 .machines__filters {
     width: 100%;
-    max-width: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    padding: 0 0.5rem;
+    padding: 30px 24px 0px 30px;
 }
 
 .filter-input-search {
@@ -147,15 +155,25 @@ body {
 
 .filter-buttons {
     width: 100%;
-    max-width: 640px;
-    display: flex;
-    /* grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem; */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) 50px;
+    gap: 0.75rem;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 20px;
+}
+
+.filter-buttons .material-symbols-outlined {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    cursor: pointer;
+}
+
+.filter-buttons a{
+    text-decoration: none;
 }
 
 .filter-button {
@@ -166,8 +184,6 @@ body {
     cursor: pointer;
     width: 100%;
     height: 100%;
-    max-width: 150px;
-    max-height: 100px;
     height: 40px;
     padding: 10px;
     border: 1px solid transparent;
@@ -188,6 +204,7 @@ body {
     box-shadow: var(--shadow-md);
 }
 
+
 /* ======================================= */
 /* =========   BLOCO: Máquinas  ============ */
 /* ======================================= */
@@ -195,9 +212,9 @@ body {
 .machines__machines-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
     width: 100%;
-    padding: 0 0.5rem;
+    gap: 1rem;
+    padding: 30px 24px 0px 30px;
 }
 
 /* ========================================
@@ -1895,5 +1912,12 @@ body {
     .machine-details__overlay.active,
     .delete-confirmation.active{
         margin-top: 75px !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .machines {
+        padding: 32px 40px;
+        gap: 32px;
     }
 }

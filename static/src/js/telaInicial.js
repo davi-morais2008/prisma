@@ -82,6 +82,8 @@ const overlayFalha = document.querySelector('.fault-create__overlay');
 const btnCloseFalha = document.querySelector('.fault-create__close-btn');
 const btnCancelFalha = document.querySelector('#btnCancelCreateFaultForm');
 
+const inputTech= document.getElementById('search-bar');
+
 
 // ==========================================
 // FUNÇÕES DE CONTROLE DOS MODAIS
@@ -365,3 +367,37 @@ inputDateStop.addEventListener('input', () => {
         containerDataParada.classList.remove('is-hidden')
     }
 })
+
+document.addEventListener('DOMContentLoaded', () => {
+    const cardsOrders = document.querySelectorAll('.work-order');
+    const msgVazio = document.getElementById('sem-resultados');
+    const flash = document.querySelector('.container-flash');
+
+    function aplicarFiltros() {
+        const termoBusca = (inputTech?.value || '').trim().toLowerCase();
+        let visiveis = 0;
+
+        cardsOrders.forEach(card => {
+            const orderCard = (card.getAttribute('data-responsavel') || '').toLowerCase()
+
+            const bateNome = !termoBusca || orderCard.includes(termoBusca);
+
+            if (bateNome) {
+                card.style.display = '';
+                visiveis++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (msgVazio) {
+            msgVazio.style.display = (visiveis === 0) ? 'flex' : 'none';
+        }
+
+        if (flash) {
+            msgVazio.style.display = 'none';
+        }
+    }
+
+    inputTech.addEventListener('input', aplicarFiltros);
+});
