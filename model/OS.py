@@ -244,7 +244,7 @@ def destinar_tecnico_os(id_ordem: int, cpf_tecnico: str) -> bool:
         cursor.close()
         conexao.close()
 
-        def editar_ordem_servico(
+def editar_ordem_servico(
     id_ordem: int,
     status_ordem: str,
     fase_manutencao: str,
