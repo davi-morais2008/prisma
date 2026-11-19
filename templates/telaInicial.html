@@ -274,7 +274,8 @@ Página Inicial
 
 
     <!-- Modal de Edição da Ordem de Serviço (OS) -->
-    <div class="order-edit" id="updateModal" role="dialog" aria-modal="true" aria-labelledby="orderEditTitle">
+     {% for os in ordens %}
+     <div class="order-edit" id="updateModal-{{ os.id_ordem }}" role="dialog" aria-modal="true">
         <div class="order-edit__overlay" id="updateModalOverlay"></div>
 
         <article class="order-edit__card">
@@ -290,7 +291,7 @@ Página Inicial
             </header>
 
             <!-- FORMULÁRIO DE EDIÇÃO -->
-            <form class="order-edit__form" id="formUpdateOrder">
+            <form class="order-edit__form" id="formUpdateOrder" action="/atualizar_ordem/{{ os.id_ordem}}" method="post">
                 <div class="order-edit__body">
 
                     <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
@@ -300,11 +301,11 @@ Página Inicial
                         <div class="order-edit__grid order-edit__grid--2-col">
                             <div class="order-edit__field">
                                 <label class="order-edit__label" for="edit_status_ordem">Status da Ordem</label>
-                                <select class="order-edit__select" id="edit_status_ordem" name="status_ordem" required>
-                                    <option value="Pendente">Pendente</option>
-                                    <option value="Em Andamento" selected>Em Andamento</option>
-                                    <option value="Concluído">Concluído</option>
-                                    <option value="Cancelado">Cancelado</option>
+                                <select name="status_ordem" required>
+                                    <option value="Pendente" {% if os.status_ordem == 'Pendente' %}selected{% endif %}>Pendente</option>
+                                    <option value="Em Andamento" {% if os.status_ordem == 'Em Andamento' %}selected{% endif %}>Em Andamento</option>
+                                    <option value="Concluído" {% if os.status_ordem == 'Concluído' %}selected{% endif %}>Concluído</option>
+                                    <option value="Cancelado" {% if os.status_ordem == 'Cancelado' %}selected{% endif %}>Cancelado</option>
                                 </select>
                             </div>
 
@@ -409,6 +410,7 @@ Página Inicial
             </form>
         </article>
     </div>
+    {% endfor %}
 
 
     <!-- Modal de Cadastro da Ordem de Serviço (OS) -->

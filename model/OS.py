@@ -204,3 +204,32 @@ def iniciar_OS(id_ordem):
     finally:
         cursor.close()
         conexao.close()
+
+def atualizar_OS(id_ordem, status_ordem, cpf, fase_manutencao, tipo_manutencao, descricao ):
+    """
+
+    """
+    conexao, cursor = conectar()
+
+    try:
+        cursor.execute("""
+            UPDATE ordens_servicos 
+            SET status_ordem = %s,
+                cpf = %s,
+                fase_manutencao = %s,
+                tipo_manutencao = %s,
+                descricao_problema = %s
+            
+            WHERE id_ordem = %s
+        """, ( status_ordem, id_ordem, cpf, fase_manutencao, tipo_manutencao, descricao))
+        conexao.commit()
+        return True
+
+    except Exception as erro:
+        conexao.rollback()
+        print(f"Erro ao iniciar OS: {erro}")
+        return False
+
+    finally:
+        cursor.close()
+        conexao.close()

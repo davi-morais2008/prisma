@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, atualizar_OS
 from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
 from model.OS_inspec import inserir_ordem_inspecao
 from model.dashboard import buscar_dados_dashboard
@@ -591,6 +591,30 @@ def api_ordens_servico():
         })
 
     return jsonify(eventos)
+
+@app.route('/atualizar_ordem/<int:id_ordem>', methods=['POST'])
+def atualizar_ordem(id_ordem):
+    status = request.form.get('status_ordem')
+    fase = request.form.get('fase_manutencao')
+    tipo = request.form.get('tipo_manutencao')
+    cpf = request.form.get('tecnico_responsavel')
+    falha = request.form.get('falha')
+    descricao = request.form.get('desc_problema')
+
+    sucesso = atualizar_OS(
+        id_ordem=id_ordem,
+        status_ordem=status,
+        cpf=cpf,
+        fase_manutencao=fase,
+        tipo_manutencao=tipo,
+        descricao=descricao
+    )
+
+    if sucesso:
+        return redirect('/ordens')
+    else:
+        return "Erro ao atualizar ordem de serviço", 400
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
