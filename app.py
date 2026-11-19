@@ -4,7 +4,7 @@ from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os
 from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
-from model.OS_inspec import inserir_ordem_inspecao, consultar_ordens_inspecao, destinar_responsavel_inspecao, editar_ordem_inspecao
+from model.OS_inspec import inserir_ordem_inspecao, consultar_ordens_inspecao, destinar_responsavel_inspecao, editar_ordem_inspecao, finalizar_ordem_inspecao
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
 from model.pecas import inserir_requisicoes_pecas
@@ -307,16 +307,31 @@ def register_os_maintenance():
     return redirect('/telaInicial')
 
 
-@app.route("/telaInicial/finalizar/<int:id>", methods=['POST'])
+@app.route("/telaInicial/finalizar-maintenance/<int:id>", methods=['POST'])
 def finish_os(id):
     desc_manutencao = request.form.get('desc_manutencao', '').strip()
 
     if not desc_manutencao:
         flash('Informe a descrição da manutenção realizada.', 'erro')
-        return redirect(url_for('tela_inicial'))
+        return redirect('/telaInicial')
 
-    finalizar_OS(id, desc_manutencao)
+    finalizar_OS(id, desc_manutencao, '')
     flash('Ordem de serviço finalizada com sucesso!', 'sucesso')
+    return redirect('/telaInicial')
+
+
+@app.route('/telaInicial/finalizar-inspecao/<int:id_inspecao>', methods=['POST'])
+def rota_finalizar_inspecao(id_inspecao):
+    if 'user' not in session:
+        return redirect('/telaInicial')
+
+    sucesso = finalizar_ordem_inspecao(id_inspecao)
+
+    if sucesso:
+        flash('Ordem de inspeção finalizada com sucesso!', 'sucesso')
+    else:
+        flash('Erro ao finalizar a ordem de inspeção.', 'erro')
+
     return redirect('/telaInicial')
 
 @app.route("/telaInicial/destinar-os-maintenance/<int:id>", methods=['POST'])
