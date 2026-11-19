@@ -17,11 +17,18 @@ Máquinas
         </div>
 
         <div class="machines__filters">
-            <input type="text" class="filter-input-search" placeholder="Buscar máquina...">
+            <input type="text" class="filter-input-search" placeholder="Buscar máquina..." id="input_maquina">
             <div class="filter-buttons">
                 {% for tipo in tipos_maquinas %}
-                <a href="/maquinas/filtro/{{tipo.tipo_maquina}}" class="filter-button">{{tipo.tipo_maquina}}</a>
+                    <button type="button" class="filter-button btn-filtro" value="{{ tipo.tipo_maquina }}">
+                        {{ tipo.tipo_maquina }}
+                    </button>
                 {% endfor %}
+                <a href="/maquinas">
+                    <span class="material-symbols-outlined filter-button">
+                        block
+                    </span>
+                </a>
             </div>
         </div>
 
@@ -39,10 +46,16 @@ Máquinas
         {% endif %}
         {% endwith %}
 
+        <div class="container-flash-js" id="sem-resultados">
+            <div class="alert alert-warning alert-dismissible fade show" >
+                Nenhuma máquina encontrada.
+            </div>
+        </div>
+
         <div class="machines__machines-grid">
             {% for maquina in maquinas %}
             {% if maquina.is_inativa == 0 %}
-            <article class="machine">
+            <article class="machine" data-machine="{{maquina.modelo_maquina}}" data-tipo="{{ maquina.tipo_maquina }}">
                 <figure class="machine__media">
                     {% if maquina.url_imagem %}
                     <img src="{{maquina.url_imagem}}" alt="Prévia visual da Máquina 01 - Torno CNC X200"

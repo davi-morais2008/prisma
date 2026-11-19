@@ -17,7 +17,7 @@ Página Inicial
     </div>
 
     <div class="home__order-filters">
-        <input type="text" id="search-bar" name="search-bar" class="home__search-bar" placeholder="Buscar máquina...">
+        <input type="text" id="search-bar" name="search-bar" class="home__search-bar" placeholder="Buscar por responsável...">
         <div class="order-filter-buttons">
             <a href="/telaInicial/filtro/Preventiva" class="filter-button">Preventiva</a>
             <a href="/telaInicial/filtro/Preditiva" class="filter-button">Preditiva</a>
@@ -30,19 +30,26 @@ Página Inicial
         </div>
     </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
-        role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-
-
+    
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="container-flash">
+            <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
+                role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    
+        <div class="container-flash-js" id="sem-resultados">
+            <div class="alert alert-warning alert-dismissible fade show" >
+                Nenhuma ordem registrada.
+            </div>
+        </div>
 
     <!-- SELETOR TIPO SLIDE (TABS) -->
     <div class="home__view-switcher" role="tablist" aria-label="Alternar tipo de ordem">
@@ -83,7 +90,7 @@ Página Inicial
             {% if (perfil in ['admin', 'root'] and status in ['ativa', 'pendente'])
             or (os.cpf == user and status == 'ativa') %}
             {% set ns_os.encontrou = true %}
-            <article class="work-order work-order--baixa" id_order="{{ os.id_ordem }}" tabindex="0">
+            <article class="work-order work-order--baixa" data-responsavel="{{os.tecnico_responsavel}}" id_order="{{ os.id_ordem }}" tabindex="0">
                 <header class="work-order__header">
                     <h3 class="work-order__title">Ordem #{{ os.id_ordem }}</h3>
                     <span class="work-order__badge {{ 'work-order__badge--pendente' if status == 'pendente' else '' }}">

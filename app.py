@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, session, flash, jsonify, url_for
 from model.login import login_usuario
-from model.buscar_finalizado import buscar_os_finalizado
+from model.buscar_finalizado import buscar_os_finalizado, buscar_filtrado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os, atualizar_OS, iniciar_OS
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os, iniciar_OS
 from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
 from model.OS_inspec import inserir_ordem_inspecao, consultar_ordens_inspecao, destinar_responsavel_inspecao, editar_ordem_inspecao, finalizar_ordem_inspecao
 from model.dashboard import buscar_dados_dashboard
@@ -422,11 +422,17 @@ def api_get_info_manutencao(id_ordem):
     except Exception as e:
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
+@app.route ("/historico/filtro/usuario", methods=["GET"])
+def historico_filtrado():
+    nome_usuario = request.args.get("tecnico", "").strip()
+    OSfinalizado = buscar_filtrado(nome_usuario)
+    if OSfinalizado == []:
+        flash("Nenhum histórico encontrado.", "warning")
+    return render_template("historico.html", OSfinalizado = OSfinalizado)
 
 @app.route('/login')
 def pagina_login():
     return render_template('cadastroLogin.html')
-
 
 @app.route('/login/post', methods=['POST'])
 def post_login():
@@ -475,8 +481,7 @@ def post_cadastro():
         flash('Erro ao cadastrar-se. Tente Novamente', 'error')
     return redirect('/login')
 
-
-@app.route('/maquinas', methods=['GET'])
+@app.route('/maquinas', methods = ['GET'])
 @login_required
 def pagina_maquinas():
     maquinas = consultar_maquinas()
@@ -484,8 +489,7 @@ def pagina_maquinas():
     setores = consulta_setores()
     return render_template('maquinas.html', maquinas=maquinas, tipos_maquinas=tipos_maquinas, setores=setores)
 
-
-@app.route('/maquinas/api_request_machines', methods=['GET'])
+@app.route('/maquinas/api_request_machines', methods = ['GET'])
 def maquinas_api_get():
     maquinas = consultar_maquinas()
     return jsonify(maquinas), 200
@@ -702,12 +706,10 @@ def pagina_usuarios():
     lista_de_usuarios = buscar_usuario()
     return render_template('usuarios.html', usuarios=lista_de_usuarios)
 
-
 @app.route('/calendario')
 @login_required
 def pagina_calendario():
     return render_template('calendario.html')
-
 
 @app.route('/usuarios/api_alterar_status', methods=['POST'])
 @login_required
@@ -729,8 +731,7 @@ def api_alterar_status_usuario():
     except Exception as e:
         flash('Erro ao atualizar o status do usuário.', 'danger')
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
-
-
+    
 @app.route('/api/ordens-servico')
 @login_required
 def api_ordens_servico():
