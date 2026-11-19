@@ -44,22 +44,60 @@ Página Inicial
 
 
 
-   <section class="home__orders" aria-label="Ordens de Serviço Ativas">
-        {% for os in ordem_servico %}
-            {% if os.status_ordem == 'Ativa' %}
+    <!-- SELETOR TIPO SLIDE (TABS) -->
+    <div class="home__view-switcher" role="tablist" aria-label="Alternar tipo de ordem">
+        <div class="home__switcher-track" id="switcherTrack">
+            <div class="home__switcher-slider" id="switcherSlider" aria-hidden="true"></div>
+
+            <button type="button" class="home__switcher-btn is-active" id="btnTabServico" role="tab"
+                aria-selected="true" aria-controls="container-ordens-servico" data-target="container-ordens-servico">
+                <span class="material-symbols-outlined" aria-hidden="true">build</span>
+                <span>Ordens de Serviço</span>
+            </button>
+
+            <button type="button" class="home__switcher-btn" id="btnTabInspecao" role="tab" aria-selected="false"
+                aria-controls="container-ordens-inspecao" data-target="container-ordens-inspecao">
+                <span class="material-symbols-outlined" aria-hidden="true">fact_check</span>
+                <span>Ordens de Inspeção</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTAINER INDIVIDUAL 1: ORDENS DE SERVIÇO -->
+    <section class="home__orders-container" id="container-ordens-servico" role="tabpanel"
+        aria-labelledby="btnTabServico">
+        <header class="home__group-header">
+            <div class="home__group-title-wrapper">
+                <span class="material-symbols-outlined home__group-icon" aria-hidden="true">build</span>
+                <h2 class="home__group-title">Ordens de Serviço</h2>
+            </div>
+        </header>
+
+        <div class="home__orders">
+            {% set ns_os = namespace(encontrou=false) %}
+            {% set perfil = (user_rbac or '') | lower | trim %}
+
+            {% for os in ordem_servico %}
+            {% set status = (os.status_ordem or '') | lower | trim %}
+
+            {% if (perfil in ['admin', 'root'] and status in ['ativa', 'pendente'])
+            or (os.cpf == user and status == 'ativa') %}
+            {% set ns_os.encontrou = true %}
             <article class="work-order work-order--baixa" id_order="{{ os.id_ordem }}" tabindex="0">
                 <header class="work-order__header">
-                    <h3 class="work-order__title">Número da Ordem: {{ os.id_ordem }}</h3>
-                    <span class="work-order__badge">Ativa</span>
+                    <h3 class="work-order__title">Ordem #{{ os.id_ordem }}</h3>
+                    <span class="work-order__badge {{ 'work-order__badge--pendente' if status == 'pendente' else '' }}">
+                        {{ os.status_ordem }}
+                    </span>
                 </header>
 
                 <div class="work-order__description">
                     <p class="work-order__item">
                         <span class="work-order__label">Responsável:</span>
-                        <span class="work-order__value">{{ os.tecnico_responsavel }}</span>
+                        <span class="work-order__value">{{ os.tecnico_responsavel or 'Não atribuído' }}</span>
                     </p>
                     <p class="work-order__item">
-                        <span class="work-order__label">Número Patrimônio:</span>
+                        <span class="work-order__label">Patrimônio:</span>
                         <span class="work-order__value">{{ os.numero_patrimonio }}</span>
                     </p>
                     <p class="work-order__item">
@@ -70,15 +108,218 @@ Página Inicial
 
                 <footer class="work-order__footer">
                     <span class="work-order__date-label">Data Parada:</span>
-                    <time class="work-order__date-value">{{ os.data_parada }}</time>
+                    <time class="work-order__date-value">{{ os.data_parada or 'Sem parada' }}</time>
                 </footer>
             </article>
             {% endif %}
-        {% endfor %}
+            {% endfor %}
+
+            {% if not ns_os.encontrou %}
+            <div class="home__empty-state">
+                <span class="material-symbols-outlined" aria-hidden="true">assignment_turned_in</span>
+                <p>Nenhuma ordem de serviço ativa no momento.</p>
+            </div>
+            {% endif %}
+        </div>
     </section>
 
+    <!-- CONTAINER INDIVIDUAL 2: ORDENS DE INSPEÇÃO -->
+    <section class="home__orders-container is-hidden" id="container-ordens-inspecao" role="tabpanel"
+        aria-labelledby="btnTabInspecao">
+        <header class="home__group-header">
+            <div class="home__group-title-wrapper">
+                <span class="material-symbols-outlined home__group-icon home__group-icon--inspecao"
+                    aria-hidden="true">fact_check</span>
+                <h2 class="home__group-title">Ordens de Inspeção</h2>
+            </div>
+        </header>
+
+        <div class="home__orders">
+            {% set ns_insp = namespace(encontrou=false) %}
+            {% for insp in ordens_inspecao %}
+            {% if insp.status_inspecao and (user_rbac in ['admin', 'root'] or insp.cpf == user) %}
+            {% set ns_insp.encontrou = true %}
+            <article class="work-order work-order--inspecao" id_inspecao="{{ insp.id_ordem_inspecao }}" tabindex="0">
+                <header class="work-order__header">
+                    <h3 class="work-order__title">Inspeção #{{ insp.id_ordem_inspecao }}</h3>
+                    <span class="work-order__badge work-order__badge--inspecao">Inspeção</span>
+                </header>
+
+                <div class="work-order__description">
+                    <p class="work-order__item">
+                        <span class="work-order__label">Solicitante:</span>
+                        <span class="work-order__value">{{ insp.nome_solicitante or insp.cpf }}</span>
+                    </p>
+                    <p class="work-order__item">
+                        <span class="work-order__label">Patrimônio:</span>
+                        <span class="work-order__value">{{ insp.numero_patrimonio }}</span>
+                    </p>
+                    <p class="work-order__item">
+                        <span class="work-order__label">Máquina:</span>
+                        <span class="work-order__value">{{ insp.nome_maquina }}</span>
+                    </p>
+                </div>
+
+                <footer class="work-order__footer">
+                    <span class="work-order__date-label">Observação:</span>
+                    <span class="work-order__date-value work-order__date-value--truncate">{{ insp.descricao_inspecao
+                        }}</span>
+                </footer>
+            </article>
+            {% endif %}
+            {% endfor %}
+
+            {% if not ns_insp.encontrou %}
+            <div class="home__empty-state">
+                <span class="material-symbols-outlined" aria-hidden="true">search_check</span>
+                <p>Nenhuma ordem de inspeção pendente.</p>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    <!-- MODAL: DETALHES DA ORDEM DE INSPEÇÃO -->
+    <div class="order-details inspection-details" id="inspectionModal" role="dialog" aria-modal="true"
+        aria-labelledby="inspectionModalTitle">
+        <div class="order-details__overlay" id="inspectionModalOverlay"></div>
+
+        <div class="order-details__container">
+            <!-- CABEÇALHO IGUAL AO DA OS -->
+            <header class="order-details__header">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo PRISMA"
+                    class="order-details__logo">
+                <h2 class="order-details__title" id="inspectionModalTitle">ORDEM DE INSPEÇÃO</h2>
+                <button type="button" class="order-details__close-btn" id="btnCloseInspection" title="Fechar">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </header>
+
+            <div class="order-details__body">
+                <!-- BLOCO SUPERIOR: IMAGEM DA MÁQUINA + RESUMO -->
+                <div class="inspection-details__hero">
+                    <div class="inspection-details__image-wrapper">
+                        <img src="{{ url_for('static', filename='img/maquina_padrao.png') }}" alt="Imagem da Máquina"
+                            class="order-details__image" id="insp_imagem_maquina">
+                    </div>
+
+                    <div class="inspection-details__summary">
+                        <div class="inspection-details__meta-item">
+                            <span class="inspection-details__meta-label">STATUS DA ORDEM:</span>
+                            <span class="inspection-details__status-pill" id="insp_status_badge">Ativa</span>
+                        </div>
+
+                        <div class="inspection-details__meta-item">
+                            <span class="inspection-details__meta-label">NÚMERO DA INSPEÇÃO:</span>
+                            <span class="inspection-details__meta-value" id="insp_id">-</span>
+                        </div>
+
+                        <div class="inspection-details__meta-item">
+                            <span class="inspection-details__meta-label">MÁQUINA / PATRIMÔNIO:</span>
+                            <span class="inspection-details__meta-value">
+                                <span id="insp_maquina">-</span> — <span id="insp_patrimonio">-</span>
+                            </span>
+                        </div>
+
+                        <div class="inspection-details__meta-item">
+                            <span class="inspection-details__meta-label">RESPONSÁVEL:</span>
+                            <span class="inspection-details__meta-value" id="insp_responsavel">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 1: CRONOGRAMA E DATAS + AÇÕES DE EDITAR E APAGAR -->
+                <section class="inspection-details__section">
+                    <div class="inspection-details__section-header">
+                        <h3 class="inspection-details__section-title">CRONOGRAMA E DATAS</h3>
+
+                        {% if user_rbac in ['admin', 'root'] %}
+                        <div class="inspection-details__section-actions">
+                            <button type="button"
+                                class="inspection-details__action-btn inspection-details__action-btn--edit"
+                                id="btnEditInspection" title="Editar Inspeção">
+                                <span class="material-symbols-outlined">edit_square</span>
+                            </button>
+                            <button type="button"
+                                class="inspection-details__action-btn inspection-details__action-btn--delete"
+                                id="btnDeleteInspection" title="Apagar Inspeção">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="inspection-details__schedule-grid">
+                        <div class="inspection-details__icon-row">
+                            <span class="material-symbols-outlined inspection-details__row-icon">event</span>
+                            <div>
+                                <span class="inspection-details__sublabel">Data da Inspeção:</span>
+                                <p class="inspection-details__subvalue" id="insp_data">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEÇÃO 2: OBSERVAÇÕES DA INSPEÇÃO -->
+                <section class="inspection-details__section">
+                    <div class="inspection-details__section-header">
+                        <h3 class="inspection-details__section-title">DETALHES E OBSERVAÇÕES</h3>
+                    </div>
+
+                    <div class="inspection-details__icon-row">
+                        <span class="material-symbols-outlined inspection-details__row-icon">fact_check</span>
+                        <div>
+                            <span class="inspection-details__sublabel">Escopo da Inspeção:</span>
+                            <p class="inspection-details__subvalue" id="insp_tipo_texto">Verificação preventiva e
+                                operacional do equipamento</p>
+                        </div>
+                    </div>
+
+                    <div class="inspection-details__desc-block">
+                        <span class="inspection-details__sublabel">Descrição / Checklist:</span>
+                        <p class="inspection-details__desc-text" id="insp_descricao">-</p>
+                    </div>
+                </section>
+
+                <!-- SEÇÃO 3: EXECUÇÃO / ATRIBUIÇÃO -->
+                <section class="inspection-details__section">
+                    <div class="inspection-details__section-header">
+                        <h3 class="inspection-details__section-title">EXECUÇÃO E RESPONSABILIDADE</h3>
+                    </div>
+
+                    {% if user_rbac in ['admin', 'root'] %}
+                    <form class="inspection-details__assign-form" id="formAssignInspection" method="POST">
+                        <label class="inspection-details__sublabel" for="select_insp_responsavel">Destinar / Alterar
+                            Responsável:</label>
+                        <div class="inspection-details__assign-row">
+                            <select class="inspection-details__select" name="tecnico_responsavel"
+                                id="select_insp_responsavel" required>
+                                <option value="" disabled selected>Selecione um técnico...</option>
+                                {% for tecnico in tecnicos %}
+                                {% if tecnico.rbac not in ['admin', 'root'] %}
+                                <option value="{{ tecnico.cpf }}">{{ tecnico.nome }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="inspection-details__btn inspection-details__btn--secondary">
+                                Destinar Técnico
+                            </button>
+                        </div>
+                    </form>
+                    {% endif %}
+
+                    <form id="formFinishInspection" method="POST" class="inspection-details__finish-form">
+                        <button type="submit" class="inspection-details__btn inspection-details__btn--primary"
+                            id="btnFinishInspection">
+                            Concluir Inspeção
+                        </button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de Detalhes da Ordem de Serviço (OS) -->
-    <div class="order-details" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+    <div class="order-details" id="orderModalMaintenance" role="dialog" aria-modal="true"
+        aria-labelledby="orderModalTitle">
         <div class="order-details__overlay" id="modalOverlay"></div>
 
         <!-- FORMULÁRIO ENVOLVENDO O CONTEÚDO DO MODAL -->
@@ -131,13 +372,14 @@ Página Inicial
                         <div class="order-details__section-header">
                             <h2 class="order-details__section-title">CRONOGRAMA E DATAS</h2>
                             <div class="order-details__actions">
-                                <button type="button" class="order-details__action-btn order-details__action-btn--edit"
+                                <button type="button"
+                                    class="inspection-details__action-btn inspection-details__action-btn--edit"
                                     id="btnEdit" aria-label="Editar Ordem de Serviço">
                                     <span class="material-symbols-outlined" aria-hidden="true">edit_square</span>
                                 </button>
                                 <button type="button"
-                                    class="order-details__action-btn order-details__action-btn--delete" id="btnDelete"
-                                    aria-label="Excluir Ordem de Serviço">
+                                    class="inspection-details__action-btn inspection-details__action-btn--delete"
+                                    id="btnDelete" aria-label="Excluir Ordem de Serviço">
                                     <span class="material-symbols-outlined" aria-hidden="true">delete</span>
                                 </button>
                             </div>
@@ -221,7 +463,7 @@ Página Inicial
 
                         <!-- CONTAINER APENAS DOS CAMPOS (aplique o display: none neste ID) -->
                         <div id="campos_execucao">
-                            <h2 class="order-details__section-title">EXECUÇÃO E PEÇAS</h2>
+                            <h2 class="order-details__section-title">EXECUÇÃO</h2>
 
                             <div class="order-details__card-group">
                                 <!-- Campo: Descrição da Manutenção -->
@@ -234,27 +476,6 @@ Página Inicial
                                         required></textarea>
                                 </div>
 
-                                <!-- Campo: Adicionar Peças Adquiridas com Quantidade e Preço -->
-                                <div class="order-details__form-group">
-                                    <label for="input_peca" class="order-details__stat-label">Peças Adquiridas /
-                                        Utilizadas:</label>
-                                    <div class="order-details__input-group">
-                                        <input type="text" class="order-details__input" id="input_peca"
-                                            placeholder="Nome da peça (Ex: Rolamento SKF 6204)">
-                                        <input type="number" min="1" step="1" value="1"
-                                            class="order-details__input order-details__input--qty" id="input_peca_qtd"
-                                            aria-label="Quantidade" placeholder="Qtd">
-                                        <input type="number" step="0.01" min="0"
-                                            class="order-details__input order-details__input--price"
-                                            id="input_peca_preco" placeholder="Preço (R$)">
-                                        <button type="button" class="order-details__add-btn" id="btnAddPecaCreate"
-                                            aria-label="Adicionar peça">
-                                            <span class="material-symbols-outlined" aria-hidden="true">add</span>
-                                            Adicionar
-                                        </button>
-                                    </div>
-                                </div>
-
                                 <!-- Área de Exibição das Peças Cadastradas -->
                                 <div class="order-details__parts-container">
                                     <span class="order-details__stat-label">Peças Cadastradas na OS:</span>
@@ -262,7 +483,19 @@ Página Inicial
                                 </div>
                             </div>
                         </div>
-
+                        <div class="order-create__field" id="containerDestinate">
+                            <label class="order-create__label" for="create_tecnico_responsavel">Técnico
+                                Responsável</label>
+                            <select class="order-create__select" id="create_tecnico_responsavel"
+                                name="tecnico_responsavel">
+                                <option value="" disabled selected>Selecione...</option>
+                                {% for tecnico in tecnicos %}
+                                {% if tecnico.rbac == 'usuario' %}
+                                <option value="{{tecnico.cpf}}">{{tecnico.nome}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
                         <!-- BOTÃO FORA DO CONTAINER DOS CAMPOS (permanece sempre visível) -->
                         <button type="submit" class="order__btn-finish" id="btnFinish"></button>
                     </section>
@@ -272,8 +505,93 @@ Página Inicial
     </div>
 
 
+    <!-- MODAL DE EDIÇÃO DA ORDEM DE INSPEÇÃO -->
+    <div class="order-edit" id="updateInspectionModal" role="dialog" aria-modal="true"
+        aria-labelledby="inspectionEditTitle">
+        <div class="order-edit__overlay" id="updateInspectionOverlay"></div>
+
+        <article class="order-edit__card">
+            <!-- CABEÇALHO SUPERIOR -->
+            <header class="order-edit__header">
+                <div class="order-edit__brand">
+                    <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="order-edit__brand-image">
+                    <h1 class="order-edit__brand-title" id="inspectionEditTitle">EDITAR ORDEM DE INSPEÇÃO</h1>
+                </div>
+                <button type="button" class="order-edit__close-btn" id="btnCancelUpdateInspection"
+                    aria-label="Fechar formulário de edição da inspeção">
+                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                </button>
+            </header>
+
+            <!-- FORMULÁRIO DE EDIÇÃO -->
+            <form class="order-edit__form" id="formUpdateInspection" method="POST" action="">
+                <div class="order-edit__body">
+
+                    <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
+                    <fieldset class="order-edit__section">
+                        <legend class="order-edit__section-title">INFORMAÇÕES GERAIS</legend>
+
+                        <div class="order-edit__grid order-edit__grid--2-col">
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_insp_status">Status da Inspeção</label>
+                                <select class="order-edit__select" id="edit_insp_status" name="status_inspecao"
+                                    required>
+                                    <option value="Ativa">Ativa</option>
+                                    <option value="Finalizada">Finalizada</option>
+                                </select>
+                            </div>
+
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_insp_responsavel">Técnico Responsável</label>
+                                <select class="order-edit__select" id="edit_insp_responsavel" name="cpf">
+                                    <option value="">Não atribuído</option>
+                                    {% for tecnico in tecnicos %}
+                                    {% if tecnico.rbac == 'usuario' %}
+                                    <option value="{{ tecnico.cpf }}">{{ tecnico.nome }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="order-edit__field order-edit__field--full">
+                                <label class="order-edit__label" for="edit_insp_data">Data da Inspeção</label>
+                                <input class="order-edit__input" type="date" id="edit_insp_data" name="data_inspec"
+                                    required>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- SEÇÃO 2: DETALHES E CHECKLIST -->
+                    <fieldset class="order-edit__section">
+                        <legend class="order-edit__section-title">DETALHES E CHECKLIST</legend>
+
+                        <div class="order-edit__grid">
+                            <div class="order-edit__field order-edit__field--full">
+                                <label class="order-edit__label" for="edit_insp_descricao">Descrição / Checklist da
+                                    Inspeção</label>
+                                <textarea class="order-edit__textarea" id="edit_insp_descricao"
+                                    name="descricao_inspecao" rows="4"
+                                    placeholder="Descreva os itens e procedimentos da inspeção..." required></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+
+                <!-- RODAPÉ COM AÇÕES -->
+                <footer class="order-edit__footer">
+                    <button type="button" class="order-edit__btn order-edit__btn--cancel"
+                        id="btnCancelEditInspectionForm">Cancelar</button>
+                    <button type="submit" class="order-edit__btn order-edit__btn--submit">Salvar Alterações</button>
+                </footer>
+            </form>
+        </article>
+    </div>
+
+
 
     <!-- Modal de Edição da Ordem de Serviço (OS) -->
+    <!-- MODAL DE EDIÇÃO DA ORDEM DE SERVIÇO -->
     <div class="order-edit" id="updateModal" role="dialog" aria-modal="true" aria-labelledby="orderEditTitle">
         <div class="order-edit__overlay" id="updateModalOverlay"></div>
 
@@ -284,13 +602,14 @@ Página Inicial
                     <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="order-edit__brand-image">
                     <h1 class="order-edit__brand-title" id="orderEditTitle">EDITAR ORDEM DE SERVIÇO</h1>
                 </div>
-                <button class="order-edit__close-btn" id="btnCancelUpdate" aria-label="Fechar formulário de edição">
+                <button type="button" class="order-edit__close-btn" id="btnCancelUpdate"
+                    aria-label="Fechar formulário de edição">
                     <span class="material-symbols-outlined" aria-hidden="true">close</span>
                 </button>
             </header>
 
             <!-- FORMULÁRIO DE EDIÇÃO -->
-            <form class="order-edit__form" id="formUpdateOrder">
+            <form class="order-edit__form" id="formUpdateOrder" method="POST" action="">
                 <div class="order-edit__body">
 
                     <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
@@ -302,31 +621,27 @@ Página Inicial
                                 <label class="order-edit__label" for="edit_status_ordem">Status da Ordem</label>
                                 <select class="order-edit__select" id="edit_status_ordem" name="status_ordem" required>
                                     <option value="Pendente">Pendente</option>
-                                    <option value="Em Andamento" selected>Em Andamento</option>
-                                    <option value="Concluído">Concluído</option>
-                                    <option value="Cancelado">Cancelado</option>
+                                    <option value="Ativa">Ativa</option>
+                                    <option value="Finalizada">Finalizada</option>
+                                    <option value="Cancelada">Cancelada</option>
                                 </select>
                             </div>
 
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_fase_manutencao">Fase da
-                                    Manutenção</label>
+                                <label class="order-edit__label" for="edit_fase_manutencao">Fase da Manutenção</label>
                                 <select class="order-edit__select" id="edit_fase_manutencao" name="fase_manutencao"
                                     required>
-                                    <option value="Triagem">Triagem</option>
-                                    <option value="Diagnóstico">Diagnóstico</option>
-                                    <option value="Execução" selected>Execução</option>
-                                    <option value="Testes">Testes</option>
-                                    <option value="Finalizado">Finalizado</option>
+                                    <option value="Aguardando Início">Aguardando Início</option>
+                                    <option value="Em andamento">Em andamento</option>
+                                    <option value="Finalizada">Finalizada</option>
                                 </select>
                             </div>
 
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_tipo_manutencao">Tipo de
-                                    Manutenção</label>
+                                <label class="order-edit__label" for="edit_tipo_manutencao">Tipo de Manutenção</label>
                                 <select class="order-edit__select" id="edit_tipo_manutencao" name="tipo_manutencao"
                                     required>
-                                    <option value="Corretiva" selected>Corretiva</option>
+                                    <option value="Corretiva">Corretiva</option>
                                     <option value="Preventiva">Preventiva</option>
                                     <option value="Preditiva">Preditiva</option>
                                 </select>
@@ -335,9 +650,15 @@ Página Inicial
                             <div class="order-edit__field">
                                 <label class="order-edit__label" for="edit_tecnico_responsavel">Técnico
                                     Responsável</label>
-                                <input class="order-edit__input" type="text" id="edit_tecnico_responsavel"
-                                    name="tecnico_responsavel" value="João Silva" placeholder="Nome do técnico"
-                                    required>
+                                <select class="order-edit__select" id="edit_tecnico_responsavel"
+                                    name="tecnico_responsavel">
+                                    <option value="">Não atribuído</option>
+                                    {% for tecnico in tecnicos %}
+                                    {% if tecnico.rbac == 'usuario' %}
+                                    <option value="{{ tecnico.cpf }}">{{ tecnico.nome }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                     </fieldset>
@@ -348,15 +669,13 @@ Página Inicial
 
                         <div class="order-edit__grid order-edit__grid--2-col">
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_data_prev_inicio">Prev. Início
-                                    Manutenção</label>
+                                <label class="order-edit__label" for="edit_data_prev_inicio">Previsão Início</label>
                                 <input class="order-edit__input" type="datetime-local" id="edit_data_prev_inicio"
                                     name="data_prev_inicio_manutencao" required>
                             </div>
 
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_data_prev_termino">Prev. Término
-                                    Manutenção</label>
+                                <label class="order-edit__label" for="edit_data_prev_termino">Previsão Término</label>
                                 <input class="order-edit__input" type="datetime-local" id="edit_data_prev_termino"
                                     name="data_prev_termino_manutencao" required>
                             </div>
@@ -368,11 +687,10 @@ Página Inicial
                             </div>
 
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_data_inicio">Data Início Real</label>
+                                <label class="order-edit__label" for="edit_data_inicio">Data de Início Real</label>
                                 <input class="order-edit__input" type="datetime-local" id="edit_data_inicio"
-                                    name="data_inicio">
+                                    name="data_inicio_manutencao">
                             </div>
-
                         </div>
                     </fieldset>
 
@@ -383,17 +701,21 @@ Página Inicial
                         <div class="order-edit__grid">
                             <div class="order-edit__field order-edit__field--full">
                                 <label class="order-edit__label" for="edit_falha">Falha Identificada</label>
-                                <input class="order-edit__input" type="text" id="edit_falha" name="falha"
-                                    value="Sobreaquecimento no motor principal"
-                                    placeholder="Sintoma ou falha identificada" required>
+                                <select class="order-edit__select" id="edit_falha" name="id_falha" required>
+                                    <option value="" disabled selected>Selecione a falha...</option>
+                                    {% for falha in falhas %}
+                                    <option value="{{ falha.id_falha }}"
+                                        data-tipo-maquina="{{ falha.id_tipo_maquina }}">
+                                        {{ falha.falha }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
                             </div>
 
                             <div class="order-edit__field order-edit__field--full">
-                                <label class="order-edit__label" for="edit_desc_problema">Descrição do
-                                    Problema</label>
-                                <textarea class="order-edit__textarea" id="edit_desc_problema" name="desc_problema"
-                                    rows="3" placeholder="Detalhamento do problema ocorrido..."
-                                    required>A máquina apresentou ruídos excessivos e desligamento automático por proteção térmica após 3 horas contínuas de operação no turno matutino.</textarea>
+                                <label class="order-edit__label" for="edit_desc_problema">Descrição do Problema</label>
+                                <textarea class="order-edit__textarea" id="edit_desc_problema" name="descricao_problema"
+                                    rows="3" placeholder="Detalhamento do problema ocorrido..." required></textarea>
                             </div>
                         </div>
                     </fieldset>
@@ -404,7 +726,7 @@ Página Inicial
                 <footer class="order-edit__footer">
                     <button type="button" class="order-edit__btn order-edit__btn--cancel"
                         id="btnCancelEditForm">Cancelar</button>
-                    <button class="order-edit__btn order-edit__btn--submit">Salvar Alterações</button>
+                    <button type="submit" class="order-edit__btn order-edit__btn--submit">Salvar Alterações</button>
                 </footer>
             </form>
         </article>
@@ -473,7 +795,7 @@ Página Inicial
                                 <!-- No Bloco 1 (Inspeção) -->
                                 <div class="order-create__field order-create__field--full">
                                     <span class="order-create__label">Solicitante</span>
-                                    {% set cpf_atual = user.cpf if user is mapping or user.cpf is defined else user %}
+                                    {% set cpf_atual = user if user is mapping or user is defined else user %}
                                     <p class="order-create__readonly-text" id="insp_solicitante_texto">
                                         {% for tecnico in tecnicos %}
                                         {% if tecnico.cpf | string | trim == cpf_atual | string | trim %}
@@ -548,7 +870,7 @@ Página Inicial
                                 <!-- No Bloco 1 (Inspeção) -->
                                 <div class="order-create__field order-create__field--full">
                                     <span class="order-create__label">Solicitante</span>
-                                    {% set cpf_atual = user.cpf if user is mapping or user.cpf is defined else user %}
+                                    {% set cpf_atual = user if user is mapping or user is defined else user %}
                                     <p class="order-create__readonly-text" id="insp_solicitante_texto">
                                         {% for tecnico in tecnicos %}
                                         {% if tecnico.cpf | string | trim == cpf_atual | string | trim %}
@@ -562,7 +884,6 @@ Página Inicial
                             </div>
                         </fieldset>
 
-                        <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->
                         <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->
                         <fieldset class="order-create__section">
                             <legend class="order-create__section-title">CRONOGRAMA E DATAS</legend>
@@ -596,7 +917,7 @@ Página Inicial
                                         parada?</label>
                                 </div>
 
-                                <div id="campo_data_parada" class="order-create__field" margin-top: 10px;">
+                                <div id="campo_data_parada" class="order-create__field" style="margin-top: 10px;">
                                     <label class="order-create__label" for="create_data_parada">Data da Parada</label>
                                     <input class="order-create__input" type="date" id="create_data_parada"
                                         name="data_parada" min="1000-01-01" max="9999-12-31">
@@ -610,12 +931,15 @@ Página Inicial
 
                             <div class="order-create__grid">
                                 <div class="order-create__field order-create__field--full">
-                                    <label class="order-create__label" for="falhas">Falha Identificada</label>
+                                    <label class="order-create__label" for="edit_falha">Falha Identificada</label>
                                     <div class="inputs-falha">
-                                        <select class="order-create__select" name="falhas" id="falhas">
-                                            <option disabled selected value="">Selecione...</option>
+                                        <select class="order-edit__select" id="edit_falha" name="id_falha">
+                                            <option value="" disabled selected>Selecione a falha...</option>
                                             {% for falha in falhas %}
-                                            <option value="{{falha.id_falha}}">{{falha.falha}}</option>
+                                            <option value="{{ falha.id_falha }}"
+                                                data-tipo-maquina="{{ falha.id_tipo_maquina }}">
+                                                {{ falha.falha }}
+                                            </option>
                                             {% endfor %}
                                         </select>
 
