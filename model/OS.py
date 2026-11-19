@@ -86,6 +86,7 @@ def consultar_ordem_servico() -> list[tuple]:
             SELECT 
                 os.id_ordem,
                 tm.tipo_maquina AS nome_maquina,
+                m.id_maquina,
                 m.numero_patrimonio,
                 f.falha,
                 u.nome AS tecnico_responsavel,
