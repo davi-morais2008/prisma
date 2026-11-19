@@ -22,13 +22,7 @@ const sliderBtn = document.getElementById('switcherSlider')
 const containerDestinate = document.getElementById('containerDestinate')
 
 
-const inputOrderMaintanence = document.getElementById('tipo_ordem_manutencao');
-const inputOrderInspection = document.getElementById('tipo_ordem_inspecao');
-const containerInspec = document.querySelector('#container_ordem_inspecao');
-const containerMaintanece = document.querySelector('#container_ordem_manutencao');
-const containerStopMachine = document.querySelector('#grupo_parada_maquina');
-const containerDataParada = document.querySelector('#campo_data_parada');
-const inputDateStop = document.querySelector('#check_maquina_parada');
+
 
 // Modal: Detalhes da OS
 const orderModal = document.querySelector('#orderModalMaintenance');
@@ -472,6 +466,7 @@ selectTipoManutencao.addEventListener('change', () => {
         containerStopMachine.classList.add('is-hidden')
     }
 
+})
 if (containerDataParada) containerDataParada.classList.add('is-hidden');
 
 
