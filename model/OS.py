@@ -204,11 +204,8 @@ def iniciar_OS(id_ordem):
     finally:
         cursor.close()
         conexao.close()
-
-def atualizar_OS(id_ordem, status_ordem, cpf, fase_manutencao, tipo_manutencao, descricao ):
-    """
-
-    """
+def atualizar_OS(id_ordem, status_ordem, cpf, fase_manutencao, tipo_manutencao, descricao,
+                 data_prev_inicio=None, data_prev_termino=None, data_parada=None, data_inicio=None):
     conexao, cursor = conectar()
 
     try:
@@ -218,16 +215,23 @@ def atualizar_OS(id_ordem, status_ordem, cpf, fase_manutencao, tipo_manutencao, 
                 cpf = %s,
                 fase_manutencao = %s,
                 tipo_manutencao = %s,
-                descricao_problema = %s
-            
+                descricao_problema = %s,
+                data_prev_inicio_manutencao = %s,
+                data_prev_termino_manutencao = %s,
+                data_parada = %s,
+                data_inicio_manutencao = %s
             WHERE id_ordem = %s
-        """, ( status_ordem, id_ordem, cpf, fase_manutencao, tipo_manutencao, descricao))
+        """, (
+            status_ordem, cpf, fase_manutencao, tipo_manutencao, descricao,
+            data_prev_inicio or None, data_prev_termino or None,
+            data_parada or None, data_inicio or None, id_ordem
+        ))
         conexao.commit()
         return True
 
     except Exception as erro:
         conexao.rollback()
-        print(f"Erro ao iniciar OS: {erro}")
+        print(f"Erro ao atualizar OS: {erro}")
         return False
 
     finally:
