@@ -4,7 +4,7 @@ from model.buscar_finalizado import buscar_os_finalizado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os
 from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
-from model.OS_inspec import inserir_ordem_inspecao, consultar_ordens_inspecao, destinar_responsavel_inspecao
+from model.OS_inspec import inserir_ordem_inspecao, consultar_ordens_inspecao, destinar_responsavel_inspecao, editar_ordem_inspecao
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
 from model.pecas import inserir_requisicoes_pecas
@@ -227,10 +227,15 @@ def filtrar_ordens(tipo):
 @app.route("/api/get/ordens_servico/", methods=["GET"])
 def api_get_ordem():
     try:
-        ordens = consultar_ordem_servico()
-        return jsonify(ordens), 200
+        ordens_manutencao = consultar_ordem_servico()
+        ordens_inspecao = consultar_ordens_inspecao()
+        
+        return jsonify({
+            "ordens_manutencao": ordens_manutencao,
+            "ordens_inspecao": ordens_inspecao
+        }), 200
     except Exception as e:
-            return jsonify({"status": "erro", "mensagem": str(e)}), 500
+        return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 @app.route("/telaInicial/post-register-order-inspec", methods=["POST"])
 def register_os_inspec():
@@ -301,24 +306,17 @@ def register_os_maintenance():
 
     return redirect('/telaInicial')
 
-@app.route("/telaInicial/finalizar/<int:id>", methods=['POST']) 
+
+@app.route("/telaInicial/finalizar/<int:id>", methods=['POST'])
 def finish_os(id):
-    desc_manutencao = request.form.get('desc_manutencao')
+    desc_manutencao = request.form.get('desc_manutencao', '').strip()
 
-    nomes = request.form.getlist('pecas_nome[]')
-    qtds = request.form.getlist('pecas_qtd[]')
-    precos = request.form.getlist('pecas_preco[]')
-    pecas = [
-        {
-            'nome': nome,
-            'qtd': int(qtd),
-            'custo': float(preco)
-        }
-        for nome, qtd, preco in zip(nomes, qtds, precos)
-    ]
+    if not desc_manutencao:
+        flash('Informe a descrição da manutenção realizada.', 'erro')
+        return redirect(url_for('tela_inicial'))
 
-    print(desc_manutencao, pecas)
-    finalizar_OS(id, desc_manutencao, pecas)
+    finalizar_OS(id, desc_manutencao)
+    flash('Ordem de serviço finalizada com sucesso!', 'sucesso')
     return redirect('/telaInicial')
 
 @app.route("/telaInicial/destinar-os-maintenance/<int:id>", methods=['POST'])
@@ -339,6 +337,42 @@ def assign_os_inspec(id):
 # def start_os(id):
 #     iniciar_OS(id)
 #     return redirect('/telaInicial')
+
+@app.route('/telaInicial/editar-inspecao/<int:id_inspecao>', methods=['POST'])
+def rota_editar_inspecao(id_inspecao):
+    # Verifica autenticação e permissão administrativa
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
+    if session.get('user_rbac') not in ['admin', 'root']:
+        flash('Você não tem permissão para editar ordens de inspeção.', 'erro')
+        return redirect('/telaInicial')
+
+    # Captura os campos enviados pelo #formUpdateInspection
+    status_inspecao = request.form.get('status_inspecao', '').strip()
+    cpf_tecnico = request.form.get('cpf', '').strip() or None
+    data_inspec = request.form.get('data_inspec', '').strip()
+    descricao_inspecao = request.form.get('descricao_inspecao', '').strip()
+
+    # Validação básica dos campos obrigatórios
+    if not status_inspecao or not data_inspec or not descricao_inspecao:
+        flash('Preencha todos os campos obrigatórios da inspeção.', 'erro')
+        return redirect('/telaInicial')
+
+    sucesso = editar_ordem_inspecao(
+        id_ordem_inspecao=id_inspecao,
+        status_inspecao=status_inspecao,
+        cpf=cpf_tecnico,
+        data_inspec=data_inspec,
+        descricao_inspecao=descricao_inspecao
+    )
+
+    if sucesso:
+        flash('Ordem de inspeção atualizada com sucesso!', 'sucesso')
+    else:
+        flash('Erro ao atualizar a ordem de inspeção.', 'erro')
+
+    return redirect('/telaInicial')
 
 
 @app.route("/historico")
