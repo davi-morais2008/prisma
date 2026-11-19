@@ -94,6 +94,7 @@ def consultar_ordem_servico() -> list[tuple]:
                 os.id_falha,
                 os.tipo_manutencao,
                 os.descricao_problema,
+                os.descricao_manutencao,
                 os.fase_manutencao,
                 os.data_parada,
                 os.data_prev_inicio_manutencao,
