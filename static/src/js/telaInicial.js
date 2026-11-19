@@ -24,7 +24,7 @@ const containerDestinate = document.getElementById('containerDestinate')
 
 
 // Modal: Detalhes da OS
-const orderModal = document.querySelector('.order-details');
+const orderModal = document.querySelector('#orderModalMaintenance');
 const overlayModal = document.querySelector('#modalOverlay');
 const btnClose = document.querySelector('#btnClose');
 const btnEdit = document.querySelector('#btnEdit');
@@ -51,7 +51,7 @@ const textareaDesc = document.getElementById('desc_manutencao');
 
 
 // Modal: Edição
-const editModal = document.querySelector('.order-edit');
+const editModal = document.querySelector('#updateModal');
 const overlayUpdate = document.querySelector('#updateModalOverlay');
 const btnCloseUpdate = document.querySelector('#btnCancelUpdate');
 const btnCancelUpdate = document.querySelector('#btnCancelEditForm');
@@ -107,6 +107,8 @@ const openFalhaModal = () => falhaModal.classList.add('active');
 const closeFalhaModal = () => falhaModal.classList.remove('active');
 
 
+
+
 // ==========================================
 // FUNÇÃO AUXILIAR DE FORMATAR DATA
 // ==========================================
@@ -131,6 +133,53 @@ function formatarDataPT(dataString) {
 }
 
 
+
+
+
+
+
+// ==========================================
+// MODAL: DETALHES DA ORDEM DE INSPEÇÃO
+// ==========================================
+const inspectionCards = document.querySelectorAll('.work-order--inspecao');
+const inspectionModal = document.querySelector('#inspectionModal');
+const inspectionModalOverlay = document.querySelector('#inspectionModalOverlay');
+const btnCloseInspection = document.querySelector('#btnCloseInspection');
+const btnCancelInspectionFooter = document.querySelector('#btnCancelInspectionFooter');
+const btnEditInspection =  document.querySelector('#btnEditInspection')
+const updateInspectionModal = document.querySelector('#updateInspectionModal')
+const btnCancelUpdateInspection = document.querySelector('#btnCancelUpdateInspection')
+
+
+const inspIdEl = document.querySelector('#insp_id');
+const inspDataEl = document.querySelector('#insp_data');
+const inspMaquinaEl = document.querySelector('#insp_maquina');
+const inspPatrimonioEl = document.querySelector('#insp_patrimonio');
+const inspResponsavelEl = document.querySelector('#insp_responsavel');
+const inspDescricaoEl = document.querySelector('#insp_descricao');
+const inspStatusBadgeEl = document.querySelector('#insp_status_badge');
+const btnCancelEditInspectionForm = document.querySelector('#btnCancelEditInspectionForm')
+const formUpdateInspection = document.querySelector('#formUpdateInspection')
+
+const formAssignInspection = document.querySelector('#formAssignInspection');
+const selectInspResponsavel = document.querySelector('#select_insp_responsavel');
+const formFinishInspection = document.querySelector('#formFinishInspection');
+
+
+const openInspectionModal = () => inspectionModal?.classList.add('active');
+const closeInspectionModal = () => inspectionModal?.classList.remove('active');
+
+const openEditInspectionModal = () => updateInspectionModal?.classList.add('active');
+const closeEditInspectionModal = () => updateInspectionModal?.classList.remove('active');
+
+btnEditInspection?.addEventListener('click', openEditInspectionModal)
+btnCancelUpdateInspection.addEventListener('click', closeEditInspectionModal)
+btnCancelEditInspectionForm.addEventListener('click', closeEditInspectionModal)
+inspectionModalOverlay.addEventListener('click', closeEditInspectionModal)
+
+
+// btnEditInspection.addEventListener('click', openEditInspectionModal)
+
 // ==========================================
 // EVENT LISTENERS E REGRAS DE NEGÓCIO
 // ==========================================
@@ -142,10 +191,13 @@ filterButton.forEach(button => {
     }
 });
 
-// Busca e exibição dos dados da OS ao clicar no card
+// Busca e exibição dos dados da OS ou Inspeção ao clicar no card
 workOrders.forEach(order => {
     order.addEventListener('click', async (event) => {
         const idOrder = event.currentTarget.getAttribute('id_order');
+        const idInspecao = event.currentTarget.getAttribute('id_inspecao');
+
+        if (!idOrder && !idInspecao) return;
 
         const resposta = await fetch('/api/get/ordens_servico/', {
             method: 'GET',
@@ -157,28 +209,29 @@ workOrders.forEach(order => {
 
         if (!resposta.ok) {
             alert("ERRO AO CARREGAR DADOS!");
-        } else {
-            const ordens = await resposta.json();
-            ordens.forEach(os => {
+            return;
+        }
+
+        const dados = await resposta.json();
+
+        // 1. Fluxo de Ordem de Manutenção
+        if (idOrder && dados.ordens_manutencao) {
+            dados.ordens_manutencao.forEach(os => {
                 if (os.id_ordem == idOrder) {
-                    btnFinishOS.textContent = os.status_ordem == 'Pendente' ? 'Destinar Técnico' : 'Executar Ordem'
-                    formDetails.action = os.status_ordem == 'Pendente' ? `/telaInicial/destinar/${os.id_ordem}` : `/telaInicial/finalizar/${os.id_ordem}`
-                    
+                    btnFinishOS.textContent = os.status_ordem == 'Pendente' ? 'Destinar Técnico' : 'Executar Ordem';
+                    formDetails.action = os.status_ordem == 'Pendente' ? `/telaInicial/destinar/${os.id_ordem}` : `/telaInicial/finalizar/${os.id_ordem}`;
+
                     if (os.status_ordem == 'Pendente') {
                         camposExecucao.style.display = 'none';
                         textareaDesc.required = false;
-                        containerDestinate.classList.remove('is-hidden')
-                        inputTecnicoResponsavel.required = 'True'
-                    }
-                    else {
-                        containerDestinate.classList.add('is-hidden')
+                        containerDestinate.classList.remove('is-hidden');
+                        inputTecnicoResponsavel.required = true;
+                    } else {
+                        containerDestinate.classList.add('is-hidden');
                         camposExecucao.style.display = 'block';
                         textareaDesc.required = true;
-                        containerDestinate.classList.add('is-hidden')
+                        inputTecnicoResponsavel.required = false;
                     }
-
-
-
 
                     statusOrdem.textContent = os.status_ordem;
                     faseManutencao.textContent = os.fase_manutencao;
@@ -195,15 +248,52 @@ workOrders.forEach(order => {
                 }
             });
         }
+
+        // 2. Fluxo de Ordem de Inspeção
+        if (idInspecao && dados.ordens_inspecao) {
+            dados.ordens_inspecao.forEach(insp => {
+                if (insp.id_ordem_inspecao == idInspecao) {
+                    formUpdateInspection.action = `/telaInicial/editar-inspecao/${insp.id_ordem_inspecao}`
+                    inspIdEl.textContent = `#${insp.id_ordem_inspecao}`;
+                    inspDataEl.textContent = formatarDataPT(insp.data_inspec);
+                    inspMaquinaEl.textContent = insp.nome_maquina || '-';
+                    inspPatrimonioEl.textContent = insp.numero_patrimonio || '-';
+                    inspResponsavelEl.textContent = insp.tecnico_responsavel || insp.cpf || 'Não atribuído';
+                    inspDescricaoEl.textContent = insp.descricao_inspecao || 'Sem descrição.';
+                    inspStatusBadgeEl.textContent = insp.status_inspecao ? 'Ativa' : 'Concluída';
+
+                    if (formAssignInspection) {
+                        formAssignInspection.action = `/telaInicial/destinar-os-inspec/${insp.id_ordem_inspecao}`;
+                        if (selectInspResponsavel && insp.cpf) {
+                            selectInspResponsavel.value = insp.cpf;
+                        }
+                    }
+
+                    if (formFinishInspection) {
+                        formFinishInspection.action = `/telaInicial/finalizar-inspecao/${insp.id_ordem_inspecao}`;
+                    }
+
+                    openInspectionModal();
+                }
+            });
+        }
     });
 });
-
-
 // Abertura dos Modais
 btnEdit.addEventListener('click', openEditModal);
 btnDelete.addEventListener('click', openDeleteModal);
 bntCreate.addEventListener('click', openCreateModal);
 btnAddFalha.addEventListener('click', openFalhaModal);
+
+document.querySelectorAll('.alert.alert-sucesso').forEach(alerta => {
+    const btnCloseAlert = alerta.querySelector('.btn-close');
+    if (btnCloseAlert) {
+        btnCloseAlert.addEventListener('click', () => alerta.remove());
+    }
+    setTimeout(() => alerta.remove(), 4000);
+});
+
+
 
 // Confirmação da Exclusão
 btnConfirmDelete.addEventListener('click', () => {
@@ -231,6 +321,10 @@ btnConfirmDelete.addEventListener('click', () => {
 
 // Fechar Modal de Cadastro de Falha
 [btnCloseFalha, overlayFalha, btnCancelFalha].forEach(el => el.addEventListener('click', closeFalhaModal));
+
+// Fechar Modal de Cadastro de Falha
+[btnCloseInspection, inspectionModalOverlay].forEach(el => el.addEventListener('click', closeInspectionModal));
+
 
 
 const btnAddPeca = document.getElementById('btnAddPecaCreate');
