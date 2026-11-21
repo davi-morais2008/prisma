@@ -98,6 +98,8 @@ const btnCancelDeleteHeader = document.getElementById('btnCancelDeleteHeader');
 const btnCancelDelete = document.getElementById('btnCancelDelete');
 const btnConfirmDelete = document.getElementById('btnConfirmDelete');
 
+const inputMaq = document.getElementById('input_maquina')
+
 function setupImagePreview(inputElement, imgElement) {
     if (!inputElement || !imgElement) return;
 
@@ -430,3 +432,60 @@ btnCancelEdit.addEventListener('click', () => { editModalOverlay.classList.remov
 if (btnCloseDeleteModal) btnCloseDeleteModal.addEventListener('click', () => { deleteConfirmationModal.classList.remove('active'); });
 if (btnCancelDeleteHeader) btnCancelDeleteHeader.addEventListener('click', () => { deleteConfirmationModal.classList.remove('active'); });
 if (btnCancelDelete) btnCancelDelete.addEventListener('click', () => { deleteConfirmationModal.classList.remove('active'); });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const cardsMaquinas = document.querySelectorAll('.machine');
+    const msgVazio = document.getElementById('sem-resultados');
+    const flash = document.querySelector('.container-flash');
+    let tipoSelecionado = '';
+
+    function aplicarFiltros() {
+        const termoBusca = (inputMaq?.value || '').trim().toLowerCase();
+        let visiveis = 0;
+
+        cardsMaquinas.forEach(card => {
+            const machineCard = (card.getAttribute('data-machine') || '').toLowerCase();
+            const tipoCard = (card.getAttribute('data-tipo') || '').toLowerCase();
+
+            const bateNome = !termoBusca || machineCard.includes(termoBusca);
+            const bateTipo = !tipoSelecionado || tipoCard === tipoSelecionado;
+
+            if (bateNome && bateTipo) {
+                card.style.display = '';
+                visiveis++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (msgVazio) {
+            msgVazio.style.display = (visiveis === 0) ? 'flex' : 'none';
+        }
+
+        if (flash) {
+            msgVazio.style.display = 'none';
+        }
+    }
+
+    if (inputMaq) {
+        inputMaq.addEventListener('input', aplicarFiltros);
+    }
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const valorBotao = (button.value || '').trim().toLowerCase();
+
+            // Se clicar no botão já ativo, desativa o filtro de tipo
+            if (button.classList.contains('active')) {
+                button.classList.remove('active');
+                tipoSelecionado = '';
+            } else {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                tipoSelecionado = valorBotao;
+            }
+
+            aplicarFiltros();
+        });
+    });
+});

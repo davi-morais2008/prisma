@@ -1,3 +1,6 @@
+const inputTech = document.querySelector(".search__input")
+const inputType = document.querySelector(".search__select")
+
 document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     // FUNÇÃO DE COMUNICAÇÃO COM O BACKEND (FLASK)
@@ -126,5 +129,40 @@ document.addEventListener("DOMContentLoaded", () => {
                 fecharModalInativar();
             }
         }
-    });
-});
+    })
+
+    function aplicarFiltros() {
+            const cardsUsers = document.querySelectorAll('.user-card');
+            const termoBusca = (inputTech?.value || '').trim().toLowerCase();
+            let visiveis = 0;
+    
+            cardsUsers.forEach(card => {
+                const nomeCard = (card.getAttribute('data-nome') || '').toLowerCase();
+    
+                const bateNome = !termoBusca || nomeCard.includes(termoBusca);
+    
+                if (bateNome) {
+                    card.style.display = '';
+                    visiveis++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+    
+            const msgVazio = document.getElementById('sem-resultados');
+            const flash = document.querySelector('.container-flash');
+            
+            if (msgVazio) {
+                    msgVazio.style.display = (visiveis === 0) ? 'flex' : 'none';
+                };
+
+            if (flash) {
+                    msgVazio.style.display = 'none';
+            }
+        }
+    
+        if (inputTech) {
+            inputTech.addEventListener('input', aplicarFiltros);
+        }
+    }
+);
