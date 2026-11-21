@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado, buscar_filtrado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os, iniciar_OS
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os, iniciar_OS, editar_ordem_servico
 from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
 from model.OS_inspec import inserir_ordem_inspecao, consultar_ordens_inspecao, destinar_responsavel_inspecao, editar_ordem_inspecao, finalizar_ordem_inspecao
 from model.dashboard import buscar_dados_dashboard
@@ -765,18 +765,16 @@ def api_ordens_servico():
 
 @app.route('/atualizar_ordem/<int:id_ordem>', methods=['POST'])
 def atualizar_ordem(id_ordem):
-    sucesso = atualizar_OS(
-        id_ordem=id_ordem,
-        status_ordem=request.form.get('status_ordem'),
-        cpf=request.form.get('tecnico_responsavel'),
-        fase_manutencao=request.form.get('fase_manutencao'),
-        tipo_manutencao=request.form.get('tipo_manutencao'),
-        descricao=request.form.get('desc_problema'),
-        data_prev_inicio=request.form.get('data_prev_inicio_manutencao'),
-        data_prev_termino=request.form.get('data_prev_termino_manutencao'),
-        data_parada=request.form.get('data_parada'),
-        data_inicio=request.form.get('data_inicio')
-    )
+    sucesso = editar_ordem_servico(id_ordem=id_ordem,
+            status_ordem=request.form.get('status_ordem'),
+            cpf=request.form.get('tecnico_responsavel'),
+            fase_manutencao=request.form.get('fase_manutencao'),
+            tipo_manutencao=request.form.get('tipo_manutencao'),
+            descricao=request.form.get('desc_problema'),
+            data_prev_inicio=request.form.get('data_prev_inicio_manutencao'),
+            data_prev_termino=request.form.get('data_prev_termino_manutencao'),
+            data_parada=request.form.get('data_parada'),
+            data_inicio=request.form.get('data_inicio'))
 
     if sucesso:
         return redirect('/telaInicial')
