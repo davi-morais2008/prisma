@@ -26,6 +26,12 @@ const inputDateStop = document.querySelector('#check_maquina_parada');
 const selectTipoManutencao = document.querySelector('#create_tipo_manutencao');
 const inputFalhaCreate = document.querySelector('#create_falha');
 
+// Requisição de Peças no Cadastro
+const checkSolicitarPecas = document.getElementById('check_solicitar_pecas');
+const containerSolicitarPecas = document.getElementById('container_solicitar_pecas');
+const listaPecas = document.getElementById('lista_pecas_requisicao');
+const btnAddPeca = document.getElementById('btnAddPeca');
+
 // Modal: Detalhes da OS (Manutenção)
 const orderModal = document.querySelector('#orderModalMaintenance');
 const overlayModal = document.querySelector('#modalOverlay');
@@ -35,6 +41,12 @@ const btnDelete = document.querySelector('#btnDelete');
 const formDetails = document.querySelector('#orderForm');
 const btnFinishOS = document.querySelector('#btnFinish');
 const containerDestinate = document.getElementById('containerDestinate');
+
+// Peças na Destinação e Execução (Detalhes da OS)
+const containerPecasDestinar = document.getElementById('container_pecas_destinar');
+const listaPecasDestinar = document.getElementById('lista_pecas_destinar');
+const checkConfirmarPecas = document.getElementById('check_confirmar_pecas');
+const listaPecasCadastradas = document.getElementById('lista_pecas_cadastradas');
 
 // Campos de Informação da OS (Detalhes)
 const statusOrdem = document.querySelector('#status_ordem');
@@ -50,12 +62,6 @@ const descricaoProblema = document.querySelector('#desc_problema');
 const camposExecucao = document.getElementById('campos_execucao');
 const textareaDesc = document.getElementById('desc_manutencao');
 const inputTecnicoResponsavel = document.querySelector('#create_tecnico_responsavel');
-
-// Modal: Edição da OS
-const overlayUpdate = document.querySelector('#updateModalOverlay');
-const btnCloseUpdate = document.querySelector('#btnCancelUpdate');
-const btnCancelUpdate = document.querySelector('#btnCancelEditForm');
-const EditFalha = document.querySelector('#edit_falha');
 
 // Modal: Exclusão
 const deleteModal = document.querySelector('.order-delete');
@@ -260,25 +266,95 @@ workOrders.forEach(order => {
                 osAtualSelecionada = os;
                 idOrdemAtual = os.id_ordem;
 
+                const pecasDaOS = (dados.peca_requisicoes || []).filter(
+                    p => String(p.id_ordem) === String(os.id_ordem)
+                );
+
+                const ehPendente = String(os.status_ordem || '').trim().toLowerCase() === 'pendente';
+
                 if (btnFinishOS) {
-                    btnFinishOS.textContent = os.status_ordem === 'Pendente' ? 'Destinar Técnico' : 'Executar Ordem';
+                    btnFinishOS.textContent = ehPendente ? 'Destinar Técnico' : 'Executar Ordem';
                 }
                 if (formDetails) {
-                    formDetails.action = os.status_ordem === 'Pendente'
+                    formDetails.action = ehPendente
                         ? `/telaInicial/destinar-os-maintenance/${os.id_ordem}`
                         : `/telaInicial/finalizar-maintenance/${os.id_ordem}`;
                 }
 
-                if (os.status_ordem === 'Pendente') {
+                if (ehPendente) {
                     if (camposExecucao) camposExecucao.style.display = 'none';
                     if (textareaDesc) textareaDesc.required = false;
-                    containerDestinate?.classList.remove('is-hidden');
+
+                    if (containerDestinate) {
+                        containerDestinate.classList.remove('is-hidden');
+                        containerDestinate.style.display = '';
+                    }
                     if (inputTecnicoResponsavel) inputTecnicoResponsavel.required = true;
+
+                    if (pecasDaOS.length > 0 && containerPecasDestinar && listaPecasDestinar) {
+                        containerPecasDestinar.classList.remove('is-hidden');
+                        containerPecasDestinar.style.display = 'flex';
+
+                        listaPecasDestinar.innerHTML = pecasDaOS.map(peca => `
+                            <div class="order-details__part-quote-item">
+                                <input type="hidden" name="id_requisicao[]" value="${peca.id_requisicao}">
+                                <div class="order-details__part-quote-info">
+                                    <strong class="order-details__part-quote-name">${peca.nome_peca}</strong>
+                                    <span class="order-details__part-quote-qty">Quantidade: ${peca.quantidade} un.</span>
+                                </div>
+                                <div class="order-details__part-quote-input-group">
+                                    <label class="order-details__part-quote-label" for="custo_${peca.id_requisicao}">Valor unitário (R$)</label>
+                                    <input
+                                        id="custo_${peca.id_requisicao}"
+                                        class="order-create__input input-custo-peca"
+                                        type="number"
+                                        step="0.01"
+                                        min="0.01"
+                                        name="custo_unitario[]"
+                                        placeholder="0,00"
+                                        value="${peca.custo_unitario ?? ''}"
+                                        required
+                                    >
+                                </div>
+                            </div>
+                        `).join('');
+
+                        if (checkConfirmarPecas) {
+                            checkConfirmarPecas.checked = false;
+                            checkConfirmarPecas.required = true;
+                        }
+                    } else {
+                        if (containerPecasDestinar) {
+                            containerPecasDestinar.classList.add('is-hidden');
+                            containerPecasDestinar.style.display = 'none';
+                        }
+                        if (listaPecasDestinar) listaPecasDestinar.innerHTML = '';
+                        if (checkConfirmarPecas) {
+                            checkConfirmarPecas.checked = false;
+                            checkConfirmarPecas.required = false;
+                        }
+                    }
                 } else {
-                    containerDestinate?.classList.add('is-hidden');
+                    if (containerDestinate) {
+                        containerDestinate.classList.add('is-hidden');
+                        containerDestinate.style.display = 'none';
+                    }
+                    if (containerPecasDestinar) {
+                        containerPecasDestinar.classList.add('is-hidden');
+                        containerPecasDestinar.style.display = 'none';
+                    }
+                    if (listaPecasDestinar) listaPecasDestinar.innerHTML = '';
+                    if (checkConfirmarPecas) checkConfirmarPecas.required = false;
+
                     if (camposExecucao) camposExecucao.style.display = 'block';
                     if (textareaDesc) textareaDesc.required = true;
                     if (inputTecnicoResponsavel) inputTecnicoResponsavel.required = false;
+
+                    if (listaPecasCadastradas) {
+                        listaPecasCadastradas.innerHTML = pecasDaOS.length > 0
+                            ? pecasDaOS.map(p => `<li>${p.nome_peca} — Qtd: ${p.quantidade}${p.custo_unitario ? ` (R$ ${Number(p.custo_unitario).toFixed(2)})` : ''}</li>`).join('')
+                            : '<li>Nenhuma peça requisitada para esta OS.</li>';
+                    }
                 }
 
                 if (statusOrdem) statusOrdem.textContent = os.status_ordem;
@@ -334,6 +410,25 @@ workOrders.forEach(order => {
     });
 });
 
+// Validação de peças antes de destinar o técnico
+formDetails?.addEventListener('submit', (event) => {
+    const ehPendente = String(osAtualSelecionada?.status_ordem || '').trim().toLowerCase() === 'pendente';
+
+    if (
+        ehPendente &&
+        containerPecasDestinar &&
+        !containerPecasDestinar.classList.contains('is-hidden')
+    ) {
+        const inputsCusto = listaPecasDestinar.querySelectorAll('.input-custo-peca');
+        const algumSemValor = Array.from(inputsCusto).some(inp => !inp.value || parseFloat(inp.value) <= 0);
+
+        if (algumSemValor || !checkConfirmarPecas?.checked) {
+            event.preventDefault();
+            alert('Informe o valor unitário de todas as peças e marque a confirmação antes de destinar o técnico.');
+        }
+    }
+});
+
 
 // ==========================================
 // 6. ABERTURA E PREENCHIMENTO DOS MODAIS DE EDIÇÃO / AÇÕES
@@ -387,7 +482,6 @@ btnEditInspection?.addEventListener('click', () => {
 });
 
 btnDelete?.addEventListener('click', openDeleteModal);
-bntCreate?.addEventListener('click', openCreateModal);
 btnAddFalha?.addEventListener('click', openFalhaModal);
 
 btnConfirmDelete?.addEventListener('click', () => {
@@ -408,7 +502,6 @@ document.querySelectorAll('.alert.alert-sucesso').forEach(alerta => {
 // ==========================================
 [btnClose, overlayModal].forEach(el => el?.addEventListener('click', closeOrderModal));
 [btnCloseDelete, btnCancelDelete].forEach(el => el?.addEventListener('click', closeDeleteModal));
-[modalOverlay, btnCloseModal, btnCancelForm].forEach(el => el?.addEventListener('click', closeCreateModal));
 [btnCloseFalha, overlayFalha, btnCancelFalha].forEach(el => el?.addEventListener('click', closeFalhaModal));
 [btnCloseInspection, btnCancelInspectionFooter, inspectionModalOverlay].forEach(el => el?.addEventListener('click', closeInspectionModal));
 [updateInspectionOverlay, btnCancelUpdateInspection, btnCancelEditInspectionForm].forEach(el => el?.addEventListener('click', closeEditInspectionModal));
@@ -423,79 +516,99 @@ document.querySelectorAll('.btn-fechar-edicao, .order-edit__overlay').forEach(el
 // ==========================================
 // 8. REQUISIÇÃO DINÂMICA DE PEÇAS NO CADASTRO
 // ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    const checkSolicitarPecas = document.getElementById('check_solicitar_pecas');
-    const containerSolicitarPecas = document.getElementById('container_solicitar_pecas');
-    const listaPecas = document.getElementById('lista_pecas_requisicao');
-    const btnAddPeca = document.getElementById('btnAddPeca');
+function atualizarRequiredPecas(isRequired) {
+    listaPecas?.querySelectorAll('input[name="peca_nome[]"]').forEach(input => input.required = isRequired);
+    listaPecas?.querySelectorAll('input[name="peca_quantidade[]"]').forEach(input => input.required = isRequired);
+}
 
-    if (checkSolicitarPecas && containerSolicitarPecas && listaPecas) {
-        checkSolicitarPecas.addEventListener('change', () => {
-            if (checkSolicitarPecas.checked) {
-                containerSolicitarPecas.style.display = 'block';
-                atualizarRequiredPecas(true);
-            } else {
-                containerSolicitarPecas.style.display = 'none';
-                atualizarRequiredPecas(false);
-                resetarListaPecas();
-            }
-        });
-    }
-
-    btnAddPeca?.addEventListener('click', () => {
-        if (listaPecas) listaPecas.appendChild(criarLinhaPeca());
-    });
-
-    listaPecas?.addEventListener('click', (event) => {
-        const btnRemover = event.target.closest('.order-create__btn--remove-peca');
-        if (!btnRemover) return;
-
-        const linhas = listaPecas.querySelectorAll('.order-create__peca-row');
-        if (linhas.length > 1) {
-            btnRemover.closest('.order-create__peca-row').remove();
+function resetarListaPecas() {
+    const linhas = listaPecas?.querySelectorAll('.order-create__peca-row') || [];
+    linhas.forEach((linha, index) => {
+        if (index > 0) {
+            linha.remove();
         } else {
-            const linhaUnica = linhas[0];
-            linhaUnica.querySelector('input[name="peca_nome[]"]').value = '';
-            linhaUnica.querySelector('input[name="peca_quantidade[]"]').value = '1';
+            const inputNome = linha.querySelector('input[name="peca_nome[]"]');
+            const inputQtd = linha.querySelector('input[name="peca_quantidade[]"]');
+            if (inputNome) inputNome.value = '';
+            if (inputQtd) inputQtd.value = '1';
         }
     });
+}
 
-    function criarLinhaPeca() {
-        const divRow = document.createElement('div');
-        divRow.classList.add('order-create__peca-row');
-        divRow.innerHTML = `
-            <div class="order-create__field">
-                <label class="order-create__label">Nome / Descrição da Peça</label>
-                <input class="order-create__input" type="text" name="peca_nome[]" placeholder="Ex: Rolamento 6205" required>
-            </div>
-            <div class="order-create__field order-create__field--qtd">
-                <label class="order-create__label">Qtd.</label>
-                <input class="order-create__input" type="number" name="peca_quantidade[]" min="1" value="1" required>
-            </div>
-            <button type="button" class="order-create__btn--remove-peca" title="Remover peça">
-                <span class="material-symbols-outlined">delete</span>
-            </button>
-        `;
-        return divRow;
+function sincronizarContainerPecas() {
+    if (!checkSolicitarPecas || !containerSolicitarPecas) return;
+
+    if (checkSolicitarPecas.checked) {
+        containerSolicitarPecas.classList.remove('is-hidden');
+        containerSolicitarPecas.style.display = 'block';
+        atualizarRequiredPecas(true);
+    } else {
+        containerSolicitarPecas.classList.add('is-hidden');
+        containerSolicitarPecas.style.display = 'none';
+        atualizarRequiredPecas(false);
+        resetarListaPecas();
     }
+}
 
-    function atualizarRequiredPecas(isRequired) {
-        listaPecas?.querySelectorAll('input[name="peca_nome[]"]').forEach(input => input.required = isRequired);
-        listaPecas?.querySelectorAll('input[name="peca_quantidade[]"]').forEach(input => input.required = isRequired);
-    }
+// Garante que o container comece oculto ao carregar a tela
+sincronizarContainerPecas();
 
-    function resetarListaPecas() {
-        const linhas = listaPecas?.querySelectorAll('.order-create__peca-row') || [];
-        linhas.forEach((linha, index) => {
-            if (index > 0) {
-                linha.remove();
-            } else {
-                linha.querySelector('input[name="peca_nome[]"]').value = '';
-                linha.querySelector('input[name="peca_quantidade[]"]').value = '1';
-            }
-        });
+// Escuta marcação/desmarcação do checkbox
+checkSolicitarPecas?.addEventListener('change', sincronizarContainerPecas);
+
+// Garante verificação ao abrir e fechar o modal de cadastro
+bntCreate?.addEventListener('click', () => {
+    if (checkSolicitarPecas) checkSolicitarPecas.checked = false;
+    sincronizarContainerPecas();
+    openCreateModal();
+});
+
+[modalOverlay, btnCloseModal, btnCancelForm].forEach(el => {
+    el?.addEventListener('click', () => {
+        if (checkSolicitarPecas) checkSolicitarPecas.checked = false;
+        sincronizarContainerPecas();
+        closeCreateModal();
+    });
+});
+
+btnAddPeca?.addEventListener('click', () => {
+    if (checkSolicitarPecas?.checked && listaPecas) {
+        listaPecas.appendChild(criarLinhaPeca());
     }
 });
+
+listaPecas?.addEventListener('click', (event) => {
+    const btnRemover = event.target.closest('.order-create__btn--remove-peca');
+    if (!btnRemover) return;
+
+    const linhas = listaPecas.querySelectorAll('.order-create__peca-row');
+    if (linhas.length > 1) {
+        btnRemover.closest('.order-create__peca-row').remove();
+    } else {
+        const linhaUnica = linhas[0];
+        linhaUnica.querySelector('input[name="peca_nome[]"]').value = '';
+        linhaUnica.querySelector('input[name="peca_quantidade[]"]').value = '1';
+    }
+});
+
+function criarLinhaPeca() {
+    const divRow = document.createElement('div');
+    divRow.classList.add('order-create__peca-row');
+    divRow.innerHTML = `
+        <div class="order-create__field">
+            <label class="order-create__label">Nome / Descrição da Peça</label>
+            <input class="order-create__input" type="text" name="peca_nome[]" placeholder="Ex: Rolamento 6205" required>
+        </div>
+        <div class="order-create__field order-create__field--qtd">
+            <label class="order-create__label">Qtd.</label>
+            <input class="order-create__input" type="number" name="peca_quantidade[]" min="1" value="1" required>
+        </div>
+        <button type="button" class="order-create__btn--remove-peca" title="Remover peça">
+            <span class="material-symbols-outlined">delete</span>
+        </button>
+    `;
+    return divRow;
+}
 
 
 // ==========================================
@@ -511,6 +624,9 @@ inputOrderInspection?.addEventListener('input', () => {
 
     if (inputFalhaCreate) inputFalhaCreate.required = false;
     if (selectTipoManutencao) selectTipoManutencao.required = false;
+
+    if (checkSolicitarPecas) checkSolicitarPecas.checked = false;
+    sincronizarContainerPecas();
 });
 
 inputOrderMaintanence?.addEventListener('input', () => {
@@ -520,6 +636,7 @@ inputOrderMaintanence?.addEventListener('input', () => {
 
     if (inputFalhaCreate) inputFalhaCreate.required = true;
     if (selectTipoManutencao) selectTipoManutencao.required = true;
+    sincronizarContainerPecas();
 });
 
 selectTipoManutencao?.addEventListener('change', () => {
