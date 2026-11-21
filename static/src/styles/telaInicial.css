@@ -2899,3 +2899,115 @@
     color: #07033b;
     background-color: #f1f5f9;
 }
+
+
+/* Container geral de aprovação de peças na destinação */
+.order-details__parts-approval {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 18px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.order-details__parts-approval.is-hidden {
+    display: none !important;
+}
+
+/* Lista de itens */
+.order-details__parts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Cada linha de peça (Nome/Qtd à esquerda | Input de Valor à direita) */
+.order-details__part-quote-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 14px;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+.order-details__part-quote-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.order-details__part-quote-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.order-details__part-quote-qty {
+    font-size: 0.82rem;
+    color: #64748b;
+}
+
+.order-details__part-quote-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 170px;
+    flex-shrink: 0;
+}
+
+.order-details__part-quote-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.order-details__part-quote-input-group .input-custo-peca {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #f8fafc;
+    font-size: 0.9rem;
+    text-align: right;
+}
+
+.order-details__part-quote-input-group .input-custo-peca:focus {
+    outline: none;
+    border-color: #2563eb;
+    background-color: #ffffff;
+}
+
+/* Checkbox de confirmação */
+.order-details__parts-approval .order-create__checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 2px;
+}
+
+.order-details__parts-approval .order-create__checkbox-wrapper label {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #334155;
+    cursor: pointer;
+}
+
+/* Responsivo para telas menores */
+@media (max-width: 540px) {
+    .order-details__part-quote-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .order-details__part-quote-input-group {
+        width: 100%;
+    }
+}
