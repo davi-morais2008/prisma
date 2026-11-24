@@ -139,7 +139,7 @@ Página Inicial
             <article class="work-order work-order--inspecao" id_inspecao="{{ insp.id_ordem_inspecao }}" tabindex="0">
                 <header class="work-order__header">
                     <h3 class="work-order__title">Inspeção #{{ insp.id_ordem_inspecao }}</h3>
-                    <span class="work-order__badge work-order__badge--inspecao">Inspeção</span>
+                    <span class="work-order__badge work-order__badge--inspecao">{{insp.status_inspecao}}</span>
                 </header>
 
                 <div class="work-order__description">
