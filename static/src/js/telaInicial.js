@@ -483,15 +483,44 @@ workOrders.forEach(order => {
                 if (inspDescricaoEl) inspDescricaoEl.textContent = insp.descricao_inspecao || 'Sem descrição.';
                 if (inspStatusBadgeEl) inspStatusBadgeEl.textContent = insp.status_inspecao || 'Ativa';
 
+                // Validação: só exibe "Destinar Técnico" se NÃO houver técnico destinado OU se o status for "Pendente"
+                const semTecnicoDestinado = !insp.cpf || String(insp.cpf).trim() === '';
+                const statusEhPendente = String(insp.status_inspecao || '').trim().toLowerCase() === 'pendente';
+                const statusEhFinalizada = ['finalizada', 'concluída', 'concluida'].includes(
+                    String(insp.status_inspecao || '').trim().toLowerCase()
+                );
+                const podeDestinarTecnico = !statusEhFinalizada && (semTecnicoDestinado || statusEhPendente);
+
                 if (formAssignInspection) {
                     formAssignInspection.action = `/telaInicial/destinar-os-inspec/${insp.id_ordem_inspecao}`;
-                    if (selectInspResponsavel) {
-                        selectInspResponsavel.value = insp.cpf || '';
+
+                    if (podeDestinarTecnico) {
+                        formAssignInspection.classList.remove('is-hidden');
+                        formAssignInspection.style.display = '';
+                        if (selectInspResponsavel) {
+                            selectInspResponsavel.value = insp.cpf || '';
+                            selectInspResponsavel.required = true;
+                        }
+                    } else {
+                        formAssignInspection.classList.add('is-hidden');
+                        formAssignInspection.style.display = 'none';
+                        if (selectInspResponsavel) {
+                            selectInspResponsavel.required = false;
+                        }
                     }
                 }
 
+                // Exibe "Concluir Inspeção" apenas quando já estiver atribuída/em andamento e ainda não finalizada
                 if (formFinishInspection) {
                     formFinishInspection.action = `/telaInicial/finalizar-inspecao/${insp.id_ordem_inspecao}`;
+
+                    if (podeDestinarTecnico || statusEhFinalizada) {
+                        formFinishInspection.classList.add('is-hidden');
+                        formFinishInspection.style.display = 'none';
+                    } else {
+                        formFinishInspection.classList.remove('is-hidden');
+                        formFinishInspection.style.display = '';
+                    }
                 }
 
                 openInspectionModal();
@@ -691,7 +720,9 @@ btnEdit?.addEventListener('click', () => {
 
 // Clique em Editar Ordem de Inspeção
 btnEditInspection?.addEventListener('click', () => {
+    
     if (inspecaoAtualSelecionada) {
+
         const editInspStatus = document.querySelector('#edit_insp_status');
         const editInspResponsavel = document.querySelector('#edit_insp_responsavel');
         const editInspData = document.querySelector('#edit_insp_data');
