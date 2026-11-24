@@ -659,6 +659,19 @@ Página Inicial
                                     <option value="">Não atribuído</option>
                                 </select>
                             </div>
+                            
+                            
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_tecnico_responsavel_{{ os.id_ordem }}">Técnico Responsável (CPF)</label>
+                                <select class="order-edit__select" id="edit_tecnico_responsavel_{{ os.id_ordem }}">
+                                    {% for tecnico in tecnicos %}
+                                    {% if tecnico.rbac == 'usuario' %}
+                                    <option value="{{tecnico.cpf}}" {% if tecnico.cpf == os.cpf %}selected{% endif %}>{{tecnico.nome}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                                
+                            </div>
                         </div>
                     </fieldset>
 
