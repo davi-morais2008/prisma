@@ -7,6 +7,13 @@ const workOrders = document.querySelectorAll('.work-order');
 const filterButton = document.querySelectorAll('.filter-button');
 const currentPath = window.location.pathname;
 
+
+const editStatusOrdem = document.querySelector('#edit_status_ordem');
+const editFaseManutencao = document.querySelector('#edit_fase_manutencao');
+const editDataInicio = document.querySelector('#edit_data_inicio');
+const editDataParada = document.querySelector('#edit_data_parada');
+
+
 const btnInspec = document.querySelector('#btnTabInspecao');
 const btnServico = document.querySelector('#btnTabServico');
 const containerInspec = document.querySelector('#container-ordens-inspecao');
@@ -25,8 +32,8 @@ const containerDataParada = document.querySelector('#campo_data_parada');
 const inputDateStop = document.querySelector('#check_maquina_parada');
 const selectTipoManutencao = document.querySelector('#create_tipo_manutencao');
 const inputFalhaCreate = document.querySelector('#create_falha');
-const inputNumberMachine = document.querySelector('#create_numero_patrimonio')
-const inputModelMachine = document.querySelector('#create_modelo_maquina')
+const inputNumberMachine = document.querySelector('#create_numero_patrimonio');
+const inputModelMachine = document.querySelector('#create_modelo_maquina');
 
 // Requisição de Peças no Cadastro
 const checkSolicitarPecas = document.getElementById('check_solicitar_pecas');
@@ -64,6 +71,23 @@ const descricaoProblema = document.querySelector('#desc_problema');
 const camposExecucao = document.getElementById('campos_execucao');
 const textareaDesc = document.getElementById('desc_manutencao');
 const inputTecnicoResponsavel = document.querySelector('#create_tecnico_responsavel');
+
+// Modal Único: Edição da Ordem de Manutenção
+const updateMaintenanceModal = document.querySelector('#updateMaintenanceModal');
+const updateMaintenanceOverlay = document.querySelector('#updateMaintenanceOverlay');
+const formUpdateMaintenance = document.querySelector('#formUpdateMaintenance');
+const orderEditTitle = document.querySelector('#orderEditTitle');
+const editTipoManutencao = document.querySelector('#edit_tipo_manutencao');
+const editTecnicoResponsavel = document.querySelector('#edit_tecnico_responsavel');
+const editPrevInicio = document.querySelector('#edit_prev_inicio');
+const editPrevTermino = document.querySelector('#edit_prev_termino');
+const editCheckParada = document.querySelector('#edit_check_parada');
+const editFalha = document.querySelector('#edit_falha');
+const editDescProblema = document.querySelector('#edit_desc_problema');
+const editCheckPecas = document.querySelector('#edit_check_pecas');
+const editContainerPecas = document.querySelector('#edit_container_pecas');
+const editListaPecas = document.querySelector('#edit_lista_pecas');
+const btnAddPecaEdit = document.querySelector('#btnAddPecaEdit');
 
 // Modal: Exclusão
 const deleteModal = document.querySelector('.order-delete');
@@ -111,10 +135,11 @@ const formAssignInspection = document.querySelector('#formAssignInspection');
 const selectInspResponsavel = document.querySelector('#select_insp_responsavel');
 const formFinishInspection = document.querySelector('#formFinishInspection');
 
-// Variáveis de controle da ordem selecionada
+// Variáveis de controle da ordem selecionada e cache da API
 let idOrdemAtual = null;
 let osAtualSelecionada = null;
 let inspecaoAtualSelecionada = null;
+let dadosApiCompletos = null;
 
 
 // ==========================================
@@ -138,9 +163,24 @@ const closeInspectionModal = () => inspectionModal?.classList.remove('active');
 const openEditInspectionModal = () => updateInspectionModal?.classList.add('active');
 const closeEditInspectionModal = () => updateInspectionModal?.classList.remove('active');
 
-if (createModal) {
+const openEditMaintenanceModal = () => updateMaintenanceModal?.classList.add('active');
+const closeEditMaintenanceModal = () => updateMaintenanceModal?.classList.remove('active');
+
+// Filtro dinâmico de máquina e falhas no Cadastro
+if (createModal && inputNumberMachine) {
+    const optionMolde = document.createElement('option');
+
     inputNumberMachine.addEventListener('change', async () => {
-        let numberMachine = inputNumberMachine.value
+        const numberMachine = inputNumberMachine.value;
+
+        if (!numberMachine) {
+            if (inputModelMachine) inputModelMachine.value = '';
+            if (inputFalhaCreate) {
+                inputFalhaCreate.innerHTML = '<option value="" disabled selected>Selecione a falha...</option>';
+            }
+            return;
+        }
+
         try {
             const resposta = await fetch('/api/get/ordens_servico/', {
                 method: 'GET',
@@ -156,16 +196,36 @@ if (createModal) {
             }
 
             const dados = await resposta.json();
-            let maquinas = dados.maquinas
-            console.log(maquinas)
-        }
-        catch(error){
-            console.error(error)
-        }
+            dadosApiCompletos = dados;
+            const maquinas = dados.maquinas || [];
+            const falhas = dados.falhas_maquinas || [];
 
-    })
-    }
+            const machine = maquinas.find(maquina => String(maquina.numero_patrimonio) === String(numberMachine));
 
+            if (machine) {
+                if (inputModelMachine) {
+                    inputModelMachine.value = machine.modelo_maquina || '';
+                }
+
+                if (inputFalhaCreate) {
+                    inputFalhaCreate.innerHTML = '<option value="" disabled selected>Selecione a falha...</option>';
+                    for (let i = 0; i < falhas.length; i++) {
+                        if (String(falhas[i].id_tipo_maquina) === String(machine.id_tipo_maquina)) {
+                            const optionClone = optionMolde.cloneNode(true);
+                            optionClone.value = falhas[i].id_falha;
+                            optionClone.textContent = falhas[i].falha;
+                            optionClone.dataset.tipoMaquina = falhas[i].id_tipo_maquina;
+
+                            inputFalhaCreate.appendChild(optionClone);
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Erro ao buscar máquina e falhas:", error);
+        }
+    });
+}
 
 
 // ==========================================
@@ -288,7 +348,8 @@ workOrders.forEach(order => {
             }
 
             const dados = await resposta.json();
-            let maquinas = dados.maquinas
+            dadosApiCompletos = dados;
+
             // 1. Fluxo de Ordem de Manutenção
             if (idOrder && dados.ordens_manutencao) {
                 const os = dados.ordens_manutencao.find(item => String(item.id_ordem) === String(idOrder));
@@ -464,38 +525,171 @@ formDetails?.addEventListener('submit', (event) => {
 // ==========================================
 // 6. ABERTURA E PREENCHIMENTO DOS MODAIS DE EDIÇÃO / AÇÕES
 // ==========================================
-btnEdit?.addEventListener('click', () => {
-    if (!osAtualSelecionada) return;
 
-    const modalDinamico = document.querySelector(`#updateModal-${osAtualSelecionada.id_ordem}`);
-    if (!modalDinamico) {
-        console.warn(`Modal #updateModal-${osAtualSelecionada.id_ordem} não encontrado.`);
-        return;
+// Função auxiliar para renderizar linha de peça no modal de edição
+function criarLinhaPecaEdicao(nomePeca = '', quantidade = 1) {
+    const divRow = document.createElement('div');
+    divRow.classList.add('order-create__peca-row');
+    divRow.innerHTML = `
+        <div class="order-create__field">
+            <label class="order-create__label">Nome / Descrição da Peça</label>
+            <input class="order-create__input" type="text" name="peca_nome[]" value="${nomePeca}" placeholder="Ex: Rolamento 6205" required>
+        </div>
+        <div class="order-create__field order-create__field--qtd">
+            <label class="order-create__label">Qtd.</label>
+            <input class="order-create__input" type="number" name="peca_quantidade[]" min="1" value="${quantidade}" required>
+        </div>
+        <button type="button" class="order-create__btn--remove-peca" title="Remover peça">
+            <span class="material-symbols-outlined">delete</span>
+        </button>
+    `;
+    return divRow;
+}
+
+function sincronizarContainerPecasEdicao() {
+    if (!editCheckPecas || !editContainerPecas || !editListaPecas) return;
+
+    if (editCheckPecas.checked) {
+        editContainerPecas.classList.remove('is-hidden');
+        editContainerPecas.style.display = 'block';
+        if (editListaPecas.children.length === 0) {
+            editListaPecas.appendChild(criarLinhaPecaEdicao());
+        }
+        editListaPecas.querySelectorAll('input').forEach(inp => inp.required = true);
+    } else {
+        editContainerPecas.classList.add('is-hidden');
+        editContainerPecas.style.display = 'none';
+        editListaPecas.innerHTML = '';
     }
+}
 
-    const selectFalhaModal = modalDinamico.querySelector('select[name="id_falha"]');
-    if (selectFalhaModal) {
-        const tipoMaquinaAtual = osAtualSelecionada.id_tipo_maquina ? String(osAtualSelecionada.id_tipo_maquina) : '';
-        const falhaAtualId = osAtualSelecionada.id_falha ? String(osAtualSelecionada.id_falha) : '';
+editCheckPecas?.addEventListener('change', sincronizarContainerPecasEdicao);
 
-        Array.from(selectFalhaModal.options).forEach(option => {
-            if (!option.value) {
-                option.hidden = false;
-                option.disabled = false;
-                return;
-            }
-            const pertenceAMaquina = !tipoMaquinaAtual || option.dataset.tipoMaquina === tipoMaquinaAtual;
-            const ehAFalhaAtual = option.value === falhaAtualId;
-            option.hidden = !(pertenceAMaquina || ehAFalhaAtual);
-            option.disabled = !(pertenceAMaquina || ehAFalhaAtual);
-        });
-
-        selectFalhaModal.value = falhaAtualId;
+btnAddPecaEdit?.addEventListener('click', () => {
+    if (editCheckPecas?.checked && editListaPecas) {
+        editListaPecas.appendChild(criarLinhaPecaEdicao());
     }
-
-    modalDinamico.classList.add('active');
 });
 
+editListaPecas?.addEventListener('click', (event) => {
+    const btnRemover = event.target.closest('.order-create__btn--remove-peca');
+    if (!btnRemover) return;
+
+    const linhas = editListaPecas.querySelectorAll('.order-create__peca-row');
+    if (linhas.length > 1) {
+        btnRemover.closest('.order-create__peca-row').remove();
+    } else {
+        linhas[0].querySelector('input[name="peca_nome[]"]').value = '';
+        linhas[0].querySelector('input[name="peca_quantidade[]"]').value = '1';
+    }
+});
+
+btnEdit?.addEventListener('click', () => {
+    if (!osAtualSelecionada || !updateMaintenanceModal) return;
+
+    const os = osAtualSelecionada;
+    const dados = dadosApiCompletos || {};
+
+    // 1. Action exata da sua rota Flask e título
+    if (formUpdateMaintenance) {
+        formUpdateMaintenance.action = `/telaIncial/atualizar_ordem/${os.id_ordem}`;
+    }
+    if (orderEditTitle) {
+        orderEditTitle.textContent = `EDITAR ORDEM DE MANUTENÇÃO #${os.id_ordem}`;
+    }
+
+    // 2. Status, Fase e Tipo de Manutenção
+    if (editStatusOrdem) editStatusOrdem.value = os.status_ordem || 'Pendente';
+    if (editFaseManutencao) editFaseManutencao.value = os.fase_manutencao || 'Aguardando Início';
+    if (editTipoManutencao) editTipoManutencao.value = os.tipo_manutencao || 'Corretiva';
+
+    // 3. Técnico Responsável
+    if (editTecnicoResponsavel) {
+        editTecnicoResponsavel.innerHTML = '<option value="">Não atribuído</option>';
+        const listaTecnicos = dados.tecnicos || dados.usuarios || [];
+
+        if (listaTecnicos.length > 0) {
+            listaTecnicos.forEach(tec => {
+                if (!tec.rbac || tec.rbac === 'usuario') {
+                    const opt = document.createElement('option');
+                    opt.value = tec.cpf;
+                    opt.textContent = tec.nome;
+                    editTecnicoResponsavel.appendChild(opt);
+                }
+            });
+        } else if (inputTecnicoResponsavel) {
+            Array.from(inputTecnicoResponsavel.options).forEach(opt => {
+                if (opt.value) editTecnicoResponsavel.appendChild(opt.cloneNode(true));
+            });
+        }
+
+        editTecnicoResponsavel.value = os.cpf || '';
+    }
+
+    // 4. Cronograma e Datas (DATE no MySQL)
+    if (editPrevInicio) editPrevInicio.value = formatarParaInputDate(os.data_prev_inicio_manutencao);
+    if (editPrevTermino) editPrevTermino.value = formatarParaInputDate(os.data_prev_termino_manutencao);
+    if (editDataInicio) editDataInicio.value = formatarParaInputDate(os.data_inicio_manutencao);
+    if (editDataParada) editDataParada.value = formatarParaInputDate(os.data_parada);
+
+    // 5. Falha Identificada filtrada pelo tipo de máquina
+    if (editFalha) {
+        editFalha.innerHTML = '<option value="" disabled>Selecione a falha...</option>';
+        const falhas = dados.falhas_maquinas || [];
+        const maquinas = dados.maquinas || [];
+
+        let tipoMaquinaAtual = os.id_tipo_maquina ? String(os.id_tipo_maquina) : '';
+        if (!tipoMaquinaAtual && os.id_maquina) {
+            const maq = maquinas.find(m => String(m.id_maquina) === String(os.id_maquina));
+            if (maq) tipoMaquinaAtual = String(maq.id_tipo_maquina);
+        }
+
+        const falhaAtualId = os.id_falha ? String(os.id_falha) : '';
+        const optionMolde = document.createElement('option');
+
+        for (let i = 0; i < falhas.length; i++) {
+            const pertenceAMaquina = !tipoMaquinaAtual || String(falhas[i].id_tipo_maquina) === tipoMaquinaAtual;
+            const ehAFalhaAtual = String(falhas[i].id_falha) === falhaAtualId;
+
+            if (pertenceAMaquina || ehAFalhaAtual) {
+                const optionClone = optionMolde.cloneNode(true);
+                optionClone.value = falhas[i].id_falha;
+                optionClone.textContent = falhas[i].falha;
+                optionClone.dataset.tipoMaquina = falhas[i].id_tipo_maquina || '';
+                editFalha.appendChild(optionClone);
+            }
+        }
+
+        editFalha.value = falhaAtualId;
+    }
+
+    // 6. Descrição do Problema
+    if (editDescProblema) {
+        editDescProblema.value = os.descricao_problema || '';
+    }
+
+    // 7. Peças Requisitadas
+    const pecasDaOS = (dados.peca_requisicoes || []).filter(
+        p => String(p.id_ordem) === String(os.id_ordem)
+    );
+
+    if (editCheckPecas && editListaPecas) {
+        editListaPecas.innerHTML = '';
+        if (pecasDaOS.length > 0) {
+            editCheckPecas.checked = true;
+            pecasDaOS.forEach(p => {
+                editListaPecas.appendChild(criarLinhaPecaEdicao(p.nome_peca, p.quantidade));
+            });
+        } else {
+            editCheckPecas.checked = false;
+        }
+        sincronizarContainerPecasEdicao();
+    }
+
+    openEditMaintenanceModal();
+});
+
+// Clique em Editar Ordem de Inspeção
 btnEditInspection?.addEventListener('click', () => {
     if (inspecaoAtualSelecionada) {
         const editInspStatus = document.querySelector('#edit_insp_status');
@@ -514,6 +708,7 @@ btnEditInspection?.addEventListener('click', () => {
 
 btnDelete?.addEventListener('click', openDeleteModal);
 btnAddFalha?.addEventListener('click', openFalhaModal);
+document.querySelectorAll('.btn-add-falha-edit').forEach(btn => btn.addEventListener('click', openFalhaModal));
 
 btnConfirmDelete?.addEventListener('click', () => {
     closeDeleteModal();
@@ -536,6 +731,7 @@ document.querySelectorAll('.alert.alert-sucesso').forEach(alerta => {
 [btnCloseFalha, overlayFalha, btnCancelFalha].forEach(el => el?.addEventListener('click', closeFalhaModal));
 [btnCloseInspection, btnCancelInspectionFooter, inspectionModalOverlay].forEach(el => el?.addEventListener('click', closeInspectionModal));
 [updateInspectionOverlay, btnCancelUpdateInspection, btnCancelEditInspectionForm].forEach(el => el?.addEventListener('click', closeEditInspectionModal));
+[updateMaintenanceOverlay].forEach(el => el?.addEventListener('click', closeEditMaintenanceModal));
 
 document.querySelectorAll('.btn-fechar-edicao, .order-edit__overlay').forEach(el => {
     el.addEventListener('click', () => {
@@ -621,7 +817,6 @@ listaPecas?.addEventListener('click', (event) => {
         linhaUnica.querySelector('input[name="peca_quantidade[]"]').value = '1';
     }
 });
-
 
 function criarLinhaPeca() {
     const divRow = document.createElement('div');
