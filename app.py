@@ -2,12 +2,12 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado, buscar_filtrado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os, editar_ordem_servico
 from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
 from model.OS_inspec import inserir_ordem_inspecao, consultar_ordens_inspecao, destinar_responsavel_inspecao, editar_ordem_inspecao, finalizar_ordem_inspecao
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
-from model.pecas import inserir_requisicoes_pecas, consultar_requisicoes_pecas, atualizar_custos_requisicoes_pecas
+from model.pecas import inserir_requisicoes_pecas, consultar_requisicoes_pecas, atualizar_custos_requisicoes_pecas, atualizar_pecas_ordem
 from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
@@ -246,11 +246,13 @@ def api_get_ordem():
         pecas_requisicoes = consultar_requisicoes_pecas()
         ordens_inspecao = consultar_ordens_inspecao()
         maquinas =  consultar_maquinas()
+        tipos_falha = listar_falhas()
         print(pecas_requisicoes)
         return jsonify({
             "ordens_manutencao": ordens_manutencao,
             "ordens_inspecao": ordens_inspecao,
             "peca_requisicoes" : pecas_requisicoes,
+            "falhas_maquinas" : tipos_falha,
             "maquinas" : maquinas
         }), 200
     except Exception as e:
@@ -789,20 +791,34 @@ def api_ordens_servico():
     return jsonify(eventos)
 
 
-@app.route('/atualizar_ordem/<int:id_ordem>', methods=['POST'])
+@app.route('/telaIncial/atualizar_ordem/<int:id_ordem>', methods=['POST'])
 def atualizar_ordem(id_ordem):
-    sucesso = editar_ordem_servico(id_ordem=id_ordem,
-            status_ordem=request.form.get('status_ordem'),
-            cpf=request.form.get('tecnico_responsavel'),
-            fase_manutencao=request.form.get('fase_manutencao'),
-            tipo_manutencao=request.form.get('tipo_manutencao'),
-            descricao=request.form.get('desc_problema'),
-            data_prev_inicio=request.form.get('data_prev_inicio_manutencao'),
-            data_prev_termino=request.form.get('data_prev_termino_manutencao'),
-            data_parada=request.form.get('data_parada'),
-            data_inicio=request.form.get('data_inicio'))
+    cpf = request.form.get('tecnico_responsavel') or None
+    id_falha = request.form.get('id_falha') or None
+    data_prev_inicio = request.form.get('data_prev_inicio_manutencao') or None
+    data_prev_termino = request.form.get('data_prev_termino_manutencao') or None
+    data_parada = request.form.get('data_parada') or None
+    data_inicio = request.form.get('data_inicio') or None
+
+    sucesso = editar_ordem_servico(
+        id_ordem=id_ordem,
+        id_falha=id_falha,
+        status_ordem=request.form.get('status_ordem'),
+        fase_manutencao=request.form.get('fase_manutencao'),
+        tipo_manutencao=request.form.get('tipo_manutencao'),
+        cpf=cpf,
+        descricao=request.form.get('desc_problema'),
+        data_prev_inicio=data_prev_inicio,
+        data_prev_termino=data_prev_termino,
+        data_parada=data_parada,
+        data_inicio=data_inicio
+    )
 
     if sucesso:
+        solicitar_pecas = request.form.get('solicitar_pecas')
+        nomes_pecas = request.form.getlist('peca_nome[]')
+        qtds_pecas = request.form.getlist('peca_quantidade[]')
+        atualizar_pecas_ordem(id_ordem, solicitar_pecas, nomes_pecas, qtds_pecas)
         return redirect('/telaInicial')
     else:
         return "Erro ao atualizar ordem de serviço", 400
