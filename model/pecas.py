@@ -98,3 +98,29 @@ def atualizar_custos_requisicoes_pecas(ids_requisicao: list[str], custos_unitari
     finally:
         cursor.close()
         conexao.close()
+
+
+def atualizar_pecas_ordem(id_ordem: int, solicitar_pecas, nomes_pecas: list, qtds_pecas: list) -> None:
+    conexao, cursor = conectar()
+    try:
+        # Remove requisições pendentes anteriores da OS para substituir pela lista editada
+        cursor.execute("""
+            DELETE FROM requisicoes_pecas
+            WHERE id_ordem = %s AND status_requisicao = 'Pendente'
+        """, (id_ordem,))
+
+        if solicitar_pecas and nomes_pecas:
+            for nome, qtd in zip(nomes_pecas, qtds_pecas):
+                if nome and nome.strip():
+                    cursor.execute("""
+                        INSERT INTO requisicoes_pecas (id_ordem, nome_peca, quantidade)
+                        VALUES (%s, %s, %s)
+                    """, (id_ordem, nome.strip(), int(qtd or 1)))
+
+        conexao.commit()
+    except Exception as erro:
+        conexao.rollback()
+        print(f"Erro ao atualizar peças da OS: {erro}")
+    finally:
+        cursor.close()
+        conexao.close()
