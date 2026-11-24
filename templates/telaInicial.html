@@ -519,26 +519,24 @@ Página Inicial
     </div>
 
 
-    <!-- MODAL DE EDIÇÃO DA ORDEM DE INSPEÇÃO -->
-    <div class="order-edit" id="updateInspectionModal" role="dialog" aria-modal="true"
-        aria-labelledby="inspectionEditTitle">
-        <div class="order-edit__overlay" id="updateInspectionOverlay"></div>
+    <!-- MODAL ÚNICO DE EDIÇÃO DA ORDEM DE MANUTENÇÃO -->
+    <div class="order-edit" id="updateMaintenanceModal" role="dialog" aria-modal="true"
+        aria-labelledby="orderEditTitle">
+        <div class="order-edit__overlay" id="updateMaintenanceOverlay"></div>
 
         <article class="order-edit__card">
-            <!-- CABEÇALHO SUPERIOR -->
             <header class="order-edit__header">
                 <div class="order-edit__brand">
                     <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="order-edit__brand-image">
-                    <h1 class="order-edit__brand-title" id="inspectionEditTitle">EDITAR ORDEM DE INSPEÇÃO</h1>
+                    <h1 class="order-edit__brand-title" id="orderEditTitle">EDITAR ORDEM DE MANUTENÇÃO</h1>
                 </div>
-                <button type="button" class="order-edit__close-btn" id="btnCancelUpdateInspection"
-                    aria-label="Fechar formulário de edição da inspeção">
+                <button type="button" class="order-edit__close-btn btn-fechar-edicao" id="btnCancelUpdateMaintenance"
+                    aria-label="Fechar formulário de edição da ordem">
                     <span class="material-symbols-outlined" aria-hidden="true">close</span>
                 </button>
             </header>
 
-            <!-- FORMULÁRIO DE EDIÇÃO -->
-            <form class="order-edit__form" id="formUpdateInspection" method="POST" action="">
+            <form class="order-edit__form" id="formUpdateMaintenance" method="POST" action="">
                 <div class="order-edit__body">
 
                     <!-- SEÇÃO 1: INFORMAÇÕES GERAIS -->
@@ -547,55 +545,135 @@ Página Inicial
 
                         <div class="order-edit__grid order-edit__grid--2-col">
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_insp_status">Status da Inspeção</label>
-                                <select class="order-edit__select" id="edit_insp_status" name="status_inspecao"
+                                <label class="order-edit__label" for="edit_status_ordem">Status da Ordem</label>
+                                <select class="order-edit__select" id="edit_status_ordem" name="status_ordem" required>
+                                    <option value="Pendente">Pendente</option>
+                                    <option value="Em Andamento">Em Andamento</option>
+                                    <option value="Concluída">Concluída</option>
+                                    <option value="Cancelada">Cancelada</option>
+                                </select>
+                            </div>
+
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_fase_manutencao">Fase da Manutenção</label>
+                                <select class="order-edit__select" id="edit_fase_manutencao" name="fase_manutencao"
                                     required>
-                                    <option value="Ativa">Ativa</option>
+                                    <option value="Aguardando Início">Aguardando Início</option>
+                                    <option value="Em Execução">Em Execução</option>
+                                    <option value="Aguardando Peças">Aguardando Peças</option>
                                     <option value="Finalizada">Finalizada</option>
                                 </select>
                             </div>
 
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_insp_responsavel">Técnico Responsável</label>
-                                <select class="order-edit__select" id="edit_insp_responsavel" name="cpf">
-                                    <option value="">Não atribuído</option>
-                                    {% for tecnico in tecnicos %}
-                                    {% if tecnico.rbac == 'usuario' %}
-                                    <option value="{{ tecnico.cpf }}">{{ tecnico.nome }}</option>
-                                    {% endif %}
-                                    {% endfor %}
+                                <label class="order-edit__label" for="edit_tipo_manutencao">Tipo de Manutenção</label>
+                                <select class="order-edit__select" id="edit_tipo_manutencao" name="tipo_manutencao"
+                                    required>
+                                    <option value="Corretiva">Corretiva</option>
+                                    <option value="Preventiva">Preventiva</option>
+                                    <option value="Preditiva">Preditiva</option>
                                 </select>
                             </div>
 
-                            <div class="order-edit__field order-edit__field--full">
-                                <label class="order-edit__label" for="edit_insp_data">Data da Inspeção</label>
-                                <input class="order-edit__input" type="date" id="edit_insp_data" name="data_inspec"
-                                    required>
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_tecnico_responsavel">Técnico
+                                    Responsável</label>
+                                <select class="order-edit__select" id="edit_tecnico_responsavel"
+                                    name="tecnico_responsavel">
+                                    <option value="">Não atribuído</option>
+                                </select>
                             </div>
                         </div>
                     </fieldset>
 
-                    <!-- SEÇÃO 2: DETALHES E CHECKLIST -->
+                    <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->
                     <fieldset class="order-edit__section">
-                        <legend class="order-edit__section-title">DETALHES E CHECKLIST</legend>
+                        <legend class="order-edit__section-title">CRONOGRAMA E DATAS</legend>
+
+                        <div class="order-edit__grid order-edit__grid--2-col">
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_prev_inicio">Prev. Início Manutenção</label>
+                                <input class="order-edit__input" type="date" id="edit_prev_inicio"
+                                    name="data_prev_inicio_manutencao">
+                            </div>
+
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_prev_termino">Prev. Término
+                                    Manutenção</label>
+                                <input class="order-edit__input" type="date" id="edit_prev_termino"
+                                    name="data_prev_termino_manutencao">
+                            </div>
+
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_data_inicio">Data de Início Real</label>
+                                <input class="order-edit__input" type="date" id="edit_data_inicio" name="data_inicio">
+                            </div>
+
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_data_parada">Data de Parada da
+                                    Máquina</label>
+                                <input class="order-edit__input" type="date" id="edit_data_parada" name="data_parada">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- SEÇÃO 3: DIAGNÓSTICO E FALHA -->
+                    <fieldset class="order-edit__section">
+                        <legend class="order-edit__section-title">DIAGNÓSTICO E FALHA</legend>
 
                         <div class="order-edit__grid">
                             <div class="order-edit__field order-edit__field--full">
-                                <label class="order-edit__label" for="edit_insp_descricao">Descrição / Checklist da
-                                    Inspeção</label>
-                                <textarea class="order-edit__textarea" id="edit_insp_descricao"
-                                    name="descricao_inspecao" rows="4"
-                                    placeholder="Descreva os itens e procedimentos da inspeção..." required></textarea>
+                                <label class="order-edit__label" for="edit_falha">Falha Identificada</label>
+                                <div class="inputs-falha">
+                                    <select class="order-edit__select" id="edit_falha" name="id_falha" required>
+                                        <option value="" disabled selected>Selecione a falha...</option>
+                                    </select>
+
+                                    <button type="button" title="Adicionar falha"
+                                        class="order-create__btn--add-falha btn-add-falha-edit">
+                                        <span class="material-symbols-outlined">add</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="order-edit__field order-edit__field--full">
+                                <label class="order-edit__label" for="edit_desc_problema">Descrição do Problema</label>
+                                <textarea class="order-edit__textarea" id="edit_desc_problema" name="desc_problema"
+                                    rows="3" placeholder="Detalhamento do problema ocorrido..." required></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- SEÇÃO 4: SOLICITAÇÃO DE PEÇAS -->
+                    <fieldset class="order-edit__section">
+                        <legend class="order-edit__section-title">SOLICITAÇÃO DE PEÇAS</legend>
+
+                        <div class="order-edit__grid">
+                            <div class="order-edit__field order-edit__field--full">
+                                <div class="order-create__checkbox-wrapper">
+                                    <input type="checkbox" id="edit_check_pecas" name="solicitar_pecas" value="1">
+                                    <label class="order-create__label" for="edit_check_pecas">
+                                        Necessita solicitar compra de peças?
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="order-edit__field order-edit__field--full is-hidden" id="edit_container_pecas"
+                                style="display: none;">
+                                <div id="edit_lista_pecas"></div>
+
+                                <button type="button" class="order-create__btn--add-peca" id="btnAddPecaEdit">
+                                    <span class="material-symbols-outlined">add</span> Adicionar outra peça
+                                </button>
                             </div>
                         </div>
                     </fieldset>
 
                 </div>
 
-                <!-- RODAPÉ COM AÇÕES -->
                 <footer class="order-edit__footer">
-                    <button type="button" class="order-edit__btn order-edit__btn--cancel"
-                        id="btnCancelEditInspectionForm">Cancelar</button>
+                    <button type="button" class="order-edit__btn order-edit__btn--cancel btn-fechar-edicao"
+                        id="btnCancelEditMaintenanceForm">Cancelar</button>
                     <button type="submit" class="order-edit__btn order-edit__btn--submit">Salvar Alterações</button>
                 </footer>
             </form>
@@ -967,16 +1045,10 @@ Página Inicial
 
                             <div class="order-create__grid">
                                 <div class="order-create__field order-create__field--full">
-                                    <label class="order-create__label" for="edit_falha">Falha Identificada</label>
+                                    <label class="order-create__label" for="create_falha">Falha Identificada</label>
                                     <div class="inputs-falha">
-                                        <select class="order-edit__select" id="edit_falha" name="id_falha">
+                                        <select class="order-edit__select" id="create_falha" name="id_falha" required>
                                             <option value="" disabled selected>Selecione a falha...</option>
-                                            {% for falha in falhas %}
-                                            <option value="{{ falha.id_falha }}"
-                                                data-tipo-maquina="{{ falha.id_tipo_maquina }}">
-                                                {{ falha.falha }}
-                                            </option>
-                                            {% endfor %}
                                         </select>
 
                                         <button type="button" title="Adicionar falha"
@@ -1006,9 +1078,8 @@ Página Inicial
                                     compra de peças?</label>
                             </div>
 
-                            <!-- Inicia com display: none -->
-                            <div id="container_solicitar_pecas" class="order-create__pecas-container"
-                                style="display: none;">
+
+                            <div id="container_solicitar_pecas" class="order-create__pecas-container">
                                 <div id="lista_pecas_requisicao">
                                     <div class="order-create__peca-row">
                                         <div class="order-create__field">
