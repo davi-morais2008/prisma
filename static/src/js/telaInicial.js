@@ -25,6 +25,8 @@ const containerDataParada = document.querySelector('#campo_data_parada');
 const inputDateStop = document.querySelector('#check_maquina_parada');
 const selectTipoManutencao = document.querySelector('#create_tipo_manutencao');
 const inputFalhaCreate = document.querySelector('#create_falha');
+const inputNumberMachine = document.querySelector('#create_numero_patrimonio')
+const inputModelMachine = document.querySelector('#create_modelo_maquina')
 
 // Requisição de Peças no Cadastro
 const checkSolicitarPecas = document.getElementById('check_solicitar_pecas');
@@ -135,6 +137,35 @@ const closeInspectionModal = () => inspectionModal?.classList.remove('active');
 
 const openEditInspectionModal = () => updateInspectionModal?.classList.add('active');
 const closeEditInspectionModal = () => updateInspectionModal?.classList.remove('active');
+
+if (createModal) {
+    inputNumberMachine.addEventListener('change', async () => {
+        let numberMachine = inputNumberMachine.value
+        try {
+            const resposta = await fetch('/api/get/ordens_servico/', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json; charset=utf-8',
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            });
+
+            if (!resposta.ok) {
+                alert("ERRO AO CARREGAR DADOS!");
+                return;
+            }
+
+            const dados = await resposta.json();
+            let maquinas = dados.maquinas
+            console.log(maquinas)
+        }
+        catch(error){
+            console.error(error)
+        }
+
+    })
+    }
+
 
 
 // ==========================================
@@ -257,7 +288,7 @@ workOrders.forEach(order => {
             }
 
             const dados = await resposta.json();
-
+            let maquinas = dados.maquinas
             // 1. Fluxo de Ordem de Manutenção
             if (idOrder && dados.ordens_manutencao) {
                 const os = dados.ordens_manutencao.find(item => String(item.id_ordem) === String(idOrder));
@@ -590,6 +621,7 @@ listaPecas?.addEventListener('click', (event) => {
         linhaUnica.querySelector('input[name="peca_quantidade[]"]').value = '1';
     }
 });
+
 
 function criarLinhaPeca() {
     const divRow = document.createElement('div');
