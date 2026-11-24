@@ -2,16 +2,16 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado, buscar_filtrado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
-from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os, iniciar_OS, editar_ordem_servico
+from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os, editar_ordem_servico
 from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
 from model.OS_inspec import inserir_ordem_inspecao, consultar_ordens_inspecao, destinar_responsavel_inspecao, editar_ordem_inspecao, finalizar_ordem_inspecao
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
-from model.pecas import inserir_requisicoes_pecas
+from model.pecas import inserir_requisicoes_pecas, consultar_requisicoes_pecas, atualizar_custos_requisicoes_pecas, atualizar_pecas_ordem
 from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
-from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina, consulta_setores, consultar_falhas, adicionar_falha, adicionar_tipo_maquina
+from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina, consulta_setores, consultar_falhas, adicionar_falha, adicionar_tipo_maquina, recalcular_custo_acumulado_maquina
 from model.categorias import (
     listar_tipos_maquina,
     listar_setores,
@@ -243,11 +243,17 @@ def filtrar_ordens(tipo):
 def api_get_ordem():
     try:
         ordens_manutencao = consultar_ordem_servico()
+        pecas_requisicoes = consultar_requisicoes_pecas()
         ordens_inspecao = consultar_ordens_inspecao()
-        
+        maquinas =  consultar_maquinas()
+        tipos_falha = listar_falhas()
+        print(pecas_requisicoes)
         return jsonify({
             "ordens_manutencao": ordens_manutencao,
-            "ordens_inspecao": ordens_inspecao
+            "ordens_inspecao": ordens_inspecao,
+            "peca_requisicoes" : pecas_requisicoes,
+            "falhas_maquinas" : tipos_falha,
+            "maquinas" : maquinas
         }), 200
     except Exception as e:
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
@@ -276,26 +282,29 @@ def register_os_inspec():
 @app.route("/telaInicial/post-register-order-maintenance", methods=["POST"])
 def register_os_maintenance():
     maquinas = consultar_maquinas()
-    nmr_patrimonio = request.form.get('numero_patrimonio')
-    cpf_solicitante = request.form.get('insp_solicitante')
+    nmr_patrimonio = request.form.get('numero_patrimonio', '').strip()
+    cpf_solicitante = request.form.get('insp_solicitante') or session.get('user')
     tec_responsavel = request.form.get('tecnico_responsavel') or None
     tipo_manutencao = request.form.get('tipo_manutencao')
+    id_falha = request.form.get('id_falha') or 1
     prev_data_inicio = request.form.get('data_prev_inicio') or None
     prev_data_termino = request.form.get('data_prev_termino') or None
     data_parada = request.form.get('data_parada') or None
-    desc_problema = request.form.get('desc_problema')
+    desc_problema = request.form.get('desc_problema', '').strip()
 
-    id_maquina = None
-    for maquina in maquinas:
-        if str(maquina['numero_patrimonio']) == str(nmr_patrimonio):
-            id_maquina = maquina['id_maquina']
+    id_maquina = next(
+        (m['id_maquina'] for m in maquinas if str(m['numero_patrimonio']) == str(nmr_patrimonio)),
+        None
+    )
 
     if id_maquina is None:
-        return "Máquina não encontrada com o patrimônio informado", 400
+        flash('Máquina não encontrada com o patrimônio informado.', 'erro')
+        return redirect('/telaInicial')
 
+    # Cadastra a OS e obtém o ID gerado (cursor.lastrowid)
     id_ordem = cadastrar_ordem_servico(
         id_maquina,
-        1,
+        int(id_falha),
         cpf_solicitante,
         tec_responsavel,
         tipo_manutencao,
@@ -305,19 +314,29 @@ def register_os_maintenance():
         prev_data_termino
     )
 
+    if not id_ordem or isinstance(id_ordem, bool):
+        flash('Erro ao registrar a ordem de serviço.', 'erro')
+        return redirect('/telaInicial')
+
+    # Se o checkbox de solicitação de peças estiver marcado, registra cada peça individualmente
     if request.form.get('solicitar_pecas') == '1':
         nomes_pecas = request.form.getlist('peca_nome[]')
         quantidades_pecas = request.form.getlist('peca_quantidade[]')
 
-        pecas_validas = [
-            (nome.strip(), int(qtd))
-            for nome, qtd in zip(nomes_pecas, quantidades_pecas)
-            if nome.strip()
-        ]
+        pecas_validas = []
+        for nome, qtd in zip(nomes_pecas, quantidades_pecas):
+            nome_limpo = nome.strip()
+            if nome_limpo:
+                qtd_int = int(qtd) if qtd and str(qtd).isdigit() and int(qtd) > 0 else 1
+                pecas_validas.append((nome_limpo, qtd_int))
 
         if pecas_validas:
-            inserir_requisicoes_pecas(id_ordem, pecas_validas)
+            sucesso_pecas = inserir_requisicoes_pecas(id_ordem, pecas_validas)
+            if not sucesso_pecas:
+                flash('OS criada, mas houve erro ao registrar a requisição de peças.', 'erro')
+                return redirect('/telaInicial')
 
+    flash('Ordem de serviço cadastrada com sucesso!', 'sucesso')
     return redirect('/telaInicial')
 
 
@@ -351,6 +370,15 @@ def rota_finalizar_inspecao(id_inspecao):
 @app.route("/telaInicial/destinar-os-maintenance/<int:id>", methods=['POST'])
 def assign_os_maintenance(id):
     cpf_tecnico = request.form.get('tecnico_responsavel')
+    ids_requisicao = request.form.getlist('id_requisicao[]')
+    custos_unitarios = request.form.getlist('custo_unitario[]')
+
+    if ids_requisicao and custos_unitarios:
+        atualizar_custos_requisicoes_pecas(ids_requisicao, custos_unitarios)
+        recalcular_custo_acumulado_maquina(id)
+
+    destinar_tecnico_os(id, cpf_tecnico)
+    return redirect('/telaInicial')
 
     destinar_tecnico_os(id, cpf_tecnico)
     return redirect('/telaInicial')
@@ -763,20 +791,34 @@ def api_ordens_servico():
     return jsonify(eventos)
 
 
-@app.route('/atualizar_ordem/<int:id_ordem>', methods=['POST'])
+@app.route('/telaIncial/atualizar_ordem/<int:id_ordem>', methods=['POST'])
 def atualizar_ordem(id_ordem):
-    sucesso = editar_ordem_servico(id_ordem=id_ordem,
-            status_ordem=request.form.get('status_ordem'),
-            cpf=request.form.get('tecnico_responsavel'),
-            fase_manutencao=request.form.get('fase_manutencao'),
-            tipo_manutencao=request.form.get('tipo_manutencao'),
-            descricao=request.form.get('desc_problema'),
-            data_prev_inicio=request.form.get('data_prev_inicio_manutencao'),
-            data_prev_termino=request.form.get('data_prev_termino_manutencao'),
-            data_parada=request.form.get('data_parada'),
-            data_inicio=request.form.get('data_inicio'))
+    cpf = request.form.get('tecnico_responsavel') or None
+    id_falha = request.form.get('id_falha') or None
+    data_prev_inicio = request.form.get('data_prev_inicio_manutencao') or None
+    data_prev_termino = request.form.get('data_prev_termino_manutencao') or None
+    data_parada = request.form.get('data_parada') or None
+    data_inicio = request.form.get('data_inicio') or None
+
+    sucesso = editar_ordem_servico(
+        id_ordem=id_ordem,
+        id_falha=id_falha,
+        status_ordem=request.form.get('status_ordem'),
+        fase_manutencao=request.form.get('fase_manutencao'),
+        tipo_manutencao=request.form.get('tipo_manutencao'),
+        cpf=cpf,
+        descricao=request.form.get('desc_problema'),
+        data_prev_inicio=data_prev_inicio,
+        data_prev_termino=data_prev_termino,
+        data_parada=data_parada,
+        data_inicio=data_inicio
+    )
 
     if sucesso:
+        solicitar_pecas = request.form.get('solicitar_pecas')
+        nomes_pecas = request.form.getlist('peca_nome[]')
+        qtds_pecas = request.form.getlist('peca_quantidade[]')
+        atualizar_pecas_ordem(id_ordem, solicitar_pecas, nomes_pecas, qtds_pecas)
         return redirect('/telaInicial')
     else:
         return "Erro ao atualizar ordem de serviço", 400

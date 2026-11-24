@@ -177,3 +177,34 @@ def adicionar_falha(tipo_maquina, falha):
     cursor.execute("INSERT INTO falhas (id_tipo_maquina, falha) VALUES (%s, %s)", (tipo_maquina, falha))
     conexao.commit()
     conexao.close()
+
+def recalcular_custo_acumulado_maquina(id_ordem: int) -> bool:
+    """
+    Recalcula o custo_acumulado da máquina somando (quantidade * custo_unitario)
+    de todas as requisições aprovadas vinculadas às ordens daquela máquina.
+    """
+    conexao, cursor = conectar()
+    # try:
+    cursor.execute("""
+    UPDATE maquinas m
+    INNER JOIN ordens_servicos os_ref ON os_ref.id_maquina = m.id_maquina
+    SET m.custo_acumulado = (
+        SELECT COALESCE(SUM(rp.quantidade * rp.custo_unitario), 0)
+        FROM requisicoes_pecas rp
+        INNER JOIN ordens_servicos os ON os.id_ordem = rp.id_ordem
+        WHERE os.id_maquina = m.id_maquina
+            AND rp.status_requisicao = 'Aprovada'
+            AND rp.custo_unitario IS NOT NULL
+    )
+    WHERE os_ref.id_ordem = %s
+""", (id_ordem,))
+
+    conexao.commit()
+    return True
+    # except Exception as erro:
+    #     conexao.rollback()
+    #     print(f"Erro ao recalcular custo acumulado da máquina: {erro}")
+    #     return False
+    # finally:
+    #     cursor.close()
+    #     conexao.close()
