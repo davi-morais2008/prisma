@@ -30,20 +30,6 @@ Página Inicial
         </div>
     </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
-        role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-
-
-
     <!-- SELETOR TIPO SLIDE (TABS) -->
     <div class="home__view-switcher" role="tablist" aria-label="Alternar tipo de ordem">
         <div class="home__switcher-track" id="switcherTrack">
@@ -62,6 +48,18 @@ Página Inicial
             </button>
         </div>
     </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
+        role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
 
     <!-- CONTAINER INDIVIDUAL 1: ORDENS DE SERVIÇO -->
     <section class="home__orders-container" id="container-ordens-servico" role="tabpanel"
@@ -459,10 +457,10 @@ Página Inicial
 
                     <!-- NOVA SEÇÃO: EXECUÇÃO DA MANUTENÇÃO E PEÇAS ADQUIRIDAS -->
                     <section class="order-details__section" id="execute-OS-section">
-
+                        <h2 class="order-details__section-title">EXECUÇÃO</h2>
                         <!-- CONTAINER APENAS DOS CAMPOS (aplique o display: none neste ID) -->
                         <div id="campos_execucao">
-                            <h2 class="order-details__section-title">EXECUÇÃO</h2>
+                            
 
                             <div class="order-details__card-group">
                                 <!-- Campo: Descrição da Manutenção -->
