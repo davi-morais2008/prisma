@@ -245,11 +245,13 @@ def api_get_ordem():
         ordens_manutencao = consultar_ordem_servico()
         pecas_requisicoes = consultar_requisicoes_pecas()
         ordens_inspecao = consultar_ordens_inspecao()
+        maquinas =  consultar_maquinas()
         print(pecas_requisicoes)
         return jsonify({
             "ordens_manutencao": ordens_manutencao,
             "ordens_inspecao": ordens_inspecao,
-            "peca_requisicoes" : pecas_requisicoes
+            "peca_requisicoes" : pecas_requisicoes,
+            "maquinas" : maquinas
         }), 200
     except Exception as e:
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
