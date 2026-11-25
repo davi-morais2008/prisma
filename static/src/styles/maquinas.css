@@ -215,7 +215,7 @@ body {
     border: 1px solid #eef0f6;
     box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
     margin-top: 20px;
-    padding: 24px 0 0 0;
+    padding: 24px 10px;
     display: flex;
     flex-direction: column;
     min-height: 60vh; /* Ajuste conforme a altura desejada na tela */
@@ -265,7 +265,7 @@ body {
 
 /* Área interna do grid com rolagem */
 .machines__container .machines__machines-grid {
-    max-height: 60vh;      /* Ativa a barra de rolagem automaticamente quando passar dessa altura */
+    max-height: 400px;      /* Ativa a barra de rolagem automaticamente quando passar dessa altura */
     overflow-y: auto;
     padding-right: 8px;    /* Evita que a barra de rolagem encoste nos cards da direita */
     
