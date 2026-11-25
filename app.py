@@ -3,7 +3,7 @@ from model.login import login_usuario
 from model.buscar_finalizado import buscar_os_finalizado, buscar_filtrado
 from model.buscar_finalizado_individual import buscar_os_finalizado_ind
 from model.OS import consultar_ordem_servico, cadastrar_ordem_servico, filtrar_ordem_servico, destinar_tecnico_os, iniciar_OS, editar_ordem_servico
-from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario
+from model.usuario import buscar_usuario, atualizar_usuario, alterar_status_usuario, buscar_usuario_especialidade
 from model.OS_inspec import inserir_ordem_inspecao, consultar_ordens_inspecao, destinar_responsavel_inspecao, editar_ordem_inspecao, finalizar_ordem_inspecao
 from model.dashboard import buscar_dados_dashboard
 from model.consultaMaquinas import consultar_maquinas, filtrar_maquinas
@@ -685,9 +685,10 @@ def categorias_deletar_falha(id_falha):
 @login_required
 def pagina_perfil():
     users = buscar_usuario()
+    especialidades = buscar_usuario_especialidade(session['user'])
     for user in users: 
         if user['cpf'] == session['user']:
-            return render_template('perfil.html', usuario=user)
+            return render_template('perfil.html', usuario=user, especialidade=especialidades)
     return redirect('/telaInicial')
 
 

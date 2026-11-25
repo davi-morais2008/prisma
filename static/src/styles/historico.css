@@ -40,6 +40,60 @@
     grid-column: 2;
 }
 
+.history__container {
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+    border: 1px solid #eef0f6;
+    margin-top: 20px;
+    padding: 30px 24px;
+}
+
+/* Cabeçalho do container */
+.history__container-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Quadrado azul claro do ícone */
+.history__container-icon {
+    width: 36px;
+    height: 36px;
+    background-color: #e6f0ff;
+    color: #2563eb;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.history__container-icon .material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* Título do container */
+.history__container-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0b132b;
+    margin: 0;
+}
+
+/* Linha divisória horizontal */
+.history__container-divider {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 18px 0 22px 0;
+}
+
+/* Ajuste opcional para garantir espaçamento interno dos cards */
+.history__container .history__cards {
+    width: 100%;
+    padding: 0;
+}
+
 .history__cards {
     width: 100%;
     display: grid;

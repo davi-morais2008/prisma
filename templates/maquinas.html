@@ -52,52 +52,62 @@ Máquinas
             </div>
         </div>
 
-        <div class="machines__machines-grid">
-            {% for maquina in maquinas %}
-            {% if maquina.is_inativa == 0 %}
-            <article class="machine" data-machine="{{maquina.modelo_maquina}}" data-tipo="{{ maquina.tipo_maquina }}">
-                <figure class="machine__media">
-                    {% if maquina.url_imagem %}
-                    <img src="{{maquina.url_imagem}}" alt="Prévia visual da Máquina 01 - Torno CNC X200"
-                        class="machine__image" loading="lazy" />
-                    {% else %}
-                    <img src="https://placehold.co/600x400" alt="Prévia visual da Máquina 01 - Torno CNC X200"
-                        class="machine__image" loading="lazy" />
-                    {% endif %}
-                    <span class="machine__status machine__status--active" aria-label="Status: Operacional">
-                        Operacional
-                    </span>
-                </figure>
-
-                <div class="machine__content">
-                    <header class="machine__header">
-                        <h3 class="machine__title">{{maquina.tipo_maquina}}</h3>
-                        <p class="machine__number">Patrimônio: {{maquina.numero_patrimonio}}</p>
-                    </header>
-
-                    <dl class="machine__details">
-                        <div class="machine__detail-item">
-                            <dt class="machine__detail-label">Modelo:</dt>
-                            <dd class="machine__detail-value">{{maquina.modelo_maquina}}</dd>
-                        </div>
-                        <div class="machine__detail-item">
-                            <dt class="machine__detail-label">Setor:</dt>
-                            <dd class="machine__detail-value">{{maquina.setor}}</dd>
-                        </div>
-                    </dl>
-
-                    <footer class="machine__footer">
-                        <button type="button" id="{{maquina.id_maquina}}" class="machine__button"
-                            aria-label="Ver detalhes da Máquina 01">
-                            Ver Detalhes
-                        </button>
-                    </footer>
+        <section class="machines__container">
+            <header class="machines__container-header">
+                <div class="machines__container-icon">
+                    <span class="material-symbols-outlined" aria-hidden="true">precision_manufacturing</span>
                 </div>
-            </article>
+                <h2 class="machines__container-title">Máquinas Cadastradas</h2>
+            </header>
 
-            {% endif %}
-            {% endfor %}
-        </div>
+            <hr class="machines__container-divider">
+
+            <div class="machines__machines-grid">
+                {% for maquina in maquinas %}
+                {% if maquina.is_inativa == 0 %}
+                <article class="machine" data-machine="{{maquina.modelo_maquina}}" data-tipo="{{ maquina.tipo_maquina }}">
+                    <figure class="machine__media">
+                        {% if maquina.url_imagem %}
+                        <img src="{{maquina.url_imagem}}" alt="Prévia visual da Máquina 01 - Torno CNC X200"
+                            class="machine__image" loading="lazy" />
+                        {% else %}
+                        <img src="https://placehold.co/600x400" alt="Prévia visual da Máquina 01 - Torno CNC X200"
+                            class="machine__image" loading="lazy" />
+                        {% endif %}
+                        <span class="machine__status machine__status--active" aria-label="Status: Operacional">
+                            Operacional
+                        </span>
+                    </figure>
+
+                    <div class="machine__content">
+                        <header class="machine__header">
+                            <h3 class="machine__title">{{maquina.tipo_maquina}}</h3>
+                            <p class="machine__number">Patrimônio: {{maquina.numero_patrimonio}}</p>
+                        </header>
+
+                        <dl class="machine__details">
+                            <div class="machine__detail-item">
+                                <dt class="machine__detail-label">Modelo:</dt>
+                                <dd class="machine__detail-value">{{maquina.modelo_maquina}}</dd>
+                            </div>
+                            <div class="machine__detail-item">
+                                <dt class="machine__detail-label">Setor:</dt>
+                                <dd class="machine__detail-value">{{maquina.setor}}</dd>
+                            </div>
+                        </dl>
+
+                        <footer class="machine__footer">
+                            <button type="button" id="{{maquina.id_maquina}}" class="machine__button"
+                                aria-label="Ver detalhes da Máquina 01">
+                                Ver Detalhes
+                            </button>
+                        </footer>
+                    </div>
+                </article>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </section>
 
         <!-- FORMULÁRIO DE CADASTRO DE MÁQUINAS -->
         <div class="machine-modal__overlay">

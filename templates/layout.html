@@ -1,3 +1,5 @@
+{% set cpf = session.get('user', '') | string %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -33,18 +35,20 @@
 
         <nav id="mobile-dropdown" class="dropdown-menu">
             <ul>
-                <li><a href="/telaInicial">Serviços</a></li>
                 <li><a href="/profile">Perfil</a></li>
+                <li><a href="/telaInicial">Serviços</a></li>
                 <li><a href="/calendario">Calendário</a></li>
+
                 {% if user_rbac in ['admin', 'root'] %}
+                    <li><a href="/historico">Histórico</a></li>
                     <li><a href="/painelGeral">Painel Geral</a></li>
+                    <li><a href="/maquinas">Máquinas</a></li>
                     <li><a href="/usuarios">Usuários</a></li>
                 {% endif %}
-                <li><a href="/maquinas">Máquinas</a></li>
-                <li><a href="/historico">Histórico</a></li>
+
                 <li>
                     <div class="identificacao">
-                        <p>CPF: {{session.get('user')}} / Acesso: {{session.get('user_rbac')}}</p>
+                        <p>CPF: {{ cpf[0:3] }}.{{ cpf[3:6] }}.{{ cpf[6:9] }}-{{ cpf[9:11] }} / Acesso: {{session.get('user_rbac') | title }}</p>
                         <div class="sidebar__logoff">
                             <span>
                                 <a class="material-symbols-outlined sidebar__logoff--icon" href="/logoff">exit_to_app</a>
@@ -65,36 +69,35 @@
         </div>
 
         <div class="identificacao">
-                <p>CPF: {{session.get('user')}}</p>
-                <p>Acesso: {{session.get('user_rbac')}}</p>
+                <p>CPF: {{ cpf[0:3] }}.{{ cpf[3:6] }}.{{ cpf[6:9] }}-{{ cpf[9:11] }}</p>
+                <p>Acesso: {{session.get('user_rbac') | title}}</p>
         </div>
 
         <nav class="sidebar__nav">
             <ul class="sidebar__nav-list">
                 <li class="sidebar__nav-item">
-                    <a class="sidebar__nav-link" href="/telaInicial">Serviços</a>
+                    <a class="sidebar__nav-link" href="/profile">Perfil</a>
                 </li>
                 <li class="sidebar__nav-item">
-                    <a class="sidebar__nav-link" href="/profile">Perfil</a>
+                    <a class="sidebar__nav-link" href="/telaInicial">Serviços</a>
                 </li>
                 <li class="sidebar__nav-item">
                     <a class="sidebar__nav-link" href="/calendario">Calendário</a>
                 </li>
+
                 {% if user_rbac in ['admin', 'root'] %}
-                <li class="sidebar__nav-item">
-                    <a class="sidebar__nav-link" href="/painelGeral">Painel Geral</a>
-                </li>
-                {% endif %}
-                <li class="sidebar__nav-item">
-                    <a class="sidebar__nav-link" href="/maquinas">Máquinas</a>
-                </li>
-                <li class="sidebar__nav-item">
-                    <a class="sidebar__nav-link" href="/historico">Histórico</a>
-                </li>
-                {% if user_rbac in ['admin', 'root'] %}
-                <li class="sidebar__nav-item">
-                    <a class="sidebar__nav-link" href="/usuarios">Usuários</a>
-                </li>
+                    <li class="sidebar__nav-item">
+                        <a class="sidebar__nav-link" href="/historico">Histórico</a>
+                    </li>
+                    <li class="sidebar__nav-item">
+                        <a class="sidebar__nav-link" href="/painelGeral">Painel Geral</a>
+                    </li>
+                    <li class="sidebar__nav-item">
+                        <a class="sidebar__nav-link" href="/maquinas">Máquinas</a>
+                    </li>
+                    <li class="sidebar__nav-item">
+                        <a class="sidebar__nav-link" href="/usuarios">Usuários</a>
+                    </li>
                 {% endif %}
             </ul>
         </nav>
@@ -121,8 +124,7 @@
                 </span>
             </div>
         </div>
-
-
+        
     </aside>
 
     {% block conteudo %}

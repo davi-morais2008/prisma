@@ -6,7 +6,7 @@ def buscar_usuario(usuario=False):
 
     Retorna:
         Lista de tuplas contendo os dados dos usuários 
-            (cpf, nome, sobrenome, email, especialidade, rbac).
+            (cpf, nome, sobrenome, email, rbac).
     """
 
     conexao, cursor = conectar()
@@ -94,3 +94,28 @@ def alterar_status_usuario(cpf, novo_status):
         (novo_status, cpf)
     )
     conexao.commit()
+
+def buscar_usuario_especialidade(cpf):
+    """
+    Busca um usuário específico no banco de dados juntamente com sua especialidade.
+
+    Parâmetros:
+        cpf (str): CPF do usuário que será buscado.
+
+    Retorna:
+        dict: Dicionário contendo os dados do usuário e sua especialidade.
+    """
+    conexao, cursor = conectar()
+    cursor.execute("""
+        SELECT 
+            especialidades.especialidade
+        FROM usuarios
+        LEFT JOIN tecnicos_especialidades ON usuarios.cpf = tecnicos_especialidades.cpf
+        LEFT JOIN especialidades ON tecnicos_especialidades.id_especialidade = especialidades.id_especialidade
+        WHERE usuarios.cpf = %s
+    """, (cpf,))
+    
+    resposta = cursor.fetchall()
+    conexao.close()
+
+    return resposta

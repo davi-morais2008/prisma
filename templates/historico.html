@@ -55,33 +55,40 @@
                         </div>
                     </div>
                 
-                <div class="history__cards" id="history_cards">
-
-                    {% for os in OSfinalizado %}
-                    <div class="card__group" data-date="{{os.data_termino_manutencao.strftime('%Y-%m-%d')}}" data-type="{{os.tipo_manutencao}}">
-                        <p class="maintence__title">{{os.data_termino_manutencao}}</p>
-                        <div class="maintence__card">
-                            <div class="upper__content">
-                                <div class="maintence__text">
-                                    <h3 class="maintence_os">Número da Ordem: {{os.id_ordem}}</h3>
-                                    <p><span>Responsável:</span> <strong>{{os.nome}}</strong></p>
-                                    <p><span>Número Patrimônio:</span> <strong>{{os.numero_patrimonio}}</strong></p>
-                                    <p><span>Tipo de Manutenção:</span> <strong>{{os.tipo_manutencao}}</strong></p>
-                                    <p class="linha-falha"><span>Falha:</span> <strong>{{os.falha}}</strong></p>
-                                </div>
-                                <div class="maintence__icon">
-                                    <button class="maint__btn btn_show" id_os="{{os.id_ordem}}">
-                                        <span class="material-icons">
-                                        arrow_drop_down
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>   
+                <section class="history__container">
+                    <div class="history__container-header">
+                        <div class="history__container-icon">
+                            <span class="material-symbols-outlined">history</span>
                         </div>
+                        <h2 class="history__container-title">Histórico de Ordens</h2>
                     </div>
-                    {% endfor %}
-                </div>
-            </div>
+
+                    <hr class="history__container-divider">
+
+                    <div class="history__cards" id="history_cards">
+                        {% for os in OSfinalizado %}
+                        <div class="card__group" data-date="{{os.data_termino_manutencao.strftime('%Y-%m-%d')}}" data-type="{{os.tipo_manutencao}}">
+                            <p class="maintence__title">{{os.data_termino_manutencao}}</p>
+                            <div class="maintence__card">
+                                <div class="upper__content">
+                                    <div class="maintence__text">
+                                        <h3 class="maintence_os">Número da Ordem: {{os.id_ordem}}</h3>
+                                        <p><span>Responsável:</span> <strong>{{os.nome}}</strong></p>
+                                        <p><span>Número Patrimônio:</span> <strong>{{os.numero_patrimonio}}</strong></p>
+                                        <p><span>Tipo de Manutenção:</span> <strong>{{os.tipo_manutencao}}</strong></p>
+                                        <p class="linha-falha"><span>Falha:</span> <strong>{{os.falha}}</strong></p>
+                                    </div>
+                                    <div class="maintence__icon">
+                                        <button class="maint__btn btn_show" id_os="{{os.id_ordem}}">
+                                            <span class="material-icons">arrow_drop_down</span>
+                                        </button>
+                                    </div>
+                                </div>   
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
 
             <div class="machine-tech__overlay" id="modal_show">
                 <div class="machine-tech">
