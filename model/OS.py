@@ -245,75 +245,53 @@ def destinar_tecnico_os(id_ordem: int, cpf_tecnico: str) -> bool:
         conexao.close()
 
 def editar_ordem_servico(
-    id_ordem: int,
-    status_ordem: str,
-    fase_manutencao: str,
-    tipo_manutencao: str,
-    cpf: str | None,
-    id_falha: int,
-    data_prev_inicio_manutencao: str | None,
-    data_prev_termino_manutencao: str | None,
-    data_parada: str | None,
-    data_inicio_manutencao: str | None,
-    descricao_problema: str
+    id_ordem,
+    id_falha,
+    status_ordem,
+    fase_manutencao,
+    tipo_manutencao,
+    cpf,
+    descricao,
+    data_prev_inicio,
+    data_prev_termino,
+    data_parada,
+    data_inicio
 ) -> bool:
-    """
-    Atualiza os dados de uma ordem de serviço existente no banco de dados.
-
-    Parâmetros:
-        id_ordem (int): Identificador da ordem de serviço a ser atualizada.
-        status_ordem (str): Status atual ('Pendente', 'Em Andamento', 'Finalizada', etc.).
-        fase_manutencao (str): Fase atual da manutenção.
-        tipo_manutencao (str): Tipo ('Corretiva', 'Preventiva', 'Preditiva', etc.).
-        cpf (str | None): CPF do técnico responsável (ou None caso não atribuído).
-        id_falha (int): Identificador da falha associada.
-        data_prev_inicio_manutencao (str | None): Data/hora prevista de início.
-        data_prev_termino_manutencao (str | None): Data/hora prevista de término.
-        data_parada (str | None): Data/hora da parada da máquina (se houver).
-        data_inicio_manutencao (str | None): Data/hora real de início.
-        descricao_problema (str): Descrição detalhada do problema.
-
-    Retorna:
-        bool: True se a atualização foi concluída com sucesso, False em caso de erro.
-    """
     conexao, cursor = conectar()
-
     try:
         cursor.execute("""
             UPDATE ordens_servicos
-            SET status_ordem = %s,
+            SET id_falha = %s,
+                status_ordem = %s,
                 fase_manutencao = %s,
                 tipo_manutencao = %s,
                 cpf = %s,
-                id_falha = %s,
+                descricao_problema = %s,
                 data_prev_inicio_manutencao = %s,
                 data_prev_termino_manutencao = %s,
                 data_parada = %s,
-                data_inicio_manutencao = %s,
-                descricao_problema = %s
-            WHERE id_ordem = %s;
+                data_inicio_manutencao = %s
+            WHERE id_ordem = %s
         """, (
+            id_falha,
             status_ordem,
             fase_manutencao,
             tipo_manutencao,
-            cpf if cpf else None,
-            id_falha,
-            data_prev_inicio_manutencao if data_prev_inicio_manutencao else None,
-            data_prev_termino_manutencao if data_prev_termino_manutencao else None,
-            data_parada if data_parada else None,
-            data_inicio_manutencao if data_inicio_manutencao else None,
-            descricao_problema,
+            cpf,
+            descricao,
+            data_prev_inicio,
+            data_prev_termino,
+            data_parada,
+            data_inicio,
             id_ordem
         ))
-
         conexao.commit()
         return True
-
     except Exception as erro:
         conexao.rollback()
-        print(f"Erro ao editar ordem de serviço #{id_ordem}: {erro}")
+        print(f"Erro ao editar ordem de serviço: {erro}")
         return False
-
     finally:
         cursor.close()
         conexao.close()
+

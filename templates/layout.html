@@ -44,8 +44,8 @@
                     <li><a href="/painelGeral">Painel Geral</a></li>
                     <li><a href="/maquinas">Máquinas</a></li>
                     <li><a href="/usuarios">Usuários</a></li>
+                    <li><a href="/categorias">Categorias</a></li>
                 {% endif %}
-
                 <li>
                     <div class="identificacao">
                         <p>CPF: {{ cpf[0:3] }}.{{ cpf[3:6] }}.{{ cpf[6:9] }}-{{ cpf[9:11] }} / Acesso: {{session.get('user_rbac') | title }}</p>
@@ -93,10 +93,13 @@
                         <a class="sidebar__nav-link" href="/painelGeral">Painel Geral</a>
                     </li>
                     <li class="sidebar__nav-item">
+                        <a class="sidebar__nav-link" href="/usuarios">Usuários</a>
+                    </li>
+                    <li class="sidebar__nav-item">
                         <a class="sidebar__nav-link" href="/maquinas">Máquinas</a>
                     </li>
                     <li class="sidebar__nav-item">
-                        <a class="sidebar__nav-link" href="/usuarios">Usuários</a>
+                        <a class="sidebar__nav-link" href="/categorias">Categorias</a>
                     </li>
                 {% endif %}
             </ul>
