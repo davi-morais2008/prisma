@@ -29,18 +29,6 @@ Página Inicial
         </div>
     </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
-        role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-
     <!-- SELETOR TIPO SLIDE (TABS) -->
     <div class="home__view-switcher" role="tablist" aria-label="Alternar tipo de ordem">
         <div class="home__switcher-track" id="switcherTrack">
@@ -59,6 +47,18 @@ Página Inicial
             </button>
         </div>
     </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
+        role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
 
     <!-- CONTAINER INDIVIDUAL 1: ORDENS DE SERVIÇO -->
     <section class="home__orders-container" id="container-ordens-servico" role="tabpanel"
@@ -540,8 +540,10 @@ Página Inicial
 
                     <!-- EXECUÇÃO DA MANUTENÇÃO E DESTINAÇÃO -->
                     <section class="order-details__section" id="execute-OS-section">
+                        <h2 class="order-details__section-title">EXECUÇÃO</h2>
+                        <!-- CONTAINER APENAS DOS CAMPOS (aplique o display: none neste ID) -->
                         <div id="campos_execucao">
-                            <h2 class="order-details__section-title">EXECUÇÃO</h2>
+                            
 
                             <div class="order-details__card-group">
                                 <div class="order-details__form-group">
@@ -659,7 +661,19 @@ Página Inicial
                                     <option value="">Não atribuído</option>
                                 </select>
                             </div>
-                        
+
+                            <div class="order-edit__field">
+                                <label class="order-edit__label" for="edit_tecnico_responsavel_{{ os.id_ordem }}">Técnico Responsável (CPF)</label>
+                                <select class="order-edit__select" id="edit_tecnico_responsavel_{{ os.id_ordem }}">
+                                    {% for tecnico in tecnicos %}
+                                    {% if tecnico.rbac == 'usuario' %}
+                                    <option value="{{tecnico.cpf}}" {% if tecnico.cpf == os.cpf %}selected{% endif %}>{{tecnico.nome}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                                
+                            </div>
+                        </div>
                     </fieldset>
 
                     <!-- SEÇÃO 2: CRONOGRAMA E DATAS -->

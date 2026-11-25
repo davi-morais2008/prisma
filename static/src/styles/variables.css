@@ -79,36 +79,58 @@
 }
 
 [data-theme="dark"] {
-  --color-primary: #1600a7;
-  --color-primary-dark: #A59BFF;
+  /* ========================================
+     CORES PRINCIPAIS
+     ======================================== */
+  /* Mantém a identidade profunda do azul marinho, mas com suporte para superfícies escuras */
+  --color-primary: #070638;
+  --color-primary-dark: #03021A;
 
-  --color-secondary: #5243FF;
-  --color-secondary-hover: #7E73FF;
+  /* Roxo / Violeta (Suavizado levemente para não vibrar demais no fundo escuro e manter contraste) */
+  --color-secondary: #5347FF;
+  --color-secondary-hover: #7066FF;
 
+  /* Laranja / Amarelo (Mantidos vibrantes para destaque de ação) */
   --color-accent-orange: #FFA834;
-  --color-accent-peach: #FFC46B;
+  --color-accent-peach: #FFB937;
 
-  --color-bg-main: #12131C;
-  --color-bg-card: #151726;
-  --color-bg-input: #1D2036;
-  --color-bg-light: #191e47;
-  --color-bg-card-inactive: #0E0F19; 
+  /* ========================================
+     BACKGROUNDS E SUPERFÍCIES
+     ======================================== */
+  /* Hierarquia de elevação: quanto mais "próximo" da tela, mais claro o azul-acinzentado */
+  --color-bg-main: #090919;          /* Fundo geral (Azul muito profundo derivado do primary) */
+  --color-bg-card: #13132B;          /* Fundo dos cards (Elevação nível 1) */
+  --color-bg-input: #1B1B3A;         /* Fundo dos inputs (Elevação nível 2) */
+  --color-bg-light: #1F1F42;         /* Destaques leves / container interno */
+  --color-bg-card-inactive: #0E0E22; /* Mais escuro e recuado que o card ativo */
 
-  --color-glass-bg: rgba(21, 23, 38, 0.75);
+  /* Glassmorphism / Modal Translucido (Telas de Login/Cadastro) */
+  --color-glass-bg: rgba(19, 19, 43, 0.65);
   --color-glass-border: rgba(255, 255, 255, 0.12);
+  --glass-blur: blur(12px);
 
+  /* ========================================
+     STATUS / ALERTAS (Calendário e Cards)
+     ======================================== */
+  /* Ajustados para manter legibilidade sem ofuscar no modo escuro */
   --color-status-danger: #FF6B6B;
-  --color-status-danger-dark: #FF4B4B;
-  --color-status-warning: #FFD93D;
-  --color-status-success: #51CF66;
+  --color-status-danger-dark: #D93838;
+  --color-status-warning: #FFD447;
+  --color-status-success: #4ADE80;
 
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #FFFFFF;
-  --color-text-light: #FFFFFF;
+  /* ========================================
+     TEXTOS
+     ======================================== */
+  --color-text-primary: #F2F3FF;     /* Branco levemente azulado para conforto visual */
+  --color-text-secondary: #A0A0B8;   /* Cinza-azulado suave para subtítulos/labels */
+  --color-text-light: #FFFFFF;       /* Mantido branco puro para botões escuros/coloridos */
 
-  --shadow-sm: 0px 2px 8px rgba(236, 230, 230, 0.05);
-  --shadow-md: 0px 4px 16px rgba(236, 230, 230, 0.1);
-  --shadow-lg: 0px 8px 24px rgba(236, 230, 230, 0.2);
+  --border-color: #2B2B4B;
 
-  --color-footer: #151726;
+  /* Sombras mais densas para criar profundidade no escuro */
+  --shadow-sm: 0px 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0px 4px 16px rgba(0, 0, 0, 0.50);
+  --shadow-lg: 0px 8px 24px rgba(0, 0, 0, 0.65);
+
+  --color-footer: #060612;
 }

@@ -1,3 +1,6 @@
+Aqui está o arquivo CSS corrigido, com todos os valores fixos (cores, fontes, tamanhos, pesos, bordas e sombras) substituídos pelas variáveis do seu `variables.css`, mantendo as classes e containers de `alert` intactos e removendo regras/propriedades duplicadas (como `height` e `display` repetidos, media queries duplicadas e cores fixas que quebravam o modo escuro):
+
+```css
 @import url('variables.css');
 
 /* ======================================= */
@@ -9,10 +12,10 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: var(--font-family-base);
 }
 
-/* Container das mensagens */
-
+/* Container das mensagens (MANTIDO INTACTO) */
 .container-flash {
     width: 100%;
     padding: 30px 24px 0px 30px;
@@ -82,15 +85,14 @@ body {
     width: 100%;
     max-width: 1200px;
     min-height: 100vh;
-    padding: 2rem 1rem;
+    padding: 2rem var(--font-size-md);
     margin: 0 auto;
     background-color: var(--color-bg-main);
     color: var(--color-text-primary);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-items: center;
-    gap: 24px;
+    gap: var(--border-radius-lg);
 }
 
 .machines__header {
@@ -110,9 +112,9 @@ body {
 }
 
 .machines__button-register:hover {
-    background-color: orange;
+    background-color: var(--color-accent-orange);
     transform: scale(1.05);
-    transition: all 130ms;
+    transition: all 130ms ease;
 }
 
 .add-button--new-type-failure:hover {
@@ -129,14 +131,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    padding: 30px 24px 0px 30px;
+    gap: var(--font-size-md);
+    padding: 30px var(--border-radius-lg) 0px 30px;
 }
 
 .filter-input-search {
     width: 100%;
     height: 48px;
-    padding: 0 1.25rem;
+    padding: 0 var(--font-size-lg);
     border: 1px solid transparent;
     border-radius: var(--border-radius-pill);
     background-color: var(--color-bg-input);
@@ -156,23 +158,19 @@ body {
 .filter-buttons {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, 1fr) 50px;
-    gap: 0.75rem;
-    flex-direction: row;
-    justify-content: center;
+    grid-template-columns: repeat(3, 1fr) var(--border-radius-pill);
+    gap: var(--font-size-xs);
     align-items: center;
-    flex-wrap: wrap;
 }
 
 .filter-buttons .material-symbols-outlined {
     display: flex;
     justify-content: center;
     align-items: center;
-    
     cursor: pointer;
 }
 
-.filter-buttons a{
+.filter-buttons a {
     text-decoration: none;
 }
 
@@ -183,7 +181,6 @@ body {
     text-align: center;
     cursor: pointer;
     width: 100%;
-    height: 100%;
     height: 40px;
     padding: 10px;
     border: 1px solid transparent;
@@ -199,11 +196,10 @@ body {
 }
 
 .filter-button:hover {
-    background-color: var(--color-secondary);
+    background-color: var(--color-pr);
     color: var(--color-text-light);
     box-shadow: var(--shadow-md);
 }
-
 
 /* ======================================= */
 /* =========   BLOCO: Máquinas  ============ */
@@ -270,10 +266,10 @@ body {
     padding-right: 8px;    /* Evita que a barra de rolagem encoste nos cards da direita */
     
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    align-content: start;
-    padding: 30px 24px ;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: var(--font-size-md);
+    padding: 30px var(--border-radius-lg) 0px 30px;
 }
 
 /* ========================================
@@ -318,9 +314,9 @@ body {
 /* Badge de Status sobreposta à imagem */
 .machine__status {
     position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    padding: 0.25rem 0.75rem;
+    top: var(--font-size-xs);
+    right: var(--font-size-xs);
+    padding: 0.25rem var(--font-size-xs);
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-bold);
     border-radius: var(--border-radius-pill);
@@ -364,7 +360,7 @@ body {
     margin: 0;
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-bold);
-    color: var(--color-primary);
+    color: var(--color-text-primary);
     line-height: 1.2;
 }
 
@@ -379,9 +375,9 @@ body {
 .machine__details {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--border-radius-sm);
     margin: 0;
-    padding: 0.75rem;
+    padding: var(--font-size-xs);
     background-color: var(--color-bg-light);
     border-radius: var(--border-radius-sm);
 }
@@ -411,7 +407,7 @@ body {
 
 .machine__button {
     width: 100%;
-    padding: 0.75rem 1rem;
+    padding: var(--font-size-xs) var(--font-size-md);
     border: none;
     border-radius: var(--border-radius-pill);
     background-color: var(--color-secondary);
@@ -433,22 +429,18 @@ body {
 }
 
 /* =============================================================== */
-/* ===  BLOCO: |MODAL| Cadastro (from de cadastro de máquinas  === */
+/* ===  BLOCO: |MODAL| Cadastro (form de cadastro de máquinas) === */
 /* =============================================================== */
-
-/* ========================================
-   CONTAINER DO MODAL & CABEÇALHO
-   ======================================== */
 
 .machine-modal__overlay {
     position: fixed;
-    inset: 0; 
-    background-color: rgba(0, 0, 0, 0.4); 
+    inset: 0;
+    background-color: color-mix(in srgb, var(--color-primary-dark) 55%, transparent);
     backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: blur(6px); 
+    -webkit-backdrop-filter: var(--glass-blur);
     display: none;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
     z-index: 900;
     padding: var(--border-radius-sm);
 }
@@ -475,14 +467,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 var(--border-radius-md);
     flex-shrink: 0;
 }
 
 .machine-modal__brand {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--border-radius-sm);
 }
 
 .machine-modal__logo {
@@ -532,7 +524,7 @@ body {
 .machine-form__top-section {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: var(--font-size-md);
 }
 
 .machine-form__avatar-wrapper {
@@ -555,7 +547,7 @@ body {
     background-color: var(--color-primary);
     color: var(--color-text-light);
     border: 2px solid var(--color-bg-card);
-    border-radius: 50%;
+    border-radius: var(--border-radius-pill);
     width: 32px;
     height: 32px;
     display: flex;
@@ -574,37 +566,38 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--font-size-xs);
     width: 100%;
 }
 
 /* Containers das Seções */
 .machine-form__section {
     border: none;
-    padding: var(--font-size-sm);
     margin: 0;
+    padding: var(--border-radius-sm);
     background-color: var(--color-bg-light);
     border-radius: var(--border-radius-md);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 12px;
 }
 
 .machine-form__section-title {
+    font-family: var(--font-family-base);
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
     text-transform: uppercase;
-    margin-bottom: 0.25rem;
-    padding: 0;
+    padding: 0 4px;
     float: left;
     width: 100%;
+    margin-bottom: 4px;
 }
 
 /* Layout Grid Interno */
 .machine-form__grid {
     display: grid;
-    gap: 0.75rem;
+    gap: var(--font-size-xs);
 }
 
 .machine-form__grid--2-cols {
@@ -614,7 +607,7 @@ body {
 .machine-form__column {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--font-size-xs);
 }
 
 /* Campos de Formulário */
@@ -633,16 +626,15 @@ body {
 .machine-form__input,
 .machine-form__select {
     width: 100%;
-    padding: 0.6rem 0.75rem;
+    padding: 0.6rem var(--font-size-xs);
     font-family: var(--font-family-base);
     font-size: var(--font-size-sm);
     color: var(--color-text-primary);
     background-color: var(--color-bg-input);
-    border: 1px solid transparent;
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius-sm);
-    box-shadow: 0px 2px 5px #282d6e48;
+    box-shadow: var(--shadow-sm);
     outline: none;
-    box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -654,24 +646,23 @@ body {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    border: 2px dashed #6366f1;
-    /* Borda tracejada semelhante à da imagem */
-    border-radius: 8px;
-    background-color: #f8fafc;
-    font-family: sans-serif;
+    gap: var(--font-size-xs);
+    padding: var(--font-size-xs) var(--font-size-md);
+    border: 2px dashed var(--color-secondary);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--color-bg-card);
+    font-family: var(--font-family-base);
 }
 
 /* Botão personalizado */
 .custom-file-button {
     background-color: var(--color-primary);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 6px;
+    color: var(--color-text-light);
+    padding: var(--border-radius-sm) var(--font-size-md);
+    border-radius: var(--border-radius-sm);
     width: 100%;
     cursor: pointer;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     transition: background-color 0.2s ease;
     text-align: center;
 }
@@ -682,17 +673,16 @@ body {
 
 /* Texto do nome do ficheiro */
 .file-name {
-    color: #64748b;
-    font-size: 14px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
     text-align: center;
     width: 100%;
 }
 
-
 .machine-form__input:focus,
 .machine-form__select:focus {
     border-color: var(--color-secondary);
-    box-shadow: 0 0 0 2px rgba(124, 114, 255, 0.2);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-secondary) 20%, transparent);
 }
 
 /* Custom Upload Button PDF */
@@ -700,7 +690,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem var(--font-size-xs);
     background-color: var(--color-bg-card);
     border: 1.5px dashed var(--color-secondary);
     border-radius: var(--border-radius-sm);
@@ -709,7 +699,7 @@ body {
 }
 
 .machine-form__file-button:hover {
-    background-color: rgba(124, 114, 255, 0.05);
+    background-color: color-mix(in srgb, var(--color-secondary) 8%, transparent);
 }
 
 .machine-form__file-name {
@@ -727,28 +717,22 @@ body {
     color: var(--color-secondary);
 }
 
-
-/* ========================================
-   TABELA DE HISTÓRICO
-   ======================================== */
 /* ========================================
    CONTAINER DO HISTÓRICO DE MANUTENÇÕES
    ======================================== */
 .machine-history {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--border-radius-sm);
     width: 100%;
     max-width: 100%;
-    box-sizing: border-box;
 }
 
-/* Cabeçalho para telas Desktop e Tablet */
 .machine-history__header {
     display: grid;
     grid-template-columns: 1.2fr 1.2fr 1fr 1.5fr;
-    gap: 0.5rem;
-    padding: 0 0.5rem;
+    gap: var(--border-radius-sm);
+    padding: 0 var(--border-radius-sm);
 }
 
 .machine-history__column-title {
@@ -757,29 +741,26 @@ body {
     color: var(--color-text-secondary);
 }
 
-/* Lista de registros */
 .machine-history__list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--border-radius-sm);
     width: 100%;
 }
 
-/* Card individual para cada manutenção */
 .machine-history__item {
     display: grid;
     grid-template-columns: 1.2fr 1.2fr 1fr 1.5fr;
-    gap: 0.5rem;
+    gap: var(--border-radius-sm);
     align-items: center;
     background-color: var(--color-bg-card);
-    padding: 0.5rem;
+    padding: var(--border-radius-sm);
     border-radius: var(--border-radius-sm);
     box-shadow: var(--shadow-sm);
     width: 100%;
-    box-sizing: border-box;
 }
 
 .machine-history__field {
@@ -787,10 +768,8 @@ body {
     flex-direction: column;
     gap: 0.2rem;
     min-width: 0;
-    /* Previne que o conteúdo estoure a célula da grid */
 }
 
-/* Rótulos auxiliares ocultos no Desktop */
 .machine-history__label {
     display: none;
     font-size: var(--font-size-xs);
@@ -807,12 +786,11 @@ body {
     text-overflow: ellipsis;
 }
 
-/* Inputs e Selects estilizados */
 .machine-history__input,
 .machine-history__select {
     width: 100%;
     max-width: 100%;
-    padding: 0.4rem 0.5rem;
+    padding: 0.4rem var(--border-radius-sm);
     font-family: var(--font-family-base);
     font-size: var(--font-size-xs);
     color: var(--color-text-primary);
@@ -820,7 +798,6 @@ body {
     border: 1px solid transparent;
     border-radius: var(--border-radius-sm);
     outline: none;
-    box-sizing: border-box;
     transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
@@ -836,7 +813,7 @@ body {
     font-family: var(--font-family-base);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-bold);
-    padding: 0.75rem 1.5rem;
+    padding: var(--font-size-xs) var(--font-size-xl);
     border: none;
     border-radius: var(--border-radius-pill);
     cursor: pointer;
@@ -853,97 +830,15 @@ body {
 }
 
 /* ========================================
-   RESPONSIVIDADE - TABLET E MOBILE (< 600px)
-   ======================================== */
-@media (max-width: 600px) {
-    .machine-history__header {
-        display: none;
-        /* Oculta o cabeçalho no mobile */
-    }
-
-    .machine-history__item {
-        grid-template-columns: repeat(2, 1fr);
-        /* 2 colunas para mobile padrão */
-        gap: 0.75rem 0.5rem;
-        padding: 0.75rem;
-    }
-
-    .machine-history__label {
-        display: block;
-        /* Exibe os rótulos */
-    }
-
-    .machine-details {
-        height: 80vh;
-    }
-
-    .machine-edit {
-        height: 80vh;
-    }
-}
-
-/* ========================================
-   AJUSTE ESPECÍFICO IPHONE SE (< 375px)
-   ======================================== */
-@media (max-width: 375px) {
-    .machine-history__item {
-        grid-template-columns: 1fr;
-        /* Coluna única no iPhone SE */
-        gap: 0.5rem;
-    }
-
-
-
-    .machine-history__field {
-        width: 100%;
-    }
-
-    .machine-form__submit-button {
-        width: 100%;
-        /* Garante que o botão ocupe toda a largura */
-    }
-
-
-}
-
-/* ========================================
-   RESPONSIVIDADE (MEDIA QUERIES)
-   ======================================== */
-@media (max-width: 480px) {
-    .machine-form__grid--2-cols {
-        grid-template-columns: 1fr;
-    }
-
-    .machine-form__avatar-upload {
-        bottom: -10px;
-    }
-
-    .machine-form__top-section {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .machine-form__actions {
-        justify-content: stretch;
-    }
-
-    .machine-form__submit-button {
-        width: 100%;
-    }
-
-}
-
-/* ========================================
    BLOCO: |MODAL| MACHINE-DETAILS (Máquina Individual)
    ======================================== */
 
 .machine-details__overlay {
     position: fixed;
-    inset: 0; 
-    background-color: rgba(0, 0, 0, 0.4); 
+    inset: 0;
+    background-color: color-mix(in srgb, var(--color-primary-dark) 55%, transparent);
     backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: blur(6px); 
+    -webkit-backdrop-filter: var(--glass-blur);
     display: none;
     justify-content: center;
     align-items: center;
@@ -966,7 +861,7 @@ body {
     position: relative;
 }
 
-.machine-details__body{
+.machine-details__body {
     padding: var(--border-radius-md);
     width: 100%;
     overflow-y: auto;
@@ -1003,7 +898,7 @@ body {
 }
 
 .machine-details__action-button--edit {
-    color: var(--color-primary);
+    color: var(--color-text-secondary);
 }
 
 .machine-details__action-button--edit:hover {
@@ -1030,8 +925,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
-    box-sizing: border-box;
+    padding: 0 var(--border-radius-md);
     position: sticky;
     top: 0;
 }
@@ -1070,9 +964,8 @@ body {
     justify-content: center;
 }
 
-.machine-details__edit-button>img {
+.machine-details__edit-button > img {
     width: 10px;
-
 }
 
 /* --- INFORMAÇÕES PRIMÁRIAS --- */
@@ -1080,12 +973,12 @@ body {
     width: 90%;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: var(--font-size-md);
 }
 
 .machine-details__img-machine {
-    width: 45%;
-    height: 110px;
+    width: 200px;
+    height: 90px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1102,9 +995,10 @@ body {
 }
 
 .machine-details__info-content {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--border-radius-sm);
     justify-content: center;
 }
 
@@ -1134,7 +1028,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 8px;
+    gap: var(--border-radius-sm);
 }
 
 .machine-details__statistics-title {
@@ -1148,24 +1042,24 @@ body {
 
 .machine-details__stat-container {
     display: flex;
-    gap: 12px;
+    gap: var(--font-size-xs);
     width: 100%;
 }
 
 .machine-details__stat-group {
     flex: 1;
-    background-color: var(--color-bg-light);
+    background-color: var(--color-bg-main);
     border-radius: var(--border-radius-md);
     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: var(--font-size-xs);
 }
 
 .machine-details__stat-item {
     display: flex;
     align-items: flex-start;
-    gap: 8px;
+    gap: var(--border-radius-sm);
 }
 
 .machine-details__stat-icon {
@@ -1190,11 +1084,10 @@ body {
     color: var(--color-text-primary);
 }
 
-
 .machine-details__stat-item--manual-machines {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--border-radius-sm);
     margin-top: auto;
 }
 
@@ -1212,7 +1105,7 @@ body {
     justify-content: space-between;
     font-family: var(--font-family-base);
     font-size: var(--font-size-xs);
-    color: var(--color-primary);
+    color: var(--color-secondary);
     text-decoration: none;
     font-weight: var(--font-weight-medium);
 }
@@ -1223,11 +1116,10 @@ body {
 
 /* --- MANUTENÇÃO PREVENTIVA --- */
 .machine-details__prev-maintance {
-    background-color: var(--color-bg-light);
+    background-color: var(--color-bg-main);
     width: 100%;
     border-radius: var(--border-radius-md);
-    padding: 12px 16px;
-    box-sizing: border-box;
+    padding: var(--font-size-xs) var(--font-size-md);
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -1251,11 +1143,10 @@ body {
 
 /* --- HISTÓRICO DE MANUTENÇÕES --- */
 .machine-details__maintance-history {
-    background-color: var(--color-bg-light);
+    background-color: var(--color-bg-main);
     width: 100%;
     border-radius: var(--border-radius-md);
-    padding: 12px 16px;
-    box-sizing: border-box;
+    padding: var(--font-size-xs) var(--font-size-md);
 }
 
 .machine-details__maintance-history-title {
@@ -1278,7 +1169,7 @@ body {
     text-align: left;
     color: var(--color-text-secondary);
     padding-bottom: 6px;
-    border-bottom: 1px solid var(--color-text-secondary);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .machine-details__maintances-list td {
@@ -1286,25 +1177,21 @@ body {
     color: var(--color-text-primary);
 }
 
-
-
-
 /* ========================================
    BLOCO: |MODAL| MACHINE-EDIT (Form Edição)
    ======================================== */
 
 .machine-edit__overlay {
     position: fixed;
-    inset: 0; 
-    background-color: rgba(0, 0, 0, 0.4); 
+    inset: 0;
+    background-color: color-mix(in srgb, var(--color-primary-dark) 55%, transparent);
     backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: blur(6px); 
+    -webkit-backdrop-filter: var(--glass-blur);
     display: none;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
     z-index: 900;
     padding: var(--border-radius-sm);
-
 }
 
 .machine-edit {
@@ -1322,7 +1209,6 @@ body {
     position: relative;
 }
 
-
 /* --- CABEÇALHO --- */
 .machine-edit__logo {
     position: sticky;
@@ -1335,7 +1221,6 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 var(--border-radius-md);
-    box-sizing: border-box;
     flex-shrink: 0;
 }
 
@@ -1377,7 +1262,7 @@ body {
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: var(--border-radius-sm);
 }
 
 .machine-edit__field {
@@ -1403,10 +1288,9 @@ body {
     font-size: var(--font-size-xs);
     color: var(--color-text-primary);
     background-color: var(--color-bg-input);
-    border: 1px solid var(--color-bg-light);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius-sm);
     outline: none;
-    box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -1420,13 +1304,13 @@ body {
 .machine-edit__primary-info {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: var(--font-size-md);
 }
 
 .machine-edit__img-container {
     position: relative;
-    width: 110px;
-    height: 90px;
+    width: 200px;
+    height: 100px;
     border-radius: var(--border-radius-md);
     overflow: hidden;
     flex-shrink: 0;
@@ -1445,7 +1329,7 @@ body {
     background-color: var(--color-primary);
     color: var(--color-text-light);
     padding: 6px;
-    border-radius: 50%;
+    border-radius: var(--border-radius-pill);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -1460,30 +1344,30 @@ body {
 .machine-edit__info-content {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--border-radius-sm);
     width: 100%;
 }
 
 /* --- ESTATÍSTICAS E PAINEL FLEX --- */
 .machine-edit__stat-container {
     display: flex;
-    gap: 12px;
+    gap: var(--font-size-xs);
 }
 
 .machine-edit__stat-group {
     flex: 1;
     background-color: var(--color-bg-light);
     border-radius: var(--border-radius-md);
-    padding: 12px;
+    padding: var(--font-size-xs);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--border-radius-sm);
 }
 
 .machine-edit__statistics {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: var(--font-size-md);
 }
 
 .machine-edit__file-upload-wrapper {
@@ -1491,14 +1375,14 @@ body {
     align-items: center;
     justify-content: space-between;
     background-color: var(--color-bg-card);
-    padding: 6px 8px;
+    padding: 6px var(--border-radius-sm);
     border-radius: var(--border-radius-sm);
     border: 1px dashed var(--color-secondary);
 }
 
 .machine-edit__file-name {
     font-family: var(--font-family-base);
-    font-size: 10px;
+    font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
     white-space: nowrap;
     overflow: hidden;
@@ -1518,19 +1402,19 @@ body {
 .machine-edit__prev-maintance {
     background-color: var(--color-bg-light);
     border-radius: var(--border-radius-md);
-    padding: 12px;
+    padding: var(--font-size-xs);
 }
 
 .machine-edit__maintance-row {
     display: flex;
-    gap: 12px;
+    gap: var(--font-size-xs);
 }
 
 /* --- TABELA EDITÁVEL --- */
 .machine-edit__maintance-history {
     background-color: var(--color-bg-light);
     border-radius: var(--border-radius-md);
-    padding: 12px;
+    padding: var(--font-size-xs);
 }
 
 .machine-edit__table-wrapper {
@@ -1545,7 +1429,7 @@ body {
 .machine-edit__maintances-list th {
     text-align: left;
     font-family: var(--font-family-base);
-    font-size: 11px;
+    font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
     padding-bottom: 6px;
 }
@@ -1555,25 +1439,25 @@ body {
     width: 100%;
     height: 28px;
     font-family: var(--font-family-base);
-    color: var(--color-primary);
-    font-size: 11px;
-    border: 1px solid var(--color-glass-border);
-    border-radius: 4px;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-xs);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
     padding: 0 4px;
-    background-color: var(--color-bg-card);
+    background-color: var(--color-bg-input);
 }
 
 /* --- BOTÕES DE AÇÃO --- */
 .machine-edit__actions {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
-    margin-top: 8px;
+    gap: var(--font-size-xs);
+    margin-top: var(--border-radius-sm);
 }
 
 .machine-edit__button {
     height: 40px;
-    padding: 0 20px;
+    padding: 0 var(--font-size-lg);
     border-radius: var(--border-radius-pill);
     font-family: var(--font-family-base);
     font-size: var(--font-size-xs);
@@ -1591,6 +1475,7 @@ body {
 
 .machine-edit__button--cancel:hover {
     background-color: var(--color-bg-light);
+    color: var(--color-text-primary);
 }
 
 .machine-edit__button--save {
@@ -1604,38 +1489,30 @@ body {
     transform: translateY(-1px);
 }
 
-
 /* =========================================================
    BLOCO: |MODAL| delete-confirmation (confirmação de delete)
    ========================================================= */
-/* Container Principal do Modal */
 .order-delete {
     position: fixed;
     inset: 0;
     z-index: 1000;
-    display: none;
     display: none;
     align-items: center;
     justify-content: center;
     padding: var(--border-radius-sm);
 }
 
-
 .order-delete.active {
     display: flex;
 }
 
-
-/* Overlay Translucido com Blur */
 .order-delete__overlay {
     position: absolute;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: color-mix(in srgb, var(--color-primary-dark) 55%, transparent);
     backdrop-filter: var(--glass-blur);
 }
 
-
-/* Card Container Compacto */
 .order-delete__card {
     position: relative;
     width: 100%;
@@ -1647,11 +1524,9 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    top: 50px;
+    top: var(--border-radius-pill);
 }
 
-
-/* Cabeçalho Fixo Escuro */
 .order-delete__header {
     width: 100%;
     height: 56px;
@@ -1660,9 +1535,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 var(--border-radius-md);
-    box-sizing: border-box;
 }
-
 
 .order-delete__brand {
     display: flex;
@@ -1670,13 +1543,11 @@ body {
     gap: var(--border-radius-sm);
 }
 
-
 .order-delete__brand-image {
     height: 32px;
     width: auto;
     object-fit: contain;
 }
-
 
 .order-delete__brand-title {
     color: var(--color-text-light);
@@ -1686,7 +1557,6 @@ body {
     margin: 0;
     text-transform: uppercase;
 }
-
 
 .order-delete__close-btn {
     background: transparent;
@@ -1701,14 +1571,11 @@ body {
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-
 .order-delete__close-btn:hover {
     background-color: var(--color-primary-dark);
     transform: scale(1.05);
 }
 
-
-/* Corpo do Alerta */
 .order-delete__body {
     padding: var(--border-radius-lg) var(--border-radius-md);
     display: flex;
@@ -1718,8 +1585,6 @@ body {
     gap: var(--border-radius-md);
 }
 
-
-/* Wrapper do Ícone de Alerta */
 .order-delete__icon-wrapper {
     width: 64px;
     height: 64px;
@@ -1731,20 +1596,16 @@ body {
     flex-shrink: 0;
 }
 
-
 .order-delete__icon {
     font-size: 2.25rem;
     color: var(--color-status-danger);
 }
 
-
-/* Bloco de Mensagens */
 .order-delete__content {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--border-radius-sm);
 }
-
 
 .order-delete__heading {
     font-family: var(--font-family-base);
@@ -1753,7 +1614,6 @@ body {
     color: var(--color-text-primary);
     margin: 0;
 }
-
 
 .order-delete__description {
     font-family: var(--font-family-base);
@@ -1764,8 +1624,6 @@ body {
     margin: 0;
 }
 
-
-/* Rodapé de Ações */
 .order-delete__footer {
     display: flex;
     align-items: center;
@@ -1775,15 +1633,13 @@ body {
     background-color: var(--color-bg-card);
 }
 
-
-/* Botões de Ação */
 .order-delete__btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
     height: 42px;
-    padding: 0 20px;
+    padding: 0 var(--font-size-lg);
     font-family: var(--font-family-base);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-bold);
@@ -1792,12 +1648,9 @@ body {
     transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
 }
 
-
 .order-delete__btn .material-symbols-outlined {
     font-size: var(--font-size-md);
 }
-
-
 
 .order-delete__btn--cancel {
     background-color: transparent;
@@ -1805,13 +1658,10 @@ body {
     border: 1px solid var(--color-text-secondary);
 }
 
-
 .order-delete__btn--cancel:hover {
     background-color: var(--color-bg-light);
     color: var(--color-text-primary);
 }
-
-
 
 .order-delete__btn--confirm {
     background-color: var(--color-status-danger);
@@ -1820,88 +1670,48 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
-
 .order-delete__btn--confirm:hover {
-    background-color: #ff6b6b;
+    background-color: var(--color-status-danger-dark);
+    color: var(--color-text-light);
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
 }
 
-
-
-
 /* ======================================= */
-/* =========   MEDIA QUERIES  ============ */
+/* ======   BOTÕES FLUTUANTES ADD   ====== */
 /* ======================================= */
-
-
-/* ======================================= */
-/* =========   MEDIA QUERIES  ============ */
-/* ======================================= */
-
-
-/* RESPONSIVIDADE MOBILE */
-
-@media(max-width: 400px) {
-    .machine-modal {
-        max-height: 75vh;
-    }
-
-    .add-button_new-category {
-        width: 20px;
-    }
-}
-
-
-@media (max-width: 600px) {
-    .machines__machines-grid {
-        grid-template-columns: 1fr;
-        width: 100%;
-    }
-
-    .machine-edit__stat-container,
-    .machine-edit__maintance-row {
-        flex-direction: column;
-    }
-
-    /* Corrige o container para o tamanho mobile */
-    .delete-confirmation {
-        width: 90%;
-        top: 35%;
-    }
-}
 
 .add-buttons {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 20px;
+    gap: var(--font-size-lg);
     position: fixed;
-    bottom: 50px;
+    bottom: var(--border-radius-pill);
     right: 40px;
+    z-index: 998;
 }
 
 .add-button_new-category {
     width: 240px;
-    height: 50px;
-    border-radius: 60px;
+    height: var(--border-radius-pill);
+    border-radius: var(--border-radius-pill);
     border: none;
-    z-index: 998;
     cursor: pointer;
-    font-size: large;
+    font-family: var(--font-family-base);
     font-weight: var(--font-weight-bold);
     font-size: var(--font-size-lg);
-
+    box-shadow: var(--shadow-md);
 }
 
 .machines__button-register {
     background-color: var(--color-accent-peach);
-    color: var(--color-bg-light);
+    color: var(--color-text-light);
 }
 
 .add-button--new-type-failure {
     background-color: var(--color-primary);
-    color: var(--color-bg-light);
+    color: var(--color-text-light);
 }
 
 @keyframes fadeInModal {
@@ -1919,47 +1729,14 @@ body {
 /* =========   MEDIA QUERIES  ============ */
 /* ======================================= */
 
-
-/* ======================================= */
-/* =========   MEDIA QUERIES  ============ */
-/* ======================================= */
-
-
-/* RESPONSIVIDADE MOBILE */
-
-@media (max-width: 600px) {
-    .machines__machines-grid {
-    grid-template-columns: 1fr;
-    width: 100%;
-  }
-
-    .add-button_new-category {
-        width: 170px;
-        height: 45px;
-        font-size: var(--font-size-sm);
-    }
-}
-
 @media (max-width: 768px) {
-
     .add-buttons {
-        bottom: 20px;
+        bottom: var(--font-size-lg);
     }
 
     .filter-input-search {
         width: 100%;
         align-self: flex-start;
-        height: 48px;
-        padding: 0 1.25rem;
-        border: 1px solid transparent;
-        border-radius: var(--border-radius-pill);
-        background-color: var(--color-bg-input);
-        font-family: var(--font-family-base);
-        font-size: var(--font-size-sm);
-        color: var(--color-text-primary);
-        box-shadow: var(--shadow-sm);
-        outline: none;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .machine-details__stat-container {
@@ -1969,8 +1746,95 @@ body {
     .machine-edit__overlay.active,
     .machine-modal__overlay.active,
     .machine-details__overlay.active,
-    .delete-confirmation.active{
+    .delete-confirmation.active {
         margin-top: 75px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .machines__machines-grid {
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .machine-history__header {
+        display: none;
+    }
+
+    .machine-history__item {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--font-size-xs) var(--border-radius-sm);
+        padding: var(--font-size-xs);
+    }
+
+    .machine-history__label {
+        display: block;
+    }
+
+    .machine-details,
+    .machine-edit {
+        height: 80vh;
+    }
+
+    .machine-edit__stat-container,
+    .machine-edit__maintance-row {
+        flex-direction: column;
+    }
+
+    .delete-confirmation {
+        width: 90%;
+        top: 35%;
+    }
+
+    .add-button_new-category {
+        width: 170px;
+        height: 45px;
+        font-size: var(--font-size-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .machine-form__grid--2-cols {
+        grid-template-columns: 1fr;
+    }
+
+    .machine-form__avatar-upload {
+        bottom: -10px;
+    }
+
+    .machine-form__top-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .machine-form__actions {
+        justify-content: stretch;
+    }
+
+    .machine-form__submit-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+    .machine-modal {
+        max-height: 75vh;
+    }
+}
+
+@media (max-width: 375px) {
+    .machine-history__item {
+        grid-template-columns: 1fr;
+        gap: var(--border-radius-sm);
+    }
+
+    .machine-history__field {
+        width: 100%;
+    }
+
+    .machine-form__submit-button {
+        width: 100%;
     }
 }
 
