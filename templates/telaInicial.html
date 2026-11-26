@@ -1103,7 +1103,9 @@ Página Inicial
                                 required>
                                 <option value="" disabled selected>Selecione a máquina...</option>
                                 {% for maquina in tipo_maquinas %}
+                                {% if maquina.status_tipo_maquina %}
                                 <option value="{{maquina.id_tipo_maquina}}">{{maquina.tipo_maquina}}</option>
+                                {% endif %}
                                 {% endfor %}
                             </select>
                         </div>
