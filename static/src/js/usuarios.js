@@ -1,5 +1,5 @@
-const inputTech = document.querySelector(".search__input")
-const inputType = document.querySelector(".search__select")
+const inputTech = document.querySelector(".search__input");
+const inputType = document.querySelector(".search__select");
 
 document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
+                // Agora envia 'Ativo' ou 'Inativo' como string
                 body: JSON.stringify({ cpf: cpf, status: novoStatus })
             });
 
@@ -26,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Erro de conexão ao tentar atualizar o usuário.");
         }
     }
-
 
     // ==========================================
     // 1. MODAL DE EDIÇÃO DE USUÁRIO
@@ -50,7 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (closeBtnEdit) closeBtnEdit.addEventListener("click", closeModalEdit);
     if (overlayEdit) overlayEdit.addEventListener("click", closeModalEdit);
-
 
     // ==========================================
     // 2. MODAL DE INATIVAÇÃO DE USUÁRIO
@@ -93,7 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (confirmBtnInativar) {
         confirmBtnInativar.addEventListener("click", () => {
             if (cpfSelecionadoParaInativar) {
-                atualizarStatusUsuario(cpfSelecionadoParaInativar, 0);
+                // ALTERADO: envia 'Inativo' no lugar de 0
+                atualizarStatusUsuario(cpfSelecionadoParaInativar, "Inativo");
             }
         });
     }
@@ -101,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (closeBtnInativar) closeBtnInativar.addEventListener("click", fecharModalInativar);
     if (cancelBtnInativar) cancelBtnInativar.addEventListener("click", fecharModalInativar);
     if (overlayInativar) overlayInativar.addEventListener("click", fecharModalInativar);
-
 
     // ==========================================
     // 3. ATIVAÇÃO / APROVAÇÃO DE CADASTRO
@@ -111,11 +110,10 @@ document.addEventListener("DOMContentLoaded", () => {
     botoesAtivar.forEach(button => {
         button.addEventListener("click", () => {
             const cpf = button.dataset.cpf;
-            // Envia status 1 para ativar/aprovar o cadastro pendente
-            atualizarStatusUsuario(cpf, 1);
+            // ALTERADO: envia 'Ativo' no lugar de 1 (serve tanto para 'Pendente' quanto para 'Inativo')
+            atualizarStatusUsuario(cpf, "Ativo");
         });
     });
-
 
     // ==========================================
     // 4. ACESSIBILIDADE GLOBAL (TECLA ESC)
@@ -129,40 +127,49 @@ document.addEventListener("DOMContentLoaded", () => {
                 fecharModalInativar();
             }
         }
-    })
+    });
 
+    // ==========================================
+    // 5. FILTROS DE BUSCA
+    // ==========================================
     function aplicarFiltros() {
-            const cardsUsers = document.querySelectorAll('.user-card');
-            const termoBusca = (inputTech?.value || '').trim().toLowerCase();
-            let visiveis = 0;
-    
-            cardsUsers.forEach(card => {
-                const nomeCard = (card.getAttribute('data-nome') || '').toLowerCase();
-    
-                const bateNome = !termoBusca || nomeCard.includes(termoBusca);
-    
-                if (bateNome) {
-                    card.style.display = '';
-                    visiveis++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-    
-            const msgVazio = document.getElementById('sem-resultados');
-            const flash = document.querySelector('.container-flash');
-            
-            if (msgVazio) {
-                    msgVazio.style.display = (visiveis === 0) ? 'flex' : 'none';
-                };
+        const cardsUsers = document.querySelectorAll('.user-card');
+        const termoBusca = (inputTech?.value || '').trim().toLowerCase();
+        const statusFiltro = (inputType?.value || '').trim().toLowerCase();
+        let visiveis = 0;
 
+        cardsUsers.forEach(card => {
+            const nomeCard = (card.getAttribute('data-nome') || '').toLowerCase();
+            // Caso o card tenha data-status="{{ usuario.status_usuario }}", o select também filtrará
+            const statusCard = (card.getAttribute('data-status') || '').toLowerCase();
+
+            const bateNome = !termoBusca || nomeCard.includes(termoBusca);
+            const bateStatus = !statusFiltro || statusFiltro === 'todos' || statusCard === statusFiltro;
+
+            if (bateNome && bateStatus) {
+                card.style.display = '';
+                visiveis++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        const msgVazio = document.getElementById('sem-resultados');
+        const flash = document.querySelector('.container-flash');
+
+        if (msgVazio) {
             if (flash) {
-                    msgVazio.style.display = 'none';
+                msgVazio.style.display = 'none';
+            } else {
+                msgVazio.style.display = (visiveis === 0) ? 'flex' : 'none';
             }
         }
-    
-        if (inputTech) {
-            inputTech.addEventListener('input', aplicarFiltros);
-        }
     }
-);
+
+    if (inputTech) {
+        inputTech.addEventListener('input', aplicarFiltros);
+    }
+    if (inputType) {
+        inputType.addEventListener('change', aplicarFiltros);
+    }
+});
