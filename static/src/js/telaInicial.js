@@ -405,7 +405,7 @@ workOrders.forEach(order => {
                 const ehPendente = String(os.status_ordem || '').trim().toLowerCase() === 'pendente';
 
                 if (btnFinishOS) {
-                    btnFinishOS.textContent = ehPendente ? 'Destinar Técnico' : 'Executar Ordem';
+                    btnFinishOS.textContent = ehPendente ? 'Destinar Técnico' : 'Finalizar Ordem';
                 }
                 if (formDetails) {
                     formDetails.action = ehPendente
