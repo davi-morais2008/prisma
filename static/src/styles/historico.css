@@ -8,20 +8,18 @@
 }
 
 /* ==========================================================================
-   CONTAINER DAS MENSAGENS / ALERTS (MANTIDO INTACTO)
+   CONTAINER DAS MENSAGENS / ALERTS
    ========================================================================== */
-.container-flash {
+.container-flash,
+.container-flash-js {
     width: 100%;
-    padding: 30px 24px 0px 30px;
+    padding: 30px 24px 0 30px;
 }
 
 .container-flash-js {
     display: none;
-    width: 100%;
-    padding: 30px 24px 0px 30px;
 }
 
-/* Estrutura base do alerta */
 .alert {
     width: 100%;
     padding: 14px 40px 14px 16px;
@@ -63,9 +61,9 @@
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 32px;
-    flex-direction: column;
 }
 
 .history__title {
@@ -74,6 +72,48 @@
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
     margin: auto 0;
+}
+
+.history__container {
+    width: 100%;
+    height: 75vh;
+    background-color: var(--color-bg-card);
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+    border: 1px solid var(--border-color);
+    margin-top: 20px;
+    padding: 30px 24px;
+}
+
+.history__container-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.history__container-icon {
+    font-size: 1.4rem;
+    color: var(--color-secondary);
+    background-color: var(--color-bg-light);
+    padding: 0.45rem;
+    border-radius: 8px;
+}
+
+.history__container-icon .material-symbols-outlined {
+    font-size: 20px;
+}
+
+.history__container-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.history__container-divider {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 18px 0 22px 0;
 }
 
 /* ==========================================================================
@@ -85,7 +125,7 @@
     flex-direction: column;
     align-items: center;
     gap: var(--font-size-md);
-    padding: 30px var(--border-radius-lg) 0px 30px;
+    padding: 30px var(--border-radius-lg) 0 30px;
 }
 
 .grupo-busca-tecnico {
@@ -101,61 +141,6 @@
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.history__container {
-    width: 100%;
-    
-    background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-    border: 1px solid #eef0f6;
-    margin-top: 20px;
-    padding: 30px 24px;
-}
-
-/* Cabeçalho do container */
-.history__container-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* Quadrado azul claro do ícone */
-.history__container-icon {
-    width: 36px;
-    height: 36px;
-    background-color: #e6f0ff;
-    color: #2563eb;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.history__container-icon .material-symbols-outlined {
-    font-size: 20px;
-}
-
-/* Título do container */
-.history__container-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #0b132b;
-    margin: 0;
-}
-
-/* Linha divisória horizontal */
-.history__container-divider {
-    border: none;
-    border-top: 1px solid #e2e8f0;
-    margin: 18px 0 22px 0;
-}
-
-/* Ajuste opcional para garantir espaçamento interno dos cards */
-.history__container .history__cards {
-    width: 100%;
-    padding: 0;
-}
-
 .grupo-busca-tecnico:focus-within {
     border-color: var(--color-secondary-hover);
     box-shadow: var(--shadow-lg);
@@ -163,15 +148,14 @@
 
 .grupo-busca-tecnico .input-tecn {
     flex: 1;
+    min-width: 0;
     height: 100%;
     border: none;
     padding: 0 var(--font-size-lg);
-    font-family: var(--font-family-base);
     font-size: var(--font-size-sm);
     color: var(--color-text-primary);
     background: transparent;
     outline: none;
-    min-width: 0;
 }
 
 .grupo-busca-tecnico .btn-enviar {
@@ -180,7 +164,6 @@
     border: none;
     background-color: var(--color-primary);
     color: var(--color-text-light);
-    font-family: var(--font-family-base);
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-bold);
     cursor: pointer;
@@ -207,7 +190,6 @@
     border-radius: var(--border-radius-pill);
     background-color: var(--color-bg-card);
     color: var(--color-text-secondary);
-    font-family: var(--font-family-base);
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-bold);
     box-shadow: var(--shadow-sm);
@@ -253,15 +235,19 @@
    LISTA E CARDS DO HISTÓRICO
    ========================================================================== */
 .history__cards {
-    width: 100%;
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--font-size-md);
-    max-height: 400px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+    width: 100%;
+    height: 100%;
+    padding: 10px !important;
     align-content: start;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 30px var(--border-radius-lg) 0px 30px;
+}
+
+.history__container .history__cards {
+    padding: 0;
 }
 
 .card__group {
@@ -281,10 +267,10 @@
 .maintence__card {
     width: 100%;
     padding: 35px 30px;
-    font-family: var(--font-family-base);
     background-color: var(--color-bg-card);
     border-radius: var(--border-radius-md);
     box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-bg-light);
     border-left: 6px solid var(--color-text-primary);
     cursor: pointer;
     user-select: none;
@@ -503,7 +489,6 @@
 }
 
 .machine-tech__label {
-    font-family: var(--font-family-base);
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-medium);
     color: var(--color-text-secondary);
@@ -511,17 +496,16 @@
 
 .machine-tech__area {
     display: flex;
+    align-items: center;
     width: 100%;
     height: 38px;
     padding: 0 10px;
-    font-family: var(--font-family-base);
     font-size: var(--font-size-md);
     color: var(--color-text-primary);
     background-color: var(--color-bg-input);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-sm);
     outline: none;
-    align-items: center;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -531,7 +515,6 @@
 }
 
 .machine-tech__section-title {
-    font-family: var(--font-family-base);
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
@@ -554,6 +537,33 @@
     gap: var(--border-radius-sm);
 }
 
+.home__empty-state {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--color-text-secondary);
+    background-color: var(--color-bg-card);
+    border: 1px dashed var(--border-color);
+    border-radius: 10px;
+    gap: 0.5rem;
+}
+
+.home__empty-state .material-symbols-outlined {
+    font-size: 2rem;
+    color: var(--color-text-secondary);
+}
+
+.home__empty-state p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
 /* ==========================================================================
    RESPONSIVIDADE
    ========================================================================== */
@@ -569,16 +579,8 @@
         flex-direction: column;
     }
 
-    .machine-tech__overlay {
-        display: none;
-    }
-
     .machine-tech__overlay.active {
         margin-top: 75px !important;
-    }
-
-    .pesquisa-container {
-        width: 100%;
     }
 
     .pesquisa-container input[type="text"],

@@ -87,6 +87,13 @@
                             </div>
                         </div>
                         {% endfor %}
+
+                        {% if OSfinalizado == [] %}
+                            <div class="home__empty-state">
+                                <span class="material-symbols-outlined" aria-hidden="true">assignment_turned_in</span>
+                                <p>Nenhuma ordem de serviço ativa no momento.</p>
+                            </div>
+                        {% endif %}
                     </div>
                 </section>
 

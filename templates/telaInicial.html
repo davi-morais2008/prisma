@@ -184,7 +184,7 @@ Página Inicial
 
         <div class="order-details__container">
             <header class="order-details__header">
-                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo PRISMA"
+                <img src="static/src/img/EmblemaPrisma.png" alt="Logo PRISMA"
                     class="order-details__logo">
                 <h2 class="order-details__title" id="inspectionModalTitle">ORDEM DE INSPEÇÃO</h2>
                 <button type="button" class="order-details__close-btn" id="btnCloseInspection" title="Fechar">
@@ -663,15 +663,15 @@ Página Inicial
                             </div>
 
                             <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_tecnico_responsavel_{{ os.id_ordem }}">Técnico Responsável (CPF)</label>
-                                <select class="order-edit__select" id="edit_tecnico_responsavel_{{ os.id_ordem }}">
+                                <label class="order-edit__label" for="edit_tecnico_responsavel">Técnico Responsável</label>
+                                <select class="order-edit__select" id="edit_tecnico_responsavel" name="tecnico_responsavel">
+                                    <option value="">Não atribuído</option>
                                     {% for tecnico in tecnicos %}
                                     {% if tecnico.rbac == 'usuario' %}
-                                    <option value="{{tecnico.cpf}}" {% if tecnico.cpf == os.cpf %}selected{% endif %}>{{tecnico.nome}}</option>
+                                    <option value="{{ tecnico.cpf }}">{{ tecnico.nome }}</option>
                                     {% endif %}
                                     {% endfor %}
                                 </select>
-                                
                             </div>
                         </div>
                     </fieldset>
