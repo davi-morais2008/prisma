@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS especialidades (
 
 CREATE TABLE IF NOT EXISTS tipos_maquinas (
     id_tipo_maquina INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    tipo_maquina VARCHAR(100) NOT NULL
+    tipo_maquina VARCHAR(100) NOT NULL,
+    status_tipo_maquina VARCHAR(100) NOT NULL default 'Ativo'
 );
 
 CREATE TABLE IF NOT EXISTS usuarios (
@@ -27,12 +28,14 @@ CREATE TABLE IF NOT EXISTS usuarios (
 CREATE TABLE IF NOT EXISTS falhas (
     id_falha INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_tipo_maquina INT NOT NULL,
-    falha VARCHAR(100) NOT NULL
+    falha VARCHAR(100) NOT NULL,
+    status_falha VARCHAR(100) NOT NULL default 'Ativo'
 );
 
 CREATE TABLE IF NOT EXISTS setores (
     id_setor INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    setor VARCHAR(100) NOT NULL
+    setor VARCHAR(100) NOT NULL,
+    status_setor VARCHAR(100) NOT NULL default 'Ativo'
 );
 
 CREATE TABLE IF NOT EXISTS maquinas (
