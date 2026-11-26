@@ -7,13 +7,6 @@ const workOrders = document.querySelectorAll('.work-order');
 const filterButton = document.querySelectorAll('.filter-button');
 const currentPath = window.location.pathname;
 
-
-const editStatusOrdem = document.querySelector('#edit_status_ordem');
-const editFaseManutencao = document.querySelector('#edit_fase_manutencao');
-const editDataInicio = document.querySelector('#edit_data_inicio');
-const editDataParada = document.querySelector('#edit_data_parada');
-
-
 const btnInspec = document.querySelector('#btnTabInspecao');
 const btnServico = document.querySelector('#btnTabServico');
 const containerInspec = document.querySelector('#container-ordens-inspecao');
@@ -34,6 +27,9 @@ const selectTipoManutencao = document.querySelector('#create_tipo_manutencao');
 const inputFalhaCreate = document.querySelector('#create_falha');
 const inputNumberMachine = document.querySelector('#create_numero_patrimonio');
 const inputModelMachine = document.querySelector('#create_modelo_maquina');
+const inputTipoMachineCreate = document.querySelector('#create_tipo_maquina');
+const inputLocalizacaoCreate = document.querySelector('#create_localizacao_setor');
+const inputTecnicoCadastro = document.querySelector('#create_tecnico_responsavel_cadastro');
 
 // Requisição de Peças no Cadastro
 const checkSolicitarPecas = document.getElementById('check_solicitar_pecas');
@@ -62,6 +58,8 @@ const statusOrdem = document.querySelector('#status_ordem');
 const faseManutencao = document.querySelector('#fase_manutencao');
 const tipoManutencao = document.querySelector('#tipo_manutencao');
 const tecnicoResponsavel = document.querySelector('#tecnico_responsavel');
+const tipoMaquinaDetalhes = document.querySelector('#tipo_maquina');
+const localizacaoSetorDetalhes = document.querySelector('#localizacao_setor');
 const dataPrevInicio = document.querySelector('#data_prev_inicio_manutencao');
 const dataPrevTermino = document.querySelector('#data_prev_termino_manutencao');
 const dataParada = document.querySelector('#data_parada');
@@ -77,11 +75,14 @@ const updateMaintenanceModal = document.querySelector('#updateMaintenanceModal')
 const updateMaintenanceOverlay = document.querySelector('#updateMaintenanceOverlay');
 const formUpdateMaintenance = document.querySelector('#formUpdateMaintenance');
 const orderEditTitle = document.querySelector('#orderEditTitle');
+const editStatusOrdem = document.querySelector('#edit_status_ordem');
+const editFaseManutencao = document.querySelector('#edit_fase_manutencao');
 const editTipoManutencao = document.querySelector('#edit_tipo_manutencao');
 const editTecnicoResponsavel = document.querySelector('#edit_tecnico_responsavel');
 const editPrevInicio = document.querySelector('#edit_prev_inicio');
 const editPrevTermino = document.querySelector('#edit_prev_termino');
-const editCheckParada = document.querySelector('#edit_check_parada');
+const editDataInicio = document.querySelector('#edit_data_inicio');
+const editDataParada = document.querySelector('#edit_data_parada');
 const editFalha = document.querySelector('#edit_falha');
 const editDescProblema = document.querySelector('#edit_desc_problema');
 const editCheckPecas = document.querySelector('#edit_check_pecas');
@@ -166,18 +167,49 @@ const closeEditInspectionModal = () => updateInspectionModal?.classList.remove('
 const openEditMaintenanceModal = () => updateMaintenanceModal?.classList.add('active');
 const closeEditMaintenanceModal = () => updateMaintenanceModal?.classList.remove('active');
 
-// Filtro dinâmico de máquina e falhas no Cadastro
+// Função auxiliar para resolver nome do tipo da máquina e localização/setor
+function obterDadosComplementaresMaquina(machine, dados) {
+    if (!machine) return { tipoMaquina: '', localizacaoSetor: '' };
+
+    const tiposMaquinas = dados?.tipo_maquinas || dados?.tipos_maquinas || [];
+    const tipoEncontrado = tiposMaquinas.find(
+        t => String(t.id_tipo_maquina) === String(machine.id_tipo_maquina)
+    );
+
+    const tipoMaquina =
+        machine.tipo_maquina ||
+        machine.nome_tipo_maquina ||
+        tipoEncontrado?.tipo_maquina ||
+        '';
+
+    const localizacaoSetor =
+        machine.localizacao_setor ||
+        machine.localizacao ||
+        machine.setor ||
+        machine.nome_setor ||
+        '';
+
+    return { tipoMaquina, localizacaoSetor };
+}
+
+// Busca automática de máquina (modelo, tipo, localização/setor) e filtro de falhas no Cadastro
 if (createModal && inputNumberMachine) {
     const optionMolde = document.createElement('option');
 
+    const limparCamposMaquinaCadastro = () => {
+        if (inputModelMachine) inputModelMachine.value = '';
+        if (inputTipoMachineCreate) inputTipoMachineCreate.value = '';
+        if (inputLocalizacaoCreate) inputLocalizacaoCreate.value = '';
+        if (inputFalhaCreate) {
+            inputFalhaCreate.innerHTML = '<option value="" disabled selected>Selecione a falha...</option>';
+        }
+    };
+
     inputNumberMachine.addEventListener('change', async () => {
-        const numberMachine = inputNumberMachine.value;
+        const numberMachine = inputNumberMachine.value.trim();
 
         if (!numberMachine) {
-            if (inputModelMachine) inputModelMachine.value = '';
-            if (inputFalhaCreate) {
-                inputFalhaCreate.innerHTML = '<option value="" disabled selected>Selecione a falha...</option>';
-            }
+            limparCamposMaquinaCadastro();
             return;
         }
 
@@ -197,15 +229,20 @@ if (createModal && inputNumberMachine) {
 
             const dados = await resposta.json();
             dadosApiCompletos = dados;
+
             const maquinas = dados.maquinas || [];
             const falhas = dados.falhas_maquinas || [];
 
-            const machine = maquinas.find(maquina => String(maquina.numero_patrimonio) === String(numberMachine));
+            const machine = maquinas.find(
+                maquina => String(maquina.numero_patrimonio).trim() === numberMachine
+            );
 
             if (machine) {
-                if (inputModelMachine) {
-                    inputModelMachine.value = machine.modelo_maquina || '';
-                }
+                const { tipoMaquina, localizacaoSetor } = obterDadosComplementaresMaquina(machine, dados);
+
+                if (inputModelMachine) inputModelMachine.value = machine.modelo_maquina || '';
+                if (inputTipoMachineCreate) inputTipoMachineCreate.value = tipoMaquina;
+                if (inputLocalizacaoCreate) inputLocalizacaoCreate.value = localizacaoSetor;
 
                 if (inputFalhaCreate) {
                     inputFalhaCreate.innerHTML = '<option value="" disabled selected>Selecione a falha...</option>';
@@ -220,6 +257,8 @@ if (createModal && inputNumberMachine) {
                         }
                     }
                 }
+            } else {
+                limparCamposMaquinaCadastro();
             }
         } catch (error) {
             console.error("Erro ao buscar máquina e falhas:", error);
@@ -349,6 +388,7 @@ workOrders.forEach(order => {
 
             const dados = await resposta.json();
             dadosApiCompletos = dados;
+            const maquinas = dados.maquinas || [];
 
             // 1. Fluxo de Ordem de Manutenção
             if (idOrder && dados.ordens_manutencao) {
@@ -449,10 +489,20 @@ workOrders.forEach(order => {
                     }
                 }
 
+                // Busca Tipo de Máquina e Localização/Setor da máquina vinculada à OS
+                const maquinaDaOS = maquinas.find(
+                    m => String(m.id_maquina) === String(os.id_maquina) ||
+                         String(m.numero_patrimonio) === String(os.numero_patrimonio)
+                );
+                const { tipoMaquina, localizacaoSetor } = obterDadosComplementaresMaquina(maquinaDaOS, dados);
+
                 if (statusOrdem) statusOrdem.textContent = os.status_ordem;
                 if (faseManutencao) faseManutencao.textContent = os.fase_manutencao;
                 if (tipoManutencao) tipoManutencao.textContent = os.tipo_manutencao;
                 if (tecnicoResponsavel) tecnicoResponsavel.textContent = os.tecnico_responsavel || 'Não atribuído';
+                if (tipoMaquinaDetalhes) tipoMaquinaDetalhes.textContent = os.tipo_maquina || tipoMaquina || '-';
+                if (localizacaoSetorDetalhes) localizacaoSetorDetalhes.textContent = os.localizacao || os.setor || localizacaoSetor || '-';
+
                 if (dataPrevInicio) dataPrevInicio.textContent = formatarDataPT(os.data_prev_inicio_manutencao);
                 if (dataPrevTermino) dataPrevTermino.textContent = formatarDataPT(os.data_prev_termino_manutencao);
                 if (dataParada) dataParada.textContent = formatarDataPT(os.data_parada);
@@ -510,7 +560,6 @@ workOrders.forEach(order => {
                     }
                 }
 
-                // Exibe "Concluir Inspeção" apenas quando já estiver atribuída/em andamento e ainda não finalizada
                 if (formFinishInspection) {
                     formFinishInspection.action = `/telaInicial/finalizar-inspecao/${insp.id_ordem_inspecao}`;
 
@@ -554,8 +603,6 @@ formDetails?.addEventListener('submit', (event) => {
 // ==========================================
 // 6. ABERTURA E PREENCHIMENTO DOS MODAIS DE EDIÇÃO / AÇÕES
 // ==========================================
-
-// Função auxiliar para renderizar linha de peça no modal de edição
 function criarLinhaPecaEdicao(nomePeca = '', quantidade = 1) {
     const divRow = document.createElement('div');
     divRow.classList.add('order-create__peca-row');
@@ -613,13 +660,14 @@ editListaPecas?.addEventListener('click', (event) => {
     }
 });
 
+// Clique em Editar Ordem de Manutenção: preenche o modal único #updateMaintenanceModal via JS
 btnEdit?.addEventListener('click', () => {
     if (!osAtualSelecionada || !updateMaintenanceModal) return;
 
     const os = osAtualSelecionada;
     const dados = dadosApiCompletos || {};
 
-    // 1. Action exata da sua rota Flask e título
+    // 1. Action da rota Flask e título
     if (formUpdateMaintenance) {
         formUpdateMaintenance.action = `/telaIncial/atualizar_ordem/${os.id_ordem}`;
     }
@@ -646,22 +694,25 @@ btnEdit?.addEventListener('click', () => {
                     editTecnicoResponsavel.appendChild(opt);
                 }
             });
-        } else if (inputTecnicoResponsavel) {
-            Array.from(inputTecnicoResponsavel.options).forEach(opt => {
-                if (opt.value) editTecnicoResponsavel.appendChild(opt.cloneNode(true));
-            });
+        } else {
+            const selectFallback = inputTecnicoResponsavel || inputTecnicoCadastro;
+            if (selectFallback) {
+                Array.from(selectFallback.options).forEach(opt => {
+                    if (opt.value) editTecnicoResponsavel.appendChild(opt.cloneNode(true));
+                });
+            }
         }
 
         editTecnicoResponsavel.value = os.cpf || '';
     }
 
-    // 4. Cronograma e Datas (DATE no MySQL)
+    // 4. Cronograma e Datas
     if (editPrevInicio) editPrevInicio.value = formatarParaInputDate(os.data_prev_inicio_manutencao);
     if (editPrevTermino) editPrevTermino.value = formatarParaInputDate(os.data_prev_termino_manutencao);
     if (editDataInicio) editDataInicio.value = formatarParaInputDate(os.data_inicio_manutencao);
     if (editDataParada) editDataParada.value = formatarParaInputDate(os.data_parada);
 
-    // 5. Falha Identificada filtrada pelo tipo de máquina
+    // 5. Falha Identificada filtrada pelo id_tipo_maquina da máquina da OS
     if (editFalha) {
         editFalha.innerHTML = '<option value="" disabled>Selecione a falha...</option>';
         const falhas = dados.falhas_maquinas || [];
@@ -697,7 +748,7 @@ btnEdit?.addEventListener('click', () => {
         editDescProblema.value = os.descricao_problema || '';
     }
 
-    // 7. Peças Requisitadas
+    // 7. Peças Requisitadas vinculadas à OS
     const pecasDaOS = (dados.peca_requisicoes || []).filter(
         p => String(p.id_ordem) === String(os.id_ordem)
     );
@@ -720,9 +771,7 @@ btnEdit?.addEventListener('click', () => {
 
 // Clique em Editar Ordem de Inspeção
 btnEditInspection?.addEventListener('click', () => {
-    
     if (inspecaoAtualSelecionada) {
-
         const editInspStatus = document.querySelector('#edit_insp_status');
         const editInspResponsavel = document.querySelector('#edit_insp_responsavel');
         const editInspData = document.querySelector('#edit_insp_data');
@@ -808,13 +857,10 @@ function sincronizarContainerPecas() {
     }
 }
 
-// Garante que o container comece oculto ao carregar a tela
 sincronizarContainerPecas();
 
-// Escuta marcação/desmarcação do checkbox
 checkSolicitarPecas?.addEventListener('change', sincronizarContainerPecas);
 
-// Garante verificação ao abrir e fechar o modal de cadastro
 bntCreate?.addEventListener('click', () => {
     if (checkSolicitarPecas) checkSolicitarPecas.checked = false;
     sincronizarContainerPecas();
