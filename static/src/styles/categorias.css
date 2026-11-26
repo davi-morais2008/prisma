@@ -3,6 +3,90 @@
 /* ==========================================================================
    ESTRUTURA DA PÁGINA
    ========================================================================== */
+
+/* Container das mensagens */
+
+/* ==========================================
+   ALERTAS / FLASH MESSAGES (SISTEMA PRISMA)
+   ========================================== */
+.container.mt-3 {
+    width: 100%;
+    max-width: 100%;
+    margin: 0.75rem 0 1.25rem 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.alert {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1.2rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    border-left: 5px solid #1e293b;
+    background-color: #ffffff;
+    color: #1e293b;
+    font-size: 0.92rem;
+    font-weight: 500;
+    line-height: 1.4;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+    animation: slideDownAlert 0.25s ease-out;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Variação: Sucesso (suporta 'sucesso' usado no seu JS e 'success' padrão) */
+.alert-sucesso,
+.alert-success {
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+    border-left-color: #16a34a;
+    color: #14532d;
+}
+
+/* Variação: Erro / Perigo */
+.alert-danger,
+.alert-erro,
+.alert-error {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+    border-left-color: #dc2626;
+    color: #7f1d1d;
+}
+
+/* Variação: Aviso / Alerta */
+.alert-warning,
+.alert-aviso {
+    background-color: #fffbeb;
+    border-color: #fde68a;
+    border-left-color: #d97706;
+    color: #78350f;
+}
+
+/* Variação: Informação */
+.alert-info {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+    border-left-color: #2563eb;
+    color: #1e3a8a;
+}
+
+@keyframes slideDownAlert {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 .categories-page {
     padding: 2rem;
     max-width: 1200px;
