@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL,
     senha VARCHAR(500) NOT NULL,
-    status_usuario BOOL DEFAULT FALSE,
+    status_usuario VARCHAR(100) default 'Pendente',
     descricao_usuario VARCHAR(255),
     imagem_perfil VARCHAR(255),
     rbac VARCHAR(100) DEFAULT 'usuario',

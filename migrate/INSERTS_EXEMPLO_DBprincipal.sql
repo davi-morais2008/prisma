@@ -24,7 +24,7 @@ INSERT INTO tipos_maquinas (tipo_maquina, status_tipo_maquina) VALUES
 
 -- 3. Usuarios (10 usuarios)
 INSERT INTO usuarios (cpf, nome, email, senha, status_usuario, descricao_usuario, imagem_perfil, rbac) VALUES
-('47126589832', 'Guxta Pereira', 'gustavo.h.pereira13@aluno.senai.br', 'gu1234', 1, 'Tecnico em Eletromecanica', '/static/img/perfis/guxta.png', 'usuario'),
+('47126589832', 'Gustavo Pereira', 'gustavo.h.pereira13@aluno.senai.br', 'gu1234', 1, 'Tecnico em Eletromecanica', '/static/img/perfis/guxta.png', 'usuario'),
 ('00000000000', 'admin root', 'admin.root@sp.senai.br', 'senai603Prisma', 1, 'Administrador geral do sistema PRISMA', '/static/img/perfis/admin.png', 'root'),
 ('38941275809', 'Mariana Costa', 'mariana.costa@sp.senai.br', 'mari1234', 1, 'Supervisora de Manutencao Industrial', '/static/img/perfis/mariana.png', 'admin'),
 ('51298432844', 'Carlos Eduardo Santos', 'carlos.santos@aluno.senai.br', 'carlos1234', 1, 'Tecnico especialista em Hidraulica e Mecanica', '/static/img/perfis/carlos.png', 'usuario'),
