@@ -68,7 +68,7 @@ Página Inicial
             {% if (perfil in ['admin', 'root'] and status in ['ativa', 'pendente'])
             or (os.cpf == user and status == 'ativa') %}
             {% set ns_os.encontrou = true %}
-            <article class="work-order work-order--baixa" id_order="{{ os.id_ordem }}" tabindex="0">
+            <article class="work-order work-order--baixa" id_order="{{ os.id_ordem }}" tabindex="0" data-responsavel="{{os.tecnico_responsavel}}">
                 <header class="work-order__header">
                     <h3 class="work-order__title">Ordem #{{ os.id_ordem }}</h3>
                     <span class="work-order__badge {{ 'work-order__badge--pendente' if status == 'pendente' else '' }}">
@@ -132,7 +132,7 @@ Página Inicial
             {% for insp in ordens_inspecao %}
             {% if insp.status_inspecao and (user_rbac in ['admin', 'root'] or insp.cpf == user) %}
             {% set ns_insp.encontrou = true %}
-            <article class="work-order work-order--inspecao" id_inspecao="{{ insp.id_ordem_inspecao }}" tabindex="0">
+            <article class="work-order work-order--inspecao" id_inspecao="{{ insp.id_ordem_inspecao }}" tabindex="0" data-responsavel="{{ insp.nome_solicitante }}">
                 <header class="work-order__header">
                     <h3 class="work-order__title">Inspeção #{{ insp.id_ordem_inspecao }}</h3>
                     <span class="work-order__badge work-order__badge--inspecao">{{insp.status_inspecao}}</span>
