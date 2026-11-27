@@ -11,7 +11,7 @@ from model.pecas import inserir_requisicoes_pecas, consultar_requisicoes_pecas, 
 from model.finalizarOS import finalizar_OS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from werkzeug.security import generate_password_hash
-from model.maquina import cadastrar_maquina, atualizar_maquina, consulta_tipo_maquinas, deletar_maquina, atualizar_editar_maquina, consulta_setores, consultar_falhas, adicionar_falha, adicionar_tipo_maquina, recalcular_custo_acumulado_maquina
+from model.maquina import cadastrar_maquina, atualizar_maquina, deletar_maquina, atualizar_editar_maquina, adicionar_falha, adicionar_tipo_maquina, recalcular_custo_acumulado_maquina
 from model.categorias import (
     listar_tipos_maquina,
     listar_setores,
@@ -170,9 +170,9 @@ def logoff():
 def pagina_inicial():
     ordens = consultar_ordem_servico()
     tecnicos = buscar_usuario()
-    falhas = consultar_falhas()
+    falhas = listar_falhas()
     maquinas = consultar_maquinas()
-    tipo_maquinas = consulta_tipo_maquinas()
+    tipo_maquinas = listar_tipos_maquina()
     ordens_inspec = consultar_ordens_inspecao()
 
     if session.get('user_rbac') == 'root':
@@ -200,7 +200,7 @@ def pagina_inicial():
         falhas=falhas,
         maquinas=maquinas,
         tipo_maquinas=tipo_maquinas,
-        ordens_inspecao=ordens_inspec
+        ordens_inspecao = ordens_inspec
     )
 
 
@@ -209,10 +209,9 @@ def pagina_inicial():
 def filtrar_ordens(tipo):
     ordens = filtrar_ordem_servico(tipo)
     tecnicos = buscar_usuario()
-    falhas = consultar_falhas()
+    falhas = listar_falhas()
     maquinas = consultar_maquinas()
-    tipo_maquinas = consulta_tipo_maquinas()
-    ordens_inspec = consultar_ordens_inspecao()
+    tipo_maquinas = listar_tipos_maquina()
 
     if session.get('user_rbac') == 'root':
         ordens_filtradas = ordens
@@ -249,15 +248,15 @@ def api_get_ordem():
         ordens_manutencao = consultar_ordem_servico()
         pecas_requisicoes = consultar_requisicoes_pecas()
         ordens_inspecao = consultar_ordens_inspecao()
-        maquinas = consultar_maquinas()
+        maquinas =  consultar_maquinas()
         tipos_falha = listar_falhas()
         print(pecas_requisicoes)
         return jsonify({
             "ordens_manutencao": ordens_manutencao,
             "ordens_inspecao": ordens_inspecao,
-            "peca_requisicoes": pecas_requisicoes,
-            "falhas_maquinas": tipos_falha,
-            "maquinas": maquinas
+            "peca_requisicoes" : pecas_requisicoes,
+            "falhas_maquinas" : tipos_falha,
+            "maquinas" : maquinas
         }), 200
     except Exception as e:
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
@@ -369,7 +368,6 @@ def rota_finalizar_inspecao(id_inspecao):
 
     return redirect('/telaInicial')
 
-
 @app.route("/telaInicial/destinar-os-maintenance/<int:id>", methods=['POST'])
 def assign_os_maintenance(id):
     cpf_tecnico = request.form.get('tecnico_responsavel')
@@ -431,7 +429,6 @@ def rota_editar_inspecao(id_inspecao):
 @roles_required('admin', 'root')
 def pagina_historico():
     OSfinalizado = buscar_os_finalizado()
-    print(OSfinalizado)
     if OSfinalizado == []:
         flash("Nenhum histórico encontrado.", "warning")
     return render_template("historico.html", OSfinalizado=OSfinalizado)
@@ -507,18 +504,16 @@ def post_cadastro():
         flash('Erro ao cadastrar-se. Tente Novamente', 'error')
     return redirect('/login')
 
-
-@app.route('/maquinas', methods=['GET'])
+@app.route('/maquinas', methods = ['GET'])
 @login_required
 @roles_required('admin', 'root')
 def pagina_maquinas():
     maquinas = consultar_maquinas()
-    tipos_maquinas = consulta_tipo_maquinas()
-    setores = consulta_setores()
+    tipos_maquinas = listar_tipos_maquina()
+    setores = listar_setores()
     return render_template('maquinas.html', maquinas=maquinas, tipos_maquinas=tipos_maquinas, setores=setores)
 
-
-@app.route('/maquinas/api_request_machines', methods=['GET'])
+@app.route('/maquinas/api_request_machines', methods = ['GET'])
 def maquinas_api_get():
     maquinas = consultar_maquinas()
     return jsonify(maquinas), 200
@@ -527,12 +522,13 @@ def maquinas_api_get():
 @app.route('/maquinas/filtro/<tipo>', methods=["GET"])
 def filtro_maquinas(tipo):
     maquinas_filtradas = filtrar_maquinas(tipo)
-    tipos_maquinas = consulta_tipo_maquinas()
+    tipos_maquinas = listar_tipos_maquina()
+    setores = listar_setores()
     
     if not maquinas_filtradas:
         flash(f"Nenhuma máquina do tipo {tipo} foi encontrada.", "warning")
 
-    return render_template("maquinas.html", maquinas=maquinas_filtradas, tipos_maquinas=tipos_maquinas)
+    return render_template("maquinas.html", maquinas=maquinas_filtradas, tipos_maquinas=tipos_maquinas, setores=setores)
 
 
 @app.route('/maquinas/post_register_machine', methods=['POST'])
@@ -676,7 +672,6 @@ def categorias_adicionar_falha():
             flash('Erro ao cadastrar falha.', 'danger')
     return redirect('/categorias')
 
-
 @app.route('/categorias/deletar_tipo/<int:id_tipo_maquina>', methods=['POST'])
 @login_required
 @roles_required('admin', 'root')
@@ -736,12 +731,10 @@ def pagina_usuarios():
     lista_de_usuarios = buscar_usuario()
     return render_template('usuarios.html', usuarios=lista_de_usuarios)
 
-
 @app.route('/calendario')
 @login_required
 def pagina_calendario():
     return render_template('calendario.html')
-
 
 @app.route('/usuarios/api_alterar_status', methods=['POST'])
 @login_required
@@ -764,7 +757,6 @@ def api_alterar_status_usuario():
         flash('Erro ao atualizar o status do usuário.', 'danger')
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
     
-
 @app.route('/api/ordens-servico')
 @login_required
 def api_ordens_servico():
@@ -830,4 +822,4 @@ def atualizar_ordem(id_ordem):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)  

@@ -20,9 +20,11 @@ Máquinas
             <input type="text" class="filter-input-search" placeholder="Buscar máquina..." id="input_maquina">
             <div class="filter-buttons">
                 {% for tipo in tipos_maquinas %}
+                {% if tipo.status_tipo_maquina == 'Ativo' %}
                     <button type="button" class="filter-button btn-filtro" value="{{ tipo.tipo_maquina }}">
                         {{ tipo.tipo_maquina }}
                     </button>
+                {% endif %}
                 {% endfor %}
                 <a href="/maquinas">
                     <span class="material-symbols-outlined filter-button">
