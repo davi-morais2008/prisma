@@ -475,7 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => {
             const valorBotao = (button.value || '').trim().toLowerCase();
 
-            // Se clicar no botão já ativo, desativa o filtro de tipo
+
             if (button.classList.contains('active')) {
                 button.classList.remove('active');
                 tipoSelecionado = '';
