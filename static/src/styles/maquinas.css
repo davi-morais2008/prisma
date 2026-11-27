@@ -155,42 +155,53 @@ body {
     box-shadow: var(--shadow-md);
 }
 
-/* Linha única deslizável em todas as resoluções + botão limpar isolado à direita */
+/* Container flexível que preenche toda a largura e vira carrossel se transbordar */
 .filter-buttons {
     width: calc(100% - 52px);
-    /* Reserva 40px para o botão + 12px de espaçamento */
     display: flex;
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.75rem;
     overflow-x: auto;
     overflow-y: hidden;
     padding: 2px 4px 6px 2px;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    /* Oculta barra no Firefox */
+    cursor: grab;
+    user-select: none;
+}
+
+.filter-buttons:active {
+    cursor: grabbing;
 }
 
 .filter-buttons::-webkit-scrollbar {
     display: none;
-    /* Oculta barra no Chrome/Safari/Edge */
 }
 
 .filter-buttons a {
     text-decoration: none;
 }
 
-.filter-buttons>*:not(:last-child) {
-    flex: 0 0 auto;
+/* 2 ou mais botões: formas variadas proporcionais ao texto preenchendo 100% da barra */
+.filter-buttons > button {
+    flex: 1 0 auto;
+    min-width: 120px;
 }
 
-/* Botão de limpar fixo na lateral direita e em tamanho menor */
-.filter-buttons>*:last-child {
+/* Apenas 1 botão: mantém tamanho natural elegante sem esticar a tela inteira */
+.filter-buttons > button:only-of-type {
+    flex: 0 0 auto;
+    min-width: 180px;
+    max-width: 320px;
+}
+
+/* Botão de limpar fixo na lateral direita com sombra lateral */
+.filter-buttons > *:last-child {
     position: absolute;
     top: calc(30px + 48px + 1rem + 2px);
-    /* Padding topo + altura input + gap + ajuste fino */
     right: 24px;
     width: 40px;
     height: 40px;
@@ -200,6 +211,20 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 2;
+    box-shadow: -8px 0 14px -2px rgba(0, 0, 0, 0.14), var(--shadow-sm);
+}
+
+/* Degradê suave à esquerda do botão para disfarçar o corte do carrossel */
+.filter-buttons > *:last-child::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    right: 34px;
+    width: 28px;
+    height: 48px;
+    background: linear-gradient(to right, transparent, var(--color-bg-main) 80%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 .filter-buttons .material-symbols-outlined {
@@ -217,7 +242,7 @@ body {
     text-align: center;
     cursor: pointer;
     height: 40px;
-    padding: 0 1.15rem;
+    padding: 0 1.35rem;
     border: 1px solid transparent;
     text-decoration: none;
     border-radius: var(--border-radius-pill);
@@ -231,18 +256,18 @@ body {
     transition: all 0.2s ease;
 }
 
-
 .filter-button.active{
     background-color: var(--color-secondary);
     color: var(--color-text-light);
 }
+
 .filter-button:hover {
     background-color: var(--color-secondary);
     color: var(--color-text-light);
     box-shadow: var(--shadow-md);
 }
 
-/* Ajuste fino de padding para telas menores */
+/* Ajuste fino para telas menores */
 @media (max-width: 768px) {
     .machines__filters {
         padding: 20px 16px 0px 16px;
@@ -252,23 +277,20 @@ body {
         width: calc(100% - 48px);
     }
 
-    .filter-buttons>*:last-child {
+    .filter-buttons > button {
+        min-width: auto;
+    }
+
+    .filter-buttons > button:only-of-type {
+        min-width: 140px;
+        max-width: 100%;
+    }
+
+    .filter-buttons > *:last-child {
         top: calc(20px + 48px + 1rem + 2px);
         right: 16px;
     }
 }
-
-.filter-buttons {
-    cursor: grab;
-    user-select: none;
-    display: flex;
-    justify-content: space-around;
-}
-
-.filter-buttons{
-    cursor: grabbing;
-}
-
 /* ======================================= */
 /* =========   BLOCO: Máquinas  ============ */
 /* ======================================= */
