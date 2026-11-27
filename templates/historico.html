@@ -34,26 +34,6 @@
                             </button>
                         </div>
                     </form>
-
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                    {% for category, message in messages %}
-                    <div class="container-flash">
-                        <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
-                            role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                    {% endfor %}
-                    {% endif %}
-                    {% endwith %}
-
-                    <div class="container-flash-js" id="sem-resultados">
-                        <div class="alert alert-warning alert-dismissible fade show" >
-                            Nenhum histórico encontrado.
-                        </div>
-                    </div>
                 
                 <section class="history__container">
                     <div class="history__container-header">
@@ -91,7 +71,13 @@
                         {% if OSfinalizado == [] %}
                             <div class="home__empty-state">
                                 <span class="material-symbols-outlined" aria-hidden="true">assignment_turned_in</span>
-                                <p>Nenhuma ordem de serviço ativa no momento.</p>
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% if messages %}
+                                        {% for category, message in messages %}
+                                            <p>{{message}}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
                             </div>
                         {% endif %}
                     </div>

@@ -150,18 +150,95 @@ body {
 /* ========================================
    COMPONENTE: LISTA DE USUÁRIOS & CARDS
 ======================================== */
-.user-list {
+
+.users__container {
     display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    height: 75vh;
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px var(--shadow-sm);
+    overflow: hidden;
+}
+
+.users__group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.9rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 2px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.users__group-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-width: 0;
+}
+
+.users__group-icon {
+    font-size: 1.4rem;
+    color: var(--color-secondary);
+    background-color: var(--color-bg-light);
+    padding: 0.45rem;
+    border-radius: 8px;
+}
+
+.users__group-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-list {
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 1rem;
     width: 100%;
-    padding: 30px 24px 0px 30px;
-    flex-direction: column;
-    gap: 16px;
-    max-height: 60vh;
+    flex: 1;
+    min-height: 0;
+    padding: 4px;
     align-content: start;
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.users__empty-state {
+    grid-column: 1 / -1;
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--color-text-secondary);
+    background-color: var(--color-bg-card);
+    border: 1px dashed var(--border-color);
+    border-radius: 10px;
+    gap: 0.5rem;
+}
+
+.users__empty-state .material-symbols-outlined {
+    font-size: 2rem;
+    color: var(--color-text-secondary);
+}
+
+.users__empty-state p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
 
 .user-card {
     display: flex;
@@ -672,7 +749,7 @@ body {
 
 
 .button--success {
-    background-color: var(--color-button-success);
+    background-color: var(--color-primary);
     color: #ffffff; 
 }
 

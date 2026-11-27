@@ -16,7 +16,7 @@ Página Inicial
     </div>
 
     <div class="home__order-filters">
-        <input type="text" id="search-bar" name="search-bar" class="home__search-bar" placeholder="Buscar máquina...">
+        <input type="text" id="search-bar" name="search-bar" class="home__search-bar" placeholder="Buscar por responsável...">
         <div class="order-filter-buttons">
             <a href="/telaInicial/filtro/Preventiva" class="filter-button">Preventiva</a>
             <a href="/telaInicial/filtro/Preditiva" class="filter-button">Preditiva</a>
@@ -47,18 +47,6 @@ Página Inicial
             </button>
         </div>
     </div>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
-        role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
 
     <!-- CONTAINER INDIVIDUAL 1: ORDENS DE SERVIÇO -->
     <section class="home__orders-container" id="container-ordens-servico" role="tabpanel"
@@ -112,10 +100,18 @@ Página Inicial
             {% endfor %}
 
             {% if not ns_os.encontrou %}
-            <div class="home__empty-state">
-                <span class="material-symbols-outlined" aria-hidden="true">assignment_turned_in</span>
-                <p>Nenhuma ordem de serviço ativa no momento.</p>
-            </div>
+                <div class="home__empty-state">
+                    <span class="material-symbols-outlined" aria-hidden="true">search_check</span>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <p>{{message}}</p>
+                            {% endfor %}
+                        {% else %}
+                            <p>Nenhuma ordem de serviço ativa no momento.</p>
+                        {% endif %}
+                    {% endwith %}
+                </div>
             {% endif %}
         </div>
     </section>

@@ -206,18 +206,18 @@ body {
 /* ======================================= */
 
 .machines__container {
-    background-color: #ffffff;
-    border-radius: 16px;
-    border: 1px solid #eef0f6;
-    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-    margin-top: 20px;
-    padding: 24px 10px;
     display: flex;
     flex-direction: column;
-    min-height: 60vh; /* Ajuste conforme a altura desejada na tela */
+    width: 100%;
+    max-width: 100%;
+    height: 75vh;
+    background-color: var(--color-bg-card);
+    box-shadow: 0 2px 8px var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.5rem;
     overflow: hidden;
-    overflow-y: auto;
-    width: 100%
+    animation: 0.25s ease 0s 1 normal none running fadeSlideIn;
 }
 
 /* Cabeçalho */
@@ -230,10 +230,10 @@ body {
 
 /* Quadrado azul claro do ícone */
 .machines__container-icon {
-    width: 36px;
-    height: 36px;
-    background-color: #e6f0ff;
-    color: #2563eb;
+    font-size: 1.4rem;
+    color: var(--color-secondary);
+    background-color: var(--color-bg-light);
+    padding: 0.45rem;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -248,7 +248,7 @@ body {
 .machines__container-title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #0b132b;
+    color: var(--color-text-primary);
     margin: 0;
 }
 
@@ -260,16 +260,19 @@ body {
 }
 
 /* Área interna do grid com rolagem */
-.machines__container .machines__machines-grid {
-    max-height: 400px;      /* Ativa a barra de rolagem automaticamente quando passar dessa altura */
-    overflow-y: auto;
-    padding-right: 8px;    /* Evita que a barra de rolagem encoste nos cards da direita */
-    
+.machines__machines-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: max-content;
+    gap: 1.25rem;
     width: 100%;
-    gap: var(--font-size-md);
-    padding: 30px var(--border-radius-lg) 0px 30px;
+    height: 90%;
+    min-height: 0;
+    padding: 10px;
+    margin-top: 16px;
+    align-content: start;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /* ========================================
@@ -282,7 +285,7 @@ body {
     width: 100%;
     background-color: var(--color-bg-card);
     border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-md);
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 6px 16px -2px, rgba(0, 0, 0, 0.04) 0px 2px 6px -1px;
     font-family: var(--font-family-base);
     color: var(--color-text-primary);
     overflow: hidden;
