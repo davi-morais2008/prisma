@@ -313,7 +313,7 @@ Página Inicial
     </div>
 
     <!-- ===================================================================== -->
-    <!-- MODAL: EDIÇÃO DA ORDEM DE INSPEÇÃO (RESTAURADO)                       -->
+    <!-- MODAL: EDIÇÃO DA ORDEM DE INSPEÇÃO                                    -->
     <!-- ===================================================================== -->
     <div class="order-edit" id="updateInspectionModal" role="dialog" aria-modal="true"
         aria-labelledby="inspectionEditTitle">
@@ -438,6 +438,14 @@ Página Inicial
                             <div class="order-details__info-group">
                                 <span class="order-details__label">Técnico Responsável:</span>
                                 <strong class="order-details__value" id="tecnico_responsavel">João Silva</strong>
+                            </div>
+                            <div class="order-details__info-group">
+                                <span class="order-details__label">Tipo de Máquina:</span>
+                                <strong class="order-details__value" id="tipo_maquina">-</strong>
+                            </div>
+                            <div class="order-details__info-group">
+                                <span class="order-details__label">Localização / Setor:</span>
+                                <strong class="order-details__value" id="localizacao_setor">-</strong>
                             </div>
                         </div>
                     </section>
@@ -657,18 +665,6 @@ Página Inicial
                                     <option value="">Não atribuído</option>
                                 </select>
                             </div>
-
-                            <div class="order-edit__field">
-                                <label class="order-edit__label" for="edit_tecnico_responsavel">Técnico Responsável</label>
-                                <select class="order-edit__select" id="edit_tecnico_responsavel" name="tecnico_responsavel">
-                                    <option value="">Não atribuído</option>
-                                    {% for tecnico in tecnicos %}
-                                    {% if tecnico.rbac == 'usuario' %}
-                                    <option value="{{ tecnico.cpf }}">{{ tecnico.nome }}</option>
-                                    {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </div>
                         </div>
                     </fieldset>
 
@@ -862,7 +858,20 @@ Página Inicial
                                     <label class="order-create__label" for="create_modelo_maquina">Modelo da
                                         Máquina</label>
                                     <input class="order-create__input" type="text" id="create_modelo_maquina"
-                                        name="modelo_maquina" placeholder="Modelo da máquina">
+                                        name="modelo_maquina" placeholder="Modelo da máquina" readonly>
+                                </div>
+
+                                <div class="order-create__field">
+                                    <label class="order-create__label" for="create_tipo_maquina">Tipo de Máquina</label>
+                                    <input class="order-create__input" type="text" id="create_tipo_maquina"
+                                        name="tipo_maquina" placeholder="Tipo da máquina" readonly>
+                                </div>
+
+                                <div class="order-create__field">
+                                    <label class="order-create__label" for="create_localizacao_setor">Localização /
+                                        Setor</label>
+                                    <input class="order-create__input" type="text" id="create_localizacao_setor"
+                                        name="localizacao_setor" placeholder="Localização / Setor" readonly>
                                 </div>
 
                                 <div class="order-create__field">
@@ -1092,7 +1101,9 @@ Página Inicial
                                 required>
                                 <option value="" disabled selected>Selecione a máquina...</option>
                                 {% for maquina in tipo_maquinas %}
+                                {% if maquina.status_tipo_maquina %}
                                 <option value="{{maquina.id_tipo_maquina}}">{{maquina.tipo_maquina}}</option>
+                                {% endif %}
                                 {% endfor %}
                             </select>
                         </div>

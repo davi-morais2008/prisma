@@ -263,6 +263,47 @@ body {
     box-shadow: var(--shadow-sm); /*[cite: 3] */
 }
 
+.user-card__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Estilo base da pílula de status */
+.user-card__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px; /* Mesmo arredondamento dos botões */
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.02em;
+}
+
+/* Bolinha indicadora antes do texto */
+.user-card__status::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+/* Variação: Ativo (Verde suave) */
+.user-card__status--active {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+/* Variação: Inativo (Vermelho suave, combinando com o botão Inativar) */
+.user-card__status--inactive {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
 .user-card__info {
     flex-grow: 1;
     display: flex;

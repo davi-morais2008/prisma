@@ -43,7 +43,8 @@ Aqui está o arquivo CSS corrigido, com todos os valores fixos (cores, fontes, t
 }
 
 /* Variações por Categoria */
-.alert-danger, .alert-error {
+.alert-danger,
+.alert-error {
     background-color: #fde8e8;
     color: #9b1c1c;
     border-left: 5px solid #f05252;
@@ -127,6 +128,7 @@ body {
 /* ======================================= */
 
 .machines__filters {
+    position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -155,18 +157,58 @@ body {
     box-shadow: var(--shadow-md);
 }
 
+/* Linha única deslizável em todas as resoluções + botão limpar isolado à direita */
 .filter-buttons {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr) var(--border-radius-pill);
-    gap: var(--font-size-xs);
+    width: calc(100% - 52px);
+    /* Reserva 40px para o botão + 12px de espaçamento */
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
     align-items: center;
+    gap: 0.65rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 4px 6px 2px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Oculta barra no Firefox */
+}
+
+.filter-buttons::-webkit-scrollbar {
+    display: none;
+    /* Oculta barra no Chrome/Safari/Edge */
+}
+
+.filter-buttons a {
+    text-decoration: none;
+}
+
+.filter-buttons>*:not(:last-child) {
+    flex: 0 0 auto;
+}
+
+/* Botão de limpar fixo na lateral direita e em tamanho menor */
+.filter-buttons>*:last-child {
+    position: absolute;
+    top: calc(30px + 48px + 1rem + 2px);
+    /* Padding topo + altura input + gap + ajuste fino */
+    right: 24px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
 }
 
 .filter-buttons .material-symbols-outlined {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 20px;
     cursor: pointer;
 }
 
@@ -175,14 +217,13 @@ body {
 }
 
 .filter-button {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     cursor: pointer;
-    width: 100%;
     height: 40px;
-    padding: 10px;
+    padding: 0 1.15rem;
     border: 1px solid transparent;
     text-decoration: none;
     border-radius: var(--border-radius-pill);
@@ -192,13 +233,46 @@ body {
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-bold);
     box-shadow: var(--shadow-sm);
+    white-space: nowrap;
     transition: all 0.2s ease;
 }
 
+
+.filter-button.active{
+    background-color: var(--color-secondary);
+    color: var(--color-text-light);
+}
 .filter-button:hover {
-    background-color: var(--color-pr);
+    background-color: var(--color-secondary);
     color: var(--color-text-light);
     box-shadow: var(--shadow-md);
+}
+
+/* Ajuste fino de padding para telas menores */
+@media (max-width: 768px) {
+    .machines__filters {
+        padding: 20px 16px 0px 16px;
+    }
+
+    .filter-buttons {
+        width: calc(100% - 48px);
+    }
+
+    .filter-buttons>*:last-child {
+        top: calc(20px + 48px + 1rem + 2px);
+        right: 16px;
+    }
+}
+
+.filter-buttons {
+    cursor: grab;
+    user-select: none;
+    display: flex;
+    justify-content: space-around;
+}
+
+.filter-buttons{
+    cursor: grabbing;
 }
 
 /* ======================================= */
@@ -1722,6 +1796,7 @@ body {
         opacity: 0;
         transform: scale(0.96);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -1836,8 +1911,11 @@ body {
         width: 100%;
     }
 
-    .machine-form__submit-button {
-        width: 100%;
+    .machine-edit__overlay.active,
+    .machine-modal__overlay.active,
+    .machine-details__overlay.active,
+    .delete-confirmation.active {
+        margin-top: 75px !important;
     }
 }
 

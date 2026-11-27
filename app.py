@@ -428,6 +428,7 @@ def rota_editar_inspecao(id_inspecao):
 
 @app.route("/historico")
 @login_required
+@roles_required('admin', 'root')
 def pagina_historico():
     OSfinalizado = buscar_os_finalizado()
     print(OSfinalizado)
@@ -467,7 +468,7 @@ def post_login():
     
     for user in usuarios:
         if user['cpf'] == usuario and user['senha'] == senha:
-            if not user.get('status_usuario'):
+            if user.get('status_usuario') == 'Pendente' or user.get('status_usuario') == 'Inativo':
                 flash('Seu cadastro está aguardando aprovação de um administrador ou está inativo.', 'warning')
                 return redirect('/login')
 
@@ -509,6 +510,7 @@ def post_cadastro():
 
 @app.route('/maquinas', methods=['GET'])
 @login_required
+@roles_required('admin', 'root')
 def pagina_maquinas():
     maquinas = consultar_maquinas()
     tipos_maquinas = consulta_tipo_maquinas()
@@ -752,7 +754,7 @@ def api_alterar_status_usuario():
     try:
         alterar_status_usuario(cpf, novo_status)
         
-        if int(novo_status) == 1:
+        if (novo_status) == 'Ativo':
             flash('Usuário ativado e aprovado com sucesso!', 'success')
         else:
             flash('Usuário inativado com sucesso!', 'warning')

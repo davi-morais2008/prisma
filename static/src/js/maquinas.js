@@ -298,7 +298,7 @@ function calcularTempoParado(machine, orders) {
     return Math.floor(totalMs / (1000 * 60 * 60 * 24));
 }
 
-function calcularIndiceDisponibilidade(machine, orders){
+function calcularIndiceDisponibilidade(machine, orders) {
     const tempoFuncionando = calcularTempoFuncionamento(machine, orders);
     const tempoParada = calcularTempoParado(machine, orders)
     const tempoTotal = tempoFuncionando + tempoParada
@@ -475,7 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => {
             const valorBotao = (button.value || '').trim().toLowerCase();
 
-            // Se clicar no botão já ativo, desativa o filtro de tipo
+
             if (button.classList.contains('active')) {
                 button.classList.remove('active');
                 tipoSelecionado = '';
@@ -488,4 +488,60 @@ document.addEventListener('DOMContentLoaded', () => {
             aplicarFiltros();
         });
     });
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const slider = document.querySelector('.filter-buttons');
+    if (!slider) return;
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let isDragging = false;
+
+    // 1. Permite rolar horizontalmente usando a rodinha normal do mouse
+    slider.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+            e.preventDefault();
+            slider.scrollLeft += e.deltaY;
+        }
+    }, { passive: false });
+
+    // 2. Permite clicar e arrastar (Drag-to-Scroll)
+    slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        isDragging = false;
+        slider.style.scrollBehavior = 'auto'; // Evita atraso ao arrastar
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+    });
+
+    slider.addEventListener('mouseleave', () => {
+        isDown = false;
+        slider.style.scrollBehavior = 'smooth';
+    });
+
+    slider.addEventListener('mouseup', () => {
+        isDown = false;
+        slider.style.scrollBehavior = 'smooth';
+    });
+
+    slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 1.5; // Velocidade do arraste
+        if (Math.abs(walk) > 5) isDragging = true;
+        slider.scrollLeft = scrollLeft - walk;
+    });
+
+    // 3. Evita disparar o clique no link/botão se o usuário estava apenas arrastando
+    slider.addEventListener('click', (e) => {
+        if (isDragging) {
+            e.preventDefault();
+            e.stopPropagation();
+            isDragging = false;
+        }
+    }, true);
 });

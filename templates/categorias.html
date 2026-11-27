@@ -15,29 +15,47 @@ Categorias e Configurações
         <h1 class="categories-page__title">Gerenciar Categorias do Sistema</h1>
     </header>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="container mt-3">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
     <!-- SEÇÃO: TIPOS DE MÁQUINA -->
     <section class="category-section">
         <div class="category-section__header">
             <h2 class="category-section__title">Tipos de Máquina</h2>
-            <button id="new-type-button" class="button button--primary btn-open-modal" data-target="#modal-tipo-maquina">
+            <button id="new-type-button" class="button button--primary btn-open-modal"
+                data-target="#modal-tipo-maquina">
                 <span class="material-symbols-outlined">add</span> Novo Tipo
             </button>
         </div>
 
         <div class="category-grid">
             {% for tipo in tipos_maquina %}
+            {% if tipo.status_tipo_maquina == 'Ativo' %}
             <article class="category-card">
                 <div class="category-card__info">
                     <h3 class="category-card__title">{{ tipo.tipo_maquina }}</h3>
                 </div>
                 <div class="category-card__actions">
                     <form action="/categorias/deletar_tipo/{{ tipo.id_tipo_maquina }}" method="POST">
-                        <button type="submit" class="btn-action btn-action--delete" aria-label="Excluir {{ tipo.tipo_maquina }}">
+                        <button type="submit" class="btn-action btn-action--delete"
+                            aria-label="Excluir {{ tipo.tipo_maquina }}">
                             <span class="material-symbols-outlined">delete</span>
                         </button>
                     </form>
                 </div>
             </article>
+            {% endif %}
             {% endfor %}
         </div>
     </section>
@@ -53,18 +71,21 @@ Categorias e Configurações
 
         <div class="category-grid">
             {% for sector in setores %}
+            {% if sector.status_setor == 'Ativo' %}
             <article class="category-card">
                 <div class="category-card__info">
                     <h3 class="category-card__title">{{ sector.setor }}</h3>
                 </div>
                 <div class="category-card__actions">
                     <form action="/categorias/deletar_setor/{{ sector.id_setor }}" method="POST">
-                        <button type="submit" class="btn-action btn-action--delete" aria-label="Excluir {{ sector.setor }}">
+                        <button type="submit" class="btn-action btn-action--delete"
+                            aria-label="Excluir {{ sector.setor }}">
                             <span class="material-symbols-outlined">delete</span>
                         </button>
                     </form>
                 </div>
             </article>
+            {% endif %}
             {% endfor %}
         </div>
     </section>
@@ -80,6 +101,7 @@ Categorias e Configurações
 
         <div class="failures-container">
             {% for tipo in tipos_maquina %}
+            {% if tipo.status_tipo_maquina == 'Ativo' %}
             <div class="failure-group" data-tipo-id="{{ tipo.id_tipo_maquina }}">
                 <div class="failure-group__header">
                     <span class="failure-group__badge">Tipo de Máquina</span>
@@ -87,23 +109,27 @@ Categorias e Configurações
                 </div>
                 <div class="category-grid">
                     {% for falha in tipo.falhas %}
+                    {% if falha.status_falha == 'Ativo' %}
                     <article class="category-card">
                         <div class="category-card__info">
                             <h3 class="category-card__title">{{ falha.falha }}</h3>
                         </div>
                         <div class="category-card__actions">
                             <form action="/categorias/deletar_falha/{{ falha.id_falha }}" method="POST">
-                                <button type="submit" class="btn-action btn-action--delete" aria-label="Excluir {{ falha.falha }}">
+                                <button type="submit" class="btn-action btn-action--delete"
+                                    aria-label="Excluir {{ falha.falha }}">
                                     <span class="material-symbols-outlined">delete</span>
                                 </button>
                             </form>
                         </div>
                     </article>
+                    {% endif %}
                     {% else %}
                     <p class="failure-group__empty">Nenhuma falha cadastrada para este tipo de máquina.</p>
                     {% endfor %}
                 </div>
             </div>
+            {% endif %}
             {% endfor %}
         </div>
     </section>
@@ -114,14 +140,16 @@ Categorias e Configurações
             <header class="category-modal__header">
                 <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="category-modal__logo">
                 <h2 id="title-tipo-maquina" class="category-modal__title">Tipo de Máquina</h2>
-                <button id="close-modal-tipo" type="button" class="category-modal__close-button" aria-label="Fechar janela">
+                <button id="close-modal-tipo" type="button" class="category-modal__close-button"
+                    aria-label="Fechar janela">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </header>
             <form class="category-modal__form" action="/categorias/adicionar_tipo" method="POST">
                 <div class="form-group">
                     <label for="tipo-nome">Nome do Tipo</label>
-                    <input type="text" id="tipo-nome" name="tipo_maquina" placeholder="Ex: Torno CNC, Fresa, Impressora 3D" required>
+                    <input type="text" id="tipo-nome" name="tipo_maquina"
+                        placeholder="Ex: Torno CNC, Fresa, Impressora 3D" required>
                 </div>
                 <footer class="category-modal__footer">
                     <button type="button" class="button button--secondary btn-close-modal">Cancelar</button>
@@ -137,14 +165,16 @@ Categorias e Configurações
             <header class="category-modal__header">
                 <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="category-modal__logo">
                 <h2 id="title-setor" class="category-modal__title">Setor</h2>
-                <button id="close-modal-location" type="button" class="category-modal__close-button" aria-label="Fechar janela">
+                <button id="close-modal-location" type="button" class="category-modal__close-button"
+                    aria-label="Fechar janela">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </header>
             <form class="category-modal__form" action="/categorias/adicionar_setor" method="POST">
                 <div class="form-group">
                     <label for="setor-nome">Nome do Setor</label>
-                    <input type="text" id="setor-nome" name="setor" placeholder="Ex: Usinagem, Montagem, Estamparia" required>
+                    <input type="text" id="setor-nome" name="setor" placeholder="Ex: Usinagem, Montagem, Estamparia"
+                        required>
                 </div>
                 <footer class="category-modal__footer">
                     <button type="button" class="button button--secondary btn-close-modal">Cancelar</button>
@@ -160,7 +190,8 @@ Categorias e Configurações
             <header class="category-modal__header">
                 <img src="/static/src/img/EmblemaPrisma.png" alt="Logo PRISMA" class="category-modal__logo">
                 <h2 id="title-falha" class="category-modal__title">Tipo de Falha</h2>
-                <button id="close-modal-failure" type="button" class="category-modal__close-button" aria-label="Fechar janela">
+                <button id="close-modal-failure" type="button" class="category-modal__close-button"
+                    aria-label="Fechar janela">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </header>
@@ -170,13 +201,16 @@ Categorias e Configurações
                     <select id="falha-tipo-maquina" name="id_tipo_maquina" required>
                         <option value="">Selecione um tipo...</option>
                         {% for tipo in tipos_maquina %}
+                        {% if tipo.status_tipo_maquina == 'Ativo' %}
                         <option value="{{ tipo.id_tipo_maquina }}">{{ tipo.tipo_maquina }}</option>
+                        {% endif %}
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="falha-nome">Nome / Descrição da Falha</label>
-                    <input type="text" id="falha-nome" name="falha" placeholder="Ex: Sobreaquecimento do Motor, Desalinhamento" required>
+                    <input type="text" id="falha-nome" name="falha"
+                        placeholder="Ex: Sobreaquecimento do Motor, Desalinhamento" required>
                 </div>
                 <footer class="category-modal__footer">
                     <button type="button" class="button button--secondary btn-close-modal">Cancelar</button>
