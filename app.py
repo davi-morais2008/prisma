@@ -434,7 +434,7 @@ def rota_editar_inspecao(id_inspecao):
 
 @app.route("/historico")
 @login_required
-@roles_required(['admin', 'root'])
+@roles_required('admin', 'root')
 def pagina_historico():
     OSfinalizado = buscar_os_finalizado()
     print(OSfinalizado)
@@ -512,7 +512,7 @@ def post_cadastro():
 
 @app.route('/maquinas', methods = ['GET'])
 @login_required
-@roles_required(['admin', 'root'])
+@roles_required('admin', 'root')
 def pagina_maquinas():
     maquinas = consultar_maquinas()
     tipos_maquinas = consulta_tipo_maquinas()
